@@ -1,217 +1,157 @@
 #!/usr/bin/env python3
 """
-build_dashboard.py
-------------------
-ดึงข้อมูลจาก SharePoint List "KYCData1" ผ่าน Microsoft Graph API (client credentials)
-แล้ว render เป็น index.html (Dashboard แบบ static ไฟล์เดียว) สำหรับ GitHub Pages
+build_dashboard.py — สร้าง KYC Daily Dashboard (HTML ไฟล์เดียว) จาก SharePoint List
+แก้ปัญหา: [ERROR] list 'KYCData1' not found  -> resolve ชื่อ list อัตโนมัติ + fail-fast
 
-ENV ที่ต้องมี (ตั้งใน GitHub Secrets):
-  AZURE_CLIENT_ID
-  AZURE_TENANT_ID
-  AZURE_CLIENT_SECRET
-ENV เสริม (มีค่า default):
-  SP_HOSTNAME   default: dohomegroup.sharepoint.com
-  SP_SITE_PATH  default: /sites/AC-Accounting
-  SP_LIST_NAME  default: KYCData1
-  OUTPUT_FILE   default: index.html
-  TEMPLATE_FILE default: templates/dashboard_template.html
-  TZ_OFFSET_HRS default: 7   (Asia/Bangkok — ใช้แสดง As of และคำนวณ "วันนี้")
+การใช้งาน
+  python scripts/build_dashboard.py
+  python scripts/build_dashboard.py --offline data.json     # build จาก snapshot ไม่ต้องต่อ SharePoint
+
+Environment (GitHub Actions secrets)
+  TENANT_ID, CLIENT_ID, CLIENT_SECRET     : Azure AD app (Sites.Read.All)
+  SP_HOST        default dohomegroup.sharepoint.com
+  SP_SITE_PATH   default /sites/AC-Accounting
+  SP_LIST_DATA   default KYC_DATA_NEW      (ทับ candidate ตัวแรก)
+  SP_LIST_GROUP  default Admin_KycNew
+  OUT_FILE       default dist/KYC_Daily_Dashboard.html
 """
-
-from __future__ import annotations
-
+import argparse
+import difflib
 import json
 import os
 import re
 import sys
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional
 
-import requests
-
-ROOT = Path(__file__).resolve().parents[1]
-
-HOSTNAME = os.getenv("SP_HOSTNAME", "dohomegroup.sharepoint.com")
+HOST = os.getenv("SP_HOST", "dohomegroup.sharepoint.com")
 SITE_PATH = os.getenv("SP_SITE_PATH", "/sites/AC-Accounting")
-LIST_NAME = os.getenv("SP_LIST_NAME", "KYCData1")
-OUTPUT_FILE = ROOT / os.getenv("OUTPUT_FILE", "index.html")
-TEMPLATE_FILE = ROOT / os.getenv("TEMPLATE_FILE", "templates/dashboard_template.html")
-TZ_OFFSET = timedelta(hours=float(os.getenv("TZ_OFFSET_HRS", "7")))
+OUT_FILE = Path(os.getenv("OUT_FILE", "dist/KYC_Daily_Dashboard.html"))
+TEMPLATE = Path(os.getenv("TEMPLATE_FILE", "templates/dashboard_template.html"))
+
+DATA_LIST_CANDIDATES = [os.getenv("SP_LIST_DATA", "").strip(), "KYC_DATA_NEW", "KYCData1", "DemoApp"]
+GROUP_LIST_CANDIDATES = [os.getenv("SP_LIST_GROUP", "").strip(), "Admin_KycNew"]
 
 GRAPH = "https://graph.microsoft.com/v1.0"
-TIMEOUT = 60
-
-# ---------------------------------------------------------------- field mapping
-# ชื่อฟิลด์ที่เป็นไปได้ในลิสต์ (internal name) → คีย์ที่ dashboard ใช้
-FIELD_MAP: Dict[str, List[str]] = {
-    "customer": ["Customer_x0020_Name", "CustomerName", "Customer_Name", "Customer", "Title"],
-    "branch":   ["branch", "Branch", "BranchCode", "Branch_x0020_Code"],
-    "owner":    ["Owner", "owner", "AssignedTo", "Responsible"],
-    "status":   ["Status", "status", "Status_x0020_1", "Status_1"],
-    "type":     ["Type_Request", "TypeRequest", "Type_x0020_Request", "RequestType"],
-    "team":     ["type_teams", "TypeTeams", "Team", "type_team"],
-    "limit":    ["limit", "Limit", "CreditLimit", "limit_amount"],
-    "seg":      ["Type1", "Segment", "CustomerType"],
-    "province": ["province", "Province"],
-    "ts":       ["Request_x0020_TimeStamp", "RequestTimeStamp", "Request_TimeStamp",
-                 "RequestDate", "Created"],
-}
 
 
-def env(name: str) -> str:
-    v = os.getenv(name, "").strip()
-    if not v:
-        sys.exit(f"[ERROR] missing required environment variable: {name}")
-    return v
+def log(lvl, msg):
+    print(f"[{lvl}] {msg}", flush=True)
 
 
-def get_token() -> str:
-    tenant = env("AZURE_TENANT_ID")
-    resp = requests.post(
-        f"https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token",
-        data={
-            "client_id": env("AZURE_CLIENT_ID"),
-            "client_secret": env("AZURE_CLIENT_SECRET"),
-            "scope": "https://graph.microsoft.com/.default",
-            "grant_type": "client_credentials",
-        },
-        timeout=TIMEOUT,
-    )
-    if resp.status_code != 200:
-        sys.exit(f"[ERROR] token request failed ({resp.status_code}): {resp.text[:400]}")
-    return resp.json()["access_token"]
+# ---------------------------------------------------------------- list resolver
+def _norm(s):
+    return re.sub(r"[\s_\-.]+", "", (s or "")).lower()
 
 
-def api_get(url: str, token: str, params: Optional[dict] = None) -> dict:
-    r = requests.get(
-        url,
-        headers={"Authorization": f"Bearer {token}", "Accept": "application/json"},
-        params=params,
-        timeout=TIMEOUT,
-    )
-    if r.status_code != 200:
-        sys.exit(f"[ERROR] GET {url} failed ({r.status_code}): {r.text[:400]}")
+def resolve_list(available, candidates, kind="data"):
+    """หา list จริงบนไซต์จาก candidates (ทน _ - . และตัวพิมพ์เล็ก/ใหญ่)"""
+    by_norm = {_norm(n): n for n in available}
+    # ไล่ทีละ candidate ตามลำดับความสำคัญ: exact -> normalized -> ใกล้เคียง
+    for cand in [c for c in candidates if c]:
+        if cand in available:
+            log("INFO", f"{kind} list = '{cand}'")
+            return cand
+        hit = by_norm.get(_norm(cand))
+        if hit:
+            log("WARN", f"list '{cand}' ไม่ตรงตัวอักษร — ใช้ '{hit}' แทน")
+            return hit
+        core = re.sub(r"\d+$", "", _norm(cand))
+        near = [n for k, n in by_norm.items() if len(core) >= 4 and (k.startswith(core) or core in k)]
+        if near:
+            log("WARN", f"ไม่พบ '{cand}' — ใช้ list ใกล้เคียง '{near[0]}'")
+            return near[0]
+    first = next((c for c in candidates if c), kind)
+    sugg = difflib.get_close_matches(first, available, n=5, cutoff=0.4)
+    log("ERROR", f"ไม่พบ {kind} list จาก {[c for c in candidates if c]}")
+    log("ERROR", f"ใกล้เคียงที่สุด: {sugg or '(ไม่มี)'}")
+    log("ERROR", "ตั้งค่า env SP_LIST_DATA / SP_LIST_GROUP ให้ตรงชื่อจริง")
+    sys.exit(1)  # fail-fast — ไม่ทำงานต่อเหมือนเวอร์ชันเดิม
+
+
+# ---------------------------------------------------------------- graph client
+def get_token():
+    import requests
+
+    t, c, s = os.getenv("TENANT_ID"), os.getenv("CLIENT_ID"), os.getenv("CLIENT_SECRET")
+    if not all([t, c, s]):
+        log("ERROR", "ไม่พบ TENANT_ID / CLIENT_ID / CLIENT_SECRET — ใช้ --offline หากต้องการ build จาก snapshot")
+        sys.exit(1)
+    r = requests.post(
+        f"https://login.microsoftonline.com/{t}/oauth2/v2.0/token",
+        data={"client_id": c, "client_secret": s,
+              "scope": "https://graph.microsoft.com/.default", "grant_type": "client_credentials"},
+        timeout=60)
+    r.raise_for_status()
+    return r.json()["access_token"]
+
+
+def gget(url, tok):
+    import requests
+    r = requests.get(url, headers={"Authorization": f"Bearer {tok}"}, timeout=120)
+    r.raise_for_status()
     return r.json()
 
 
-def fetch_items(token: str) -> List[dict]:
-    site = api_get(f"{GRAPH}/sites/{HOSTNAME}:{SITE_PATH}", token)
-    site_id = site["id"]
-    print(f"[INFO] site: {site.get('displayName')} ({site_id})")
-
-    lists = api_get(f"{GRAPH}/sites/{site_id}/lists", token, {"$top": "200"})["value"]
-    match = next(
-        (l for l in lists if l.get("name") == LIST_NAME or l.get("displayName") == LIST_NAME),
-        None,
-    )
-    if not match:
-        names = ", ".join(sorted({l.get("displayName", "") for l in lists}))
-        sys.exit(f"[ERROR] list '{LIST_NAME}' not found. Available: {names}")
-    list_id = match["id"]
-    print(f"[INFO] list: {match.get('displayName')} ({list_id})")
-
-    items: List[dict] = []
-    url = f"{GRAPH}/sites/{site_id}/lists/{list_id}/items"
-    params = {"$expand": "fields", "$top": "200"}
+def gall(url, tok):
+    out = []
     while url:
-        page = api_get(url, token, params)
-        items.extend(page.get("value", []))
-        url = page.get("@odata.nextLink")
-        params = None  # nextLink already carries query params
-        print(f"[INFO] fetched {len(items)} items...")
-    return items
+        j = gget(url, tok)
+        out += j.get("value", [])
+        url = j.get("@odata.nextLink")
+    return out
 
 
-# ---------------------------------------------------------------- normalisation
-def pick(fields: dict, keys: Iterable[str]) -> Any:
-    for k in keys:
-        v = fields.get(k)
-        if v not in (None, ""):
-            return v
-    return None
+def fetch():
+    tok = get_token()
+    site = gget(f"{GRAPH}/sites/{HOST}:{SITE_PATH}", tok)
+    log("INFO", f"site: {site['name']} ({site['id']})")
+    lists = gall(f"{GRAPH}/sites/{site['id']}/lists?$select=id,displayName&$top=200", tok)
+    names = [l["displayName"] for l in lists]
+    log("INFO", f"lists found: {len(names)}")
+    dl = resolve_list(names, DATA_LIST_CANDIDATES, "data")
+    gl = resolve_list(names, GROUP_LIST_CANDIDATES, "group")
+    ids = {l["displayName"]: l["id"] for l in lists}
+
+    def items(name):
+        rows = gall(f"{GRAPH}/sites/{site['id']}/lists/{ids[name]}/items?expand=fields&$top=2000", tok)
+        out = []
+        for r in rows:
+            f = dict(r.get("fields", {}))
+            f["_ID"] = r.get("id")
+            out.append(f)
+        return out
+
+    records = items(dl)
+    allowed = [r.get("Title") for r in items(gl) if r.get("Title")]
+    log("INFO", f"records={len(records)} allowed_viewers={len(allowed)}")
+    return {"records": records, "allowed": allowed, "source": dl}
 
 
-def to_number(v: Any) -> float:
-    if v is None:
-        return 0.0
-    if isinstance(v, (int, float)):
-        return float(v)
-    s = re.sub(r"[^\d.\-]", "", str(v))
-    try:
-        return float(s) if s not in ("", "-", ".") else 0.0
-    except ValueError:
-        return 0.0
+# ---------------------------------------------------------------- build
+def build(payload):
+    if not TEMPLATE.exists():
+        log("ERROR", f"ไม่พบ template: {TEMPLATE}")
+        sys.exit(1)
+    html = TEMPLATE.read_text(encoding="utf-8")
+    if "__DATA__" not in html or "__ALLOWED__" not in html:
+        log("ERROR", "template ต้องมี placeholder __DATA__ และ __ALLOWED__")
+        sys.exit(1)
+    html = html.replace("__ALLOWED__", json.dumps(payload["allowed"], ensure_ascii=False))
+    html = html.replace("__DATA__", json.dumps(payload["records"], ensure_ascii=False, default=str))
+    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    OUT_FILE.write_text(html, encoding="utf-8")
+    log("OK", f"wrote {OUT_FILE} ({OUT_FILE.stat().st_size:,} bytes) "
+               f"records={len(payload['records'])} viewers={len(payload['allowed'])}")
 
 
-def to_ts(v: Any) -> str:
-    """คืนค่า 'YYYY-MM-DD HH:MM' (UTC) ให้ frontend"""
-    if not v:
-        return ""
-    s = str(v)
-    for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S.%fZ", "%Y-%m-%dT%H:%M:%S",
-                "%m/%d/%Y %H:%M:%S", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
-        try:
-            return datetime.strptime(s, fmt).strftime("%Y-%m-%d %H:%M")
-        except ValueError:
-            continue
-    return s[:16].replace("T", " ")
-
-
-def normalise(items: List[dict]) -> List[dict]:
-    rows: List[dict] = []
-    for it in items:
-        f = it.get("fields", {}) or {}
-        ts = to_ts(pick(f, FIELD_MAP["ts"]) or it.get("createdDateTime"))
-        if not ts:
-            continue
-        rows.append(
-            {
-                "id": int(f.get("id") or it.get("id") or 0),
-                "customer": str(pick(f, FIELD_MAP["customer"]) or ""),
-                "branch": str(pick(f, FIELD_MAP["branch"]) or "(ไม่ระบุสาขา)"),
-                "owner": str(pick(f, FIELD_MAP["owner"]) or "(ไม่ระบุผู้ดูแล)"),
-                "status": str(pick(f, FIELD_MAP["status"]) or "(ไม่ระบุสถานะ)"),
-                "type": str(pick(f, FIELD_MAP["type"]) or ""),
-                "team": str(pick(f, FIELD_MAP["team"]) or ""),
-                "limit": to_number(pick(f, FIELD_MAP["limit"])),
-                "seg": str(pick(f, FIELD_MAP["seg"]) or ""),
-                "province": str(pick(f, FIELD_MAP["province"]) or ""),
-                "ts": ts,
-            }
-        )
-    rows.sort(key=lambda r: r["ts"], reverse=True)
-    return rows
-
-
-# ---------------------------------------------------------------- render
-def render(rows: List[dict]) -> str:
-    if not TEMPLATE_FILE.exists():
-        sys.exit(f"[ERROR] template not found: {TEMPLATE_FILE}")
-    html = TEMPLATE_FILE.read_text(encoding="utf-8")
-
-    now_local = datetime.now(timezone.utc) + TZ_OFFSET
-    site_url = f"https://{HOSTNAME}{SITE_PATH}/Lists/{LIST_NAME}"
-
-    payload = json.dumps(rows, ensure_ascii=False)
-    if "/*__DATA__*/[]" not in html:
-        sys.exit("[ERROR] template missing the /*__DATA__*/[] binding placeholder")
-    html = html.replace("/*__DATA__*/[]", payload)
-    html = html.replace("__GENERATED_AT__", now_local.strftime("%Y-%m-%d %H:%M") + " (UTC+7)")
-    html = html.replace("__LIST_URL__", site_url)
-    html = html.replace("__LIST_NAME__", LIST_NAME)
-    return html
-
-
-def main() -> None:
-    print(f"[INFO] building dashboard for list '{LIST_NAME}' @ {HOSTNAME}{SITE_PATH}")
-    token = get_token()
-    items = fetch_items(token)
-    rows = normalise(items)
-    if not rows:
-        sys.exit("[ERROR] no rows returned — refusing to overwrite index.html with empty data")
-    OUTPUT_FILE.write_text(render(rows), encoding="utf-8")
-    print(f"[OK] wrote {OUTPUT_FILE} ({len(rows)} records, {OUTPUT_FILE.stat().st_size:,} bytes)")
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--offline", metavar="JSON", help="build จากไฟล์ snapshot {records,allowed}")
+    a = ap.parse_args()
+    log("INFO", f"building dashboard @ {HOST}{SITE_PATH}")
+    payload = json.loads(Path(a.offline).read_text(encoding="utf-8")) if a.offline else fetch()
+    payload.setdefault("allowed", [])
+    build(payload)
 
 
 if __name__ == "__main__":
