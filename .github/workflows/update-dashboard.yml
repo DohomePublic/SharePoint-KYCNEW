@@ -1,32 +1,31 @@
-name: Build KYC Daily Dashboard
+name: Update Dashboard
 
 on:
   schedule:
-    - cron: "0 1 * * *"          # 01:00 UTC = 08:00 น. ประเทศไทย ทุกวัน
+    - cron: "0 1 * * *"          # 01:00 UTC = 08:00 น. ไทย ทุกวัน
   workflow_dispatch:
     inputs:
       list_data:
         description: "ชื่อ SharePoint List ข้อมูล"
         default: "KYC_DATA_NEW"
         required: false
-      offline:
-        description: "build จาก data/sample_data.json (ไม่ต่อ SharePoint)"
+      sample:
+        description: "ใช้ข้อมูลตัวอย่าง (ไม่ต่อ SharePoint / ไม่ต้องมี secret)"
         type: boolean
         default: false
   push:
     branches: [main]
     paths:
       - "scripts/**"
-      - "templates/**"
       - ".github/workflows/**"
 
 permissions:
-  contents: read
+  contents: write        # ต้องมีเพื่อ commit index.html กลับเข้า repo
   pages: write
   id-token: write
 
 concurrency:
-  group: kyc-dashboard
+  group: update-dashboard
   cancel-in-progress: true
 
 jobs:
@@ -40,20 +39,27 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: pip
 
-      - name: Install deps
-        run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install requests
 
-      - name: Smoke test (offline build ต้องผ่านเสมอ)
+      - name: Self-check (สคริปต์ต้องสร้าง HTML ได้เสมอ)
         run: |
-          OUT_FILE=dist/_smoke.html python scripts/build_dashboard.py --offline data/sample_data.json
-          test -s dist/_smoke.html
-          grep -q "__DATA__" dist/_smoke.html && { echo "placeholder ไม่ถูกแทนที่"; exit 1; } || echo "placeholder OK"
-          rm -f dist/_smoke.html
+          set -e
+          python -m py_compile scripts/build_dashboard.py
+          OUT_FILE=/tmp/_smoke.html python scripts/build_dashboard.py --sample
+          test -s /tmp/_smoke.html
+          grep -q "__DATA__\|__ALLOWED__" /tmp/_smoke.html && { echo "::error::placeholder ไม่ถูกแทนที่"; exit 1; } || true
+          node -e "
+            const fs=require('fs');
+            const h=fs.readFileSync('/tmp/_smoke.html','utf8');
+            const s=[...h.matchAll(/<script>([\s\S]*?)<\/script>/g)].pop()[1];
+            new Function(s);
+            console.log('✔ JS syntax OK');
+          "
 
-      - name: Build dashboard (live from SharePoint)
-        if: ${{ github.event.inputs.offline != 'true' }}
+      - name: Build dashboard (live)
+        if: ${{ github.event.inputs.sample != 'true' }}
         env:
           TENANT_ID:     ${{ secrets.TENANT_ID }}
           CLIENT_ID:     ${{ secrets.CLIENT_ID }}
@@ -62,34 +68,44 @@ jobs:
           SP_SITE_PATH:  /sites/AC-Accounting
           SP_LIST_DATA:  ${{ github.event.inputs.list_data || 'KYC_DATA_NEW' }}
           SP_LIST_GROUP: Admin_KycNew
-          OUT_FILE:      dist/KYC_Daily_Dashboard.html
+          OUT_FILE:      index.html
         run: python scripts/build_dashboard.py
 
-      - name: Build dashboard (offline fallback)
-        if: ${{ github.event.inputs.offline == 'true' }}
+      - name: Build dashboard (sample)
+        if: ${{ github.event.inputs.sample == 'true' }}
         env:
-          OUT_FILE: dist/KYC_Daily_Dashboard.html
-        run: python scripts/build_dashboard.py --offline data/sample_data.json
+          OUT_FILE: index.html
+        run: python scripts/build_dashboard.py --sample
+
+      - name: Commit index.html กลับเข้า repo
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- index.html; then
+            echo "ไม่มีการเปลี่ยนแปลง — ข้ามการ commit"
+          else
+            git add index.html
+            git commit -m "chore(dashboard): auto-update $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+            echo "✔ pushed index.html"
+          fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: kyc-daily-dashboard
-          path: dist/KYC_Daily_Dashboard.html
+          name: dashboard
+          path: index.html
           retention-days: 30
 
-      # ---- (ตัวเลือก) เผยแพร่ขึ้น GitHub Pages ----
-      - name: Prepare Pages
-        if: github.ref == 'refs/heads/main'
-        run: cp dist/KYC_Daily_Dashboard.html dist/index.html
-
+      # ---- (ตัวเลือก) เผยแพร่ผ่าน GitHub Pages ----
+      # ⚠️ ถ้า repo เป็น Private และไม่ได้ใช้ GitHub Enterprise ให้ลบ 2 step นี้ + job deploy ทิ้ง
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: .
 
-  deploy-pages:
+  deploy:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
