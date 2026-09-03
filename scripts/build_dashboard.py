@@ -75,13 +75,19 @@ def resolve_list(available, candidates, kind="data"):
 
 
 # ------------------------------------------------------------ graph client
+class NoCredentials(Exception):
+    """ยังไม่ได้ตั้ง GitHub Secrets / env — ให้ผู้เรียกตัดสินใจว่าจะ fallback หรือ fail"""
+
+
+def missing_creds():
+    return [k for k in ("TENANT_ID", "CLIENT_ID", "CLIENT_SECRET") if not os.getenv(k)]
+
+
 def get_token():
     import requests
     t, c, s = os.getenv("TENANT_ID"), os.getenv("CLIENT_ID"), os.getenv("CLIENT_SECRET")
     if not all([t, c, s]):
-        log("ERROR", "ไม่พบ TENANT_ID / CLIENT_ID / CLIENT_SECRET")
-        log("HINT", "รันแบบไม่ต่อ SharePoint ได้ด้วย: python scripts/build_dashboard.py --sample")
-        sys.exit(1)
+        raise NoCredentials(", ".join(missing_creds()))
     r = requests.post(
         f"https://login.microsoftonline.com/{t}/oauth2/v2.0/token",
         data={"client_id": c, "client_secret": s,
@@ -148,12 +154,26 @@ def build(payload):
               f"records={len(payload['records'])} viewers={len(payload['allowed'])}")
 
 
+def build_and_exit(payload, a):
+    payload.setdefault("allowed", [])
+    payload.setdefault("records", [])
+    if getattr(a, "dump_data", None):
+        Path(a.dump_data).write_text(
+            json.dumps({"records": payload["records"], "allowed": payload["allowed"]},
+                       ensure_ascii=False, default=str), encoding="utf-8")
+        log("OK", f"dumped snapshot -> {a.dump_data}")
+    build(payload)
+    sys.exit(0)
+
+
 def main():
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group()
     g.add_argument("--offline", metavar="JSON", help='build จากไฟล์ {"records":[],"allowed":[]}')
     g.add_argument("--sample", action="store_true", help="build จากข้อมูลตัวอย่างในตัวสคริปต์")
     ap.add_argument("--dump-data", metavar="JSON", help="เซฟข้อมูลที่ดึงมาเป็น snapshot")
+    ap.add_argument("--fallback-sample", action="store_true",
+                    help="ถ้าไม่มี TENANT_ID/CLIENT_ID/CLIENT_SECRET ให้ใช้ข้อมูลตัวอย่างแทนการ fail")
     a = ap.parse_args()
 
     log("INFO", f"building dashboard @ {HOST}{SITE_PATH}")
@@ -163,7 +183,28 @@ def main():
     elif a.offline:
         payload = json.loads(Path(a.offline).read_text(encoding="utf-8"))
     else:
-        payload = fetch()
+        miss = missing_creds()
+        if miss:
+            msg = "ไม่พบ " + " / ".join(miss)
+            if a.fallback_sample:
+                log("WARN", msg + " — สร้าง dashboard จากข้อมูลตัวอย่างแทน (ยังไม่ใช่ข้อมูลจริง)")
+                log("HINT", "ตั้ง GitHub Secrets แล้วรันใหม่เพื่อดึงข้อมูลจริง: "
+                           "Settings > Secrets and variables > Actions")
+                payload = json.loads(SAMPLE_JSON)
+                payload["_mode"] = "sample"
+                build_and_exit(payload, a)
+            log("ERROR", msg)
+            log("HINT", "รันแบบไม่ต่อ SharePoint ได้ด้วย: python scripts/build_dashboard.py --sample")
+            log("HINT", "หรือให้ CI ไม่แดงเมื่อยังไม่ตั้ง secrets: --fallback-sample")
+            sys.exit(1)
+        try:
+            payload = fetch()
+        except NoCredentials as e:
+            if not a.fallback_sample:
+                log("ERROR", f"ไม่พบ {e}")
+                sys.exit(1)
+            log("WARN", f"ไม่พบ {e} — ใช้ข้อมูลตัวอย่างแทน")
+            payload = json.loads(SAMPLE_JSON)
 
     payload.setdefault("allowed", [])
     payload.setdefault("records", [])
