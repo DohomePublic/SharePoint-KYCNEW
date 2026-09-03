@@ -74,6 +74,40 @@ python scripts/build_dashboard.py --offline data.json
 
 ---
 
+## 🔑 ตั้ง GitHub Secrets
+
+> สาเหตุอันดับ 1 ของ error `[ERROR] ไม่พบ TENANT_ID / CLIENT_ID / CLIENT_SECRET`
+> คือ **ยังไม่ได้ตั้ง Secrets ใน repo** (ค่าใน `secrets.*` จะกลายเป็นสตริงว่าง)
+
+**1) สร้าง Azure AD App**
+
+1. Azure Portal → **Microsoft Entra ID → App registrations → New registration**
+2. คัดลอก **Directory (tenant) ID** → `TENANT_ID`, **Application (client) ID** → `CLIENT_ID`
+3. **Certificates & secrets → New client secret** → คัดลอกค่า **Value** (ไม่ใช่ Secret ID) → `CLIENT_SECRET`
+4. **API permissions → Add a permission → Microsoft Graph → Application permissions →
+   `Sites.Read.All`** → กด **Grant admin consent** (ต้องใช้สิทธิ์ Global/App Admin)
+
+**2) ใส่ค่าเข้า repo**
+
+ทาง UI: `Settings → Secrets and variables → Actions → New repository secret` (ทำ 3 ครั้ง)
+
+หรือทาง CLI:
+
+```bash
+gh secret set TENANT_ID
+gh secret set CLIENT_ID
+gh secret set CLIENT_SECRET
+gh secret list          # ต้องเห็นครบ 3 ตัว
+```
+
+**3) รันใหม่**: Actions → *Update Dashboard* → **Run workflow**
+
+> Workflow จะตรวจ secrets ให้เองในสเตป *ตรวจว่ามี Secrets ครบหรือไม่*
+> - มีครบ → build ข้อมูลจริง
+> - ไม่ครบ → ขึ้น `::warning::` แล้ว build ด้วยข้อมูลตัวอย่าง **workflow ไม่แดง**
+
+---
+
 ## 🔧 นำขึ้น GitHub
 
 ```bash
@@ -127,7 +161,7 @@ gh run watch
 | ปัญหา | วิธีแก้ |
 |---|---|
 | `[ERROR] list 'KYCData1' not found` | ตั้ง `SP_LIST_DATA=KYC_DATA_NEW` (resolver จะจับชื่อใกล้เคียงให้เองพร้อม `[WARN]`) |
-| `[ERROR] ไม่พบ TENANT_ID / CLIENT_ID / CLIENT_SECRET` | ตั้ง GitHub Secrets หรือรัน `--sample` |
+| `[ERROR] ไม่พบ TENANT_ID / CLIENT_ID / CLIENT_SECRET` | ยังไม่ได้ตั้ง GitHub Secrets → ดูหัวข้อ [ตั้ง Secrets](#-ตั้ง-github-secrets) ด้านล่าง หรือรัน `--sample` / `--fallback-sample` |
 | `[ERROR] template ต้องมี placeholder` | **ไม่เกิดแล้ว** — template ฝังอยู่ในสคริปต์ ไม่มีไฟล์ภายนอกให้หาย |
 | Workflow commit ไม่ได้ | ตรวจว่า workflow มี `permissions: contents: write` |
 | Dashboard ขึ้น badge เทา `Snapshot` | เปิดไฟล์นอกไซต์ SharePoint หรือ REST ถูกบล็อก — ข้อมูลจะใช้ snapshot ที่ฝังไว้ |
