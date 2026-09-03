@@ -1,25 +1,33 @@
-name: Update KYC Dashboard
+name: Build KYC Daily Dashboard
 
 on:
   schedule:
-    # 00:00 UTC = 07:00 น. (Asia/Bangkok) ทุกวัน
-    - cron: "0 0 * * *"
+    - cron: "0 1 * * *"          # 01:00 UTC = 08:00 น. ประเทศไทย ทุกวัน
   workflow_dispatch:
+    inputs:
+      list_data:
+        description: "ชื่อ SharePoint List ข้อมูล"
+        default: "KYC_DATA_NEW"
+        required: false
+      offline:
+        description: "build จาก data/sample_data.json (ไม่ต่อ SharePoint)"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
       - "scripts/**"
       - "templates/**"
-      - ".github/workflows/update-dashboard.yml"
+      - ".github/workflows/**"
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: update-dashboard
-  cancel-in-progress: false
+  group: kyc-dashboard
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -28,50 +36,66 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
 
-      - name: Install dependencies
+      - name: Install deps
         run: pip install -r requirements.txt
 
-      - name: Build dashboard from SharePoint (Microsoft Graph)
+      - name: Smoke test (offline build ต้องผ่านเสมอ)
+        run: |
+          OUT_FILE=dist/_smoke.html python scripts/build_dashboard.py --offline data/sample_data.json
+          test -s dist/_smoke.html
+          grep -q "__DATA__" dist/_smoke.html && { echo "placeholder ไม่ถูกแทนที่"; exit 1; } || echo "placeholder OK"
+          rm -f dist/_smoke.html
+
+      - name: Build dashboard (live from SharePoint)
+        if: ${{ github.event.inputs.offline != 'true' }}
         env:
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          SP_HOSTNAME: dohomegroup.sharepoint.com
-          SP_SITE_PATH: /sites/AC-Accounting
-          SP_LIST_NAME: KYCData1
-          TZ_OFFSET_HRS: "7"
+          TENANT_ID:     ${{ secrets.TENANT_ID }}
+          CLIENT_ID:     ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          SP_HOST:       dohomegroup.sharepoint.com
+          SP_SITE_PATH:  /sites/AC-Accounting
+          SP_LIST_DATA:  ${{ github.event.inputs.list_data || 'KYC_DATA_NEW' }}
+          SP_LIST_GROUP: Admin_KycNew
+          OUT_FILE:      dist/KYC_Daily_Dashboard.html
         run: python scripts/build_dashboard.py
 
-      - name: Commit & push updated dashboard
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- index.html; then
-            echo "No changes in index.html — skipping commit."
-          else
-            git add index.html
-            git commit -m "chore(dashboard): auto-update $(date -u +'%Y-%m-%d %H:%M UTC')"
-            git push
-          fi
+      - name: Build dashboard (offline fallback)
+        if: ${{ github.event.inputs.offline == 'true' }}
+        env:
+          OUT_FILE: dist/KYC_Daily_Dashboard.html
+        run: python scripts/build_dashboard.py --offline data/sample_data.json
 
-      - name: Upload GitHub Pages artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kyc-daily-dashboard
+          path: dist/KYC_Daily_Dashboard.html
+          retention-days: 30
+
+      # ---- (ตัวเลือก) เผยแพร่ขึ้น GitHub Pages ----
+      - name: Prepare Pages
+        if: github.ref == 'refs/heads/main'
+        run: cp dist/KYC_Daily_Dashboard.html dist/index.html
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: dist
 
-  deploy:
+  deploy-pages:
     needs: build
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
