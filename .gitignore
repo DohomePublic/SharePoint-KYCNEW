@@ -1,4 +1,24 @@
+# Python
 __pycache__/
-*.pyc
-.env
+*.py[cod]
 .venv/
+venv/
+env/
+
+# Secrets — ห้าม commit เด็ดขาด
+.env
+.env.*
+*.secret
+secrets.json
+credentials.json
+
+# Build output ชั่วคราว
+dist/_smoke.html
+dist/index.html
+*.log
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
