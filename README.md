@@ -1,180 +1,174 @@
-# sharepoint-web — KYC Daily Dashboard
+# SharePoint-KYCNEW — DemoApp Daily Dashboard
 
-Dashboard รายวันงาน KYC ดึงข้อมูลจาก SharePoint List ของไซต์ **AC-Accounting**
-สร้างเป็น HTML ไฟล์เดียว (Bootstrap 5 + Chart.js) · Responsive · Dark Mode · จำกัดสิทธิ์ดูด้วย Email Whitelist
+Dashboard รายวันสำหรับ SharePoint List **DemoApp** (ไซต์ `AC-Accounting`)
+ไฟล์เดียวจบ: HTML + CSS + JavaScript · Bootstrap 5 · Chart.js · Dark Mode · Responsive
+
+🔗 **Live:** https://dohomepublic.github.io/SharePoint-KYCNEW/
 
 ---
 
-## 📁 โครงสร้าง
+## 📁 โครงสร้าง repo
 
 ```
-sharepoint-web/
-├── .github/
-│   └── workflows/
-│       └── update-dashboard.yml   ← GitHub Actions workflow (รันทุกวัน 08:00 น. ไทย)
-├── scripts/
-│   └── build_dashboard.py         ← ดึงข้อมูล + สร้าง HTML (ฝัง template ไว้ในตัว)
-├── index.html                     ← Dashboard (auto-generated — ห้ามแก้มือ)
-└── README.md
+SharePoint-KYCNEW/
+├── index.html                          ← Dashboard ทั้งหมด (ไฟล์เดียว)
+├── data.json                           ← ข้อมูลสำรอง (MODE C)
+├── .nojekyll                           ← ปิด Jekyll ของ GitHub Pages
+├── README.md
+└── .github/
+    └── workflows/
+        └── sync-sharepoint.yml         ← sync อัตโนมัติทุก 15 นาที
 ```
 
-> `scripts/build_dashboard.py` **ฝังเทมเพลต HTML ไว้ในตัวเอง** (ตัวแปร `TEMPLATE_HTML`)
-> จึงไม่มีไฟล์ template ภายนอกให้หายหรือถูกเขียนทับ — แก้หน้าตา Dashboard ได้ที่ตัวแปรนี้โดยตรง
-> (ห้ามลบ placeholder `__DATA__` และ `__ALLOWED__`)
-
 ---
 
-## ✨ ฟีเจอร์
+## 🚀 นำขึ้น GitHub (3 ขั้นตอน)
 
-| กลุ่ม | รายละเอียด |
-|---|---|
-| **Access Control** | ตรวจอีเมลผู้ใช้อัตโนมัติจาก List `Admin_KycNew` (65 บัญชี) — ไม่อยู่ในรายชื่อ **ไม่เห็นรายงาน** |
-| **KPI Cards** | Total / New Today / Closed Today / Pending / ปัญหา / Success Rate / Avg Processing Time / 7-30 วัน |
-| **Filter** | Keyword, สาขา, ผู้ดูแล, สถานะ, ช่วงวันที่ |
-| **Charts** | Bar สาขา · Doughnut สถานะ · Line รายวัน · Stacked สาขา×สถานะ · Top 10 Owner · วงเงินรายสาขา |
-| **Analytics** | Ranking สาขา/ผู้ดูแล, %, งานเปิด-ปิด-ค้าง, Drill Down |
-| **Detail Table** | Sort ทุกคอลัมน์, Search, Pagination, Export Excel/CSV (UTF-8 BOM รองรับภาษาไทย) |
-| **Auto Insight** | สาขาสูงสุด, ผู้ดูแลงานมากสุด, แนวโน้มเทียบวันก่อน, Anomaly งานค้าง >3 วัน, ข้อเสนอแนะ |
-| **Data Binding** | Live จาก SharePoint REST + fallback snapshot ที่ฝังในไฟล์ (offline ก็ไม่พัง) |
-
----
-
-## 🚀 เริ่มใช้งาน
+### ขั้นที่ 1 — Push ไฟล์
 
 ```bash
-git clone https://github.com/<org>/sharepoint-web.git
-cd sharepoint-web
-pip install requests
+git clone https://github.com/DohomePublic/SharePoint-KYCNEW.git
+cd SharePoint-KYCNEW
 
-# สร้าง index.html จากข้อมูลตัวอย่าง (ไม่ต้องมี credential)
-python scripts/build_dashboard.py --sample
+# คัดลอกไฟล์ทั้งหมดจาก zip มาวางทับ (รวมโฟลเดอร์ .github และไฟล์ .nojekyll)
 
-# ดึงสดจาก SharePoint
-export TENANT_ID=... CLIENT_ID=... CLIENT_SECRET=...
-export SP_LIST_DATA=KYC_DATA_NEW SP_LIST_GROUP=Admin_KycNew
-python scripts/build_dashboard.py
+git add -A
+git commit -m "feat: DemoApp dashboard v3 พร้อม live connect ผ่าน Microsoft Graph"
+git push origin main
+```
 
-# เซฟ snapshot ไว้ใช้ offline
-python scripts/build_dashboard.py --dump-data data.json
-python scripts/build_dashboard.py --offline data.json
+> ⚠️ ไฟล์ `.nojekyll` และโฟลเดอร์ `.github` ขึ้นต้นด้วยจุด — บางระบบซ่อนไว้
+> ตรวจว่า push ขึ้นไปจริงด้วย `git status` ก่อน commit
+
+### ขั้นที่ 2 — เปิด GitHub Pages
+
+**Settings → Pages**
+- Source: `Deploy from a branch`
+- Branch: `main` · Folder: `/ (root)`
+- Save → รอ 1-2 นาที
+
+### ขั้นที่ 3 — ตั้งค่า Entra ID (สำคัญที่สุด ⚠️)
+
+ถ้าข้ามขั้นนี้ Dashboard จะแสดงข้อมูล snapshot อย่างเดียว ไม่ดึงสด
+
+ไปที่ **Entra admin center → App registrations → Sharepoint-web**
+
+**3.1 Authentication**
+- คลิก **Add a platform** → เลือก **Single-page application** (ห้ามเลือก "Web")
+- ใส่ Redirect URI ให้ครบทั้ง 2 บรรทัด:
+  ```
+  https://dohomepublic.github.io/SharePoint-KYCNEW/
+  https://dohomepublic.github.io/SharePoint-KYCNEW/index.html
+  ```
+- Save
+
+**3.2 API permissions**
+- **Add a permission** → Microsoft Graph → **Delegated permissions** → `Sites.Read.All`
+- คลิก **Grant admin consent for Dohome** (ต้องเป็น Global Admin)
+- สถานะต้องขึ้นเครื่องหมายถูกเขียวทั้งแถว
+
+**3.3 ทดสอบ**
+เปิด https://dohomepublic.github.io/SharePoint-KYCNEW/
+→ กดปุ่ม **"เชื่อมต่อ SharePoint"** → login → badge เปลี่ยนเป็นสีเขียว `GRAPH (MSAL)`
+
+---
+
+## 🔌 3 โหมดดึงข้อมูล (เลือกอัตโนมัติ + fallback ต่อกัน)
+
+| โหมด | เงื่อนไข | ต้อง login | ใช้เมื่อไหร่ |
+|------|----------|-----------|-------------|
+| **A · EMBED** | หน้าอยู่บนโดเมน `sharepoint.com` | ไม่ต้อง | ฝังใน SharePoint Site Page |
+| **B · GRAPH** | มี clientId + tenantId | ครั้งแรกครั้งเดียว | GitHub Pages ← **ใช้อันนี้** |
+| **C · JSON** | มีไฟล์ `data.json` | ไม่ต้อง | หน้า public / ไม่มีสิทธิ์ Entra |
+
+ระบบไล่ลองตามลำดับ A → B → C → snapshot ในไฟล์
+แผง **"0. Data Connection"** บอกทุกครั้งว่าใช้โหมดไหน และโหมดที่ล้มเหลวเพราะอะไร
+
+### ทางเลือก MODE A — ฝังใน SharePoint (ง่ายกว่า ไม่ต้องตั้ง Entra ID)
+
+1. อัปโหลด `index.html` ไปที่ **Site Assets** ของ `/sites/AC-Accounting`
+2. สร้าง Site Page → เพิ่ม web part **Embed** → วาง:
+   ```html
+   <iframe src="https://dohomegroup.sharepoint.com/sites/AC-Accounting/SiteAssets/index.html"
+           width="100%" height="2400" frameborder="0"></iframe>
+   ```
+3. ถ้า Embed ถูกบล็อก ให้ admin เพิ่มโดเมนที่
+   **SharePoint admin center → Settings → Embed HTML**
+
+---
+
+## 🤖 เปิด Auto-sync (MODE C)
+
+ให้ GitHub Action ดึงข้อมูลมาเขียน `data.json` ทุก 15 นาที — หน้าเว็บจะสดโดยไม่ต้อง login เลย
+
+**Settings → Secrets and variables → Actions → New repository secret** สร้าง 3 ตัว:
+
+| ชื่อ | ค่า |
+|------|-----|
+| `AZ_TENANT_ID` | `7f8918d9-718a-495b-ac9a-17cba381c4a0` |
+| `AZ_CLIENT_ID` | `a37bd62d-e74d-4ea0-9546-1eb5aa96f604` |
+| `AZ_CLIENT_SECRET` | สร้างที่ Entra ID → Sharepoint-web → Certificates & secrets → New client secret |
+
+จากนั้นเพิ่มสิทธิ์แบบ **Application** (คนละอันกับ Delegated ในขั้นที่ 3.2):
+Microsoft Graph → **Application permissions** → `Sites.Read.All` → **Grant admin consent**
+
+ทดสอบ: แท็บ **Actions** → `Sync SharePoint DemoApp` → **Run workflow**
+
+---
+
+## 🩺 แก้ปัญหา
+
+| อาการ | สาเหตุ | วิธีแก้ |
+|-------|--------|---------|
+| badge แดง `SNAPSHOT` | ยังไม่ได้ login | กดปุ่ม "เชื่อมต่อ SharePoint" |
+| `AADSTS50011` | Redirect URI ไม่ตรง | คัดลอก URI จากหน้าเว็บไปใส่ใน Entra ID |
+| `AADSTS9002326` | เลือกแพลตฟอร์มผิด | ลบทิ้ง แล้วสร้างใหม่เป็น **SPA** |
+| `AADSTS65001` / Graph 403 | ยังไม่ได้ consent | Grant admin consent สิทธิ์ `Sites.Read.All` |
+| `AADSTS700016` | ไม่พบ Client ID | ตรวจ clientId/tenantId ใน `CONFIG` |
+| Graph 404 | ไม่พบ list | ตรวจชื่อ `CONFIG.list` = `DemoApp` |
+| หน้าเว็บยังเป็นของเก่า | CDN cache ของ GitHub Pages (~10 นาที) | Ctrl+Shift+R หรือรอสักครู่ |
+| CORS error ใน console | เรียก `/_api/` จากนอกโดเมน SharePoint | ปกติ — ระบบจะ fallback ไป Graph เอง |
+
+หมดทางแล้ว: ใช้ปุ่ม **CSV** อัปโหลดไฟล์ export จาก SharePoint โดยตรง (รองรับภาษาไทย)
+
+---
+
+## ⚙️ ปรับแต่ง
+
+แก้ที่ block `CONFIG` บนสุดของ `<script>` ใน `index.html`
+
+```js
+const CONFIG = {
+  list: "DemoApp",              // ชื่อ list
+  autoRefreshSec: 300,          // refresh อัตโนมัติ (วินาที) · 0 = ปิด
+  staleHours: 24,               // เกินกี่ชั่วโมงถือว่างานค้าง
+  openStatuses:    ["รอดำเนินการ","รอการพิจารณาเบื้องต้น","รอผู้จัดการ D3 อนุมัติ","Draft"],
+  closedStatuses:  ["อนุมัติ-KYC","ผ่านการพิจารณาเบื้องต้น"],
+  problemStatuses: ["ไม่ผ่านการพิจารณาเบื้องต้น"]
+};
 ```
 
 ---
 
-## ⚙️ Environment Variables
+## 📊 ฟีเจอร์
 
-| ตัวแปร | ค่าเริ่มต้น | หมายเหตุ |
-|---|---|---|
-| `TENANT_ID` / `CLIENT_ID` / `CLIENT_SECRET` | — | Azure AD App สิทธิ์ **`Sites.Read.All`** (Application) + Grant admin consent |
-| `SP_HOST` | `dohomegroup.sharepoint.com` | |
-| `SP_SITE_PATH` | `/sites/AC-Accounting` | |
-| `SP_LIST_DATA` | `KYC_DATA_NEW` | ⚠️ ชื่อเดิม `KYCData1` **ไม่มีบนไซต์** |
-| `SP_LIST_GROUP` | `Admin_KycNew` | รายชื่ออีเมลผู้มีสิทธิ์ดู |
-| `OUT_FILE` | `index.html` | |
+- **KPI 12 การ์ด** — Total, New Today, Closed Today, Pending, Success Rate, Avg Processing, ย้อนหลัง 7/30 วัน, กำลังดำเนินการ, เสร็จสิ้น, มีปัญหา, Pending Age
+- **Filter** — keyword, สาขา, ผู้ดูแล, สถานะ, ช่วงวันที่
+- **กราฟ 5 แบบ** — Bar (สาขา), Pie (สถานะ), Line (แนวโน้มรายวัน), Stacked Bar (สาขา×สถานะ), Top 10 Owner · คลิกกราฟเพื่อ drill down
+- **Branch / Owner Analytics** — ranking, %, งานเปิด/ปิด/ค้าง
+- **ตารางรายละเอียด** — sort ทุกคอลัมน์, ค้นหา, pagination, Export Excel/CSV, ลิงก์ไป DispForm
+- **Auto Insight** — สาขาสูงสุด, ผู้ดูแลงานมากสุด, growth เทียบวันก่อน, anomaly detection, ข้อเสนอแนะเชิงธุรกิจ
 
 ---
 
-## 🔑 ตั้ง GitHub Secrets
+## ⚠️ ปัญหาข้อมูลที่ตรวจพบ
 
-> สาเหตุอันดับ 1 ของ error `[ERROR] ไม่พบ TENANT_ID / CLIENT_ID / CLIENT_SECRET`
-> คือ **ยังไม่ได้ตั้ง Secrets ใน repo** (ค่าใน `secrets.*` จะกลายเป็นสตริงว่าง)
+คอลัมน์ `Status` และ `Status_1` ไม่ sync กัน **11 รายการ**
+(ID 551, 554, 559, 563, 564, 565, 566, 567, 568, 570, 571)
 
-**1) สร้าง Azure AD App**
+Workflow เขียนค่าใหม่ลง `Status` แต่ `Status_1` ยังค้างค่าเดิม → รายงานที่ผูกกับ `Status_1` จะเห็นข้อมูลเก่า
 
-1. Azure Portal → **Microsoft Entra ID → App registrations → New registration**
-2. คัดลอก **Directory (tenant) ID** → `TENANT_ID`, **Application (client) ID** → `CLIENT_ID`
-3. **Certificates & secrets → New client secret** → คัดลอกค่า **Value** (ไม่ใช่ Secret ID) → `CLIENT_SECRET`
-4. **API permissions → Add a permission → Microsoft Graph → Application permissions →
-   `Sites.Read.All`** → กด **Grant admin consent** (ต้องใช้สิทธิ์ Global/App Admin)
+Dashboard นี้อ่านจาก **`Status`** จึงถูกต้องเสมอ และขึ้นแบนเนอร์เตือนอัตโนมัติ
 
-**2) ใส่ค่าเข้า repo**
-
-ทาง UI: `Settings → Secrets and variables → Actions → New repository secret` (ทำ 3 ครั้ง)
-
-หรือทาง CLI:
-
-```bash
-gh secret set TENANT_ID
-gh secret set CLIENT_ID
-gh secret set CLIENT_SECRET
-gh secret list          # ต้องเห็นครบ 3 ตัว
-```
-
-**3) รันใหม่**: Actions → *Update Dashboard* → **Run workflow**
-
-> Workflow จะตรวจ secrets ให้เองในสเตป *ตรวจว่ามี Secrets ครบหรือไม่*
-> - มีครบ → build ข้อมูลจริง
-> - ไม่ครบ → ขึ้น `::warning::` แล้ว build ด้วยข้อมูลตัวอย่าง **workflow ไม่แดง**
-
----
-
-## 🔧 นำขึ้น GitHub
-
-```bash
-cd sharepoint-web
-git init -b main
-git add .
-git commit -m "feat: KYC daily dashboard"
-
-# สร้าง repo แบบ Private (มีข้อมูลลูกค้า + อีเมลพนักงาน)
-gh repo create <org>/sharepoint-web --private --source=. --remote=origin --push
-
-# ตั้ง secrets
-gh secret set TENANT_ID     --body "<tenant-guid>"
-gh secret set CLIENT_ID     --body "<client-id>"
-gh secret set CLIENT_SECRET --body "<secret>"
-
-# ทดสอบรัน (ไม่ต้องใช้ secret)
-gh workflow run "Update Dashboard" -f sample=true
-gh run watch
-```
-
-ไม่มี `gh` → สร้าง repo ที่ https://github.com/new (เลือก **Private**) แล้ว
-`git remote add origin https://github.com/<org>/sharepoint-web.git && git push -u origin main`
-
-**Workflow ทำอะไรบ้าง**
-1. Self-check — compile สคริปต์ + build ตัวอย่าง + ตรวจ JS syntax
-2. Build จาก SharePoint (หรือ `--sample` ถ้าเลือก)
-3. **Commit `index.html` กลับเข้า repo อัตโนมัติ** (ข้ามถ้าไม่มีอะไรเปลี่ยน)
-4. Upload artifact + (ตัวเลือก) Deploy GitHub Pages
-
----
-
-## 📤 นำขึ้น SharePoint
-
-1. อัปโหลด `index.html` ไปที่
-   `AC-Accounting / Shared Documents / Dashboard/`
-2. สร้าง Page → เพิ่ม Web Part **File viewer** → ชี้ไปที่ไฟล์ → Publish
-
-> ต้องวางในไซต์เดียวกันเพื่อให้ตรวจสิทธิ์อัตโนมัติแบบ same-origin ผ่าน `_api/web/currentUser`
-> ถ้าเปิดจากที่อื่นจะแสดงหน้ากรอกอีเมลแทน
-
-**พฤติกรรม**
-- อยู่ในกลุ่ม `Admin_KycNew` → เข้าได้
-- ไม่อยู่ในกลุ่ม → “ไม่มีสิทธิ์เข้าถึงรายงานนี้” และ **ไม่เรนเดอร์ Dashboard เลย**
-- รายชื่อสิทธิ์ sync สดจาก List → เพิ่ม/ลบคนแล้วมีผลทันที ไม่ต้อง build ใหม่
-
----
-
-## 🩺 Troubleshooting
-
-| ปัญหา | วิธีแก้ |
-|---|---|
-| `[ERROR] list 'KYCData1' not found` | ตั้ง `SP_LIST_DATA=KYC_DATA_NEW` (resolver จะจับชื่อใกล้เคียงให้เองพร้อม `[WARN]`) |
-| `[ERROR] ไม่พบ TENANT_ID / CLIENT_ID / CLIENT_SECRET` | ยังไม่ได้ตั้ง GitHub Secrets → ดูหัวข้อ [ตั้ง Secrets](#-ตั้ง-github-secrets) ด้านล่าง หรือรัน `--sample` / `--fallback-sample` |
-| `[ERROR] template ต้องมี placeholder` | **ไม่เกิดแล้ว** — template ฝังอยู่ในสคริปต์ ไม่มีไฟล์ภายนอกให้หาย |
-| Workflow commit ไม่ได้ | ตรวจว่า workflow มี `permissions: contents: write` |
-| Dashboard ขึ้น badge เทา `Snapshot` | เปิดไฟล์นอกไซต์ SharePoint หรือ REST ถูกบล็อก — ข้อมูลจะใช้ snapshot ที่ฝังไว้ |
-
----
-
-## 🔐 ความปลอดภัย
-
-- ตั้ง repo เป็น **Private** — `index.html` มีชื่อลูกค้า วงเงิน และอีเมลพนักงาน
-- ห้าม commit `CLIENT_SECRET` — ใช้ GitHub Secrets เท่านั้น
-- ถ้าไม่ต้องการเผยแพร่สาธารณะ ให้ลบ step `Upload Pages artifact` และ job `deploy` ออกจาก workflow
-
----
-
-## 📄 License
-Internal use — DOHOME Group
+**แก้ที่ต้นทาง:** ใน Power Automate ให้ action *Update item* เขียนทั้ง `Status` และ `Status_1` พร้อมกัน
+หรือเลิกใช้คอลัมน์คู่ แล้วให้ทุกรายงานอ่าน `Status` อย่างเดียว
