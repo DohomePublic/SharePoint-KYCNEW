@@ -43,8 +43,13 @@ jobs:
         run: pip install --quiet requests
 
       # ---------- 3) ดึงข้อมูลจาก SharePoint (Microsoft Graph API) ----------
+      #  หมายเหตุ: map ทั้งชื่อ AZ_* และชื่อไม่มี prefix
+      #  ตั้ง Secret ไว้แบบไหนก็ใช้ได้ อีกตัวจะเป็นค่าว่างและถูกข้ามไปเอง
       - name: Fetch SharePoint data
         env:
+          AZ_TENANT_ID: ${{ secrets.AZ_TENANT_ID }}
+          AZ_CLIENT_ID: ${{ secrets.AZ_CLIENT_ID }}
+          AZ_CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET }}
           TENANT_ID: ${{ secrets.TENANT_ID }}
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
