@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-04T07:50:06.231171+00:00",
-  "mode": "LIVE via Microsoft Graph",
+  "generated_at": "2026-09-04T07:44:13.322287+00:00",
+  "mode": "CSV snapshot",
   "acl_accounts": 65,
   "count": 28,
   "max_id": 572,
   "min_id": 541,
-  "latest_timestamp": "2026-09-04T04:09:58Z",
-  "sha256": "47cf56f6c0e41c34"
+  "latest_timestamp": "2026-09-04T04:09:56Z",
+  "sha256": "66cd157967e21a32"
 }

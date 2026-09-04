@@ -139,6 +139,7 @@ python scripts/build_dashboard.py --mask-pii
 | 🔴 **GitHub Pages ของ repo private ยังเป็น public** ในแพ็กเกจ Free/Pro — ต้องใช้ **GitHub Enterprise Cloud** จึงจะจำกัดผู้เข้าถึงได้ ถ้าไม่มี ให้ deploy ด้วย `--mask-pii` |
 | 🟡 **Login ฝั่ง client เป็น UI-layer** | ผู้ที่ View Source ยังเห็น `RAW_DATA` ได้ — ต้องกันการเข้าถึงที่ระดับ repo/Pages ควบคู่เสมอ |
 | 🟢 **ไม่มีอีเมลใน UI ล็อกอิน** | หน้าล็อกอินไม่แสดง/ไม่ autocomplete รายชื่ออีเมล ผู้ใช้ต้องพิมพ์เอง และข้อความ error ไม่บอกว่าอีเมลมีอยู่จริงหรือไม่ (กัน account enumeration) |
+| 🟢 **ไม่แสดงทะเบียนผู้มีสิทธิ์บนหน้าแดชบอร์ด** | แผง **Security & Permission (RBAC)** และ **ทะเบียนผู้มีสิทธิ์ · Admin_KycNew (65 บัญชี)** ถูกซ่อนถาวรด้วย `HIDE_RBAC_PANELS = true` — ไม่ render รายชื่อ/อีเมลลง DOM เลย · ADMIN เปิดดูชั่วคราวได้ด้วย `?rbac=1` เท่านั้น (บทบาทอื่นใส่ `?rbac=1` ก็ไม่เห็น) · ต้องการปิดถาวรทั้งหมด ให้ลบการ์ด `#cardPerm` / `#cardAcl` ออกจาก `scripts/template.html` |
 | 🟢 **Secret ไม่อยู่ในโค้ด** | `CLIENT_SECRET` อยู่ใน GitHub Secrets เท่านั้น ไม่ถูกพิมพ์ลง log |
 | 🟡 **หมุน Client Secret** | ตั้งอายุ 6–12 เดือน และจดวันหมดอายุไว้ ถ้าหมดอายุ workflow จะ fail ที่ขั้นขอ token |
 
