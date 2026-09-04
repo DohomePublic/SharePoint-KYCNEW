@@ -1,1261 +1,405 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-build_dashboard.py — ดึงข้อมูลจาก SharePoint List แล้วสร้าง index.html (Dashboard ไฟล์เดียว)
+build_dashboard.py — ดึงข้อมูลจาก SharePoint Online แล้ว generate index.html (Daily Dashboard)
 
-โครงสร้าง repo
-    sharepoint-web/
-    ├── .github/workflows/update-dashboard.yml
-    ├── scripts/build_dashboard.py     <- ไฟล์นี้ (ฝัง template ไว้ข้างใน)
-    ├── index.html                     <- ผลลัพธ์ (auto-generated ห้ามแก้มือ)
-    └── README.md
+แหล่งข้อมูล 2 ลิสต์บนไซต์ AC-Accounting
+  1) DemoApp        -> ข้อมูลคำขอสินเชื่อ/KYC ที่นำมาทำ Dashboard
+  2) Admin_KycNew   -> ทะเบียนอีเมลผู้มีสิทธิ์ (ACL) คอลัมน์ Title = อีเมล
+
+โหมดการทำงาน (เลือกอัตโนมัติ)
+  GRAPH  : มี TENANT_ID/CLIENT_ID/CLIENT_SECRET  -> Microsoft Graph (app-only) ** ใช้ใน GitHub Actions **
+  CSV    : ไม่มี credential แต่มีไฟล์ใน data/   -> อ่านจาก CSV (dev / offline)
 
 การใช้งาน
-    python scripts/build_dashboard.py                    # ดึงสดจาก SharePoint
-    python scripts/build_dashboard.py --offline data.json
-    python scripts/build_dashboard.py --sample           # สร้างจากข้อมูลตัวอย่างในตัว
-    python scripts/build_dashboard.py --dump-data d.json # เซฟ snapshot ไว้ใช้ offline
-
-Environment
-    TENANT_ID / CLIENT_ID / CLIENT_SECRET : Azure AD app (Graph: Sites.Read.All)
-    SP_HOST        default dohomegroup.sharepoint.com
-    SP_SITE_PATH   default /sites/AC-Accounting
-    SP_LIST_DATA   default KYC_DATA_NEW     (ชื่อเดิม KYCData1 ไม่มีบนไซต์ -> resolver จับให้เอง)
-    SP_LIST_GROUP  default Admin_KycNew     (รายชื่ออีเมลผู้มีสิทธิ์ดู)
-    OUT_FILE       default index.html
+  python scripts/build_dashboard.py                 # เขียนทับ index.html
+  python scripts/build_dashboard.py --out out.html  # กำหนดไฟล์ผลลัพธ์
+  python scripts/build_dashboard.py --source csv    # บังคับใช้ CSV
 """
+from __future__ import annotations
+
 import argparse
-import difflib
+import datetime as dt
 import json
 import os
+import pathlib
 import re
 import sys
-from pathlib import Path
+import time
+import urllib.parse
+import urllib.request
+from collections import Counter
 
-# ------------------------------------------------------------------ config
-HOST = os.getenv("SP_HOST", "dohomegroup.sharepoint.com")
-SITE_PATH = os.getenv("SP_SITE_PATH", "/sites/AC-Accounting")
-OUT_FILE = Path(os.getenv("OUT_FILE", "index.html"))
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+TEMPLATE = ROOT / "scripts" / "template.html"
+DEFAULT_OUT = ROOT / "index.html"
 
-DATA_LIST_CANDIDATES = [os.getenv("SP_LIST_DATA", "").strip(), "KYC_DATA_NEW", "KYCData1", "DemoApp"]
-GROUP_LIST_CANDIDATES = [os.getenv("SP_LIST_GROUP", "").strip(), "Admin_KycNew"]
-
+# ---------------------------------------------------------------- config ----
+SITE_HOSTNAME = os.getenv("SITE_HOSTNAME", "dohomegroup.sharepoint.com")
+SITE_PATH = os.getenv("SITE_PATH", "/sites/AC-Accounting")
+LIST_DATA = os.getenv("LIST_DEMOAPP", "DemoApp")
+LIST_ACL = os.getenv("LIST_ACL", "Admin_KycNew")
+TENANT_ID = os.getenv("TENANT_ID", "")
+CLIENT_ID = os.getenv("CLIENT_ID", "")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
 GRAPH = "https://graph.microsoft.com/v1.0"
 
-
-def log(lvl, msg):
-    print(f"[{lvl}] {msg}", flush=True)
-
-
-# ------------------------------------------------------- list name resolver
-def _norm(s):
-    return re.sub(r"[\s_\-.]+", "", (s or "")).lower()
-
-
-def resolve_list(available, candidates, kind="data"):
-    """หา list จริงบนไซต์ — exact -> normalized -> ใกล้เคียง -> fail-fast"""
-    by_norm = {_norm(n): n for n in available}
-    for cand in [c for c in candidates if c]:
-        if cand in available:
-            log("INFO", f"{kind} list = '{cand}'")
-            return cand
-        hit = by_norm.get(_norm(cand))
-        if hit:
-            log("WARN", f"list '{cand}' ไม่ตรงตัวอักษร — ใช้ '{hit}' แทน")
-            return hit
-        core = re.sub(r"\d+$", "", _norm(cand))
-        near = [n for k, n in by_norm.items() if len(core) >= 4 and (k.startswith(core) or core in k)]
-        if near:
-            log("WARN", f"ไม่พบ '{cand}' — ใช้ list ใกล้เคียง '{near[0]}'")
-            return near[0]
-    first = next((c for c in candidates if c), kind)
-    log("ERROR", f"ไม่พบ {kind} list จาก {[c for c in candidates if c]}")
-    log("ERROR", f"ใกล้เคียงที่สุด: {difflib.get_close_matches(first, available, n=5, cutoff=0.4) or '(ไม่มี)'}")
-    log("ERROR", "ตั้ง env SP_LIST_DATA / SP_LIST_GROUP ให้ตรงชื่อจริง")
-    sys.exit(1)
+# ชื่อคอลัมน์ใน SharePoint -> คีย์ที่ Dashboard ใช้
+FIELD_MAP = {
+    "Title": "Title", "Customer_id": "Customer_id", "Customer_x0020_Name": "CustomerName",
+    "branch": "branch", "Request_x0020_TimeStamp": "RequestTimeStamp", "Status": "Status",
+    "Status_1": "Status_1", "Type_Request": "TypeRequest", "Type1": "Type1",
+    "type_teams": "type_teams", "Typr_Distribution": "Distribution", "Owner": "Owner",
+    "limit": "limit", "limit_other": "limit_other", "registration_number": "registration_number",
+    "Registered_Name": "Registered_Name", "business_type": "business_type",
+    "contact_name": "contact_name", "position": "position", "contact_number": "contact_number",
+    "telephone": "telephone", "county": "county", "district": "district", "province": "province",
+    "credit_semester1": "credit_semester1", "credit_semester2": "credit_semester2",
+    "land": "land", "other_property": "other_property", "Data": "Data",
+    "Estimated_annual_income": "Estimated_annual_income",
+}
+# ชื่อคอลัมน์ใน CSV export -> คีย์ที่ Dashboard ใช้
+CSV_MAP = {
+    "_ID": "ID", "Title": "Title", "Customer_id": "Customer_id", "Customer Name": "CustomerName",
+    "branch": "branch", "Request TimeStamp": "RequestTimeStamp", "Status": "Status",
+    "Status_1": "Status_1", "Type_Request": "TypeRequest", "Type1": "Type1",
+    "type_teams": "type_teams", "Typr_Distribution": "Distribution", "Owner": "Owner",
+    "limit": "limit", "limit_other": "limit_other", "registration_number": "registration_number",
+    "Registered_Name": "Registered_Name", "business_type": "business_type",
+    "contact_name": "contact_name", "position": "position", "contact_number": "contact_number",
+    "telephone": "telephone", "county": "county", "district": "district", "province": "province",
+    "credit_semester1": "credit_semester1", "credit_semester2": "credit_semester2",
+    "land": "land", "other_property": "other_property", "Data": "Data",
+    "Estimated_annual_income": "Estimated_annual_income",
+}
 
 
-# ------------------------------------------------------------ graph client
-class NoCredentials(Exception):
-    """ยังไม่ได้ตั้ง GitHub Secrets / env — ให้ผู้เรียกตัดสินใจว่าจะ fallback หรือ fail"""
+def log(msg: str) -> None:
+    print(f"[build] {msg}", flush=True)
 
 
-def missing_creds():
-    return [k for k in ("TENANT_ID", "CLIENT_ID", "CLIENT_SECRET") if not os.getenv(k)]
+# ------------------------------------------------------------- http util ----
+def http_json(url: str, token: str = "", data: bytes | None = None,
+              headers: dict | None = None, retries: int = 4) -> dict:
+    """เรียก REST + retry แบบ exponential backoff (กัน 429/503 ของ Graph)"""
+    hdr = {"Accept": "application/json"}
+    if token:
+        hdr["Authorization"] = "Bearer " + token
+    if headers:
+        hdr.update(headers)
+    last = None
+    for attempt in range(retries):
+        req = urllib.request.Request(url, data=data, headers=hdr,
+                                     method="POST" if data else "GET")
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return json.loads(r.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", "ignore")[:400]
+            last = RuntimeError(f"HTTP {e.code} {url.split('?')[0]} :: {body}")
+            if e.code in (429, 500, 502, 503, 504) and attempt < retries - 1:
+                wait = int(e.headers.get("Retry-After") or 2 ** attempt)
+                log(f"  ↻ HTTP {e.code} รอ {wait}s แล้วลองใหม่ ({attempt + 1}/{retries})")
+                time.sleep(wait)
+                continue
+            raise last
+        except Exception as e:                                    # network error
+            last = e
+            if attempt < retries - 1:
+                time.sleep(2 ** attempt)
+                continue
+            raise
+    raise last  # pragma: no cover
 
 
-def get_token():
-    import requests
-    t, c, s = os.getenv("TENANT_ID"), os.getenv("CLIENT_ID"), os.getenv("CLIENT_SECRET")
-    if not all([t, c, s]):
-        raise NoCredentials(", ".join(missing_creds()))
-    r = requests.post(
-        f"https://login.microsoftonline.com/{t}/oauth2/v2.0/token",
-        data={"client_id": c, "client_secret": s,
-              "scope": "https://graph.microsoft.com/.default",
-              "grant_type": "client_credentials"}, timeout=60)
-    r.raise_for_status()
-    return r.json()["access_token"]
+def get_token() -> str:
+    """OAuth2 client-credentials (app-only) — ไม่ต้องมีผู้ใช้ล็อกอิน"""
+    url = f"https://login.microsoftonline.com/{TENANT_ID}/oauth2/v2.0/token"
+    body = urllib.parse.urlencode({
+        "client_id": CLIENT_ID, "client_secret": CLIENT_SECRET,
+        "scope": "https://graph.microsoft.com/.default", "grant_type": "client_credentials",
+    }).encode()
+    tok = http_json(url, data=body,
+                    headers={"Content-Type": "application/x-www-form-urlencoded"})
+    if "access_token" not in tok:
+        raise RuntimeError("ขอ access token ไม่สำเร็จ: " + json.dumps(tok)[:300])
+    return tok["access_token"]
 
 
-def gall(url, tok):
-    import requests
-    out = []
-    while url:
-        r = requests.get(url, headers={"Authorization": f"Bearer {tok}"}, timeout=120)
-        r.raise_for_status()
-        j = r.json()
-        out += j.get("value", [])
+def graph_all(url: str, token: str) -> list:
+    """ไล่ paging ตาม @odata.nextLink จนครบทุกรายการ"""
+    out, guard = [], 0
+    while url and guard < 200:
+        guard += 1
+        j = http_json(url, token)
+        out.extend(j.get("value", []))
         url = j.get("@odata.nextLink")
     return out
 
 
-def fetch():
-    import requests
-    tok = get_token()
-    r = requests.get(f"{GRAPH}/sites/{HOST}:{SITE_PATH}",
-                     headers={"Authorization": f"Bearer {tok}"}, timeout=60)
-    r.raise_for_status()
-    site = r.json()
-    log("INFO", f"site: {site['name']}")
-    lists = gall(f"{GRAPH}/sites/{site['id']}/lists?$select=id,displayName&$top=200", tok)
-    names = [l["displayName"] for l in lists]
-    log("INFO", f"lists found: {len(names)}")
-    ids = {l["displayName"]: l["id"] for l in lists}
-    dl = resolve_list(names, DATA_LIST_CANDIDATES, "data")
-    gl = resolve_list(names, GROUP_LIST_CANDIDATES, "group")
+# ------------------------------------------------------------ graph mode ----
+def fetch_graph() -> tuple[list, list]:
+    log(f"เชื่อมต่อ Microsoft Graph · site {SITE_HOSTNAME}{SITE_PATH}")
+    token = get_token()
+    site = http_json(f"{GRAPH}/sites/{SITE_HOSTNAME}:{SITE_PATH}", token)
+    site_id = site["id"]
+    log(f"  site id = {site_id}")
 
-    def items(name):
-        rows = gall(f"{GRAPH}/sites/{site['id']}/lists/{ids[name]}/items?expand=fields&$top=2000", tok)
-        res = []
-        for r_ in rows:
-            f = dict(r_.get("fields", {}))
-            f["_ID"] = r_.get("id")
-            res.append(f)
-        return res
+    def items(list_name: str) -> list:
+        url = (f"{GRAPH}/sites/{site_id}/lists/{urllib.parse.quote(list_name)}"
+               f"/items?expand=fields&$top=999")
+        rows = graph_all(url, token)
+        log(f"  {list_name}: {len(rows)} รายการ")
+        return rows
 
-    records = items(dl)
-    allowed = [x.get("Title") for x in items(gl) if x.get("Title")]
-    log("INFO", f"records={len(records)} allowed_viewers={len(allowed)}")
-    return {"records": records, "allowed": allowed, "source": dl}
+    return items(LIST_DATA), items(LIST_ACL)
 
 
-# ------------------------------------------------------------------- build
-def build(payload):
-    """ฉีดข้อมูลลง template ที่ฝังอยู่ในไฟล์นี้ — ไม่มีไฟล์ template ภายนอกให้หายหรือถูกทับ"""
-    html = TEMPLATE_HTML
-    html = html.replace("__ALLOWED__", json.dumps(payload["allowed"], ensure_ascii=False))
-    html = html.replace("__DATA__", json.dumps(payload["records"], ensure_ascii=False, default=str))
-    if "__DATA__" in html or "__ALLOWED__" in html:
-        log("ERROR", "inject ไม่สำเร็จ — ยังมี placeholder เหลือ")
-        sys.exit(1)
-    OUT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    OUT_FILE.write_text(html, encoding="utf-8")
-    log("OK", f"wrote {OUT_FILE} ({OUT_FILE.stat().st_size:,} bytes) "
-              f"records={len(payload['records'])} viewers={len(payload['allowed'])}")
+def map_graph_row(row: dict) -> dict:
+    f = row.get("fields", {}) or {}
+    o = {"ID": int(f.get("id") or row.get("id") or 0)}
+    for sp, key in FIELD_MAP.items():
+        v = f.get(sp)
+        if v in (None, ""):
+            # SharePoint บางไซต์ไม่เข้ารหัส _x0020_ -> ลองชื่อแบบ underscore
+            v = f.get(sp.replace("_x0020_", "_")) or f.get(sp.replace("_x0020_", ""))
+        o[key] = "" if v is None else (str(v).strip() if not isinstance(v, (int, float)) else v)
+    if not o.get("RequestTimeStamp"):
+        o["RequestTimeStamp"] = f.get("Created") or row.get("createdDateTime") or ""
+    return o
 
 
-def build_and_exit(payload, a):
-    payload.setdefault("allowed", [])
-    payload.setdefault("records", [])
-    if getattr(a, "dump_data", None):
-        Path(a.dump_data).write_text(
-            json.dumps({"records": payload["records"], "allowed": payload["allowed"]},
-                       ensure_ascii=False, default=str), encoding="utf-8")
-        log("OK", f"dumped snapshot -> {a.dump_data}")
-    build(payload)
-    sys.exit(0)
+# -------------------------------------------------------------- csv mode ----
+def fetch_csv(data_csv: str, acl_csv: str) -> tuple[list, list]:
+    import csv
+    log(f"อ่านจาก CSV · {data_csv} / {acl_csv}")
+
+    def read(p):
+        with open(p, encoding="utf-8-sig", newline="") as fh:
+            return list(csv.DictReader(fh))      # อ่านเป็น str ทั้งหมด กันเลข 0 นำหน้าหาย
+
+    return read(data_csv), read(acl_csv)
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    g = ap.add_mutually_exclusive_group()
-    g.add_argument("--offline", metavar="JSON", help='build จากไฟล์ {"records":[],"allowed":[]}')
-    g.add_argument("--sample", action="store_true", help="build จากข้อมูลตัวอย่างในตัวสคริปต์")
-    ap.add_argument("--dump-data", metavar="JSON", help="เซฟข้อมูลที่ดึงมาเป็น snapshot")
-    ap.add_argument("--fallback-sample", action="store_true",
-                    help="ถ้าไม่มี TENANT_ID/CLIENT_ID/CLIENT_SECRET ให้ใช้ข้อมูลตัวอย่างแทนการ fail")
+def map_csv_row(row: dict) -> dict:
+    o = {}
+    for src, key in CSV_MAP.items():
+        v = row.get(src, "")
+        o[key] = ("" if v is None else str(v).strip())
+    o["ID"] = int(float(o["ID"])) if str(o.get("ID", "")).strip() else 0
+    return o
+
+
+# ------------------------------------------------------------------ acl -----
+def classify_acl(item_id: int, email: str) -> dict:
+    """กติกาเดียวกับฝั่ง JavaScript ใน template (classifyAcl)"""
+    e = (email or "").strip().lower()
+    local = e.split("@")[0]
+    m = re.match(r"^bi-v?operation([a-z0-9]+)_gm$", local)
+    m2 = re.match(r"^dohometogogm-([a-z0-9]+)$", local)
+    m3 = re.match(r"^gm-([a-z0-9]+)$", local)
+    if m:
+        code = m.group(1).upper()
+        kind, role, name = "BI_OPERATION", "BIOPS", "BI Operation " + code
+    elif m2:
+        code = m2.group(1).upper()
+        kind, role, name = "TOGO_GM", "GM", "Dohome To Go GM " + code
+    elif m3:
+        code = m3.group(1).upper()
+        trainee = code == "TRAINEE"
+        kind = "BRANCH_GM"
+        role = "VIEWER" if trainee else "GM"
+        name = "GM Trainee" if trainee else "GM สาขา " + code
+    else:
+        code, kind, role, name = "", "NAMED_USER", "CREDIT", local
+    branches = [code + "OO"] if (code and kind != "NAMED_USER" and code != "TRAINEE") else []
+    return {"id": item_id, "email": e, "kind": kind, "code": code,
+            "role": role, "name": name, "branches": branches}
+
+
+# ---------------------------------------------------------------- render ----
+# ------------------------------------------------------------ mask PII ------
+# ใช้เมื่อ deploy ขึ้นที่สาธารณะ (GitHub Pages แบบ public) — ปิดบังข้อมูลส่วนบุคคล
+# ตั้งแต่ต้นทางก่อนเขียนลงไฟล์ ไม่ใช่ปิดบังแค่ตอนแสดงผล
+MASK_FIELDS = ["CustomerName", "contact_name", "contact_number", "telephone",
+               "registration_number", "Registered_Name", "Customer_id"]
+
+
+def mask_value(v: str) -> str:
+    s = str(v or "")
+    if len(s) <= 2:
+        return "•" * len(s)
+    if len(s) <= 6:
+        return s[0] + "•" * (len(s) - 1)
+    return s[:3] + "•" * (len(s) - 5) + s[-2:]
+
+
+def mask_records(records: list) -> list:
+    for r in records:
+        for f in MASK_FIELDS:
+            if r.get(f):
+                r[f] = mask_value(r[f])
+    log(f"  ปิดบัง PII แล้ว {len(MASK_FIELDS)} คอลัมน์: {MASK_FIELDS}")
+    return records
+
+
+def render(records: list, acl: list, mode: str, out_path: pathlib.Path) -> None:
+    tpl = TEMPLATE.read_text(encoding="utf-8")
+    for ph in ("__DATA__", "__ACL__", "__GENAT__"):
+        if ph not in tpl:
+            raise RuntimeError(f"template.html ไม่มี placeholder {ph}")
+    gen = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    html = (tpl.replace("__DATA__", json.dumps(records, ensure_ascii=False, indent=1))
+               .replace("__ACL__", json.dumps(acl, ensure_ascii=False, indent=1))
+               .replace("__GENAT__", f"{gen} · {mode}"))
+    out_path.write_text(html, encoding="utf-8")
+    log(f"เขียน {out_path} ({len(html):,} bytes)")
+
+
+def fingerprint(records: list) -> dict:
+    """ลายนิ้วมือข้อมูล — ใช้พิสูจน์ว่า 'ดึงมาใหม่จริง' ไม่ใช่ไฟล์เดิม"""
+    import hashlib
+    ids = [int(r.get("ID") or 0) for r in records]
+    stamps = sorted(str(r.get("RequestTimeStamp") or "") for r in records)
+    payload = json.dumps(records, ensure_ascii=False, sort_keys=True).encode()
+    return {
+        "count": len(records),
+        "max_id": max(ids) if ids else 0,
+        "min_id": min(ids) if ids else 0,
+        "latest_timestamp": stamps[-1] if stamps else "",
+        "sha256": hashlib.sha256(payload).hexdigest()[:16],
+    }
+
+
+def report(lines: list) -> None:
+    """เขียนสรุปขึ้น GitHub Actions Job Summary (เห็นได้โดยไม่ต้องเปิด log)"""
+    for ln in lines:
+        log(ln)
+    path = os.getenv("GITHUB_STEP_SUMMARY")
+    if path:
+        with open(path, "a", encoding="utf-8") as fh:
+            fh.write("\n".join(lines) + "\n")
+    out = os.getenv("GITHUB_OUTPUT")
+    return out
+
+
+def summarize(records: list, acl: list) -> None:
+    log(f"สรุปข้อมูล: {len(records)} รายการ · {len(acl)} บัญชีในทะเบียน")
+    log(f"  ประเภทบัญชี: {dict(Counter(a['kind'] for a in acl))}")
+    branches = sorted({(r.get('branch') or '').strip() for r in records if (r.get('branch') or '').strip()})
+    log(f"  สาขาที่มีข้อมูล ({len(branches)}): {branches}")
+    log(f"  ไม่ระบุสาขา: {sum(1 for r in records if not (r.get('branch') or '').strip())} รายการ")
+    log(f"  ผู้ดูแล: {len({r.get('Owner') for r in records if r.get('Owner')})} คน")
+    acl_branches = {b for a in acl for b in a["branches"]}
+    missing = [b for b in branches if b not in acl_branches]
+    log(f"  สาขาที่ยังไม่มีบัญชีดูแลใน {LIST_ACL}: {missing or 'ไม่มี (ครบทุกสาขา)'}")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Build DemoApp Daily Dashboard")
+    ap.add_argument("--out", default=str(DEFAULT_OUT))
+    ap.add_argument("--source", choices=["auto", "graph", "csv"], default="auto")
+    ap.add_argument("--data-csv", default=str(ROOT / "data" / "DemoApp.csv"))
+    ap.add_argument("--acl-csv", default=str(ROOT / "data" / "Admin_KycNew.csv"))
+    ap.add_argument("--min-records", type=int, default=1,
+                    help="ถ้าดึงได้น้อยกว่านี้ให้ถือว่าล้มเหลว (กันเขียนทับด้วยข้อมูลว่าง)")
+    ap.add_argument("--mask-pii", action="store_true",
+                    default=os.getenv("MASK_PII", "").lower() in ("1", "true", "yes"),
+                    help="ปิดบังข้อมูลส่วนบุคคลก่อนเขียนไฟล์ (ใช้เมื่อ repo/Pages เป็น public)")
+    ap.add_argument("--require-live", action="store_true",
+                    default=os.getenv("REQUIRE_LIVE", "").lower() in ("1", "true", "yes"),
+                    help="บังคับดึงสดเท่านั้น — ถ้าไม่มี credential หรือดึงไม่สำเร็จให้ FAIL "
+                         "(ห้ามเงียบ ๆ ใช้ CSV เก่า) ** ต้องเปิดใน CI เสมอ **")
     a = ap.parse_args()
 
-    log("INFO", f"building dashboard @ {HOST}{SITE_PATH}")
-    if a.sample:
-        log("INFO", "โหมด --sample : ใช้ข้อมูลตัวอย่างที่ฝังในสคริปต์")
-        payload = json.loads(SAMPLE_JSON)
-    elif a.offline:
-        payload = json.loads(Path(a.offline).read_text(encoding="utf-8"))
-    else:
-        miss = missing_creds()
-        if miss:
-            msg = "ไม่พบ " + " / ".join(miss)
-            if a.fallback_sample:
-                log("WARN", msg + " — สร้าง dashboard จากข้อมูลตัวอย่างแทน (ยังไม่ใช่ข้อมูลจริง)")
-                log("HINT", "ตั้ง GitHub Secrets แล้วรันใหม่เพื่อดึงข้อมูลจริง: "
-                           "Settings > Secrets and variables > Actions")
-                payload = json.loads(SAMPLE_JSON)
-                payload["_mode"] = "sample"
-                build_and_exit(payload, a)
-            log("ERROR", msg)
-            log("HINT", "รันแบบไม่ต่อ SharePoint ได้ด้วย: python scripts/build_dashboard.py --sample")
-            log("HINT", "หรือให้ CI ไม่แดงเมื่อยังไม่ตั้ง secrets: --fallback-sample")
-            sys.exit(1)
-        try:
-            payload = fetch()
-        except NoCredentials as e:
-            if not a.fallback_sample:
-                log("ERROR", f"ไม่พบ {e}")
-                sys.exit(1)
-            log("WARN", f"ไม่พบ {e} — ใช้ข้อมูลตัวอย่างแทน")
-            payload = json.loads(SAMPLE_JSON)
+    has_cred = all([TENANT_ID, CLIENT_ID, CLIENT_SECRET])
+    # ---- กันเคส "workflow เขียว แต่ข้อมูลไม่อัปเดต" ----
+    if a.require_live and not has_cred:
+        missing = [n for n, v in (("TENANT_ID", TENANT_ID), ("CLIENT_ID", CLIENT_ID),
+                                  ("CLIENT_SECRET", CLIENT_SECRET)) if not v]
+        log("!! REQUIRE_LIVE เปิดอยู่ แต่ไม่พบ secret: " + ", ".join(missing))
+        log("!! ตรวจที่ GitHub → Settings → Secrets and variables → Actions (ชื่อต้องตรงเป๊ะ ตัวพิมพ์ใหญ่)")
+        log("!! หมายเหตุ: secret ไม่ถูกส่งให้ workflow ที่ trigger จาก fork pull request")
+        return 3
+    if not has_cred and a.source != "csv":
+        log("!! คำเตือน: ไม่พบ TENANT_ID/CLIENT_ID/CLIENT_SECRET — จะได้ข้อมูลเก่าจาก CSV เท่านั้น")
 
-    payload.setdefault("allowed", [])
-    payload.setdefault("records", [])
-    if a.dump_data:
-        Path(a.dump_data).write_text(
-            json.dumps({"records": payload["records"], "allowed": payload["allowed"]},
-                       ensure_ascii=False, default=str), encoding="utf-8")
-        log("OK", f"dumped snapshot -> {a.dump_data}")
-    build(payload)
+    use_graph = a.source == "graph" or (a.source == "auto" and has_cred)
+    try:
+        if use_graph:
+            raw, acl_raw = fetch_graph()
+            records = [map_graph_row(r) for r in raw]
+            acl = [classify_acl(int((r.get("fields", {}) or {}).get("id") or r.get("id") or 0),
+                                (r.get("fields", {}) or {}).get("Title", ""))
+                   for r in acl_raw]
+            mode = "LIVE via Microsoft Graph"
+        else:
+            if a.source == "auto":
+                log("ไม่พบ TENANT_ID/CLIENT_ID/CLIENT_SECRET -> ใช้โหมด CSV")
+            raw, acl_raw = fetch_csv(a.data_csv, a.acl_csv)
+            records = [map_csv_row(r) for r in raw]
+            acl = [classify_acl(int(float(r.get("_ID") or 0)), r.get("Title", "")) for r in acl_raw]
+            mode = "CSV snapshot"
+    except Exception as e:                                   # noqa: BLE001
+        log(f"!! ดึงข้อมูลไม่สำเร็จ: {e}")
+        if a.require_live:
+            log("!! REQUIRE_LIVE เปิดอยู่ → ไม่ fallback ไป CSV เพื่อไม่ให้ workflow เขียวทั้งที่ข้อมูลเก่า")
+            return 1
+        return 1
 
+    acl = [x for x in acl if x["email"]]
+    records = [r for r in records if r.get("ID")]
+    records.sort(key=lambda x: (str(x.get("RequestTimeStamp") or ""), x["ID"]), reverse=True)
 
+    if len(records) < a.min_records:
+        log(f"!! ได้ข้อมูลเพียง {len(records)} รายการ (< {a.min_records}) — ยกเลิกเพื่อไม่ให้ทับ index.html เดิม")
+        return 2
 
-# ============================================================ EMBEDDED TEMPLATE
-# แก้หน้าตา Dashboard ได้ที่นี่ (placeholder __DATA__ / __ALLOWED__ ห้ามลบ)
-TEMPLATE_HTML = r"""<!DOCTYPE html>
-<html lang="th" data-bs-theme="light">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KYC Daily Dashboard | DOHOME BI</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<style>
-:root{--corp:#0b5ed7;--corp-2:#0a4bb0;--corp-soft:#e7f0ff;--ok:#198754;--warn:#fd7e14;--dgr:#dc3545;--ink:#0f172a;}
-body{background:#f4f7fb;color:var(--ink);font-family:"Segoe UI",Tahoma,"Sarabun",sans-serif;}
-[data-bs-theme="dark"] body{background:#0b1220;color:#e6edf7;}
-.navbar-corp{background:linear-gradient(90deg,var(--corp-2),var(--corp));}
-.card-soft{border:0;border-radius:16px;box-shadow:0 6px 18px rgba(13,42,90,.08);}
-[data-bs-theme="dark"] .card-soft{background:#131c2e;box-shadow:0 6px 18px rgba(0,0,0,.4);}
-.kpi{border-radius:16px;padding:16px 18px;color:#fff;height:100%;}
-.kpi h6{font-size:.78rem;opacity:.92;margin:0 0 6px;letter-spacing:.3px;text-transform:uppercase;}
-.kpi .v{font-size:1.9rem;font-weight:700;line-height:1;}
-.kpi .s{font-size:.75rem;opacity:.9;}
-.k1{background:linear-gradient(135deg,#0b5ed7,#3b82f6);}
-.k2{background:linear-gradient(135deg,#0891b2,#22d3ee);}
-.k3{background:linear-gradient(135deg,#198754,#4ade80);}
-.k4{background:linear-gradient(135deg,#fd7e14,#fbbf24);}
-.k5{background:linear-gradient(135deg,#dc3545,#f87171);}
-.k6{background:linear-gradient(135deg,#6f42c1,#a78bfa);}
-.k7{background:linear-gradient(135deg,#334155,#64748b);}
-.chart-box{position:relative;height:320px;}
-.chart-box-sm{position:relative;height:270px;}
-th.sortable{cursor:pointer;white-space:nowrap;}
-th.sortable:after{content:"\2195";opacity:.35;margin-left:4px;}
-th.sortable.asc:after{content:"\2191";opacity:1;}
-th.sortable.desc:after{content:"\2193";opacity:1;}
-.table-wrap{overflow:auto;max-height:560px;}
-.badge-st{font-weight:600;}
-#gate{position:fixed;inset:0;z-index:2000;background:linear-gradient(135deg,#062a63,#0b5ed7);display:flex;align-items:center;justify-content:center;padding:16px;}
-#gate .box{max-width:520px;width:100%;border-radius:20px;background:#fff;padding:28px;}
-[data-bs-theme="dark"] #gate .box{background:#131c2e;}
-#app{display:none;}
-.insight-item{border-left:4px solid var(--corp);background:var(--corp-soft);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
-[data-bs-theme="dark"] .insight-item{background:#16233b;border-color:#3b82f6;}
-.rank-bar{height:8px;border-radius:6px;background:#e5ecf6;overflow:hidden;}
-.rank-bar>span{display:block;height:100%;background:linear-gradient(90deg,#0b5ed7,#60a5fa);}
-.small-muted{font-size:.8rem;opacity:.7;}
-@media(max-width:576px){.kpi .v{font-size:1.5rem;}.chart-box{height:260px;}}
-</style>
-</head>
-<body>
+    summarize(records, acl)
 
-<!-- ============ ACCESS GATE (Email whitelist from Admin_KycNew) ============ -->
-<div id="gate">
-  <div class="box shadow-lg">
-    <div class="text-center mb-3">
-      <i class="bi bi-shield-lock-fill" style="font-size:2.4rem;color:#0b5ed7"></i>
-      <h4 class="mt-2 mb-1">KYC Daily Dashboard</h4>
-      <div class="small-muted">รายงานนี้จำกัดสิทธิ์เฉพาะกลุ่มผู้มีสิทธิ์เข้าถึง (Authorized Viewer Group)</div>
-    </div>
-    <div id="gateChecking" class="text-center py-3">
-      <div class="spinner-border text-primary"></div>
-      <div class="mt-2 small-muted">กำลังตรวจสอบสิทธิ์ผู้ใช้งาน...</div>
-    </div>
-    <div id="gateForm" class="d-none">
-      <label class="form-label fw-semibold">อีเมลผู้ใช้งาน (@dohome.co.th)</label>
-      <div class="input-group">
-        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-        <input id="gateEmail" type="email" class="form-control" placeholder="name@dohome.co.th" autocomplete="email">
-        <button id="gateBtn" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i> เข้าสู่รายงาน</button>
-      </div>
-      <div id="gateMsg" class="mt-3"></div>
-      <div class="small-muted mt-3">
-        <i class="bi bi-info-circle"></i> กลุ่มผู้มีสิทธิ์ดูรายงานถูกกำหนดจาก SharePoint List
-        <a href="https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/Admin_KycNew/AllItems.aspx" target="_blank">Admin_KycNew</a>
-        (<span id="gateCount"></span> บัญชี) — อีเมลที่ไม่อยู่ในรายชื่อจะไม่สามารถเปิดดูรายงานนี้ได้
-      </div>
-    </div>
-  </div>
-</div>
+    # ---- เทียบกับ index.html เดิม เพื่อพิสูจน์ว่าข้อมูล "เปลี่ยนจริงหรือไม่" ----
+    fp = fingerprint(records)
+    out_path = pathlib.Path(a.out)
+    old_fp = {}
+    if out_path.exists():
+        m = re.search(r"const RAW_DATA = (\[.*?\n\]);", out_path.read_text(encoding="utf-8"), re.S)
+        if m:
+            try:
+                old_fp = fingerprint(json.loads(m.group(1)))
+            except Exception:                                  # noqa: BLE001
+                pass
 
-<!-- ============ APP ============ -->
-<div id="app">
-<nav class="navbar navbar-expand-lg navbar-dark navbar-corp sticky-top">
-  <div class="container-fluid">
-    <span class="navbar-brand fw-bold"><i class="bi bi-bar-chart-fill"></i> KYC Daily Dashboard</span>
-    <div class="d-flex align-items-center gap-2 ms-auto text-white">
-      <span class="badge bg-secondary" id="srcBadge"></span>
-      <span class="badge bg-light text-primary d-none d-md-inline"><i class="bi bi-person-check"></i> <span id="whoami"></span></span>
-      <button class="btn btn-sm btn-outline-light" id="refreshBtn" title="รีเฟรชข้อมูล"><i class="bi bi-arrow-clockwise"></i></button>
-      <button class="btn btn-sm btn-outline-light" id="themeBtn"><i class="bi bi-moon-stars"></i></button>
-      <button class="btn btn-sm btn-outline-light" id="logoutBtn"><i class="bi bi-box-arrow-right"></i></button>
-    </div>
-  </div>
-</nav>
+    changed = old_fp.get("sha256") != fp["sha256"]
+    report([
+        "## 📊 ผลการดึงข้อมูล",
+        "",
+        f"| หัวข้อ | ค่า |",
+        f"|---|---|",
+        f"| โหมด | **{mode}** |",
+        f"| จำนวนรายการ | **{fp['count']}** (เดิม {old_fp.get('count', '-')}) |",
+        f"| ID ล่าสุด | **{fp['max_id']}** (เดิม {old_fp.get('max_id', '-')}) |",
+        f"| Timestamp ล่าสุด | **{fp['latest_timestamp'] or '-'}** (เดิม {old_fp.get('latest_timestamp', '-')}) |",
+        f"| ลายนิ้วมือข้อมูล | `{fp['sha256']}` (เดิม `{old_fp.get('sha256', '-')}`) |",
+        f"| ข้อมูลเปลี่ยนแปลง | {'✅ **ใช่**' if changed else '⚠️ **ไม่เปลี่ยน** — ถ้าใน SharePoint มีรายการใหม่ แปลว่าดึงมาไม่ครบ/ผิดลิสต์'} |",
+        "",
+    ])
+    if not changed and "CSV" in mode:
+        log("!! ข้อมูลไม่เปลี่ยน และกำลังใช้โหมด CSV — นี่คือสาเหตุของ 'workflow ผ่านแต่ข้อมูลไม่อัปเดต'")
 
-<div class="container-fluid px-3 px-lg-4 py-3">
+    if a.mask_pii:
+        records = mask_records(records)
+        mode += " · PII masked"
+    render(records, acl, mode, out_path)
 
-  <!-- Executive summary -->
-  <div class="card card-soft mb-3">
-    <div class="card-body">
-      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-        <div>
-          <h5 class="mb-1"><i class="bi bi-clipboard-data text-primary"></i> Executive Summary</h5>
-          <div class="small-muted">แหล่งข้อมูล: SharePoint List <b>DemoApp</b> (AC-Accounting) · สิทธิ์การเข้าถึง: <b>Admin_KycNew</b></div>
-        </div>
-        <div class="text-end small-muted">อัปเดตล่าสุด: <span id="lastUpdate"></span></div>
-      </div>
-      <p id="execText" class="mt-3 mb-0"></p>
-    </div>
-  </div>
-
-  <!-- KPI cards -->
-  <div class="row g-3 mb-3" id="kpiRow">
-    <div class="col-6 col-md-4 col-xl-3"><div class="kpi k1"><h6>Total Transaction</h6><div class="v" id="kTotal">0</div><div class="s">รายการทั้งหมดในระบบ</div></div></div>
-    <div class="col-6 col-md-4 col-xl-3"><div class="kpi k2"><h6>New Today</h6><div class="v" id="kToday">0</div><div class="s" id="kTodayDelta">เทียบเมื่อวาน</div></div></div>
-    <div class="col-6 col-md-4 col-xl-3"><div class="kpi k3"><h6>Closed Today</h6><div class="v" id="kClosedToday">0</div><div class="s">ปิดงานวันนี้</div></div></div>
-    <div class="col-6 col-md-4 col-xl-3"><div class="kpi k4"><h6>Pending</h6><div class="v" id="kPending">0</div><div class="s">อยู่ระหว่างดำเนินการ</div></div></div>
-    <div class="col-6 col-md-4 col-xl-3"><div class="kpi k5"><h6>ปัญหา / ต้องติดตาม</h6><div class="v" id="kIssue">0</div><div class="s">ไม่ผ่าน / ค้างเกิน 3 วัน</div></div></div>
-    <div class="col-6 col-md-4 col-xl-3"><div class="kpi k6"><h6>Success Rate</h6><div class="v" id="kRate">0%</div><div class="s">อนุมัติ+ผ่านเกณฑ์ / ทั้งหมด</div></div></div>
-    <div class="col-6 col-md-4 col-xl-3"><div class="kpi k7"><h6>Avg Processing Time</h6><div class="v" id="kAvg">-</div><div class="s">เฉลี่ยต่อรายการที่ปิดแล้ว</div></div></div>
-    <div class="col-6 col-md-4 col-xl-3"><div class="kpi k1"><h6>7 วัน / 30 วัน</h6><div class="v"><span id="k7">0</span> <span class="fs-6">/</span> <span id="k30">0</span></div><div class="s">ย้อนหลัง 7 และ 30 วัน</div></div></div>
-  </div>
-
-  <!-- Filters -->
-  <div class="card card-soft mb-3">
-    <div class="card-body">
-      <div class="row g-2 align-items-end">
-        <div class="col-12 col-lg-3"><label class="form-label small fw-semibold">ค้นหา (Keyword)</label>
-          <input id="fKeyword" class="form-control" placeholder="ลูกค้า / ผู้ดูแล / สาขา / เบอร์โทร"></div>
-        <div class="col-6 col-lg-2"><label class="form-label small fw-semibold">สาขา</label><select id="fBranch" class="form-select"></select></div>
-        <div class="col-6 col-lg-2"><label class="form-label small fw-semibold">ผู้ดูแล</label><select id="fOwner" class="form-select"></select></div>
-        <div class="col-6 col-lg-2"><label class="form-label small fw-semibold">สถานะ</label><select id="fStatus" class="form-select"></select></div>
-        <div class="col-3 col-lg-1"><label class="form-label small fw-semibold">จากวันที่</label><input id="fFrom" type="date" class="form-control"></div>
-        <div class="col-3 col-lg-1"><label class="form-label small fw-semibold">ถึงวันที่</label><input id="fTo" type="date" class="form-control"></div>
-        <div class="col-12 col-lg-1 d-grid"><button id="fReset" class="btn btn-outline-secondary"><i class="bi bi-arrow-counterclockwise"></i> ล้าง</button></div>
-      </div>
-      <div class="mt-2 small-muted">แสดง <b id="cntShown">0</b> จาก <b id="cntAll">0</b> รายการ</div>
-    </div>
-  </div>
-
-  <!-- Charts -->
-  <div class="row g-3 mb-3">
-    <div class="col-12 col-xl-7"><div class="card card-soft h-100"><div class="card-body">
-      <h6 class="fw-bold mb-3"><i class="bi bi-bar-chart-line text-primary"></i> จำนวนรายการตามสาขา</h6>
-      <div class="chart-box"><canvas id="chBranch"></canvas></div></div></div></div>
-    <div class="col-12 col-md-6 col-xl-5"><div class="card card-soft h-100"><div class="card-body">
-      <h6 class="fw-bold mb-3"><i class="bi bi-pie-chart text-primary"></i> สัดส่วนตามสถานะ</h6>
-      <div class="chart-box"><canvas id="chStatus"></canvas></div></div></div></div>
-    <div class="col-12 col-xl-7"><div class="card card-soft h-100"><div class="card-body">
-      <h6 class="fw-bold mb-3"><i class="bi bi-graph-up-arrow text-primary"></i> แนวโน้มรายวัน (Daily Trend)</h6>
-      <div class="chart-box"><canvas id="chTrend"></canvas></div></div></div></div>
-    <div class="col-12 col-md-6 col-xl-5"><div class="card card-soft h-100"><div class="card-body">
-      <h6 class="fw-bold mb-3"><i class="bi bi-layers text-primary"></i> สาขาเทียบสถานะ (Stacked)</h6>
-      <div class="chart-box"><canvas id="chStack"></canvas></div></div></div></div>
-    <div class="col-12 col-xl-7"><div class="card card-soft h-100"><div class="card-body">
-      <h6 class="fw-bold mb-3"><i class="bi bi-trophy text-primary"></i> Top 10 Owner</h6>
-      <div class="chart-box"><canvas id="chOwner"></canvas></div></div></div></div>
-    <div class="col-12 col-md-6 col-xl-5"><div class="card card-soft h-100"><div class="card-body">
-      <h6 class="fw-bold mb-3"><i class="bi bi-cash-coin text-primary"></i> วงเงินที่ขอ แยกตามสาขา (ล้านบาท)</h6>
-      <div class="chart-box"><canvas id="chLimit"></canvas></div></div></div></div>
-  </div>
-
-  <!-- Branch analytics -->
-  <div class="row g-3 mb-3">
-    <div class="col-12 col-xl-6"><div class="card card-soft h-100"><div class="card-body">
-      <h6 class="fw-bold mb-3"><i class="bi bi-shop text-primary"></i> Branch Analytics (คลิกเพื่อ Drill Down)</h6>
-      <div class="table-responsive"><table class="table table-sm align-middle mb-0">
-        <thead class="table-light"><tr><th>#</th><th>สาขา</th><th class="text-end">รายการ</th><th class="text-end">%</th><th style="width:28%">สัดส่วน</th><th class="text-end">Pending</th></tr></thead>
-        <tbody id="tbBranch"></tbody></table></div></div></div></div>
-    <div class="col-12 col-xl-6"><div class="card card-soft h-100"><div class="card-body">
-      <h6 class="fw-bold mb-3"><i class="bi bi-people text-primary"></i> Owner Analytics</h6>
-      <div class="table-responsive" style="max-height:340px;overflow:auto"><table class="table table-sm align-middle mb-0">
-        <thead class="table-light"><tr><th>#</th><th>ผู้ดูแล</th><th class="text-end">ทั้งหมด</th><th class="text-end">เปิด</th><th class="text-end">ปิด</th><th class="text-end">ค้าง</th></tr></thead>
-        <tbody id="tbOwner"></tbody></table></div></div></div></div>
-  </div>
-
-  <!-- Insight -->
-  <div class="card card-soft mb-3"><div class="card-body">
-    <h6 class="fw-bold mb-3"><i class="bi bi-lightbulb text-warning"></i> Auto Insight &amp; Anomaly Detection</h6>
-    <div id="insights"></div>
-  </div></div>
-
-  <!-- Detail table -->
-  <div class="card card-soft mb-4"><div class="card-body">
-    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
-      <h6 class="fw-bold mb-0"><i class="bi bi-table text-primary"></i> Detailed Records</h6>
-      <div class="d-flex gap-2">
-        <input id="tSearch" class="form-control form-control-sm" style="max-width:220px" placeholder="ค้นหาในตาราง...">
-        <select id="tSize" class="form-select form-select-sm" style="width:auto"><option>10</option><option>25</option><option>50</option><option>100</option></select>
-        <button class="btn btn-sm btn-success" id="btnXlsx"><i class="bi bi-file-earmark-excel"></i> Excel</button>
-        <button class="btn btn-sm btn-outline-primary" id="btnCsv"><i class="bi bi-filetype-csv"></i> CSV</button>
-      </div>
-    </div>
-    <div class="table-wrap"><table class="table table-hover table-sm align-middle">
-      <thead class="table-light sticky-top"><tr id="tHead"></tr></thead><tbody id="tBody"></tbody></table></div>
-    <nav class="mt-3"><ul class="pagination pagination-sm mb-0 flex-wrap" id="tPager"></ul></nav>
-  </div></div>
-
-  <div class="text-center small-muted pb-4">
-    DOHOME BI · KYC Daily Dashboard · Data: SharePoint List DemoApp · Access Group: Admin_KycNew
-  </div>
-</div>
-</div>
-
-<!-- Drill-down modal -->
-<div class="modal fade" id="drillModal" tabindex="-1"><div class="modal-dialog modal-xl modal-dialog-scrollable">
- <div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="drillTitle"></h5>
- <button class="btn-close" data-bs-dismiss="modal"></button></div>
- <div class="modal-body" id="drillBody"></div></div></div></div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-/* ================= SAMPLE / BINDING DATA STRUCTURE =================
-   RECORDS  : ข้อมูลจาก SharePoint List "DemoApp"
-   ALLOWED_VIEWERS : กลุ่มอีเมลที่มีสิทธิ์ดูรายงาน จาก List "Admin_KycNew"
-   หากต้องการดึงสดจาก SharePoint ให้ใช้ฟังก์ชัน loadFromSharePoint() ด้านล่าง
-=================================================================== */
-const ALLOWED_VIEWERS = __ALLOWED__;
-const RECORDS = __DATA__;
-
-/* -------- SharePoint live binding (ทำงานอัตโนมัติเมื่อ Embed เป็น WebPart ในไซต์เดียวกัน) --------
-   ลำดับการหา List: KYC_DATA_NEW -> KYCData1 -> DemoApp  (ถ้าไม่พบ/ไม่มีสิทธิ์ = ใช้ snapshot ในไฟล์)
-   ชื่อ list ปรับได้ที่ SP_LIST_DATA_CANDIDATES ด้านล่างโดยไม่ต้องแก้โค้ดส่วนอื่น */
-const SP_SITE = "https://dohomegroup.sharepoint.com/sites/AC-Accounting";
-const SP_LIST_DATA_CANDIDATES  = ["KYC_DATA_NEW","KYCData1","DemoApp"];
-const SP_LIST_GROUP_CANDIDATES = ["Admin_KycNew"];
-const LIVE_MODE = true;   // false = ใช้ snapshot ในไฟล์อย่างเดียว (offline demo)
-
-async function spGet(url){
-  const r=await fetch(url,{headers:{"Accept":"application/json;odata=nometadata"},credentials:"include"});
-  if(!r.ok)throw new Error("HTTP "+r.status); return r.json();
-}
-const spNorm=s=>String(s||'').replace(/[\s_\-.]+/g,'').toLowerCase();
-async function spResolveList(cands){
-  let titles=[];
-  try{titles=(await spGet(`${SP_SITE}/_api/web/lists?$select=Title&$filter=Hidden eq false&$top=500`)).value.map(x=>x.Title);}
-  catch(e){return cands[0];}
-  for(const c of cands){
-    const hit=titles.find(t=>t===c)||titles.find(t=>spNorm(t)===spNorm(c));
-    if(hit)return hit;
-  }
-  const core=spNorm(cands[0]).replace(/\d+$/,'');
-  return titles.find(t=>spNorm(t).startsWith(core)||spNorm(t).includes(core))||null;
-}
-async function loadFromSharePoint(){
-  const [dl,gl]=await Promise.all([spResolveList(SP_LIST_DATA_CANDIDATES),spResolveList(SP_LIST_GROUP_CANDIDATES)]);
-  if(!dl)throw new Error("ไม่พบ list ข้อมูล KYC บนไซต์นี้");
-  const out={source:dl};
-  const d=await spGet(`${SP_SITE}/_api/web/lists/getbytitle('${dl}')/items?$top=5000&$orderby=Id desc`);
-  out.records=d.value;
-  if(gl){try{const g=await spGet(`${SP_SITE}/_api/web/lists/getbytitle('${gl}')/items?$select=Title&$top=5000`);
-    out.allowed=g.value.map(x=>x.Title).filter(Boolean);}catch(e){}}
-  return out;
-}
-/* map field แบบยืดหยุ่น รองรับชื่อคอลัมน์ต่างกันระหว่าง KYC_DATA_NEW / DemoApp */
-const FIELD_ALIASES={
-  customer:['Customer Name','Customer_Name','CustomerName','Registered_Name','Customer','Title'],
-  branch  :['branch','Branch','Branch_Code','BranchName','สาขา'],
-  owner   :['Owner','owner','Owner_Name','AssignTo','ผู้ดูแล'],
-  status  :['Status','Status_1','status','สถานะ'],
-  type    :['Type_Request','TypeRequest','Type1','ประเภทคำขอ'],
-  ts      :['Request TimeStamp','Request_TimeStamp','RequestTimeStamp','Created','Modified'],
-  limit   :['limit','Limit','CreditLimit','limit_other','วงเงิน'],
-  province:['province','Province','จังหวัด'],
-  tel     :['telephone','Telephone','contact_number','Phone'],
-  biz     :['business_type','BusinessType','ประเภทธุรกิจ'],
-  contact :['contact_name','ContactName','ผู้ติดต่อ'],
-  id      :['_ID','ID','Id']
-};
-function pick(row,key){for(const f of FIELD_ALIASES[key]){const v=row[f];if(v!==undefined&&v!==null&&String(v).trim()!=='' &&String(v)!=='nan')return v;}return '';}
-
-/* ===================== ACCESS CONTROL ===================== */
-const ALLOW_SET = new Set(ALLOWED_VIEWERS.map(e=>String(e).trim().toLowerCase()));
-document.getElementById('gateCount').textContent = ALLOW_SET.size;
-
-function denyBox(email){
-  return `<div class="alert alert-danger mb-0"><b><i class="bi bi-x-octagon-fill"></i> ไม่มีสิทธิ์เข้าถึงรายงานนี้</b>
-    <div class="mt-1 small">บัญชี <b>${email||'(ไม่ระบุ)'}</b> ไม่อยู่ในกลุ่มผู้มีสิทธิ์ดู (Admin_KycNew)
-    กรุณาติดต่อทีม BI HQ เพื่อขอเพิ่มสิทธิ์</div></div>`;
-}
-function grant(email){
-  sessionStorage.setItem('kyc_user',email);
-  document.getElementById('gate').style.display='none';
-  document.getElementById('app').style.display='block';
-  document.getElementById('whoami').textContent=email;
-  boot();
-}
-function tryEmail(raw){
-  const e=String(raw||'').trim().toLowerCase();
-  if(!e){document.getElementById('gateMsg').innerHTML='<div class="alert alert-warning mb-0">กรุณากรอกอีเมล</div>';return false;}
-  if(ALLOW_SET.has(e)){grant(e);return true;}
-  document.getElementById('gateMsg').innerHTML=denyBox(e);return false;
-}
-async function detectSharePointUser(){
-  try{const j=await spGet(`${SP_SITE}/_api/web/currentUser`);return (j.Email||j.UserPrincipalName||'').toLowerCase();}catch(e){return '';}
-}
-(async function initGate(){
-  const cached=sessionStorage.getItem('kyc_user');
-  if(cached && ALLOW_SET.has(cached)){grant(cached);return;}
-  const spUser=await detectSharePointUser();
-  document.getElementById('gateChecking').classList.add('d-none');
-  document.getElementById('gateForm').classList.remove('d-none');
-  if(spUser){
-    document.getElementById('gateEmail').value=spUser;
-    if(ALLOW_SET.has(spUser)){grant(spUser);return;}
-    document.getElementById('gateMsg').innerHTML=denyBox(spUser);
-  }
-})();
-document.getElementById('gateBtn').addEventListener('click',()=>tryEmail(document.getElementById('gateEmail').value));
-document.getElementById('gateEmail').addEventListener('keydown',e=>{if(e.key==='Enter')tryEmail(e.target.value);});
-document.getElementById('logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem('kyc_user');location.reload();});
-
-/* ===================== HELPERS ===================== */
-const OPEN_ST=['รอดำเนินการ','รอการพิจารณาเบื้องต้น','รอผู้จัดการ D3 อนุมัติ','Draft'];
-const CLOSED_ST=['อนุมัติ-KYC','ผ่านการพิจารณาเบื้องต้น','ไม่ผ่านการพิจารณาเบื้องต้น'];
-const SUCCESS_ST=['อนุมัติ-KYC','ผ่านการพิจารณาเบื้องต้น'];
-const ISSUE_ST=['ไม่ผ่านการพิจารณาเบื้องต้น'];
-const NOW=new Date();
-const dnum=v=>{if(v===null||v===undefined)return 0;const n=parseFloat(String(v).replace(/[^0-9.\-]/g,''));return isNaN(n)?0:n;};
-const dstr=v=>(v===null||v===undefined||v==='nan')?'':String(v);
-const dt=v=>{const d=new Date(v);return isNaN(d)?null:d;};
-const dayKey=d=>d?d.toISOString().slice(0,10):'';
-const fmt=n=>n.toLocaleString('en-US');
-const daysAgo=n=>{const d=new Date(NOW);d.setDate(d.getDate()-n);return d;};
-const TODAY=dayKey(NOW);
-
-function mapRows(rows){return rows.map(r=>{
-  const d=dt(pick(r,'ts'));
-  const st=dstr(pick(r,'status'))||'ไม่ระบุ';
-  const id=pick(r,'id');
-  return {id:id, customer:dstr(pick(r,'customer'))||('รายการ '+id),
-    branch:dstr(pick(r,'branch'))||'ไม่ระบุ', owner:dstr(pick(r,'owner'))||'ไม่ระบุ', status:st,
-    type:dstr(pick(r,'type'))||'-', limit:dnum(pick(r,'limit')), province:dstr(pick(r,'province')),
-    tel:dstr(pick(r,'tel')), biz:dstr(pick(r,'biz')), contact:dstr(pick(r,'contact')),
-    date:d, dkey:dayKey(d),
-    ageDays:d?Math.max(0,Math.round((NOW-d)/86400000)):null,
-    open:OPEN_ST.includes(st), closed:CLOSED_ST.includes(st),
-    success:SUCCESS_ST.includes(st), issue:ISSUE_ST.includes(st)};
-});}
-
-let DATA=mapRows(RECORDS);
-let FILTERED=DATA.slice(), page=1, pageSize=10, sortKey='date', sortDir='desc', charts={};
-
-/* ===================== FILTERS ===================== */
-function fillSelect(el,vals,label){el.innerHTML=`<option value="">${label}</option>`+vals.map(v=>`<option>${v}</option>`).join('');}
-function uniq(k){return [...new Set(DATA.map(r=>r[k]).filter(Boolean))].sort();}
-function applyFilters(){
-  const kw=document.getElementById('fKeyword').value.trim().toLowerCase();
-  const b=document.getElementById('fBranch').value, o=document.getElementById('fOwner').value, s=document.getElementById('fStatus').value;
-  const f=document.getElementById('fFrom').value, t=document.getElementById('fTo').value;
-  FILTERED=DATA.filter(r=>{
-    if(b&&r.branch!==b)return false;
-    if(o&&r.owner!==o)return false;
-    if(s&&r.status!==s)return false;
-    if(f&&(!r.dkey||r.dkey<f))return false;
-    if(t&&(!r.dkey||r.dkey>t))return false;
-    if(kw){const hay=[r.customer,r.branch,r.owner,r.status,r.type,r.province,r.tel,r.biz,r.contact].join(' ').toLowerCase();if(!hay.includes(kw))return false;}
-    return true;});
-  page=1; renderAll();
-}
-['fKeyword','fBranch','fOwner','fStatus','fFrom','fTo'].forEach(id=>{
-  const el=document.getElementById(id);el.addEventListener(id==='fKeyword'?'input':'change',applyFilters);});
-document.getElementById('fReset').addEventListener('click',()=>{['fKeyword','fBranch','fOwner','fStatus','fFrom','fTo'].forEach(id=>document.getElementById(id).value='');applyFilters();});
-
-/* ===================== KPI ===================== */
-function renderKPI(){
-  const D=FILTERED;
-  const d7=daysAgo(7), d30=daysAgo(30), yest=dayKey(daysAgo(1));
-  const today=D.filter(r=>r.dkey===TODAY).length;
-  const yesterday=D.filter(r=>r.dkey===yest).length;
-  const closedToday=D.filter(r=>r.dkey===TODAY&&r.closed).length;
-  const pending=D.filter(r=>r.open).length;
-  const issue=D.filter(r=>r.issue||(r.open&&r.ageDays!==null&&r.ageDays>3)).length;
-  const succ=D.filter(r=>r.success).length;
-  const closedAll=D.filter(r=>r.closed);
-  const avg=closedAll.length?(closedAll.reduce((a,r)=>a+(r.ageDays||0),0)/closedAll.length):0;
-  document.getElementById('kTotal').textContent=fmt(D.length);
-  document.getElementById('kToday').textContent=fmt(today);
-  document.getElementById('kClosedToday').textContent=fmt(closedToday);
-  document.getElementById('kPending').textContent=fmt(pending);
-  document.getElementById('kIssue').textContent=fmt(issue);
-  document.getElementById('kRate').textContent=(D.length?Math.round(succ*100/D.length):0)+'%';
-  document.getElementById('kAvg').textContent=closedAll.length?avg.toFixed(1)+' วัน':'-';
-  document.getElementById('k7').textContent=fmt(D.filter(r=>r.date&&r.date>=d7).length);
-  document.getElementById('k30').textContent=fmt(D.filter(r=>r.date&&r.date>=d30).length);
-  const delta=today-yesterday;
-  document.getElementById('kTodayDelta').textContent=`เทียบเมื่อวาน ${delta>=0?'+':''}${delta} รายการ`;
-  document.getElementById('cntShown').textContent=fmt(D.length);
-  document.getElementById('cntAll').textContent=fmt(DATA.length);
-  document.getElementById('lastUpdate').textContent=NOW.toLocaleString('th-TH');
-  const topB=groupCount('branch')[0], topO=groupCount('owner')[0];
-  document.getElementById('execText').innerHTML=
-   `ข้อมูล KYC ทั้งหมด <b>${fmt(D.length)}</b> รายการ จาก <b>${uniq('branch').length}</b> สาขา และผู้ดูแล <b>${uniq('owner').length}</b> ราย ` +
-   `— วันนี้เข้าใหม่ <b>${today}</b> รายการ (เมื่อวาน ${yesterday}) ปิดงานวันนี้ <b>${closedToday}</b> รายการ ` +
-   `คงค้างระหว่างดำเนินการ <b>${pending}</b> รายการ อัตราความสำเร็จ <b>${D.length?Math.round(succ*100/D.length):0}%</b> ` +
-   `ระยะเวลาดำเนินการเฉลี่ย <b>${closedAll.length?avg.toFixed(1):'-'} วัน</b> ` +
-   `สาขาที่มีปริมาณงานสูงสุดคือ <b>${topB?topB[0]:'-'}</b> (${topB?topB[1]:0} รายการ) ผู้ดูแลที่มีงานมากที่สุดคือ <b>${topO?topO[0]:'-'}</b> (${topO?topO[1]:0} รายการ)`;
-}
-function groupCount(key,arr){const m={};(arr||FILTERED).forEach(r=>m[r[key]]=(m[r[key]]||0)+1);return Object.entries(m).sort((a,b)=>b[1]-a[1]);}
-
-/* ===================== CHARTS ===================== */
-const PALETTE=['#0b5ed7','#3b82f6','#22d3ee','#198754','#4ade80','#fbbf24','#fd7e14','#dc3545','#a78bfa','#64748b','#0891b2','#e879f9'];
-function mk(id,cfg){if(charts[id])charts[id].destroy();charts[id]=new Chart(document.getElementById(id),cfg);}
-function renderCharts(){
-  const dark=document.documentElement.getAttribute('data-bs-theme')==='dark';
-  Chart.defaults.color=dark?'#cbd5e1':'#334155';
-  Chart.defaults.borderColor=dark?'#1f2b45':'#e5ecf6';
-  const br=groupCount('branch');
-  mk('chBranch',{type:'bar',data:{labels:br.map(x=>x[0]),datasets:[{label:'จำนวนรายการ',data:br.map(x=>x[1]),backgroundColor:'#0b5ed7',borderRadius:6}]},
-    options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}},
-      onClick:(e,el)=>{if(el.length)drill('branch',br[el[0].index][0]);}}});
-  const st=groupCount('status');
-  mk('chStatus',{type:'doughnut',data:{labels:st.map(x=>x[0]),datasets:[{data:st.map(x=>x[1]),backgroundColor:PALETTE}]},
-    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}}}}});
-  const days={};FILTERED.forEach(r=>{if(r.dkey)days[r.dkey]=(days[r.dkey]||0)+1;});
-  const dk=Object.keys(days).sort();
-  mk('chTrend',{type:'line',data:{labels:dk,datasets:[{label:'รายการ/วัน',data:dk.map(k=>days[k]),borderColor:'#0b5ed7',backgroundColor:'rgba(11,94,215,.15)',fill:true,tension:.35,pointRadius:4}]},
-    options:{maintainAspectRatio:false,scales:{y:{beginAtZero:true,ticks:{precision:0}}}}});
-  const stsAll=st.map(x=>x[0]);
-  mk('chStack',{type:'bar',data:{labels:br.map(x=>x[0]),datasets:stsAll.map((s,i)=>({label:s,backgroundColor:PALETTE[i%PALETTE.length],
-    data:br.map(b=>FILTERED.filter(r=>r.branch===b[0]&&r.status===s).length)}))},
-    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}}},
-      scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true,ticks:{precision:0}}}}});
-  const ow=groupCount('owner').slice(0,10);
-  mk('chOwner',{type:'bar',data:{labels:ow.map(x=>x[0]),datasets:[{label:'จำนวนงาน',data:ow.map(x=>x[1]),backgroundColor:'#198754',borderRadius:6}]},
-    options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{precision:0}}},
-      onClick:(e,el)=>{if(el.length)drill('owner',ow[el[0].index][0]);}}});
-  const lm={};FILTERED.forEach(r=>lm[r.branch]=(lm[r.branch]||0)+r.limit);
-  const le=Object.entries(lm).sort((a,b)=>b[1]-a[1]);
-  mk('chLimit',{type:'bar',data:{labels:le.map(x=>x[0]),datasets:[{label:'วงเงินรวม (ล้านบาท)',data:le.map(x=>+(x[1]/1e6).toFixed(2)),backgroundColor:'#fd7e14',borderRadius:6}]},
-    options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
-}
-
-/* ===================== BRANCH / OWNER TABLES ===================== */
-function renderBranch(){
-  const br=groupCount('branch'), tot=FILTERED.length||1;
-  document.getElementById('tbBranch').innerHTML=br.map((b,i)=>{
-    const pend=FILTERED.filter(r=>r.branch===b[0]&&r.open).length, pct=(b[1]*100/tot);
-    return `<tr style="cursor:pointer" onclick="drill('branch','${b[0]}')">
-      <td><span class="badge bg-primary">${i+1}</span></td><td class="fw-semibold">${b[0]}</td>
-      <td class="text-end">${b[1]}</td><td class="text-end">${pct.toFixed(1)}%</td>
-      <td><div class="rank-bar"><span style="width:${pct}%"></span></div></td>
-      <td class="text-end">${pend?`<span class="badge bg-warning text-dark">${pend}</span>`:'0'}</td></tr>`;}).join('');
-}
-function renderOwner(){
-  const ow=groupCount('owner');
-  document.getElementById('tbOwner').innerHTML=ow.map((o,i)=>{
-    const rows=FILTERED.filter(r=>r.owner===o[0]);
-    const op=rows.filter(r=>r.open).length, cl=rows.filter(r=>r.closed).length;
-    const stuck=rows.filter(r=>r.open&&r.ageDays!==null&&r.ageDays>3).length;
-    return `<tr style="cursor:pointer" onclick="drill('owner','${o[0].replace(/'/g,"\\'")}')">
-      <td><span class="badge bg-secondary">${i+1}</span></td><td>${o[0]}</td>
-      <td class="text-end fw-semibold">${o[1]}</td><td class="text-end text-warning">${op}</td>
-      <td class="text-end text-success">${cl}</td><td class="text-end ${stuck?'text-danger fw-bold':''}">${stuck}</td></tr>`;}).join('');
-}
-
-/* ===================== INSIGHTS ===================== */
-function renderInsights(){
-  const D=FILTERED, out=[];
-  const br=groupCount('branch'), ow=groupCount('owner');
-  const tot=D.length||1;
-  if(br[0]) out.push(`<i class="bi bi-shop"></i> <b>สาขาที่มีปริมาณงานสูงสุด:</b> ${br[0][0]} จำนวน ${br[0][1]} รายการ (${(br[0][1]*100/tot).toFixed(1)}% ของทั้งหมด)${br[1]?` รองลงมาคือ ${br[1][0]} (${br[1][1]} รายการ)`:''}`);
-  if(ow[0]) out.push(`<i class="bi bi-person-badge"></i> <b>ผู้ดูแลที่มีงานมากที่สุด:</b> ${ow[0][0]} จำนวน ${ow[0][1]} รายการ — ควรพิจารณากระจายงานหากเกินค่าเฉลี่ย ${(tot/(ow.length||1)).toFixed(1)} รายการ/คน`);
-  const today=D.filter(r=>r.dkey===TODAY).length, yest=D.filter(r=>r.dkey===dayKey(daysAgo(1))).length;
-  const growth=yest?((today-yest)*100/yest).toFixed(1):(today?'100.0':'0.0');
-  out.push(`<i class="bi bi-graph-up"></i> <b>แนวโน้มเทียบวันก่อน:</b> วันนี้ ${today} รายการ เทียบเมื่อวาน ${yest} รายการ = ${today-yest>=0?'+':''}${growth}%`);
-  const stuck=D.filter(r=>r.open&&r.ageDays!==null&&r.ageDays>3).sort((a,b)=>b.ageDays-a.ageDays);
-  out.push(`<i class="bi bi-exclamation-triangle"></i> <b>Anomaly – งานค้างเกิน 3 วัน:</b> ${stuck.length} รายการ` +
-    (stuck.length?` เช่น ${stuck.slice(0,3).map(r=>`${r.customer} (${r.branch}, ค้าง ${r.ageDays} วัน)`).join(' · ')}`:' — ไม่พบงานค้างผิดปกติ'));
-  const rej=D.filter(r=>r.issue);
-  out.push(`<i class="bi bi-x-circle"></i> <b>รายการไม่ผ่านการพิจารณาเบื้องต้น:</b> ${rej.length} รายการ (${(rej.length*100/tot).toFixed(1)}%)` +
-    (rej.length?` — สาขาที่พบมากสุด: ${groupCount('branch',rej)[0][0]}`:''));
-  const big=D.slice().sort((a,b)=>b.limit-a.limit).slice(0,3).filter(r=>r.limit>0);
-  if(big.length) out.push(`<i class="bi bi-cash-stack"></i> <b>วงเงินคำขอสูงสุด:</b> ${big.map(r=>`${r.customer} ${fmt(r.limit)} บาท (${r.branch})`).join(' · ')}`);
-  const succ=D.filter(r=>r.success).length;
-  out.push(`<i class="bi bi-lightbulb-fill"></i> <b>ข้อเสนอแนะเชิงธุรกิจ:</b> อัตราสำเร็จปัจจุบัน ${(succ*100/tot).toFixed(1)}% — ` +
-    `แนะนำ (1) ตั้ง SLA ปิดงานภายใน 3 วันทำการ และแจ้งเตือนอัตโนมัติเมื่อเกินกำหนด ` +
-    `(2) โค้ชสาขาที่มีอัตราไม่ผ่านสูงเรื่องความครบถ้วนของเอกสาร KYC ` +
-    `(3) เกลี่ยงานจากผู้ดูแลที่มีคิวสูงสุดไปยังผู้ที่มีงานต่ำกว่าค่าเฉลี่ย`);
-  document.getElementById('insights').innerHTML=out.map(t=>`<div class="insight-item">${t}</div>`).join('');
-}
-
-/* ===================== DETAIL TABLE ===================== */
-const COLS=[{k:'id',t:'ID'},{k:'customer',t:'ลูกค้า'},{k:'branch',t:'สาขา'},{k:'type',t:'ประเภทคำขอ'},
- {k:'status',t:'สถานะ'},{k:'owner',t:'ผู้ดูแล'},{k:'limit',t:'วงเงิน (บาท)',num:1},{k:'province',t:'จังหวัด'},
- {k:'dkey',t:'วันที่ยื่น'},{k:'ageDays',t:'อายุงาน (วัน)',num:1}];
-function stBadge(s){const m={'อนุมัติ-KYC':'success','ผ่านการพิจารณาเบื้องต้น':'primary','ไม่ผ่านการพิจารณาเบื้องต้น':'danger',
- 'รอดำเนินการ':'warning text-dark','รอการพิจารณาเบื้องต้น':'warning text-dark','รอผู้จัดการ D3 อนุมัติ':'info text-dark','Draft':'secondary'};
- return `<span class="badge badge-st bg-${m[s]||'secondary'}">${s}</span>`;}
-function tableRows(){
-  const q=document.getElementById('tSearch').value.trim().toLowerCase();
-  let rows=FILTERED.filter(r=>!q||COLS.map(c=>r[c.k]).join(' ').toLowerCase().includes(q));
-  rows.sort((a,b)=>{let x=a[sortKey],y=b[sortKey];
-    if(sortKey==='date'){x=a.date?a.date.getTime():0;y=b.date?b.date.getTime():0;}
-    if(typeof x==='string'||typeof y==='string'){x=String(x||'');y=String(y||'');return sortDir==='asc'?x.localeCompare(y,'th'):y.localeCompare(x,'th');}
-    return sortDir==='asc'?(x||0)-(y||0):(y||0)-(x||0);});
-  return rows;
-}
-function renderTable(){
-  document.getElementById('tHead').innerHTML=COLS.map(c=>
-    `<th class="sortable ${sortKey===c.k?sortDir:''} ${c.num?'text-end':''}" data-k="${c.k}">${c.t}</th>`).join('');
-  document.querySelectorAll('#tHead th').forEach(th=>th.onclick=()=>{
-    const k=th.dataset.k; sortDir=(sortKey===k&&sortDir==='asc')?'desc':'asc'; sortKey=k; renderTable();});
-  const rows=tableRows(), pages=Math.max(1,Math.ceil(rows.length/pageSize));
-  page=Math.min(page,pages);
-  const slice=rows.slice((page-1)*pageSize,page*pageSize);
-  document.getElementById('tBody').innerHTML=slice.map(r=>`<tr>
-    <td>${r.id}</td><td class="fw-semibold">${r.customer}</td><td>${r.branch}</td><td>${r.type}</td>
-    <td>${stBadge(r.status)}</td><td>${r.owner}</td><td class="text-end">${r.limit?fmt(r.limit):'-'}</td>
-    <td>${r.province||'-'}</td><td>${r.dkey||'-'}</td>
-    <td class="text-end ${r.open&&r.ageDays>3?'text-danger fw-bold':''}">${r.ageDays??'-'}</td></tr>`).join('')
-    ||`<tr><td colspan="${COLS.length}" class="text-center py-4 small-muted">ไม่พบข้อมูลตามเงื่อนไข</td></tr>`;
-  let ph='';
-  const add=(p,lbl,dis,act)=>ph+=`<li class="page-item ${dis?'disabled':''} ${act?'active':''}"><a class="page-link" href="#" data-p="${p}">${lbl||p}</a></li>`;
-  add(page-1,'&laquo;',page===1);
-  for(let i=1;i<=pages;i++){if(pages>7&&i>2&&i<pages-1&&Math.abs(i-page)>1){if(!ph.endsWith('…</a></li>'))ph+='<li class="page-item disabled"><a class="page-link">…</a></li>';continue;}add(i,null,false,i===page);}
-  add(page+1,'&raquo;',page===pages);
-  const pg=document.getElementById('tPager'); pg.innerHTML=ph;
-  pg.querySelectorAll('a[data-p]').forEach(a=>a.onclick=e=>{e.preventDefault();const p=+a.dataset.p;if(p>=1&&p<=pages){page=p;renderTable();}});
-}
-document.getElementById('tSearch').addEventListener('input',()=>{page=1;renderTable();});
-document.getElementById('tSize').addEventListener('change',e=>{pageSize=+e.target.value;page=1;renderTable();});
-
-/* ===================== EXPORT ===================== */
-function exportRows(){return tableRows().map(r=>({ID:r.id,ลูกค้า:r.customer,สาขา:r.branch,ประเภทคำขอ:r.type,สถานะ:r.status,
-  ผู้ดูแล:r.owner,วงเงิน:r.limit,จังหวัด:r.province,เบอร์โทร:r.tel,ประเภทธุรกิจ:r.biz,วันที่ยื่น:r.dkey,อายุงานวัน:r.ageDays}));}
-document.getElementById('btnXlsx').onclick=()=>{const ws=XLSX.utils.json_to_sheet(exportRows());const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'KYC');XLSX.writeFile(wb,`KYC_Dashboard_${TODAY}.xlsx`);};
-document.getElementById('btnCsv').onclick=()=>{const rows=exportRows();if(!rows.length)return;
-  const head=Object.keys(rows[0]);
-  const csv='\uFEFF'+[head.join(','),...rows.map(r=>head.map(h=>`"${String(r[h]??'').replace(/"/g,'""')}"`).join(','))].join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
-  a.download=`KYC_Dashboard_${TODAY}.csv`;a.click();};
-
-/* ===================== DRILL DOWN ===================== */
-window.drill=function(key,val){
-  const rows=FILTERED.filter(r=>r[key]===val);
-  document.getElementById('drillTitle').innerHTML=`<i class="bi bi-zoom-in"></i> ${key==='branch'?'สาขา':'ผู้ดูแล'}: ${val} — ${rows.length} รายการ`;
-  const st=groupCount('status',rows);
-  document.getElementById('drillBody').innerHTML=
-   `<div class="mb-3 d-flex flex-wrap gap-2">${st.map(s=>`<span class="badge bg-primary-subtle text-primary-emphasis">${s[0]}: ${s[1]}</span>`).join('')}
-     <span class="badge bg-success-subtle text-success-emphasis">ปิดแล้ว: ${rows.filter(r=>r.closed).length}</span>
-     <span class="badge bg-warning-subtle text-warning-emphasis">ค้าง: ${rows.filter(r=>r.open).length}</span>
-     <span class="badge bg-info-subtle text-info-emphasis">วงเงินรวม: ${fmt(rows.reduce((a,r)=>a+r.limit,0))} บาท</span></div>
-    <div class="table-responsive"><table class="table table-sm table-striped">
-    <thead><tr><th>ID</th><th>ลูกค้า</th><th>${key==='branch'?'ผู้ดูแล':'สาขา'}</th><th>สถานะ</th><th class="text-end">วงเงิน</th><th>วันที่</th><th class="text-end">อายุ(วัน)</th></tr></thead>
-    <tbody>${rows.map(r=>`<tr><td>${r.id}</td><td>${r.customer}</td><td>${key==='branch'?r.owner:r.branch}</td>
-     <td>${stBadge(r.status)}</td><td class="text-end">${r.limit?fmt(r.limit):'-'}</td><td>${r.dkey||'-'}</td>
-     <td class="text-end">${r.ageDays??'-'}</td></tr>`).join('')}</tbody></table></div>`;
-  new bootstrap.Modal('#drillModal').show();
-};
-
-/* ===================== THEME ===================== */
-document.getElementById('themeBtn').onclick=()=>{
-  const cur=document.documentElement.getAttribute('data-bs-theme');
-  const nx=cur==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-bs-theme',nx);
-  localStorage.setItem('kyc_theme',nx); renderCharts();
-};
-if(localStorage.getItem('kyc_theme')==='dark')document.documentElement.setAttribute('data-bs-theme','dark');
-
-/* ===================== BOOT ===================== */
-function renderAll(){renderKPI();renderCharts();renderBranch();renderOwner();renderInsights();renderTable();}
-function refreshFilters(){
-  const keep={b:document.getElementById('fBranch').value,o:document.getElementById('fOwner').value,s:document.getElementById('fStatus').value};
-  fillSelect(document.getElementById('fBranch'),uniq('branch'),'ทุกสาขา');
-  fillSelect(document.getElementById('fOwner'),uniq('owner'),'ทุกผู้ดูแล');
-  fillSelect(document.getElementById('fStatus'),uniq('status'),'ทุกสถานะ');
-  document.getElementById('fBranch').value=keep.b;document.getElementById('fOwner').value=keep.o;document.getElementById('fStatus').value=keep.s;
-}
-function setSourceBadge(txt,cls){const b=document.getElementById('srcBadge');if(b){b.className='badge '+cls;b.innerHTML=txt;}}
-function boot(){
-  refreshFilters(); FILTERED=DATA.slice(); renderAll();
-  setSourceBadge('<i class="bi bi-hdd"></i> Snapshot ในไฟล์','bg-secondary');
-  if(LIVE_MODE) syncLive();
-}
-async function syncLive(){
-  setSourceBadge('<i class="bi bi-arrow-repeat"></i> กำลังซิงก์ SharePoint...','bg-warning text-dark');
-  try{
-    const res=await loadFromSharePoint();
-    if(res.records&&res.records.length){DATA=mapRows(res.records);}
-    if(res.allowed&&res.allowed.length){res.allowed.forEach(e=>ALLOW_SET.add(String(e).trim().toLowerCase()));
-      document.getElementById('gateCount').textContent=ALLOW_SET.size;}
-    refreshFilters(); applyFilters();
-    setSourceBadge(`<i class="bi bi-cloud-check"></i> Live: ${res.source} (${DATA.length})`,'bg-success');
-  }catch(e){
-    setSourceBadge(`<i class="bi bi-hdd"></i> Snapshot (${DATA.length}) · offline`,'bg-secondary');
-    console.warn('live sync failed:',e.message);
-  }
-}
-document.getElementById('refreshBtn').addEventListener('click',()=>{if(LIVE_MODE)syncLive();else{FILTERED=DATA.slice();renderAll();}});
-</script>
-</body>
-</html>
-"""
-
-# ============================================================ SAMPLE DATA
-# ข้อมูลตัวอย่างสำหรับ --sample (ใช้ทดสอบ workflow โดยไม่ต้องมี credential)
-SAMPLE_JSON = r"""{
-"records": [
-{
-"_ID": 541,
-"Customer Name": "หจก.ชวกร เอ็นจิเนียริ่ง",
-"Registered_Name": "หจก.ชวกร เอ็นจิเนียริ่ง",
-"branch": "CMOO",
-"Request TimeStamp": "2026-08-26T04:55:22Z",
-"Status": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Status_1": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "โจ้ สหสัณห์ SG CM",
-"limit": "2,000,000",
-"province": "เชียงใหม่",
-"telephone": 858634774,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "นายวัชรพงษ์ อินต๊ะโตด"
-},
-{
-"_ID": 542,
-"Customer Name": "จำลองชัยคอนกรีต",
-"Registered_Name": "จำลองชัยคอนกรีต",
-"branch": NaN,
-"Request TimeStamp": "2026-08-26T05:47:54Z",
-"Status": "รอดำเนินการ",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "กรรณ กรรณ SG KK",
-"limit": "5,000,000",
-"province": "ขอนแก่น",
-"telephone": 43491508,
-"business_type": "ร้านค้าช่วง",
-"contact_name": "นายสุขสันต์ ชัยวงศ์"
-},
-{
-"_ID": 546,
-"Customer Name": "ปัตตานีสหพันธ์ก่อสร้าง",
-"Registered_Name": "ปัตตานีสหพันธ์ก่อสร้าง",
-"branch": NaN,
-"Request TimeStamp": "2026-08-27T09:44:31Z",
-"Status": "ผ่านการพิจารณาเบื้องต้น",
-"Status_1": "ผ่านการพิจารณาเบื้องต้น",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "แจ๋ว สำเนียง CF HQ",
-"limit": "20,000,000",
-"province": "ปัตตานี",
-"telephone": 21278891,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "อาจหาญ กล้าทำ"
-},
-{
-"_ID": 547,
-"Customer Name": "ปัตตานีสหพันธ์ก่อสร้าง",
-"Registered_Name": "ปัตตานีสหพันธ์ก่อสร้าง",
-"branch": NaN,
-"Request TimeStamp": "2026-08-27T09:44:54Z",
-"Status": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Status_1": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "พลอย ศิริยา CF HQ",
-"limit": "20,000,000",
-"province": "ปัตตานี",
-"telephone": 964534444,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "อาจหาญ กล้าทำ"
-},
-{
-"_ID": 548,
-"Customer Name": "ปัตตานีสหพันธ์ก่อสร้าง",
-"Registered_Name": "ปัตตานีสหพันธ์ก่อสร้าง",
-"branch": "KROO",
-"Request TimeStamp": "2026-08-27T09:45:19Z",
-"Status": "รอดำเนินการ",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "ป่าน พรรษชล CF HQ",
-"limit": "20,000,000",
-"province": "ปัตตานี",
-"telephone": 20000000,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "กอไก่"
-},
-{
-"_ID": 549,
-"Customer Name": "ปัตตานีสหพันธ์ก่อสร้าง",
-"Registered_Name": "ปัตตานีสหพันธ์ก่อสร้าง",
-"branch": "CBOO",
-"Request TimeStamp": "2026-08-27T09:46:34Z",
-"Status": "อนุมัติ-KYC",
-"Status_1": "อนุมัติ-KYC",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "เฟิร์น พัชรภา AC HQ",
-"limit": "20,000,000",
-"province": "ปัตตานี",
-"telephone": 24567669,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "อาจหาญ กล้าทำ"
-},
-{
-"_ID": 550,
-"Customer Name": "บริษัท โกลด์สตีลเทคแอนด์คอนสทรัคชั่น จำกัด",
-"Registered_Name": "บริษัท โกลด์สตีลเทคแอนด์คอนสทรัคชั่น จำกัด",
-"branch": "SNOO",
-"Request TimeStamp": "2026-08-27T09:49:55Z",
-"Status": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Status_1": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "ฝ้าย ณัฐญา CF HQ",
-"limit": "2,000,000",
-"province": "ชัยภูมิ",
-"telephone": 661248481,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "เฟิร์น"
-},
-{
-"_ID": 551,
-"Customer Name": "บริษัท หาดใหญ่เรืองชัยการโยธา จำกัด",
-"Registered_Name": "บริษัท หาดใหญ่เรืองชัยการโยธา จำกัด",
-"branch": NaN,
-"Request TimeStamp": "2026-08-28T08:14:34Z",
-"Status": "รอการพิจารณาเบื้องต้น",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "อาร์ วิทวัส SA HY",
-"limit": "50,000,000",
-"province": "สงขลา",
-"telephone": 20278795,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "แสนดี มีใจ"
-},
-{
-"_ID": 552,
-"Customer Name": "DAWAL SUPPLY CO., LTD.",
-"Registered_Name": "ดาวัลย์ ซัพพลาย",
-"branch": "RSOO",
-"Request TimeStamp": "2026-09-01T07:55:17Z",
-"Status": "ผ่านการพิจารณาเบื้องต้น",
-"Status_1": "ผ่านการพิจารณาเบื้องต้น",
-"Type_Request": "คำขอเพิ่มวงเงิน",
-"Owner": "เกตุ เกตุศณี SG RS",
-"limit": "1,000,000",
-"province": "ปทุมธานี",
-"telephone": 922494499,
-"business_type": "รับเหมาก่อสร้าง(เพิ่ม)",
-"contact_name": "ดาวัลย์ อิ่มนาง"
-},
-{
-"_ID": 554,
-"Customer Name": "พี.บี.คอนสตรัคชั่น (กรุ๊ป)",
-"Registered_Name": "พี.บี.คอนสตรัคชั่น (กรุ๊ป)",
-"branch": "RSOO",
-"Request TimeStamp": "2026-09-01T08:08:14Z",
-"Status": "รอการพิจารณาเบื้องต้น",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเพิ่มวงเงิน",
-"Owner": "ภุมรินธ์  ภุมรินธ์ D3 RS",
-"limit": "1,500,000",
-"province": "ปทุมธานี",
-"telephone": 838905552,
-"business_type": "รับเหมาก่อสร้าง(เพิ่ม)",
-"contact_name": "นายพิรุณ บูรณะกุล"
-},
-{
-"_ID": 555,
-"Customer Name": "ส.เจริญการช่าง 1972",
-"Registered_Name": "ส.เจริญการช่าง 1972",
-"branch": "SNOO",
-"Request TimeStamp": "2026-09-02T04:16:41Z",
-"Status": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Status_1": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "มล สัญยพงศ์ SO SN",
-"limit": "3,000,000",
-"province": "สกลนคร",
-"telephone": 883239529,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "นายสมาน จันทา"
-},
-{
-"_ID": 556,
-"Customer Name": "ส.เจริญการช่าง 1972",
-"Registered_Name": "ส.เจริญการช่าง 1972",
-"branch": "SNOO",
-"Request TimeStamp": "2026-09-02T04:17:03Z",
-"Status": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Status_1": "ไม่ผ่านการพิจารณาเบื้องต้น",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "มล สัญยพงศ์ SO SN",
-"limit": "3,000,000",
-"province": "สกลนคร",
-"telephone": 883239529,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "นายสมาน จันทา"
-},
-{
-"_ID": 557,
-"Customer Name": "ส.เจริญการช่าง 1972",
-"Registered_Name": "ส.เจริญการช่าง 1972",
-"branch": "SNOO",
-"Request TimeStamp": "2026-09-02T04:18:24Z",
-"Status": "รอการพิจารณาเบื้องต้น",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "มล สัญยพงศ์ SO SN",
-"limit": "3,000,000",
-"province": "สกลนคร",
-"telephone": 883239529,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "นายสมาน จันทา"
-},
-{
-"_ID": 558,
-"Customer Name": "บริษัท ชาญธารา กรุ๊ป จำกัด",
-"Registered_Name": "บริษัท ชาญธารา กรุ๊ป จำกัด",
-"branch": "UBOO",
-"Request TimeStamp": "2026-09-02T10:53:59Z",
-"Status": "รอผู้จัดการ D3 อนุมัติ",
-"Status_1": "รอผู้จัดการ D3 อนุมัติ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "ท๊อป สายสินธิ์ SG UB",
-"limit": "500,000",
-"province": "ศรีสะเกษ",
-"telephone": 654149789,
-"business_type": "รับเหมาก่อสร้าง, ร้านค้าปลีก/ส่ง(กรณีรายได้ต่ำกว่า 10 ล้านบาทต่อปี), ผู้รับเหมาส่วนราชการ",
-"contact_name": "นายพลวรรธน์ ชาญประดิษฐ์"
-},
-{
-"_ID": 559,
-"Customer Name": "บริษัท ชาญธารา กรุ๊ป จำกัด",
-"Registered_Name": "บริษัท ชาญธารา กรุ๊ป จำกัด",
-"branch": "UBOO",
-"Request TimeStamp": "2026-09-02T10:56:35Z",
-"Status": "รอการพิจารณาเบื้องต้น",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "ท๊อป สายสินธิ์ SG UB",
-"limit": "500,000",
-"province": "ศรีสะเกษ",
-"telephone": 654149789,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "นายพลวรรธน์ ชาญประดิษฐ์"
-},
-{
-"_ID": 560,
-"Customer Name": "บริษัท วารินวสันต์ จำกัด",
-"Registered_Name": "บริษัท วารินวสันต์ จำกัด",
-"branch": "UDOO",
-"Request TimeStamp": "2026-09-02T13:23:58Z",
-"Status": "รอดำเนินการ",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "แฟนต้า นิรุตติ์ SG UD",
-"limit": "200,000",
-"province": "อุดรธานี",
-"telephone": 904442656,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "นายณัฎฐสันต์ ตั้งศิวพงษ์"
-},
-{
-"_ID": 561,
-"Customer Name": "บริษัท กาญจนาวนคาม คอนสตรัคชั่น จำกัด",
-"Registered_Name": "บริษัท กาญจนาวนคาม คอนสตรัคชั่น จำกัด",
-"branch": NaN,
-"Request TimeStamp": "2026-09-02T13:35:43Z",
-"Status": "รอดำเนินการ",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "เพลิน อรระวี SG PK",
-"limit": "3,000,000",
-"province": "กรุงเทพมหานคร",
-"telephone": 926359195,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "คุณติ๊ก "
-},
-{
-"_ID": 562,
-"Customer Name": "UDONTHANADEE ENGINEERING COMPANY LIMITED",
-"Registered_Name": " อุดรธนะดีวิศวกรรม",
-"branch": "UDOO",
-"Request TimeStamp": "2026-09-03T02:31:38Z",
-"Status": "รอดำเนินการ",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเพิ่มวงเงิน",
-"Owner": "แบงค์ ธนัชพงศ์ D3 UD",
-"limit": "45,000,000",
-"province": "อุดรธานี",
-"telephone": 945585610,
-"business_type": "รับเหมาก่อสร้าง(เพิ่ม)",
-"contact_name": "นายลิขิต อุปชัย"
-},
-{
-"_ID": 563,
-"Customer Name": "บริษัท ไพร์ม สตาร์ช อินดัสทรี จำกัด",
-"Registered_Name": "บริษัท ไพร์ม สตาร์ช อินดัสทรี จำกัด",
-"branch": NaN,
-"Request TimeStamp": "2026-09-03T02:40:16Z",
-"Status": "รอการพิจารณาเบื้องต้น",
-"Status_1": "Draft",
-"Type_Request": "คำขอเพิ่มวงเงิน",
-"Owner": "กรรณ กรรณ SG KK",
-"limit": "2,000,000",
-"province": "ขอนแก่น",
-"telephone": 619596333,
-"business_type": "อื่นๆ(เพิ่ม)",
-"contact_name": "นายวัชระ ห่วงสกุล"
-},
-{
-"_ID": 564,
-"Customer Name": "วิทยกุลก่อสร้าง",
-"Registered_Name": "วิทยกุลก่อสร้าง",
-"branch": "UDOO",
-"Request TimeStamp": "2026-09-03T02:53:49Z",
-"Status": "รอการพิจารณาเบื้องต้น",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเพิ่มวงเงิน",
-"Owner": "แบงค์ ธนัชพงศ์ D3 UD",
-"limit": "4,500,000",
-"province": "อุดรธานี",
-"telephone": 94530496,
-"business_type": "รับเหมาก่อสร้าง(เพิ่ม)",
-"contact_name": "นายกฤษฎา วิทยอภิบาลกุล"
-},
-{
-"_ID": 565,
-"Customer Name": "บริษัท ชนะสุ พร็อพเพอร์ตี้ จำกัด",
-"Registered_Name": "บริษัท ชนะสุ พร็อพเพอร์ตี้ จำกัด",
-"branch": "PKOO",
-"Request TimeStamp": "2026-09-03T04:26:35Z",
-"Status": "รอการพิจารณาเบื้องต้น",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "แผนกขายค้าส่งรายย่อย PK",
-"limit": "6,000,000",
-"province": "นครปฐม",
-"telephone": 986951456,
-"business_type": "อสังหาริมทรัพย์",
-"contact_name": "ศุภวัฒน์ รัตนธำรงค์กุล"
-},
-{
-"_ID": 566,
-"Customer Name": "นายกุลเดช แพนลา",
-"Registered_Name": "บริษัท ไทย มายด์ คอนสตรัคชั่น จำกัด",
-"branch": "BWOO",
-"Request TimeStamp": "2026-09-03T04:34:40Z",
-"Status": "รอดำเนินการ",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "ภัทรวดี วิเวกแว่ว SG BW",
-"limit": "1,000,000",
-"province": "ระยอง",
-"telephone": 951150272,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "ศิริลักษณ์ สิทธิพูนปราชญา"
-},
-{
-"_ID": 567,
-"Customer Name": "บริษัท เมธาวัจน์ เอ็นจิเนียริ่ง จำกัด",
-"Registered_Name": "บริษัท เมธาวัจน์ เอ็นจิเนียริ่ง จำกัด",
-"branch": "NSOO",
-"Request TimeStamp": "2026-09-03T04:41:08Z",
-"Status": "รอการพิจารณาเบื้องต้น",
-"Status_1": "รอดำเนินการ",
-"Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
-"Owner": "ปูนิ่ม กนกกาญจน์ SG NS",
-"limit": "500,000",
-"province": "พิจิตร",
-"telephone": 649898893,
-"business_type": "รับเหมาก่อสร้าง",
-"contact_name": "นายเมธาวัจน์ พัฒนะศิริเจริญ"
-}
-],
-"allowed": [
-"BI-VOperationCR_GM@dohome.co.th",
-"BI-VOperationAY_GM@dohome.co.th",
-"BI-OperationBN_GM@dohome.co.th",
-"BI-VOperationBP_GM@dohome.co.th",
-"BI-OperationBR_GM@dohome.co.th",
-"BI-OperationBT_GM@dohome.co.th",
-"BI-OperationBW_GM@dohome.co.th",
-"BI-OperationCB_GM@dohome.co.th",
-"BI-OperationCM_GM@dohome.co.th",
-"BI-OperationCP_GM@dohome.co.th",
-"BI-OperationHY_GM@dohome.co.th",
-"BI-OperationKK_GM@dohome.co.th",
-"BI-OperationKN_GM@dohome.co.th",
-"BI-OperationKR_GM@dohome.co.th",
-"BI-OperationLB_GM@dohome.co.th",
-"BI-OperationMP_GM@dohome.co.th",
-"BI-OperationPK_GM@dohome.co.th",
-"BI-OperationPL_GM@dohome.co.th",
-"BI-OperationPR2_GM@dohome.co.th",
-"BI-OperationRS_GM@dohome.co.th",
-"BI-OperationSN_GM@dohome.co.th",
-"BI-OperationSR_GM@dohome.co.th",
-"BI-OperationUB_GM@dohome.co.th",
-"BI-OperationUD_GM@dohome.co.th",
-"GM-trainee@dohome.co.th",
-"GM-BR@dohome.co.th",
-"GM-PK@dohome.co.th",
-"GM-SN@dohome.co.th",
-"GM-KK@dohome.co.th",
-"GM-CP@dohome.co.th",
-"GM-CM@dohome.co.th",
-"GM-CR@dohome.co.th",
-"GM-CB@dohome.co.th",
-"GM-PR@dohome.co.th",
-"GM-LB@dohome.co.th",
-"GM-KN@dohome.co.th",
-"GM-RS@dohome.co.th",
-"GM-UD@dohome.co.th",
-"gm-tp@dohome.co.th",
-"gm-bw@dohome.co.th",
-"GM-MP@dohome.co.th",
-"GM-DC@dohome.co.th",
-"GM-NS@dohome.co.th",
-"GM-BT@dohome.co.th",
-"GM-PT@dohome.co.th",
-"GM-SR@dohome.co.th",
-"Dohometogogm-tsb@dohome.co.th",
-"Dohometogogm-tty@dohome.co.th",
-"Dohometogogm-trc@dohome.co.th",
-"GM-BP@dohome.co.th",
-"GM-PL@dohome.co.th",
-"GM-BN@dohome.co.th",
-"GM-HY@dohome.co.th",
-"GM-KR@dohome.co.th",
-"gm-ub@dohome.co.th",
-"GM-AY@dohome.co.th",
-"phongsapan.mar@dohome.co.th",
-"Piyatida.Mali@dohome.co.th",
-"siratip.tha@dohome.co.th",
-"samniang.jai@dohome.co.th",
-"Patcharapa.Sri@dohome.co.th",
-"Siriya.Jan@dohome.co.th",
-"Yutima.Hem@dohome.co.th",
-"Nattaya.Pho@dohome.co.th",
-"Patsachon.Put@dohome.co.th"
-]
-}"""
+    # เขียน data.json ไว้ตรวจสอบเร็ว ๆ โดยไม่ต้องเปิด HTML
+    meta = {"generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "mode": mode, "acl_accounts": len(acl), **fp}
+    (out_path.parent / "build-info.json").write_text(
+        json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    log(f"เขียน {out_path.parent / 'build-info.json'}")
+    log("เสร็จสมบูรณ์")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
