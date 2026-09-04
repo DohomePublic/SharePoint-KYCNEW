@@ -7,7 +7,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="build-version" content="2026-09-04 09:34 UTC · LIVE via Microsoft Graph">
+<meta name="build-version" content="2026-09-04 09:41 UTC · LIVE via Microsoft Graph">
 <title>DemoApp | Daily KYC & Credit Limit Dashboard</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -333,6 +333,39 @@ const PAGE_SIZE_API   = 2000;   // ต่อ 1 request (ตามด้วย pa
 const AUTO_REFRESH_MIN = 5;     // รีเฟรชอัตโนมัติทุกกี่นาที (0 = ปิด)
 const STALE_HOURS = 24;         // snapshot เก่ากว่านี้ให้ขึ้นป้ายเตือน "ข้อมูลเก่า"
 const RAW_DATA = [
+ {
+  "ID": 573,
+  "Title": "บริษัท จํากัด",
+  "Customer_id": "",
+  "CustomerName": "",
+  "branch": "",
+  "RequestTimeStamp": "2026-09-04T09:37:20Z",
+  "Status": "",
+  "Status_1": "",
+  "TypeRequest": "",
+  "Type1": "",
+  "type_teams": "",
+  "Distribution": "",
+  "Owner": "",
+  "limit": "",
+  "limit_other": "",
+  "registration_number": "",
+  "Registered_Name": "",
+  "business_type": "",
+  "contact_name": "",
+  "position": "",
+  "contact_number": "",
+  "telephone": "",
+  "county": "",
+  "district": "",
+  "province": "",
+  "credit_semester1": "",
+  "credit_semester2": "",
+  "land": "",
+  "other_property": "",
+  "Data": "",
+  "Estimated_annual_income": ""
+ },
  {
   "ID": 572,
   "Title": "บริษัท เดอะ บี คอร์ปอเรชั่น จำกัด",
@@ -1258,7 +1291,7 @@ const RAW_DATA = [
   "Estimated_annual_income": ""
  }
 ];
-const GENERATED_AT = "2026-09-04 09:34 UTC · LIVE via Microsoft Graph";
+const GENERATED_AT = "2026-09-04 09:41 UTC · LIVE via Microsoft Graph";
 
 /* สถานะแหล่งข้อมูล — แสดงบนหน้าจอ ไม่ซ่อนใน console */
 let DATA_SOURCE = { mode:"SNAPSHOT", at:GENERATED_AT, count:RAW_DATA.length, error:"", ms:0 };
