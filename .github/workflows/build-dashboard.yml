@@ -59,23 +59,89 @@ jobs:
           TENANT_ID: ${{ secrets.TENANT_ID }}
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        shell: bash
         run: |
+          set -u
           missing=""
-          [ -z "$TENANT_ID" ]     && missing="$missing TENANT_ID"
-          [ -z "$CLIENT_ID" ]     && missing="$missing CLIENT_ID"
-          [ -z "$CLIENT_SECRET" ] && missing="$missing CLIENT_SECRET"
+          dirty=""
+
+          {
+            echo "## 🔍 ผลตรวจ Secrets"
+            echo ""
+            echo "| Secret | สถานะ | ความยาว | รูปแบบ |"
+            echo "|---|---|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          check() {
+            name="$1"; val="$2"; expect="$3"
+            len=${#val}
+            trimmed="$(printf '%s' "$val" | tr -d '[:space:]')"
+            tlen=${#trimmed}
+
+            if [ "$len" -eq 0 ]; then
+              missing="$missing $name"
+              echo "| \`$name\` | ❌ ไม่พบ / ว่าง | 0 | — |" >> "$GITHUB_STEP_SUMMARY"
+              echo "❌ $name : ไม่ได้ตั้งค่า หรือเป็นค่าว่าง"
+              return
+            fi
+
+            note="ok"
+            if [ "$len" -ne "$tlen" ]; then
+              dirty="$dirty $name"
+              note="⚠️ มีช่องว่าง/ขึ้นบรรทัดใหม่ปนมา"
+            elif [ -n "$expect" ] && ! printf '%s' "$val" | grep -qE "$expect"; then
+              dirty="$dirty $name"
+              note="⚠️ รูปแบบไม่ตรงที่คาด"
+            fi
+
+            echo "| \`$name\` | ✅ พบ | $len | $note |" >> "$GITHUB_STEP_SUMMARY"
+            echo "✅ $name : พบค่า (ยาว $len อักขระ) $note"
+          }
+
+          # GUID = 8-4-4-4-12
+          guid='^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+          check TENANT_ID     "${TENANT_ID:-}"     "$guid"
+          check CLIENT_ID     "${CLIENT_ID:-}"     "$guid"
+          check CLIENT_SECRET "${CLIENT_SECRET:-}" ""
+
+          # client secret VALUE ยาว ~40 อักขระ ส่วน secret ID เป็น GUID 36 ตัว
+          if [ -n "${CLIENT_SECRET:-}" ] && printf '%s' "$CLIENT_SECRET" | grep -qE "$guid"; then
+            echo "::error title=CLIENT_SECRET ผิดช่อง::ค่าที่ใส่เป็น GUID ซึ่งคือ 'Secret ID' ไม่ใช่ 'Value'"
+            echo "### ⚠️ CLIENT_SECRET ดูเหมือนเป็น **Secret ID** ไม่ใช่ **Value**" >> "$GITHUB_STEP_SUMMARY"
+            echo "ใน Azure Portal ให้คัดลอกคอลัมน์ **Value** (ยาวประมาณ 40 อักขระ) ไม่ใช่ **Secret ID**" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
           if [ -n "$missing" ]; then
             echo "::error title=ไม่พบ Secrets::ขาด$missing -> ตั้งที่ Settings > Secrets and variables > Actions"
             {
-              echo "## ❌ ไม่พบ GitHub Secrets"
               echo ""
-              echo "ขาด: **$missing**"
+              echo "### ❌ ขาด Secrets:$missing"
               echo ""
-              echo "นี่คือสาเหตุที่ workflow รันผ่านแต่ข้อมูลไม่อัปเดต — สคริปต์จะไปอ่าน CSV เก่าใน data/ แทน"
+              echo "**นี่คือสาเหตุที่ข้อมูลไม่อัปเดต** — ถ้าไม่บังคับ REQUIRE_LIVE สคริปต์จะไปอ่าน CSV เก่าใน \`data/\` แทน"
+              echo ""
+              echo "#### วิธีแก้ทีละขั้น"
+              echo ""
+              echo "1. ไปที่ **Settings → Secrets and variables → Actions** (แท็บ **Secrets**)"
+              echo "2. กด **New repository secret**"
+              echo "3. เพิ่มให้ครบ 3 ตัว ชื่อ **ตัวพิมพ์ใหญ่ทั้งหมด** ห้ามมีช่องว่าง:"
+              echo "   - \`TENANT_ID\` — Directory (tenant) ID (GUID)"
+              echo "   - \`CLIENT_ID\` — Application (client) ID (GUID)"
+              echo "   - \`CLIENT_SECRET\` — ค่าในคอลัมน์ **Value** ของ Client secret"
+              echo ""
+              echo "> ⚠️ ต้องอยู่ใต้ **Repository secrets** เท่านั้น"
+              echo "> ถ้าใส่ไว้ใน **Environment secrets** หรือ **Dependabot secrets** workflow จะมองไม่เห็น"
+              echo ""
+              echo "> ⚠️ ถ้าเป็น Fork หรือ PR จาก fork GitHub จะไม่ส่ง secrets ให้เพื่อความปลอดภัย"
             } >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
-          echo "✅ พบ secrets ครบ 3 ตัว (TENANT_ID / CLIENT_ID / CLIENT_SECRET)"
+
+          if [ -n "$dirty" ]; then
+            echo "::warning title=รูปแบบ Secret น่าสงสัย::ตรวจสอบ$dirty อีกครั้ง"
+          fi
+
+          echo "✅ พบ secrets ครบ 3 ตัว"
 
       - name: Verify script syntax
         run: python -m py_compile scripts/build_dashboard.py
