@@ -1,24 +1,24 @@
-« MODE C — ดึง SharePoint List มาเขียน data.json อัตโนมัติ »
-ไฟล์นี้ต้องวางที่: .github/workflows/sync-sharepoint.yml
-
-ต้องสร้าง Repository secrets 3 ตัวก่อน (Settings > Secrets and variables > Actions):
-  AZ_TENANT_ID  = 7f8918d9-718a-495b-ac9a-17cba381c4a0
-  AZ_CLIENT_ID  = a37bd62d-e74d-4ea0-9546-1eb5aa96f604
-  AZ_CLIENT_SECRET = <สร้างใน Entra ID > Sharepoint-web > Certificates & secrets>
-
-และต้องเพิ่ม API permission แบบ Application (ไม่ใช่ Delegated):
-  Microsoft Graph > Application > Sites.Read.All  → Grant admin consent
-
--------------------- คัดลอกตั้งแต่บรรทัดถัดไป --------------------
 name: Sync SharePoint DemoApp
+
+# ดึงข้อมูลจาก SharePoint List "DemoApp" มาเขียนทับ data.json
+# ต้องสร้าง Repository secrets 3 ตัวก่อน (Settings > Secrets and variables > Actions):
+#   AZ_TENANT_ID     = 7f8918d9-718a-495b-ac9a-17cba381c4a0
+#   AZ_CLIENT_ID     = a37bd62d-e74d-4ea0-9546-1eb5aa96f604
+#   AZ_CLIENT_SECRET = <Entra ID > Sharepoint-web > Certificates & secrets > New client secret>
+# และต้องเพิ่ม API permission แบบ Application (ไม่ใช่ Delegated):
+#   Microsoft Graph > Application > Sites.Read.All  -> Grant admin consent
 
 on:
   schedule:
-    - cron: '*/15 * * * *'      # ทุก 15 นาที
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: sync-sharepoint
+  cancel-in-progress: false
 
 jobs:
   sync:
@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch list from Microsoft Graph
+      - name: Fetch DemoApp from Microsoft Graph
         env:
           TENANT: ${{ secrets.AZ_TENANT_ID }}
           CLIENT: ${{ secrets.AZ_CLIENT_ID }}
@@ -34,57 +34,75 @@ jobs:
         run: |
           set -euo pipefail
 
-          TOKEN=$(curl -s -X POST \
-            "https://login.microsoftonline.com/$TENANT/oauth2/v2.0/token" \
-            -d "client_id=$CLIENT" \
-            -d "client_secret=$SECRET" \
-            -d "scope=https://graph.microsoft.com/.default" \
-            -d "grant_type=client_credentials" | jq -r .access_token)
-
-          if [ "$TOKEN" = "null" ] || [ -z "$TOKEN" ]; then
-            echo "::error::ขอ token ไม่สำเร็จ — ตรวจ AZ_CLIENT_SECRET"; exit 1
+          if [ -z "${SECRET:-}" ]; then
+            echo "::error::ยังไม่ได้ตั้ง secret AZ_CLIENT_SECRET"; exit 1
           fi
 
-          SITE=$(curl -s -H "Authorization: Bearer $TOKEN" \
-            "https://graph.microsoft.com/v1.0/sites/dohomegroup.sharepoint.com:/sites/AC-Accounting" \
-            | jq -r .id)
+          TOKEN=$(curl -sS -X POST \
+            "https://login.microsoftonline.com/$TENANT/oauth2/v2.0/token" \
+            --data-urlencode "client_id=$CLIENT" \
+            --data-urlencode "client_secret=$SECRET" \
+            --data-urlencode "scope=https://graph.microsoft.com/.default" \
+            --data-urlencode "grant_type=client_credentials" | jq -r '.access_token // empty')
 
-          if [ "$SITE" = "null" ]; then
-            echo "::error::หา site ไม่เจอ — ตรวจสิทธิ์ Sites.Read.All (Application)"; exit 1
+          if [ -z "$TOKEN" ]; then
+            echo "::error::ขอ access token ไม่สำเร็จ - ตรวจ AZ_CLIENT_SECRET / AZ_CLIENT_ID / AZ_TENANT_ID"
+            exit 1
+          fi
+
+          SITE=$(curl -sS -H "Authorization: Bearer $TOKEN" \
+            "https://graph.microsoft.com/v1.0/sites/dohomegroup.sharepoint.com:/sites/AC-Accounting" \
+            | jq -r '.id // empty')
+
+          if [ -z "$SITE" ]; then
+            echo "::error::หา site AC-Accounting ไม่เจอ - ตรวจสิทธิ์ Sites.Read.All (Application) และ Grant admin consent"
+            exit 1
           fi
 
           URL="https://graph.microsoft.com/v1.0/sites/$SITE/lists/DemoApp/items?expand=fields&\$top=999"
           echo '[]' > raw.json
+          GUARD=0
 
-          while [ -n "$URL" ] && [ "$URL" != "null" ]; do
-            PAGE=$(curl -s -H "Authorization: Bearer $TOKEN" "$URL")
+          while [ -n "$URL" ] && [ "$URL" != "null" ] && [ "$GUARD" -lt 50 ]; do
+            GUARD=$((GUARD+1))
+            PAGE=$(curl -sS -H "Authorization: Bearer $TOKEN" "$URL")
+            if echo "$PAGE" | jq -e '.error' >/dev/null 2>&1; then
+              echo "::error::Graph error: $(echo "$PAGE" | jq -r '.error.message')"; exit 1
+            fi
             echo "$PAGE" | jq '.value' > page.json
             jq -s '.[0] + .[1]' raw.json page.json > tmp.json && mv tmp.json raw.json
             URL=$(echo "$PAGE" | jq -r '."@odata.nextLink" // ""')
           done
 
           jq '[ .[] | .fields | {
-                ID: (.id|tonumber?),
-                Title: .Title,
-                Customer: .Customer_x0020_Name,
-                Branch: .branch,
-                Created: .Request_x0020_TimeStamp,
-                Status: .Status,
+                ID:           (.id | tonumber? // 0),
+                Title:        .Title,
+                Customer:     .Customer_x0020_Name,
+                Branch:       .branch,
+                Created:      .Request_x0020_TimeStamp,
+                Status:       .Status,
                 StatusMirror: .Status_1,
-                Owner: .Owner,
-                Type: .Type_Request,
-                Modified: .Modified
-              } ]' raw.json > data.json
+                Owner:        .Owner,
+                Type:         .Type_Request,
+                Modified:     .Modified
+              } ] | sort_by(.ID)' raw.json > data.new.json
 
-          echo "rows: $(jq length data.json)"
+          ROWS=$(jq length data.new.json)
+          echo "ดึงได้ $ROWS รายการ"
+
+          if [ "$ROWS" -eq 0 ]; then
+            echo "::error::ดึงได้ 0 รายการ - ยกเลิกการเขียนทับ data.json"; exit 1
+          fi
+
+          mv data.new.json data.json
           rm -f raw.json page.json
 
       - name: Commit if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet data.json; then
-            echo "ไม่มีข้อมูลเปลี่ยน"
+          if git diff --quiet -- data.json; then
+            echo "ไม่มีข้อมูลเปลี่ยนแปลง"
           else
             git add data.json
             git commit -m "chore: sync DemoApp $(date -u +'%Y-%m-%d %H:%M UTC')"
