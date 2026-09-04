@@ -56,9 +56,10 @@ jobs:
       # ── ตรวจ secret ก่อนเริ่ม เพื่อไม่ให้ไปตกโหมด CSV เงียบ ๆ ──
       - name: Preflight · ตรวจ secrets
         env:
-          TENANT_ID: ${{ secrets.TENANT_ID }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          # รองรับทั้งชื่อที่มี AZ_ นำหน้า และชื่อเดิม (ใช้ตัวไหนก็ได้)
+          TENANT_ID: ${{ secrets.AZ_TENANT_ID || secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.AZ_CLIENT_ID || secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET || secrets.CLIENT_SECRET }}
         shell: bash
         run: |
           set -u
@@ -124,10 +125,11 @@ jobs:
               echo ""
               echo "1. ไปที่ **Settings → Secrets and variables → Actions** (แท็บ **Secrets**)"
               echo "2. กด **New repository secret**"
-              echo "3. เพิ่มให้ครบ 3 ตัว ชื่อ **ตัวพิมพ์ใหญ่ทั้งหมด** ห้ามมีช่องว่าง:"
-              echo "   - \`TENANT_ID\` — Directory (tenant) ID (GUID)"
-              echo "   - \`CLIENT_ID\` — Application (client) ID (GUID)"
-              echo "   - \`CLIENT_SECRET\` — ค่าในคอลัมน์ **Value** ของ Client secret"
+              echo "3. เพิ่มให้ครบ 3 ตัว ชื่อ **ตัวพิมพ์ใหญ่ทั้งหมด** ห้ามมีช่องว่าง"
+              echo "   (workflow รองรับทั้งแบบมี \`AZ_\` นำหน้า และแบบไม่มี):"
+              echo "   - \`AZ_TENANT_ID\` หรือ \`TENANT_ID\` — Directory (tenant) ID (GUID)"
+              echo "   - \`AZ_CLIENT_ID\` หรือ \`CLIENT_ID\` — Application (client) ID (GUID)"
+              echo "   - \`AZ_CLIENT_SECRET\` หรือ \`CLIENT_SECRET\` — ค่าในคอลัมน์ **Value** ของ Client secret"
               echo ""
               echo "> ⚠️ ต้องอยู่ใต้ **Repository secrets** เท่านั้น"
               echo "> ถ้าใส่ไว้ใน **Environment secrets** หรือ **Dependabot secrets** workflow จะมองไม่เห็น"
@@ -148,9 +150,9 @@ jobs:
 
       - name: Build index.html from SharePoint
         env:
-          TENANT_ID: ${{ secrets.TENANT_ID }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.AZ_TENANT_ID || secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.AZ_CLIENT_ID || secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET || secrets.CLIENT_SECRET }}
           SITE_HOSTNAME: ${{ vars.SITE_HOSTNAME || 'dohomegroup.sharepoint.com' }}
           SITE_PATH: ${{ vars.SITE_PATH || '/sites/AC-Accounting' }}
           LIST_DEMOAPP: ${{ vars.LIST_DEMOAPP || 'DemoApp' }}
