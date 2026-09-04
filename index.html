@@ -55,9 +55,59 @@ table.tbl thead th .sort-ico{opacity:.55;font-size:10px}
 .form-control,.form-select{font-size:13px}
 @media (max-width:768px){.kpi .val{font-size:21px}.chart-box{height:250px}}
 @media print{.no-print{display:none}}
+.login-card{border-radius:18px;overflow:hidden;border:none;box-shadow:0 18px 50px rgba(11,79,158,.35)}
+.login-hero{background:linear-gradient(135deg,var(--corp-blue),var(--corp-blue-2) 55%,var(--corp-cyan))}
+#loginModal .form-control{font-size:14px}
+.locked-blur{filter:blur(6px);pointer-events:none;user-select:none}
 </style>
 </head>
 <body>
+
+<!-- ===================== LOGIN POPUP (ACL: Admin_KycNew) ===================== -->
+<div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content login-card">
+      <div class="login-hero text-center text-white p-4">
+        <i class="bi bi-shield-lock-fill" style="font-size:44px"></i>
+        <h5 class="fw-bold mt-2 mb-0">DemoApp · Daily Dashboard</h5>
+        <div class="small opacity-75">เข้าสู่ระบบด้วยบัญชี Dohome ที่ได้รับสิทธิ์</div>
+      </div>
+      <div class="modal-body p-4">
+        <form id="loginForm" autocomplete="off">
+          <label class="form-label small fw-semibold">อีเมลผู้ใช้ (ตรวจสอบจากทะเบียน Admin_KycNew)</label>
+          <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+            <input type="text" class="form-control" id="loginEmail" placeholder="yourname@dohome.co.th" list="aclEmails" required>
+            <button class="btn btn-outline-primary" type="button" id="lookupBtn" title="ตรวจสอบสิทธิ์"><i class="bi bi-search"></i></button>
+          </div>
+          <datalist id="aclEmails"></datalist>
+          <div id="lookupResult" class="mb-2"></div>
+          <div id="pinGroup">
+            <label class="form-label small fw-semibold">รหัสผ่าน / PIN</label>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="bi bi-key"></i></span>
+              <input type="password" class="form-control" id="loginPin" placeholder="••••••">
+              <button class="btn btn-outline-secondary" type="button" id="togglePin" tabindex="-1"><i class="bi bi-eye"></i></button>
+            </div>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="loginRemember">
+            <label class="form-check-label small" for="loginRemember">จดจำการเข้าสู่ระบบบนเครื่องนี้</label>
+          </div>
+          <div id="loginAlert" class="alert alert-danger py-2 small d-none"></div>
+          <button class="btn btn-primary w-100 fw-semibold" type="submit" id="loginSubmit"><i class="bi bi-box-arrow-in-right me-1"></i>เข้าสู่ระบบ</button>
+          <button class="btn btn-outline-secondary w-100 mt-2 btn-sm" type="button" id="ssoBtn"><i class="bi bi-microsoft me-1"></i>ใช้บัญชีที่ล็อกอิน SharePoint (SSO)</button>
+        </form>
+        <hr class="my-3">
+        <div class="small-muted">
+          <i class="bi bi-info-circle me-1"></i>ระบบ Lookup อีเมลจาก SharePoint List <b>Admin_KycNew</b>
+          (<span id="loginAclCount">0</span> บัญชีในทะเบียน) แบบเรียลไทม์เมื่อฝังบน SharePoint · หากไม่พบอีเมลจะเข้าใช้งานไม่ได้<br>
+          <span class="text-muted" id="pinHint"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <nav class="navbar navbar-expand-lg navbar-dark navbar-corp sticky-top no-print">
   <div class="container-fluid">
@@ -68,6 +118,7 @@ table.tbl thead th .sort-ico{opacity:.55;font-size:10px}
       <span class="perm-chip"><i class="bi bi-diagram-3 me-1"></i><span id="curScope">-</span></span>
       <select id="roleSwitch" class="form-select form-select-sm" style="width:auto" title="จำลองสิทธิ์ผู้ใช้ (Demo)"></select>
       <button class="btn btn-sm btn-light" id="themeBtn"><i class="bi bi-moon-stars"></i></button>
+      <button class="btn btn-sm btn-outline-light" id="logoutBtn" title="ออกจากระบบ"><i class="bi bi-box-arrow-right"></i></button>
     </div>
   </div>
 </nav>
@@ -1152,7 +1203,7 @@ const RAW_DATA = [
   "Estimated_annual_income": ""
  }
 ];
-const GENERATED_AT = "2026-09-04 03:59 UTC";
+const GENERATED_AT = "2026-09-04 04:14 UTC";
 
 /* SharePoint REST binding (ใช้เมื่อ LIVE_MODE = true) */
 const SELECT_FIELDS = ["Id","Title","Customer_id","Customer_x0020_Name","branch","Request_x0020_TimeStamp","Status","Status_1","Type_Request","Type1","type_teams","Typr_Distribution","Owner","limit","limit_other","registration_number","Registered_Name","business_type","contact_name","position","contact_number","telephone","county","district","province","credit_semester1","credit_semester2","land","other_property","Data","Estimated_annual_income"];
@@ -1927,6 +1978,70 @@ async function loadAcl(){
   const j=await r.json();
   return j.value.map(x=>classifyAcl(x.Id,(x.Title||"").trim()));
 }
+/* ------------------------------------------------------------
+   LOGIN GATE
+   - บน SharePoint (มี _spPageContextInfo) จะ SSO อัตโนมัติ ไม่ต้องกรอก
+   - นอก SharePoint จะเปิด Popup ให้ล็อกอินด้วยอีเมล + PIN แล้วตรวจกับ Admin_KycNew
+   ------------------------------------------------------------ */
+const REQUIRE_PIN = false;          // false = ล็อกอินด้วยการ "Lookup อีเมลจาก Admin_KycNew" อย่างเดียว
+const LOGIN_PIN   = "dohome2026";   // ใช้เมื่อ REQUIRE_PIN = true
+const ALLOW_DOMAIN= "dohome.co.th"; // บังคับโดเมนอีเมลองค์กร
+const SESSION_KEY = "demoapp_session";
+const SESSION_TTL_HOURS = 8;
+function checkPin(email,pin){ return pin===LOGIN_PIN; }
+
+/* ------------------------------------------------------------
+   LOOKUP อีเมลจาก SharePoint List "Admin_KycNew" ตอนล็อกอิน
+   1) ถ้าอยู่บน SharePoint  -> ยิง REST $filter=Title eq 'email' (ข้อมูลสดเสมอ)
+   2) ถ้าเปิดนอก SharePoint -> ค้นจากทะเบียน snapshot ที่ฝังมาในไฟล์
+   คืนค่า {found, source, item, role, branches, name}
+   ------------------------------------------------------------ */
+async function lookupAclUser(email){
+  const e=(email||"").trim().toLowerCase();
+  // 1) live lookup
+  if(typeof _spPageContextInfo!=="undefined"){
+    try{
+      const url=`${_spPageContextInfo.webAbsoluteUrl}/_api/web/lists/getbytitle('${ACL_LIST_TITLE}')/items`
+        +`?$select=Id,Title,Created,Modified,Author/Title&$expand=Author`
+        +`&$filter=Title eq '${e.replace(/'/g,"''")}'&$top=1`;
+      const r=await fetch(url,{headers:{'Accept':'application/json;odata=nometadata'},credentials:'same-origin'});
+      if(r.ok){
+        const j=await r.json();
+        if(j.value && j.value.length){
+          const it=j.value[0], cls=classifyAcl(it.Id,(it.Title||"").trim());
+          upsertAcl(cls);                                  // sync เข้าทะเบียนในหน้าเว็บ
+          return {found:true,source:"LIVE",item:{id:it.Id,title:it.Title,created:it.Created,modified:it.Modified,
+                  author:(it.Author&&it.Author.Title)||""},acl:ACL_MAP[e]||cls};
+        }
+        return {found:false,source:"LIVE",item:null,acl:null};
+      }
+    }catch(err){ console.warn("ACL live lookup ล้มเหลว ใช้ snapshot แทน",err); }
+  }
+  // 2) snapshot lookup
+  const hit=ACL_REGISTRY.find(a=>a.email===e);
+  return hit? {found:true,source:"SNAPSHOT",item:{id:hit.id,title:hit.email,created:hit.created||"",modified:hit.modified||"",author:hit.author||""},acl:ACL_MAP[e]||hit}
+            : {found:false,source:"SNAPSHOT",item:null,acl:null};
+}
+function upsertAcl(rec){
+  const i=ACL_REGISTRY.findIndex(a=>a.email===rec.email);
+  if(i>=0) ACL_REGISTRY[i]={...ACL_REGISTRY[i],...rec}; else ACL_REGISTRY.push(rec);
+  ACL_MAP=buildAclMap(ACL_REGISTRY);
+}
+function saveSession(email,remember){
+  const s={email,ts:Date.now()};
+  try{ (remember?localStorage:sessionStorage).setItem(SESSION_KEY,JSON.stringify(s)); }catch(e){}
+}
+function readSession(){
+  try{
+    const raw=sessionStorage.getItem(SESSION_KEY)||localStorage.getItem(SESSION_KEY);
+    if(!raw) return null;
+    const s=JSON.parse(raw);
+    if(Date.now()-s.ts > SESSION_TTL_HOURS*3600000){ clearSession(); return null; }
+    return s;
+  }catch(e){ return null; }
+}
+function clearSession(){ try{ sessionStorage.removeItem(SESSION_KEY); localStorage.removeItem(SESSION_KEY);}catch(e){} }
+
 /* กติกาแปลงอีเมลในทะเบียน -> บทบาท + ขอบเขตสาขา */
 function classifyAcl(id,email){
   const e=(email||"").toLowerCase(), local=e.split("@")[0];
@@ -1993,6 +2108,9 @@ function resolveUser(){
   const q=new URLSearchParams(location.search);
   let email=(q.get("user")||"").toLowerCase(), name=q.get("name")||"", role=(q.get("role")||"").toUpperCase();
   if(!email && typeof _spPageContextInfo!=="undefined"){ email=(_spPageContextInfo.userEmail||"").toLowerCase(); name=_spPageContextInfo.userDisplayName||name; }
+  if(!email){ const s=readSession(); if(s) email=(s.email||"").toLowerCase(); }   // ← จาก Login Popup
+  if(!email) return {email:"",name:"",role:"ANON",authorized:false,aclKind:"NO_SESSION",aclCode:"",aclId:null,
+                     branches:[],owners:[],label:"ยังไม่ได้เข้าสู่ระบบ",scope:"NONE",pii:false,export:false,detail:false};
   const acl=ACL_MAP[email];                       // ← ตรวจสิทธิ์จากทะเบียน Admin_KycNew
   const authorized=!!acl;
   if(acl){ role=role||acl.role; name=name||acl.name; }
@@ -2368,11 +2486,52 @@ function renderAcl(){
     + `<span class="badge bg-info text-dark me-1 mb-1">รวม ${ACL_REGISTRY.length} บัญชี</span>`;
 }
 function renderDenied(){
-  const denied = ME.role==="DENIED";
+  const anon = ME.role==="ANON", denied = ME.role==="DENIED";
   $("#deniedBox").style.display = denied? "block":"none";
-  document.querySelectorAll(".secured-zone").forEach(el=>el.style.display = denied? "none":"");
+  document.querySelectorAll(".secured-zone").forEach(el=>el.style.display = (denied||anon)? "none":"");
   if(denied) $("#deniedEmail").textContent = ME.email;
 }
+/* ---------- LOGIN POPUP CONTROL ---------- */
+let loginModalRef=null;
+function showLogin(msg){
+  $("#loginAclCount").textContent=ACL_REGISTRY.length;
+  $("#aclEmails").innerHTML=ACL_REGISTRY.map(a=>`<option value="${esc(a.email)}">`).join("");
+  $("#pinGroup").style.display = REQUIRE_PIN? "":"none";
+  $("#pinHint").innerHTML = REQUIRE_PIN? `ต้องใช้ PIN ร่วมด้วย (ค่าเริ่มต้น <code>${LOGIN_PIN}</code> · แก้ที่ <code>LOGIN_PIN</code>)`
+    : `โหมดปัจจุบัน: <b>Lookup-only</b> — ยืนยันตัวตนด้วยทะเบียน Admin_KycNew เท่านั้น (เปิดใช้ PIN ได้ที่ <code>REQUIRE_PIN = true</code>)`;
+  const box=$("#loginAlert");
+  if(msg){ box.textContent=msg; box.classList.remove("d-none"); } else { box.classList.add("d-none"); }
+  if(typeof bootstrap!=="undefined"){
+    loginModalRef=loginModalRef||new bootstrap.Modal($("#loginModal"));
+    loginModalRef.show();
+  }
+}
+function hideLogin(){ if(loginModalRef) loginModalRef.hide(); }
+async function doLogin(email,pin,remember){
+  email=(email||"").trim().toLowerCase();
+  if(!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)) return {ok:false,msg:"รูปแบบอีเมลไม่ถูกต้อง"};
+  if(ALLOW_DOMAIN && !email.endsWith("@"+ALLOW_DOMAIN)) return {ok:false,msg:"อนุญาตเฉพาะบัญชี @"+ALLOW_DOMAIN};
+  const res=await lookupAclUser(email);                    // ← Lookup จาก Admin_KycNew
+  if(!res.found) return {ok:false,msg:"ไม่พบอีเมล "+email+" ในทะเบียน Admin_KycNew ("+res.source+") กรุณาให้ผู้ดูแลเพิ่มรายการก่อนเข้าใช้งาน",lookup:res};
+  if(REQUIRE_PIN && !checkPin(email,pin)) return {ok:false,msg:"รหัสผ่าน / PIN ไม่ถูกต้อง",lookup:res};
+  saveSession(email,remember);
+  return {ok:true,lookup:res};
+}
+function lookupResultHtml(res,email){
+  if(!res||!res.found) return `<div class="alert alert-danger py-2 small mb-0"><i class="bi bi-x-octagon me-1"></i>
+    ไม่พบ <b>${esc(email)}</b> ในทะเบียน Admin_KycNew (${res?res.source:"-"})</div>`;
+  const a=ACL_MAP[res.item.title.toLowerCase()]||res.acl||{};
+  const R=ROLES[a.role]||ROLES.VIEWER;
+  return `<div class="alert alert-success py-2 small mb-0">
+    <div><i class="bi bi-patch-check-fill me-1"></i><b>พบสิทธิ์ในทะเบียน Admin_KycNew</b>
+      <span class="badge bg-${res.source==="LIVE"?"success":"secondary"} ms-1">${res.source==="LIVE"?"ตรวจสอบสด":"snapshot"}</span></div>
+    <div class="mt-1">Item ID <b>${res.item.id}</b> · ${esc(res.item.title)}</div>
+    <div>บทบาท: <b>${esc(R.label)}</b> · ขอบเขต: <b>${a.branches&&a.branches.length? esc(a.branches.join(", ")) : (R.scope==="ALL"?"ทุกสาขา":"—")}</b></div>
+    <div>PII: ${R.pii?"เห็นครบ":"ปิดบัง"} · Export: ${R.export?"อนุญาต":"ไม่อนุญาต"}</div>
+    ${res.item.created?`<div class="text-muted">สร้างเมื่อ ${esc(String(res.item.created).substring(0,19).replace("T"," "))}${res.item.author?" โดย "+esc(res.item.author):""}</div>`:""}
+  </div>`;
+}
+function logout(){ clearSession(); ME=resolveUser(); DATA=[];VIEW=[]; renderPermission(); showLogin("ออกจากระบบเรียบร้อย"); }
 function renderPermission(){
   renderAcl(); renderDenied();
   $("#curUser").textContent=ME.name; $("#curRole").textContent=ME.label;
@@ -2419,8 +2578,11 @@ async function boot(first){
     try{ ACL_REGISTRY=await loadAcl(); ACL_MAP=buildAclMap(ACL_REGISTRY); ME=resolveUser(); }
     catch(e){ console.warn("ACL live load failed, ใช้ทะเบียน snapshot แทน",e); }
     try{ raw=await loadLive(); }catch(e){ console.warn("LIVE_MODE failed, fallback to RAW_DATA",e);} }
+  if(ME.role==="ANON"){ DATA=[]; VIEW=[]; renderPermission(); showLogin(""); return; }
   if(ME.role==="DENIED"){ DATA=[]; VIEW=[]; renderPermission();
-    $("#dataStamp").textContent="ถูกปฏิเสธการเข้าถึงข้อมูล"; $("#genAt").textContent=new Date().toLocaleString('th-TH'); return; }
+    $("#dataStamp").textContent="ถูกปฏิเสธการเข้าถึงข้อมูล"; $("#genAt").textContent=new Date().toLocaleString('th-TH');
+    showLogin("บัญชี "+ME.email+" ไม่มีสิทธิ์เข้าถึง Dashboard นี้"); return; }
+  hideLogin();
   const all=normalize(raw);
   DATA=applySecurity(all);
   fillSelects(DATA); applyFilter(); renderPermission();
@@ -2432,6 +2594,45 @@ document.addEventListener("DOMContentLoaded",()=>{
   ME=resolveUser();
   buildColChooser();
   $("#aclSearch").oninput=renderAcl;
+  /* --- login popup events --- */
+  const setBusy=(on,txt)=>{ const b=$("#loginSubmit"); if(!b)return;
+    b.disabled=on; $("#lookupBtn").disabled=on;
+    b.innerHTML = on? `<span class="spinner-border spinner-border-sm me-1"></span>${txt||"กำลังตรวจสอบทะเบียน..."}`
+                    : `<i class="bi bi-box-arrow-in-right me-1"></i>เข้าสู่ระบบ`; };
+  $("#loginForm").onsubmit=async (e)=>{
+    e.preventDefault();
+    const email=$("#loginEmail").value.trim().toLowerCase();
+    setBusy(true);
+    let r; try{ r=await doLogin(email,$("#loginPin").value,$("#loginRemember").checked); }
+    finally{ setBusy(false); }
+    if(r.lookup) $("#lookupResult").innerHTML=lookupResultHtml(r.lookup,email);
+    if(!r.ok){ const a=$("#loginAlert"); a.textContent=r.msg; a.classList.remove("d-none"); return; }
+    $("#loginPin").value=""; $("#loginAlert").classList.add("d-none");
+    ME=resolveUser(); hideLogin(); boot(false);
+  };
+  $("#lookupBtn").onclick=async ()=>{
+    const email=$("#loginEmail").value.trim().toLowerCase();
+    if(!email){ $("#lookupResult").innerHTML=`<div class="alert alert-warning py-2 small mb-0">กรุณากรอกอีเมลก่อนตรวจสอบสิทธิ์</div>`; return; }
+    $("#lookupResult").innerHTML=`<div class="small text-muted"><span class="spinner-border spinner-border-sm me-1"></span>กำลัง Lookup จาก Admin_KycNew...</div>`;
+    setBusy(true,"กำลัง Lookup...");
+    let res; try{ res=await lookupAclUser(email); } finally{ setBusy(false); }
+    $("#lookupResult").innerHTML=lookupResultHtml(res,email);
+  };
+  $("#loginEmail").oninput=()=>{ $("#lookupResult").innerHTML=""; $("#loginAlert").classList.add("d-none"); };
+  $("#togglePin").onclick=()=>{const p=$("#loginPin"); p.type = p.type==="password"?"text":"password";};
+  $("#ssoBtn").onclick=async ()=>{
+    if(typeof _spPageContextInfo==="undefined"){ const a=$("#loginAlert");
+      a.textContent="ไม่พบ session ของ SharePoint — โหมด SSO ใช้ได้เมื่อฝังหน้านี้บน SharePoint Online เท่านั้น";
+      a.classList.remove("d-none"); return; }
+    const email=(_spPageContextInfo.userEmail||"").toLowerCase();
+    $("#loginEmail").value=email; setBusy(true,"กำลัง Lookup SSO...");
+    let res; try{ res=await lookupAclUser(email); } finally{ setBusy(false); }
+    $("#lookupResult").innerHTML=lookupResultHtml(res,email);
+    if(!res.found){ const a=$("#loginAlert");
+      a.textContent="บัญชี SSO "+email+" ไม่พบในทะเบียน Admin_KycNew"; a.classList.remove("d-none"); return; }
+    saveSession(email,false); ME=resolveUser(); hideLogin(); boot(false);
+  };
+  $("#logoutBtn").onclick=logout;
   $("#btnApply").onclick=applyFilter;
   $("#btnReset").onclick=()=>{["fKeyword","fFrom","fTo"].forEach(i=>$("#"+i).value="");["fBranch","fOwner","fStatus","fType"].forEach(i=>$("#"+i).value="");
     document.querySelectorAll("#quickRange .btn").forEach(b=>b.classList.remove("active"));
