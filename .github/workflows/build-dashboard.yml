@@ -35,8 +35,10 @@ permissions:
   pages: write
   id-token: write
 
+# GitHub Pages อนุญาตให้ deploy ได้ทีละชุดเท่านั้น
+# ถ้าตั้งกลุ่มไม่ตรงกับที่ Pages ใช้ จะเกิดคิวซ้อนกันจนค้างที่ purging_cdn
 concurrency:
-  group: update-dashboard
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -44,6 +46,8 @@ jobs:
     name: Build dashboard from SharePoint
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -192,29 +196,88 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
+      # ── จัดชุดไฟล์ที่จะเผยแพร่ ──
+      # เดิมใช้ path: . ซึ่งอัปโหลด "ทั้ง repo" ขึ้น Pages
+      #   1) ทำให้ artifact ใหญ่เกินจำเป็น → CDN purge ช้า → ค้างที่ purging_cdn
+      #   2) 🔴 เผยแพร่ data/*.csv (ข้อมูลลูกค้าดิบ + อีเมล 65 บัญชี) และ scripts/ สู่สาธารณะ
+      - name: Stage site files
+        run: |
+          rm -rf _site && mkdir -p _site
+          cp index.html      _site/
+          cp build-info.json _site/
+          touch _site/.nojekyll
+          # กันไฟล์ต้องห้ามหลุดขึ้น Pages โดยไม่ตั้งใจ
+          if find _site -name "*.csv" -o -name "*.py" | grep -q .; then
+            echo "::error title=พบไฟล์ต้องห้ามใน _site::ต้องไม่มี .csv หรือ .py"
+            exit 1
+          fi
+          echo "ไฟล์ที่จะเผยแพร่:"; ls -la _site
+          echo "ขนาดรวม: $(du -sh _site | cut -f1)"
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
   deploy:
     name: Deploy to GitHub Pages
     needs: build
     runs-on: ubuntu-latest
+    # ข้าม deploy เมื่อไฟล์ไม่เปลี่ยน — ลดจำนวน deployment ที่ไปแย่งคิว CDN purge
+    # (schedule ทุก 30 นาที ถ้า deploy ทุกครั้งจะเกิดคิวซ้อนจนค้าง)
+    if: needs.build.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+    timeout-minutes: 20
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}
     steps:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          # ค่า default คือ 10 นาที (600000 ms) แต่ขั้น purging_cdn ของ Pages
+          # บางช่วงใช้เวลานานกว่าปกติ → ขยายเป็น 20 นาที และผ่อนเกณฑ์ error
+          timeout: 1200000
+          error_count: 15
+          reporting_interval: 10000
+
+      # purging_cdn ค้างมักเป็นอาการชั่วคราวฝั่ง GitHub — ลองซ้ำอีกครั้งก่อนยอมแพ้
+      - name: Deploy (retry)
+        id: deployment_retry
+        if: failure() && steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 1200000
+          error_count: 15
+          reporting_interval: 10000
+
+      - name: อธิบายเมื่อ deploy ไม่สำเร็จ
+        if: failure()
+        run: |
+          {
+            echo "## ❌ Deploy to GitHub Pages ไม่สำเร็จ (purging_cdn / Timeout)"
+            echo ""
+            echo "**index.html ถูก build และ commit ขึ้น repo เรียบร้อยแล้ว** — ข้อมูลไม่หาย"
+            echo "ที่ล้มเหลวคือขั้นเผยแพร่ขึ้น CDN ของ GitHub Pages เท่านั้น"
+            echo ""
+            echo "### สาเหตุที่พบบ่อย"
+            echo "1. **GitHub Pages ขัดข้องชั่วคราว** — เช็คที่ https://www.githubstatus.com"
+            echo "2. **มี deployment ค้างคิวอยู่** — ไปที่แท็บ **Actions → Deployments** แล้วยกเลิกอันที่ค้าง"
+            echo "3. **artifact ใหญ่เกินไป** — workflow นี้เผยแพร่เฉพาะ \`index.html\` + \`build-info.json\` แล้ว"
+            echo ""
+            echo "### วิธีแก้"
+            echo "- รอ 10–15 นาที แล้วสั่ง **Run workflow** ใหม่ (ส่วน build จะข้ามถ้าข้อมูลไม่เปลี่ยน)"
+            echo "- ถ้าค้างซ้ำ ๆ ให้ไปที่ **Settings → Pages** เปลี่ยน Source เป็น *Deploy from a branch* (\`main\` / root)"
+            echo "  ซึ่งไม่ต้องพึ่งขั้น CDN purge เลย — index.html ถูก commit ลง main อยู่แล้ว"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Summary
+        if: success()
         run: |
           {
             echo "## 🚀 Deploy สำเร็จ"
             echo ""
-            echo "URL: ${{ steps.deployment.outputs.page_url }}"
+            echo "URL: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}"
             echo ""
             echo "ถ้าเปิดแล้วยังเห็นข้อมูลเก่า ให้กด Ctrl+Shift+R (hard refresh)"
             echo "หรือต่อท้าย URL ด้วย ?v=$(date +%s) เพื่อข้ามแคชเบราว์เซอร์"
