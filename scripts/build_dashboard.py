@@ -39,9 +39,11 @@ SITE_HOSTNAME = os.getenv("SITE_HOSTNAME", "dohomegroup.sharepoint.com")
 SITE_PATH = os.getenv("SITE_PATH", "/sites/AC-Accounting")
 LIST_DATA = os.getenv("LIST_DEMOAPP", "DemoApp")
 LIST_ACL = os.getenv("LIST_ACL", "Admin_KycNew")
-TENANT_ID = os.getenv("TENANT_ID", "")
-CLIENT_ID = os.getenv("CLIENT_ID", "")
-CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
+# .strip() สำคัญ: ถ้า paste ค่าลง GitHub Secret แล้วติด newline/ช่องว่างมาด้วย
+# การขอ token จะได้ HTTP 400/401 โดยไม่บอกสาเหตุ
+TENANT_ID = os.getenv("TENANT_ID", "").strip()
+CLIENT_ID = os.getenv("CLIENT_ID", "").strip()
+CLIENT_SECRET = os.getenv("CLIENT_SECRET", "").strip()
 GRAPH = "https://graph.microsoft.com/v1.0"
 
 # ชื่อคอลัมน์ใน SharePoint -> คีย์ที่ Dashboard ใช้
