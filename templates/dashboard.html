@@ -118,6 +118,9 @@ table.dataTable thead th{position:sticky;top:0;z-index:5;background:var(--brand)
 
 <div class="container-fluid p-3 p-lg-4">
 
+  <!-- แถบเตือนเมื่อข้อมูลว่าง / debug panel (?debug=1) -->
+  <div id="dataWarn" class="alert alert-warning" style="display:none"></div>
+
   <!-- ============ 1) EXECUTIVE SUMMARY ============ -->
   <h5 class="section-title mb-3"><i class="fa-solid fa-briefcase"></i> 1. Executive Summary</h5>
   <div class="row g-3 mb-4" id="execRow"></div>
@@ -791,6 +794,50 @@ function toggleTheme(){
   renderCharts(VIEW);   /* วาดกราฟใหม่ให้สีตรงกับธีม */
 }
 
+/* แสดงแถบเตือนบนสุดเมื่อข้อมูลว่าง พร้อมบอกสาเหตุที่เป็นไปได้ */
+function showDataWarning(user){
+  const el = document.getElementById("dataWarn");
+  if(!el) return;
+  if(DATA.length === 0){
+    el.style.display = "block";
+    el.innerHTML = `<b><i class="fa-solid fa-triangle-exclamation me-2"></i>ไม่มีข้อมูลในไฟล์นี้เลย (0 records)</b>
+      <div class="small mt-1">แปลว่า build ล่าสุดดึงข้อมูลจาก SharePoint ไม่สำเร็จ —
+      ตรวจ log ของ GitHub Actions ที่ step <code>Fetch SharePoint data</code> และ <code>Build dashboard</code></div>`;
+    return;
+  }
+  if(SCOPED.length === 0){
+    el.style.display = "block";
+    el.innerHTML = `<b><i class="fa-solid fa-user-lock me-2"></i>คุณมีสิทธิ์เข้าใช้งาน แต่ยังไม่มีข้อมูลในขอบเขตของคุณ</b>
+      <div class="small mt-1">
+        ไฟล์นี้มีทั้งหมด <b>${nf(DATA.length)}</b> รายการ แต่ Role <b>${user.role}</b>
+        ${user.role==="BranchManager" ? "สาขา <b>"+(user.branches.join(",")||"-")+"</b>" : ""}
+        มองเห็น 0 รายการ<br>
+        ${user.role==="BranchManager"
+          ? "สาขาที่มีข้อมูลจริง: <b>"+[...new Set(DATA.map(r=>r.branch))].join(", ")+"</b>"
+          : "ลองเข้าด้วยอีเมล Admin หรือเพิ่มอีเมลของคุณใน ADMIN_EMAILS"}
+      </div>`;
+    return;
+  }
+  el.style.display = "none";
+}
+
+/* Debug Panel : เปิดด้วย ?debug=1 เพื่อดูข้อมูลดิบเมื่อ dashboard ว่าง */
+function showDebug(user){
+  if(new URLSearchParams(location.search).get("debug") !== "1") return;
+  const el = document.getElementById("dataWarn");
+  const sample = DATA[0] ? JSON.stringify(DATA[0], null, 1) : "(ไม่มี record)";
+  el.style.display = "block";
+  el.innerHTML += `<hr><b><i class="fa-solid fa-bug me-2"></i>Debug</b>
+    <div class="small">
+      build = ${META.generatedAt} · DATA = ${DATA.length} · USERS = ${Object.keys(USERS).length}<br>
+      user = ${user.email} · role = ${user.role} · branches = [${user.branches}] · scoped = ${SCOPED.length}<br>
+      branches ในข้อมูล = ${[...new Set(DATA.map(r=>r.branch))].join(", ")}<br>
+      statuses = ${[...new Set(DATA.map(r=>r.status))].join(" | ")}<br>
+      มี requestAt = ${DATA.filter(r=>r.requestAt).length}/${DATA.length}
+    </div>
+    <pre class="small mt-2 mb-0" style="max-height:220px;overflow:auto">${sample}</pre>`;
+}
+
 function startApp(user){
   CURRENT_USER = user;
   SCOPED = applyRbac(user);
@@ -810,6 +857,8 @@ function startApp(user){
   document.getElementById("app").style.display="block";
   document.getElementById("loader").style.display="none";
   applyFilters();
+  showDataWarning(user);
+  showDebug(user);
 }
 
 /* ---------- ENTRY POINT ---------- */
