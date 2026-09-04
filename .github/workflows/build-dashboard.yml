@@ -1,132 +1,92 @@
-name: Update Dashboard
+« MODE C — ดึง SharePoint List มาเขียน data.json อัตโนมัติ »
+ไฟล์นี้ต้องวางที่: .github/workflows/sync-sharepoint.yml
+
+ต้องสร้าง Repository secrets 3 ตัวก่อน (Settings > Secrets and variables > Actions):
+  AZ_TENANT_ID  = 7f8918d9-718a-495b-ac9a-17cba381c4a0
+  AZ_CLIENT_ID  = a37bd62d-e74d-4ea0-9546-1eb5aa96f604
+  AZ_CLIENT_SECRET = <สร้างใน Entra ID > Sharepoint-web > Certificates & secrets>
+
+และต้องเพิ่ม API permission แบบ Application (ไม่ใช่ Delegated):
+  Microsoft Graph > Application > Sites.Read.All  → Grant admin consent
+
+-------------------- คัดลอกตั้งแต่บรรทัดถัดไป --------------------
+name: Sync SharePoint DemoApp
 
 on:
   schedule:
-    - cron: "0 1 * * *"          # 01:00 UTC = 08:00 น. ไทย ทุกวัน
+    - cron: '*/15 * * * *'      # ทุก 15 นาที
   workflow_dispatch:
-    inputs:
-      list_data:
-        description: "ชื่อ SharePoint List ข้อมูล"
-        default: "KYC_DATA_NEW"
-        required: false
-      sample:
-        description: "ใช้ข้อมูลตัวอย่าง (ไม่ต่อ SharePoint / ไม่ต้องมี secret)"
-        type: boolean
-        default: false
-  push:
-    branches: [main]
-    paths:
-      - "scripts/**"
-      - ".github/workflows/**"
 
 permissions:
-  contents: write        # ต้องมีเพื่อ commit index.html กลับเข้า repo
-  pages: write
-  id-token: write
-
-concurrency:
-  group: update-dashboard
-  cancel-in-progress: true
+  contents: write
 
 jobs:
-  build:
+  sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: pip install requests
-
-      - name: Self-check (สคริปต์ต้องสร้าง HTML ได้เสมอ)
-        run: |
-          set -e
-          python -m py_compile scripts/build_dashboard.py
-          OUT_FILE=/tmp/_smoke.html python scripts/build_dashboard.py --sample
-          test -s /tmp/_smoke.html
-          grep -q "__DATA__\|__ALLOWED__" /tmp/_smoke.html && { echo "::error::placeholder ไม่ถูกแทนที่"; exit 1; } || true
-          node -e "
-            const fs=require('fs');
-            const h=fs.readFileSync('/tmp/_smoke.html','utf8');
-            const s=[...h.matchAll(/<script>([\s\S]*?)<\/script>/g)].pop()[1];
-            new Function(s);
-            console.log('✔ JS syntax OK');
-          "
-
-      - name: ตรวจว่ามี Secrets ครบหรือไม่
-        id: creds
+      - name: Fetch list from Microsoft Graph
         env:
-          TENANT_ID:     ${{ secrets.TENANT_ID }}
-          CLIENT_ID:     ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          TENANT: ${{ secrets.AZ_TENANT_ID }}
+          CLIENT: ${{ secrets.AZ_CLIENT_ID }}
+          SECRET: ${{ secrets.AZ_CLIENT_SECRET }}
         run: |
-          if [ -n "$TENANT_ID" ] && [ -n "$CLIENT_ID" ] && [ -n "$CLIENT_SECRET" ]; then
-            echo "has_secrets=true" >> "$GITHUB_OUTPUT"
-            echo "✔ พบ secrets ครบ — จะดึงข้อมูลจริงจาก SharePoint"
-          else
-            echo "has_secrets=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::ยังไม่ได้ตั้ง TENANT_ID / CLIENT_ID / CLIENT_SECRET — จะ build ด้วยข้อมูลตัวอย่างไปก่อน"
+          set -euo pipefail
+
+          TOKEN=$(curl -s -X POST \
+            "https://login.microsoftonline.com/$TENANT/oauth2/v2.0/token" \
+            -d "client_id=$CLIENT" \
+            -d "client_secret=$SECRET" \
+            -d "scope=https://graph.microsoft.com/.default" \
+            -d "grant_type=client_credentials" | jq -r .access_token)
+
+          if [ "$TOKEN" = "null" ] || [ -z "$TOKEN" ]; then
+            echo "::error::ขอ token ไม่สำเร็จ — ตรวจ AZ_CLIENT_SECRET"; exit 1
           fi
 
-      - name: Build dashboard (live)
-        if: ${{ github.event.inputs.sample != 'true' && steps.creds.outputs.has_secrets == 'true' }}
-        env:
-          TENANT_ID:     ${{ secrets.TENANT_ID }}
-          CLIENT_ID:     ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          SP_HOST:       dohomegroup.sharepoint.com
-          SP_SITE_PATH:  /sites/AC-Accounting
-          SP_LIST_DATA:  ${{ github.event.inputs.list_data || 'KYC_DATA_NEW' }}
-          SP_LIST_GROUP: Admin_KycNew
-          OUT_FILE:      index.html
-        run: python scripts/build_dashboard.py --fallback-sample
+          SITE=$(curl -s -H "Authorization: Bearer $TOKEN" \
+            "https://graph.microsoft.com/v1.0/sites/dohomegroup.sharepoint.com:/sites/AC-Accounting" \
+            | jq -r .id)
 
-      - name: Build dashboard (sample)
-        if: ${{ github.event.inputs.sample == 'true' || steps.creds.outputs.has_secrets != 'true' }}
-        env:
-          OUT_FILE: index.html
-        run: python scripts/build_dashboard.py --sample
+          if [ "$SITE" = "null" ]; then
+            echo "::error::หา site ไม่เจอ — ตรวจสิทธิ์ Sites.Read.All (Application)"; exit 1
+          fi
 
-      - name: Commit index.html กลับเข้า repo
+          URL="https://graph.microsoft.com/v1.0/sites/$SITE/lists/DemoApp/items?expand=fields&\$top=999"
+          echo '[]' > raw.json
+
+          while [ -n "$URL" ] && [ "$URL" != "null" ]; do
+            PAGE=$(curl -s -H "Authorization: Bearer $TOKEN" "$URL")
+            echo "$PAGE" | jq '.value' > page.json
+            jq -s '.[0] + .[1]' raw.json page.json > tmp.json && mv tmp.json raw.json
+            URL=$(echo "$PAGE" | jq -r '."@odata.nextLink" // ""')
+          done
+
+          jq '[ .[] | .fields | {
+                ID: (.id|tonumber?),
+                Title: .Title,
+                Customer: .Customer_x0020_Name,
+                Branch: .branch,
+                Created: .Request_x0020_TimeStamp,
+                Status: .Status,
+                StatusMirror: .Status_1,
+                Owner: .Owner,
+                Type: .Type_Request,
+                Modified: .Modified
+              } ]' raw.json > data.json
+
+          echo "rows: $(jq length data.json)"
+          rm -f raw.json page.json
+
+      - name: Commit if changed
         run: |
           git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- index.html; then
-            echo "ไม่มีการเปลี่ยนแปลง — ข้ามการ commit"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet data.json; then
+            echo "ไม่มีข้อมูลเปลี่ยน"
           else
-            git add index.html
-            git commit -m "chore(dashboard): auto-update $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git add data.json
+            git commit -m "chore: sync DemoApp $(date -u +'%Y-%m-%d %H:%M UTC')"
             git push
-            echo "✔ pushed index.html"
           fi
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dashboard
-          path: index.html
-          retention-days: 30
-
-      # ---- (ตัวเลือก) เผยแพร่ผ่าน GitHub Pages ----
-      # ⚠️ ถ้า repo เป็น Private และไม่ได้ใช้ GitHub Enterprise ให้ลบ 2 step นี้ + job deploy ทิ้ง
-      - name: Upload Pages artifact
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
-  deploy:
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
