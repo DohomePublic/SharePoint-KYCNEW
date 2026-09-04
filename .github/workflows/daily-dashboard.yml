@@ -4,6 +4,10 @@ name: Daily KYC Dashboard Build
 #  รันอัตโนมัติทุกวัน 07:00 น. (เวลาไทย ICT = UTC+7)
 #  cron ของ GitHub Actions ใช้ UTC -> 00:00 UTC = 07:00 ICT
 #  สั่งรันเองได้ผ่านปุ่ม "Run workflow" (workflow_dispatch)
+#
+#  โครงสร้าง 2 jobs (ตามมาตรฐาน GitHub Pages)
+#    build  : ดึงข้อมูล -> สร้าง index.html -> commit/push -> upload artifact
+#    deploy : deploy artifact ขึ้น Pages  (ต้องมี environment: github-pages)
 # =====================================================================
 on:
   schedule:
@@ -18,15 +22,18 @@ on:
 
 permissions:
   contents: write               # ใช้ commit + push index.html กลับเข้า repo
-  pages: write
-  id-token: write
+  pages: write                  # ใช้ deploy GitHub Pages
+  id-token: write               # ใช้ OIDC ยืนยันตัวตนตอน deploy
 
 concurrency:
   group: daily-dashboard
   cancel-in-progress: false
 
 jobs:
-  build-and-publish:
+  # ===================================================================
+  #  JOB 1 : BUILD
+  # ===================================================================
+  build:
     runs-on: ubuntu-latest
     steps:
       # ---------- 1) เอา source ล่าสุด ----------
@@ -76,15 +83,37 @@ jobs:
             echo "ไม่มีการเปลี่ยนแปลง — ข้ามการ commit"
           else
             git commit -m "chore(dashboard): daily build $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git pull --rebase --autostash || true
             git push
           fi
 
-      # ---------- 6) Deploy GitHub Pages ----------
+      # ---------- 6) เตรียมไฟล์ที่จะขึ้น Pages ----------
+      #  ส่งขึ้นเฉพาะไฟล์ที่ต้องเสิร์ฟ (ไม่เอา scripts/ หรือ data ดิบขึ้นเว็บ)
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p _site
+          cp index.html _site/index.html
+          cp index.html _site/404.html          # กันคนพิมพ์ path ผิด
+          echo "Dashboard build $(date -u)" > _site/build.txt
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
+  # ===================================================================
+  #  JOB 2 : DEPLOY
+  #  ต้องประกาศ environment ไม่งั้น deploy-pages@v4 จะ error ว่า
+  #  "Missing environment. Ensure your workflow's deployment job
+  #   has an environment."
+  # ===================================================================
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
