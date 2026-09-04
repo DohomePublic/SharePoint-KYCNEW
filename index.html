@@ -74,8 +74,22 @@ table.tbl thead th .sort-ico{opacity:.55;font-size:10px}
 
 <div class="container-fluid p-3">
 
+  <!-- ACCESS DENIED -->
+  <div id="deniedBox" style="display:none">
+    <div class="card border-danger my-5 mx-auto" style="max-width:720px">
+      <div class="card-body text-center p-4">
+        <i class="bi bi-shield-lock-fill text-danger" style="font-size:56px"></i>
+        <h4 class="mt-3 fw-bold text-danger">ไม่มีสิทธิ์เข้าถึง Dashboard</h4>
+        <p class="mb-1">บัญชี <b id="deniedEmail"></b> ไม่พบในทะเบียนผู้มีสิทธิ์</p>
+        <p class="small-muted">Dashboard นี้ควบคุมสิทธิ์ด้วย SharePoint List <b>Admin_KycNew</b><br>
+          กรุณาให้ผู้ดูแลเพิ่มอีเมลของคุณเป็นรายการใหม่ในลิสต์ (คอลัมน์ Title) แล้วเปิดหน้านี้อีกครั้ง</p>
+        <a class="btn btn-outline-danger btn-sm" target="_blank" href="https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/Admin_KycNew"><i class="bi bi-box-arrow-up-right me-1"></i>เปิดทะเบียน Admin_KycNew</a>
+      </div>
+    </div>
+  </div>
+
   <!-- 1. EXECUTIVE SUMMARY -->
-  <div class="card mb-3">
+  <div class="card mb-3 secured-zone">
     <div class="card-header d-flex justify-content-between align-items-center">
       <span><i class="bi bi-clipboard-data me-2 text-primary"></i>1. Executive Summary</span>
       <span class="small-muted" id="dataStamp"></span>
@@ -84,12 +98,12 @@ table.tbl thead th .sort-ico{opacity:.55;font-size:10px}
   </div>
 
   <!-- 2. KPI -->
-  <h6 class="fw-bold text-secondary mb-2"><i class="bi bi-speedometer me-1"></i>2. KPI Dashboard</h6>
-  <div class="row g-2 mb-3" id="kpiRow"></div>
-  <div class="row g-2 mb-3" id="kpiRow2"></div>
+  <h6 class="fw-bold text-secondary mb-2 secured-zone"><i class="bi bi-speedometer me-1"></i>2. KPI Dashboard</h6>
+  <div class="row g-2 mb-3 secured-zone" id="kpiRow"></div>
+  <div class="row g-2 mb-3 secured-zone" id="kpiRow2"></div>
 
   <!-- FILTER -->
-  <div class="card mb-3 no-print">
+  <div class="card mb-3 no-print secured-zone">
     <div class="card-header"><i class="bi bi-funnel me-2 text-primary"></i>Search & Filter</div>
     <div class="card-body">
       <div class="row g-2">
@@ -118,8 +132,8 @@ table.tbl thead th .sort-ico{opacity:.55;font-size:10px}
   </div>
 
   <!-- 3. CHARTS -->
-  <h6 class="fw-bold text-secondary mb-2"><i class="bi bi-bar-chart-line me-1"></i>3. Charts & Visualization</h6>
-  <div class="row g-3 mb-3">
+  <h6 class="fw-bold text-secondary mb-2 secured-zone"><i class="bi bi-bar-chart-line me-1"></i>3. Charts & Visualization</h6>
+  <div class="row g-3 mb-3 secured-zone">
     <div class="col-12 col-lg-6"><div class="card h-100"><div class="card-header">จำนวนรายการตามสาขา (Bar)</div>
       <div class="card-body"><div class="chart-box"><canvas id="chBranch"></canvas></div></div></div></div>
     <div class="col-12 col-lg-6"><div class="card h-100"><div class="card-header">สัดส่วนตามสถานะ (Pie)</div>
@@ -135,7 +149,7 @@ table.tbl thead th .sort-ico{opacity:.55;font-size:10px}
   </div>
 
   <!-- 4 & 5 ANALYTICS -->
-  <div class="row g-3 mb-3">
+  <div class="row g-3 mb-3 secured-zone">
     <div class="col-12 col-lg-6"><div class="card h-100">
       <div class="card-header d-flex justify-content-between"><span><i class="bi bi-shop me-2 text-primary"></i>4. Branch Analytics</span><span class="small-muted">คลิกแถวเพื่อ Drill Down</span></div>
       <div class="card-body p-2"><div class="table-responsive"><table class="table table-sm table-hover tbl align-middle mb-0" id="tblBranch"></table></div></div></div></div>
@@ -145,7 +159,7 @@ table.tbl thead th .sort-ico{opacity:.55;font-size:10px}
   </div>
 
   <!-- 6. DETAIL TABLE -->
-  <div class="card mb-3">
+  <div class="card mb-3 secured-zone">
     <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
       <span><i class="bi bi-table me-2 text-primary"></i>6. Detailed Records <span class="badge bg-primary" id="rowCount">0</span></span>
       <div class="d-flex gap-2 flex-wrap no-print">
@@ -169,7 +183,7 @@ table.tbl thead th .sort-ico{opacity:.55;font-size:10px}
   </div>
 
   <!-- 7. AUTO INSIGHT -->
-  <div class="card mb-3">
+  <div class="card mb-3 secured-zone">
     <div class="card-header"><i class="bi bi-lightbulb me-2 text-warning"></i>7. Auto Insight & Anomaly Detection</div>
     <div class="card-body"><div class="row"><div class="col-12 col-lg-6" id="insightA"></div><div class="col-12 col-lg-6" id="insightB"></div></div></div>
   </div>
@@ -189,10 +203,32 @@ table.tbl thead th .sort-ico{opacity:.55;font-size:10px}
             <b>สิทธิ์ Export:</b> <span id="permExport"></span></div>
           <div class="small-muted">
             เมื่อ Embed บน SharePoint Online ระบบจะอ่านผู้ใช้จาก <code>_spPageContextInfo.userEmail</code> อัตโนมัติ
-            และจับคู่กับ <code>USER_DIRECTORY</code> ในไฟล์ HTML ถ้าไม่พบผู้ใช้จะได้สิทธิ์ <code>VIEWER</code> (ดูสรุปเท่านั้น)
-            สามารถทดสอบด้วย <code>?role=BRANCH&amp;branch=UDOO</code> หรือ <code>?user=อีเมล</code>
+            แล้วตรวจกับทะเบียน <code>Admin_KycNew</code> ถ้าไม่พบอีเมลจะถูกปฏิเสธการเข้าถึงทันที (<code>ENFORCE_ACL = true</code>)
+            ทดสอบได้ด้วย <code>?user=gm-ud@dohome.co.th</code> หรือ <code>?user=someone@dohome.co.th</code> (จะโดนบล็อก)
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACL REGISTRY : Admin_KycNew -->
+  <div class="card mb-4">
+    <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <span><i class="bi bi-people-fill me-2 text-primary"></i>ทะเบียนผู้มีสิทธิ์ · SharePoint List “Admin_KycNew”
+        <span class="badge bg-primary" id="aclCount">0</span></span>
+      <div class="d-flex gap-2 align-items-center no-print">
+        <input id="aclSearch" class="form-control form-control-sm" style="width:220px" placeholder="ค้นหาอีเมล / รหัสสาขา / Role">
+        <span class="small-muted">แสดง <b id="aclShown">0</b> รายการ</span>
+        <a class="btn btn-sm btn-outline-primary" target="_blank" href="https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/Admin_KycNew"><i class="bi bi-box-arrow-up-right me-1"></i>จัดการทะเบียน</a>
+      </div>
+    </div>
+    <div class="card-body p-2">
+      <div class="mb-2" id="aclSummary"></div>
+      <div class="table-wrap"><table class="table table-sm table-striped table-hover tbl align-middle mb-0" id="tblAcl"></table></div>
+      <div class="small-muted mt-2">
+        กติกาแปลงอีเมลเป็นสิทธิ์อัตโนมัติ: <code>BI-(V)Operation<b>XX</b>_GM@</code> → BIOPS ขอบเขตสาขา <code>XXOO</code> ·
+        <code>GM-<b>XX</b>@</code> → GM ขอบเขตสาขา <code>XXOO</code> · <code>Dohometogogm-<b>xxx</b>@</code> → GM (Dohome To Go) ·
+        อีเมลรายบุคคล → CREDIT (HQ เห็นทุกสาขา) · <code>GM-trainee@</code> → VIEWER (ปิดบัง PII)
       </div>
     </div>
   </div>
@@ -1116,7 +1152,7 @@ const RAW_DATA = [
   "Estimated_annual_income": ""
  }
 ];
-const GENERATED_AT = "2026-09-04 03:38 UTC";
+const GENERATED_AT = "2026-09-04 03:59 UTC";
 
 /* SharePoint REST binding (ใช้เมื่อ LIVE_MODE = true) */
 const SELECT_FIELDS = ["Id","Title","Customer_id","Customer_x0020_Name","branch","Request_x0020_TimeStamp","Status","Status_1","Type_Request","Type1","type_teams","Typr_Distribution","Owner","limit","limit_other","registration_number","Registered_Name","business_type","contact_name","position","contact_number","telephone","county","district","province","credit_semester1","credit_semester2","land","other_property","Data","Estimated_annual_income"];
@@ -1140,22 +1176,769 @@ async function loadLive(){
    pii   : true = เห็นชื่อผู้ติดต่อ/เบอร์โทร/เลขทะเบียนครบ, false = ปิดบัง
    ============================================================ */
 const ROLES = {
-  ADMIN:   {label:"ผู้ดูแลระบบ (Admin)",        scope:"ALL",    pii:true,  export:true,  detail:true,  desc:"เห็นทุกสาขา ทุกฟิลด์ Export ได้"},
-  MANAGER: {label:"ผู้บริหาร/ผู้จัดการเขต",      scope:"ALL",    pii:true,  export:true,  detail:true,  desc:"เห็นทุกสาขา ใช้อนุมัติและติดตาม"},
-  CREDIT:  {label:"ฝ่ายสินเชื่อ/KYC (CF-AC HQ)", scope:"ALL",    pii:true,  export:true,  detail:true,  desc:"เห็นทุกสาขาเพื่อพิจารณาวงเงิน"},
+  ADMIN:   {label:"ผู้ดูแลระบบ (Admin/BI HQ)",   scope:"ALL",    pii:true,  export:true,  detail:true,  desc:"เห็นทุกสาขา ทุกฟิลด์ Export ได้ และจัดการทะเบียนสิทธิ์"},
+  CREDIT:  {label:"ฝ่ายสินเชื่อ/KYC (CF-AC HQ)", scope:"ALL",    pii:true,  export:true,  detail:true,  desc:"เห็นทุกสาขาเพื่อพิจารณาวงเงินและอนุมัติ KYC"},
+  BIOPS:   {label:"BI Operation สาขา",           scope:"BRANCH", pii:true,  export:true,  detail:true,  desc:"บัญชี BI-(V)Operation ของสาขา เห็นเฉพาะสาขาตนเอง"},
+  GM:      {label:"ผู้จัดการสาขา (GM)",          scope:"BRANCH", pii:true,  export:true,  detail:true,  desc:"บัญชี GM-XX ของสาขา เห็นเฉพาะสาขาตนเอง"},
   BRANCH:  {label:"ผู้ใช้ระดับสาขา",             scope:"BRANCH", pii:true,  export:true,  detail:true,  desc:"เห็นเฉพาะสาขาที่รับผิดชอบ"},
   OWNER:   {label:"เจ้าของงาน (Sales/Owner)",    scope:"OWNER",  pii:true,  export:false, detail:true,  desc:"เห็นเฉพาะรายการที่ตนเองเป็นผู้ดูแล"},
-  VIEWER:  {label:"ผู้ชมทั่วไป (Viewer)",        scope:"ALL",    pii:false, export:false, detail:true,  desc:"เห็นรายการแต่ปิดบังข้อมูลส่วนบุคคล ห้าม Export"}
+  VIEWER:  {label:"ผู้ชมทั่วไป (Viewer)",        scope:"ALL",    pii:false, export:false, detail:true,  desc:"เห็นรายการแต่ปิดบังข้อมูลส่วนบุคคล ห้าม Export"},
+  DENIED:  {label:"ไม่มีสิทธิ์เข้าถึง (Denied)",  scope:"NONE",   pii:false, export:false, detail:false, desc:"อีเมลไม่อยู่ในทะเบียน Admin_KycNew — ถูกปฏิเสธการเข้าถึง"}
 };
-/* จับคู่ผู้ใช้จริง -> สิทธิ์  (email ตัวพิมพ์เล็ก) */
-const USER_DIRECTORY = {
-  "phongsapan.mar@dohome.co.th": {role:"ADMIN",  name:"จัมโบ้ พงศพันธ์ BI HQ"},
-  "thossarat.cha@dohome.co.th":  {role:"CREDIT", name:"ฝ่ายสินเชื่อ HQ"}
-  /* ตัวอย่างเพิ่มผู้ใช้:
-  "somchai@dohome.co.th": {role:"BRANCH", name:"สมชาย", branches:["UDOO"]},
-  "banky@dohome.co.th":   {role:"OWNER",  name:"แบงค์ ธนัชพงศ์ D3 UD", owners:["แบงค์ ธนัชพงศ์ D3 UD"]} */
+
+/* ------------------------------------------------------------
+   ACL SOURCE = SharePoint List "Admin_KycNew"
+   ทะเบียนอีเมลผู้มีสิทธิ์ (คอลัมน์ Title) ถูก sync มาเป็น ACL_REGISTRY
+   ผู้ที่ "ไม่อยู่ในลิสต์นี้" จะถูกปฏิเสธการเข้าถึง Dashboard ทันที
+   ------------------------------------------------------------ */
+const ACL_LIST_URL   = "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/Admin_KycNew";
+const ACL_LIST_TITLE = "Admin_KycNew";
+const ACL_DISP_FORM  = ACL_LIST_URL + "/DispForm.aspx?ID=";
+const ENFORCE_ACL    = true;   // false = อนุญาตผู้ที่ไม่อยู่ในทะเบียนแบบ VIEWER (ปิดบัง PII)
+let   ACL_REGISTRY   = [
+ {
+  "id": 1,
+  "email": "bi-voperationcr_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "CR",
+  "role": "BIOPS",
+  "name": "BI Operation CR",
+  "branches": [
+   "CROO"
+  ]
+ },
+ {
+  "id": 2,
+  "email": "bi-voperationay_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "AY",
+  "role": "BIOPS",
+  "name": "BI Operation AY",
+  "branches": [
+   "AYOO"
+  ]
+ },
+ {
+  "id": 3,
+  "email": "bi-operationbn_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "BN",
+  "role": "BIOPS",
+  "name": "BI Operation BN",
+  "branches": [
+   "BNOO"
+  ]
+ },
+ {
+  "id": 4,
+  "email": "bi-voperationbp_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "BP",
+  "role": "BIOPS",
+  "name": "BI Operation BP",
+  "branches": [
+   "BPOO"
+  ]
+ },
+ {
+  "id": 5,
+  "email": "bi-operationbr_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "BR",
+  "role": "BIOPS",
+  "name": "BI Operation BR",
+  "branches": [
+   "BROO"
+  ]
+ },
+ {
+  "id": 6,
+  "email": "bi-operationbt_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "BT",
+  "role": "BIOPS",
+  "name": "BI Operation BT",
+  "branches": [
+   "BTOO"
+  ]
+ },
+ {
+  "id": 7,
+  "email": "bi-operationbw_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "BW",
+  "role": "BIOPS",
+  "name": "BI Operation BW",
+  "branches": [
+   "BWOO"
+  ]
+ },
+ {
+  "id": 8,
+  "email": "bi-operationcb_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "CB",
+  "role": "BIOPS",
+  "name": "BI Operation CB",
+  "branches": [
+   "CBOO"
+  ]
+ },
+ {
+  "id": 9,
+  "email": "bi-operationcm_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "CM",
+  "role": "BIOPS",
+  "name": "BI Operation CM",
+  "branches": [
+   "CMOO"
+  ]
+ },
+ {
+  "id": 10,
+  "email": "bi-operationcp_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "CP",
+  "role": "BIOPS",
+  "name": "BI Operation CP",
+  "branches": [
+   "CPOO"
+  ]
+ },
+ {
+  "id": 11,
+  "email": "bi-operationhy_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "HY",
+  "role": "BIOPS",
+  "name": "BI Operation HY",
+  "branches": [
+   "HYOO"
+  ]
+ },
+ {
+  "id": 12,
+  "email": "bi-operationkk_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "KK",
+  "role": "BIOPS",
+  "name": "BI Operation KK",
+  "branches": [
+   "KKOO"
+  ]
+ },
+ {
+  "id": 13,
+  "email": "bi-operationkn_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "KN",
+  "role": "BIOPS",
+  "name": "BI Operation KN",
+  "branches": [
+   "KNOO"
+  ]
+ },
+ {
+  "id": 14,
+  "email": "bi-operationkr_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "KR",
+  "role": "BIOPS",
+  "name": "BI Operation KR",
+  "branches": [
+   "KROO"
+  ]
+ },
+ {
+  "id": 15,
+  "email": "bi-operationlb_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "LB",
+  "role": "BIOPS",
+  "name": "BI Operation LB",
+  "branches": [
+   "LBOO"
+  ]
+ },
+ {
+  "id": 16,
+  "email": "bi-operationmp_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "MP",
+  "role": "BIOPS",
+  "name": "BI Operation MP",
+  "branches": [
+   "MPOO"
+  ]
+ },
+ {
+  "id": 17,
+  "email": "bi-operationpk_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "PK",
+  "role": "BIOPS",
+  "name": "BI Operation PK",
+  "branches": [
+   "PKOO"
+  ]
+ },
+ {
+  "id": 18,
+  "email": "bi-operationpl_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "PL",
+  "role": "BIOPS",
+  "name": "BI Operation PL",
+  "branches": [
+   "PLOO"
+  ]
+ },
+ {
+  "id": 19,
+  "email": "bi-operationpr2_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "PR2",
+  "role": "BIOPS",
+  "name": "BI Operation PR2",
+  "branches": [
+   "PR2OO"
+  ]
+ },
+ {
+  "id": 20,
+  "email": "bi-operationrs_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "RS",
+  "role": "BIOPS",
+  "name": "BI Operation RS",
+  "branches": [
+   "RSOO"
+  ]
+ },
+ {
+  "id": 21,
+  "email": "bi-operationsn_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "SN",
+  "role": "BIOPS",
+  "name": "BI Operation SN",
+  "branches": [
+   "SNOO"
+  ]
+ },
+ {
+  "id": 22,
+  "email": "bi-operationsr_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "SR",
+  "role": "BIOPS",
+  "name": "BI Operation SR",
+  "branches": [
+   "SROO"
+  ]
+ },
+ {
+  "id": 23,
+  "email": "bi-operationub_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "UB",
+  "role": "BIOPS",
+  "name": "BI Operation UB",
+  "branches": [
+   "UBOO"
+  ]
+ },
+ {
+  "id": 24,
+  "email": "bi-operationud_gm@dohome.co.th",
+  "kind": "BI_OPERATION",
+  "code": "UD",
+  "role": "BIOPS",
+  "name": "BI Operation UD",
+  "branches": [
+   "UDOO"
+  ]
+ },
+ {
+  "id": 25,
+  "email": "gm-trainee@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "TRAINEE",
+  "role": "VIEWER",
+  "name": "GM Trainee",
+  "branches": []
+ },
+ {
+  "id": 26,
+  "email": "gm-br@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "BR",
+  "role": "GM",
+  "name": "GM สาขา BR",
+  "branches": [
+   "BROO"
+  ]
+ },
+ {
+  "id": 27,
+  "email": "gm-pk@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "PK",
+  "role": "GM",
+  "name": "GM สาขา PK",
+  "branches": [
+   "PKOO"
+  ]
+ },
+ {
+  "id": 28,
+  "email": "gm-sn@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "SN",
+  "role": "GM",
+  "name": "GM สาขา SN",
+  "branches": [
+   "SNOO"
+  ]
+ },
+ {
+  "id": 29,
+  "email": "gm-kk@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "KK",
+  "role": "GM",
+  "name": "GM สาขา KK",
+  "branches": [
+   "KKOO"
+  ]
+ },
+ {
+  "id": 30,
+  "email": "gm-cp@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "CP",
+  "role": "GM",
+  "name": "GM สาขา CP",
+  "branches": [
+   "CPOO"
+  ]
+ },
+ {
+  "id": 31,
+  "email": "gm-cm@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "CM",
+  "role": "GM",
+  "name": "GM สาขา CM",
+  "branches": [
+   "CMOO"
+  ]
+ },
+ {
+  "id": 32,
+  "email": "gm-cr@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "CR",
+  "role": "GM",
+  "name": "GM สาขา CR",
+  "branches": [
+   "CROO"
+  ]
+ },
+ {
+  "id": 33,
+  "email": "gm-cb@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "CB",
+  "role": "GM",
+  "name": "GM สาขา CB",
+  "branches": [
+   "CBOO"
+  ]
+ },
+ {
+  "id": 34,
+  "email": "gm-pr@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "PR",
+  "role": "GM",
+  "name": "GM สาขา PR",
+  "branches": [
+   "PROO"
+  ]
+ },
+ {
+  "id": 35,
+  "email": "gm-lb@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "LB",
+  "role": "GM",
+  "name": "GM สาขา LB",
+  "branches": [
+   "LBOO"
+  ]
+ },
+ {
+  "id": 36,
+  "email": "gm-kn@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "KN",
+  "role": "GM",
+  "name": "GM สาขา KN",
+  "branches": [
+   "KNOO"
+  ]
+ },
+ {
+  "id": 37,
+  "email": "gm-rs@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "RS",
+  "role": "GM",
+  "name": "GM สาขา RS",
+  "branches": [
+   "RSOO"
+  ]
+ },
+ {
+  "id": 38,
+  "email": "gm-ud@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "UD",
+  "role": "GM",
+  "name": "GM สาขา UD",
+  "branches": [
+   "UDOO"
+  ]
+ },
+ {
+  "id": 39,
+  "email": "gm-tp@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "TP",
+  "role": "GM",
+  "name": "GM สาขา TP",
+  "branches": [
+   "TPOO"
+  ]
+ },
+ {
+  "id": 40,
+  "email": "gm-bw@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "BW",
+  "role": "GM",
+  "name": "GM สาขา BW",
+  "branches": [
+   "BWOO"
+  ]
+ },
+ {
+  "id": 41,
+  "email": "gm-mp@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "MP",
+  "role": "GM",
+  "name": "GM สาขา MP",
+  "branches": [
+   "MPOO"
+  ]
+ },
+ {
+  "id": 42,
+  "email": "gm-dc@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "DC",
+  "role": "GM",
+  "name": "GM สาขา DC",
+  "branches": [
+   "DCOO"
+  ]
+ },
+ {
+  "id": 43,
+  "email": "gm-ns@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "NS",
+  "role": "GM",
+  "name": "GM สาขา NS",
+  "branches": [
+   "NSOO"
+  ]
+ },
+ {
+  "id": 44,
+  "email": "gm-bt@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "BT",
+  "role": "GM",
+  "name": "GM สาขา BT",
+  "branches": [
+   "BTOO"
+  ]
+ },
+ {
+  "id": 45,
+  "email": "gm-pt@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "PT",
+  "role": "GM",
+  "name": "GM สาขา PT",
+  "branches": [
+   "PTOO"
+  ]
+ },
+ {
+  "id": 46,
+  "email": "gm-sr@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "SR",
+  "role": "GM",
+  "name": "GM สาขา SR",
+  "branches": [
+   "SROO"
+  ]
+ },
+ {
+  "id": 47,
+  "email": "dohometogogm-tsb@dohome.co.th",
+  "kind": "TOGO_GM",
+  "code": "TSB",
+  "role": "GM",
+  "name": "Dohome To Go GM TSB",
+  "branches": [
+   "TSBOO"
+  ]
+ },
+ {
+  "id": 48,
+  "email": "dohometogogm-tty@dohome.co.th",
+  "kind": "TOGO_GM",
+  "code": "TTY",
+  "role": "GM",
+  "name": "Dohome To Go GM TTY",
+  "branches": [
+   "TTYOO"
+  ]
+ },
+ {
+  "id": 49,
+  "email": "dohometogogm-trc@dohome.co.th",
+  "kind": "TOGO_GM",
+  "code": "TRC",
+  "role": "GM",
+  "name": "Dohome To Go GM TRC",
+  "branches": [
+   "TRCOO"
+  ]
+ },
+ {
+  "id": 50,
+  "email": "gm-bp@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "BP",
+  "role": "GM",
+  "name": "GM สาขา BP",
+  "branches": [
+   "BPOO"
+  ]
+ },
+ {
+  "id": 51,
+  "email": "gm-pl@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "PL",
+  "role": "GM",
+  "name": "GM สาขา PL",
+  "branches": [
+   "PLOO"
+  ]
+ },
+ {
+  "id": 52,
+  "email": "gm-bn@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "BN",
+  "role": "GM",
+  "name": "GM สาขา BN",
+  "branches": [
+   "BNOO"
+  ]
+ },
+ {
+  "id": 53,
+  "email": "gm-hy@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "HY",
+  "role": "GM",
+  "name": "GM สาขา HY",
+  "branches": [
+   "HYOO"
+  ]
+ },
+ {
+  "id": 54,
+  "email": "gm-kr@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "KR",
+  "role": "GM",
+  "name": "GM สาขา KR",
+  "branches": [
+   "KROO"
+  ]
+ },
+ {
+  "id": 55,
+  "email": "gm-ub@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "UB",
+  "role": "GM",
+  "name": "GM สาขา UB",
+  "branches": [
+   "UBOO"
+  ]
+ },
+ {
+  "id": 56,
+  "email": "gm-ay@dohome.co.th",
+  "kind": "BRANCH_GM",
+  "code": "AY",
+  "role": "GM",
+  "name": "GM สาขา AY",
+  "branches": [
+   "AYOO"
+  ]
+ },
+ {
+  "id": 57,
+  "email": "phongsapan.mar@dohome.co.th",
+  "kind": "NAMED_USER",
+  "code": "",
+  "role": "CREDIT",
+  "name": "phongsapan.mar",
+  "branches": []
+ },
+ {
+  "id": 58,
+  "email": "piyatida.mali@dohome.co.th",
+  "kind": "NAMED_USER",
+  "code": "",
+  "role": "CREDIT",
+  "name": "piyatida.mali",
+  "branches": []
+ },
+ {
+  "id": 59,
+  "email": "siratip.tha@dohome.co.th",
+  "kind": "NAMED_USER",
+  "code": "",
+  "role": "CREDIT",
+  "name": "siratip.tha",
+  "branches": []
+ },
+ {
+  "id": 60,
+  "email": "samniang.jai@dohome.co.th",
+  "kind": "NAMED_USER",
+  "code": "",
+  "role": "CREDIT",
+  "name": "samniang.jai",
+  "branches": []
+ },
+ {
+  "id": 61,
+  "email": "patcharapa.sri@dohome.co.th",
+  "kind": "NAMED_USER",
+  "code": "",
+  "role": "CREDIT",
+  "name": "patcharapa.sri",
+  "branches": []
+ },
+ {
+  "id": 62,
+  "email": "siriya.jan@dohome.co.th",
+  "kind": "NAMED_USER",
+  "code": "",
+  "role": "CREDIT",
+  "name": "siriya.jan",
+  "branches": []
+ },
+ {
+  "id": 63,
+  "email": "yutima.hem@dohome.co.th",
+  "kind": "NAMED_USER",
+  "code": "",
+  "role": "CREDIT",
+  "name": "yutima.hem",
+  "branches": []
+ },
+ {
+  "id": 64,
+  "email": "nattaya.pho@dohome.co.th",
+  "kind": "NAMED_USER",
+  "code": "",
+  "role": "CREDIT",
+  "name": "nattaya.pho",
+  "branches": []
+ },
+ {
+  "id": 65,
+  "email": "patsachon.put@dohome.co.th",
+  "kind": "NAMED_USER",
+  "code": "",
+  "role": "CREDIT",
+  "name": "patsachon.put",
+  "branches": []
+ }
+];   // [{id,email,kind,code,branches,role,name}]
+let   ACL_MAP        = {};
+
+/* ผู้ใช้เฉพาะรายที่ต้อง override บทบาท/ชื่อ (ทับค่าที่ derive อัตโนมัติ) */
+const ROLE_OVERRIDE = {
+  "phongsapan.mar@dohome.co.th": {role:"ADMIN", name:"จัมโบ้ พงศพันธ์ BI HQ"}
 };
-const DEFAULT_ROLE = "VIEWER";
+/* ผูกอีเมล HQ กับชื่อ Owner ใน DemoApp เพื่อรองรับ scope=OWNER */
+const OWNER_ALIAS = {
+  "samniang.jai@dohome.co.th":   "แจ๋ว สำเนียง CF HQ",
+  "siriya.jan@dohome.co.th":     "พลอย ศิริยา CF HQ",
+  "patsachon.put@dohome.co.th":  "ป่าน พรรษชล CF HQ",
+  "patcharapa.sri@dohome.co.th": "เฟิร์น พัชรภา AC HQ",
+  "nattaya.pho@dohome.co.th":    "ฝ้าย ณัฐญา CF HQ",
+  "yutima.hem@dohome.co.th":     "ข้าวโอ๊ต ยุธิมา CF HQ"
+};
+/* รหัสสาขา 2 ตัวใน Admin_KycNew -> รหัสสาขาใน DemoApp */
+const CODE_TO_BRANCH = (c)=> c? (c.toUpperCase().replace(/[^A-Z0-9]/g,"")+"OO"):"";
+function buildAclMap(reg){
+  const m={};
+  reg.forEach(a=>{
+    const e=(a.email||"").toLowerCase();
+    const ov=ROLE_OVERRIDE[e]||{};
+    const owner=OWNER_ALIAS[e];
+    m[e]={...a, email:e, role: ov.role || (owner?"CREDIT":a.role), name: ov.name || a.name,
+          owners: owner?[owner]:[], branches:a.branches||[]};
+  });
+  return m;
+}
+/* โหลด ACL สดจาก Admin_KycNew (ใช้เมื่อ embed บน SharePoint) */
+async function loadAcl(){
+  const url=`${_spPageContextInfo.webAbsoluteUrl}/_api/web/lists/getbytitle('${ACL_LIST_TITLE}')/items?$select=Id,Title&$top=5000`;
+  const r=await fetch(url,{headers:{'Accept':'application/json;odata=nometadata'},credentials:'same-origin'});
+  const j=await r.json();
+  return j.value.map(x=>classifyAcl(x.Id,(x.Title||"").trim()));
+}
+/* กติกาแปลงอีเมลในทะเบียน -> บทบาท + ขอบเขตสาขา */
+function classifyAcl(id,email){
+  const e=(email||"").toLowerCase(), local=e.split("@")[0];
+  let kind="USER", code="", role="VIEWER", name=email;
+  let m;
+  if((m=local.match(/^bi-v?operation([a-z0-9]+)_gm$/i))){ kind="BI_OPERATION"; code=m[1].toUpperCase(); role="BIOPS"; name="BI Operation "+code; }
+  else if((m=local.match(/^dohometogogm-([a-z0-9]+)$/i))){ kind="TOGO_GM"; code=m[1].toUpperCase(); role="GM"; name="Dohome To Go GM "+code; }
+  else if((m=local.match(/^gm-([a-z0-9]+)$/i))){ kind="BRANCH_GM"; code=m[1].toUpperCase(); role= m[1].toLowerCase()==="trainee"?"VIEWER":"GM"; name= m[1].toLowerCase()==="trainee"?"GM Trainee":"GM สาขา "+code; }
+  else { kind="NAMED_USER"; role="CREDIT"; name=email.split("@")[0]; }
+  const branches = code && kind!=="NAMED_USER" && code!=="TRAINEE" ? [CODE_TO_BRANCH(code)] : [];
+  return {id,email:e,kind,code,role,name,branches};
+}
 
 /* ============================================================
    [3] STATUS MAPPING
@@ -1210,12 +1993,16 @@ function resolveUser(){
   const q=new URLSearchParams(location.search);
   let email=(q.get("user")||"").toLowerCase(), name=q.get("name")||"", role=(q.get("role")||"").toUpperCase();
   if(!email && typeof _spPageContextInfo!=="undefined"){ email=(_spPageContextInfo.userEmail||"").toLowerCase(); name=_spPageContextInfo.userDisplayName||name; }
-  const dir=USER_DIRECTORY[email];
-  if(dir){ role=role||dir.role; name=name||dir.name; }
-  if(!ROLES[role]) role=dir?dir.role:DEFAULT_ROLE;
-  const branches=(q.get("branch")?q.get("branch").split(","):(dir&&dir.branches)||[]);
-  const owners=(q.get("owner")?q.get("owner").split(","):(dir&&dir.owners)||[]);
-  return {email:email||"(anonymous)",name:name||email||"ผู้ใช้ทั่วไป",role,branches,owners,...ROLES[role]};
+  const acl=ACL_MAP[email];                       // ← ตรวจสิทธิ์จากทะเบียน Admin_KycNew
+  const authorized=!!acl;
+  if(acl){ role=role||acl.role; name=name||acl.name; }
+  else if(ENFORCE_ACL){ role="DENIED"; }
+  if(!ROLES[role]) role= authorized? acl.role : (ENFORCE_ACL?"DENIED":"VIEWER");
+  const branches=(q.get("branch")? q.get("branch").split(",").map(s=>s.trim()) : ((acl&&acl.branches)||[]));
+  const owners=(q.get("owner")? q.get("owner").split(",").map(s=>s.trim()) : ((acl&&acl.owners)||[]));
+  return {email:email||"(anonymous)",name:name||email||"ผู้ใช้ทั่วไป",role,branches,owners,
+          authorized, aclId:acl?acl.id:null, aclKind:acl?acl.kind:"NOT_REGISTERED", aclCode:acl?acl.code:"",
+          ...ROLES[role]};
 }
 /* กรองข้อมูลตามสิทธิ์ (row-level security) */
 function applySecurity(rows){
@@ -1557,10 +2344,41 @@ function renderInsight(k){
 /* ============================================================
    [12] PERMISSION UI
    ============================================================ */
+function renderAcl(){
+  const q=($("#aclSearch")?$("#aclSearch").value:"").trim().toLowerCase();
+  const rows=ACL_REGISTRY.filter(a=>!q||a.email.includes(q)||(a.code||"").toLowerCase().includes(q)||(a.role||"").toLowerCase().includes(q));
+  const kindLabel={BI_OPERATION:"BI Operation สาขา",BRANCH_GM:"ผู้จัดการสาขา (GM)",TOGO_GM:"Dohome To Go GM",NAMED_USER:"ผู้ใช้รายบุคคล (HQ)"};
+  const dataBranches=new Set(RAW_DATA.map(r=>(r.branch||"").trim()).filter(Boolean));
+  $("#aclCount").textContent=ACL_REGISTRY.length;
+  $("#tblAcl").innerHTML=`<thead><tr><th>#</th><th>อีเมล (Title)</th><th>ประเภทบัญชี</th><th>รหัส</th><th>ขอบเขตสาขา</th><th>Role</th><th>PII</th><th>Export</th><th>มีข้อมูลใน DemoApp</th><th></th></tr></thead><tbody>`+
+   rows.map(a=>{const R=ROLES[ (ROLE_OVERRIDE[a.email]&&ROLE_OVERRIDE[a.email].role) || (OWNER_ALIAS[a.email]?"CREDIT":a.role) ]||ROLES.VIEWER;
+     const b=a.branches&&a.branches[0]?a.branches[0]:"";
+     const has= R.scope==="ALL"? "ทุกสาขา" : (b? (dataBranches.has(b)? `<span class="text-success">มี (${b})</span>`:`<span class="text-muted">ยังไม่มีรายการ</span>`):"—");
+     return `<tr class="${a.email===ME.email?'table-primary':''}"><td>${a.id}</td><td class="text-break">${esc(a.email)}</td>
+     <td>${kindLabel[a.kind]||a.kind}</td><td>${esc(a.code||"—")}</td><td>${esc(b||(R.scope==="ALL"?"ทุกสาขา":"—"))}</td>
+     <td><span class="badge bg-primary">${esc(R.label)}</span></td>
+     <td>${R.pii?'<i class="bi bi-check-lg text-success"></i>':'<i class="bi bi-eye-slash text-danger"></i>'}</td>
+     <td>${R.export?'<i class="bi bi-check-lg text-success"></i>':'<i class="bi bi-x-lg text-danger"></i>'}</td>
+     <td>${has}</td>
+     <td><a class="btn btn-sm btn-outline-secondary py-0" target="_blank" href="${ACL_DISP_FORM}${a.id}"><i class="bi bi-box-arrow-up-right"></i></a></td></tr>`;}).join("")
+   +`</tbody>`;
+  $("#aclShown").textContent=rows.length;
+  const byKind={}; ACL_REGISTRY.forEach(a=>byKind[a.kind]=(byKind[a.kind]||0)+1);
+  $("#aclSummary").innerHTML=Object.entries(byKind).map(([k,v])=>`<span class="badge bg-secondary me-1 mb-1">${kindLabel[k]||k}: ${v}</span>`).join("")
+    + `<span class="badge bg-info text-dark me-1 mb-1">รวม ${ACL_REGISTRY.length} บัญชี</span>`;
+}
+function renderDenied(){
+  const denied = ME.role==="DENIED";
+  $("#deniedBox").style.display = denied? "block":"none";
+  document.querySelectorAll(".secured-zone").forEach(el=>el.style.display = denied? "none":"");
+  if(denied) $("#deniedEmail").textContent = ME.email;
+}
 function renderPermission(){
+  renderAcl(); renderDenied();
   $("#curUser").textContent=ME.name; $("#curRole").textContent=ME.label;
   $("#curScope").textContent= ME.scope==="ALL"?"ทุกสาขา": ME.scope==="BRANCH"? ("สาขา: "+(ME.branches.join(", ")||"ยังไม่กำหนด")) : ("Owner: "+(ME.owners.join(", ")||"ยังไม่กำหนด"));
-  $("#permWho").textContent=`${ME.name} (${ME.email}) · บทบาท ${ME.label}`;
+  $("#permWho").innerHTML=`${esc(ME.name)} (${esc(ME.email)}) · บทบาท ${esc(ME.label)}<br>
+    <span class="small-muted">ทะเบียน Admin_KycNew: ${ME.authorized? `<span class="text-success">พบ (Item ID ${ME.aclId} · ${ME.aclKind}${ME.aclCode?" · "+ME.aclCode:""})</span>` : '<span class="text-danger">ไม่พบอีเมลนี้ในทะเบียน</span>'}</span>`;
   $("#permScope").textContent=$("#curScope").textContent;
   $("#permPii").innerHTML= ME.pii? '<span class="text-success">เห็นครบ</span>':'<span class="text-danger">ปิดบัง (masked)</span>';
   $("#permExport").innerHTML= ME.export? '<span class="text-success">อนุญาต</span>':'<span class="text-danger">ไม่อนุญาต</span>';
@@ -1597,7 +2415,12 @@ function buildColChooser(){
 }
 async function boot(first){
   let raw=RAW_DATA;
-  if(first && LIVE_MODE && typeof _spPageContextInfo!=="undefined"){ try{ raw=await loadLive(); }catch(e){ console.warn("LIVE_MODE failed, fallback to RAW_DATA",e);} }
+  if(first && LIVE_MODE && typeof _spPageContextInfo!=="undefined"){
+    try{ ACL_REGISTRY=await loadAcl(); ACL_MAP=buildAclMap(ACL_REGISTRY); ME=resolveUser(); }
+    catch(e){ console.warn("ACL live load failed, ใช้ทะเบียน snapshot แทน",e); }
+    try{ raw=await loadLive(); }catch(e){ console.warn("LIVE_MODE failed, fallback to RAW_DATA",e);} }
+  if(ME.role==="DENIED"){ DATA=[]; VIEW=[]; renderPermission();
+    $("#dataStamp").textContent="ถูกปฏิเสธการเข้าถึงข้อมูล"; $("#genAt").textContent=new Date().toLocaleString('th-TH'); return; }
   const all=normalize(raw);
   DATA=applySecurity(all);
   fillSelects(DATA); applyFilter(); renderPermission();
@@ -1605,8 +2428,10 @@ async function boot(first){
   $("#genAt").textContent=new Date().toLocaleString('th-TH');
 }
 document.addEventListener("DOMContentLoaded",()=>{
+  ACL_MAP=buildAclMap(ACL_REGISTRY);
   ME=resolveUser();
   buildColChooser();
+  $("#aclSearch").oninput=renderAcl;
   $("#btnApply").onclick=applyFilter;
   $("#btnReset").onclick=()=>{["fKeyword","fFrom","fTo"].forEach(i=>$("#"+i).value="");["fBranch","fOwner","fStatus","fType"].forEach(i=>$("#"+i).value="");
     document.querySelectorAll("#quickRange .btn").forEach(b=>b.classList.remove("active"));
