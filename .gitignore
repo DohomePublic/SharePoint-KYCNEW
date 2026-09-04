@@ -1,0 +1,3 @@
+data/raw_*.json
+__pycache__/
+*.pyc
