@@ -116,21 +116,20 @@ OK: index.html (82,388 bytes) | records=30 | users=65 | branches=14
 ```
 
 4. เสร็จแล้วเปิดลิงก์ได้ที่
-   `https://<username>.github.io/kyc-daily-dashboard/index.html?email=phongsapan.mar@dohome.co.th`
+   `https://<username>.github.io/<repo>/`  (ไม่ต้องใส่ `?email=` แล้ว)
 
 ---
 
 ## ขั้นที่ 7 — แจกลิงก์ให้ผู้ใช้งาน
 
-| ผู้ใช้ | ลิงก์ที่ส่งให้ | เห็นอะไร |
-|---|---|---|
-| Admin | `.../index.html?email=phongsapan.mar@dohome.co.th` | ทุกสาขา |
-| ผจก. สาขาอุดร | `.../index.html?email=GM-UD@dohome.co.th` | เฉพาะ UDOO |
-| ผจก. สาขาราชบุรี | `.../index.html?email=GM-RS@dohome.co.th` | เฉพาะ RSOO |
-| ทั่วไป | `.../index.html` | ขึ้นหน้ากรอกอีเมลก่อน |
+โหมดปัจจุบันคือ **Public View** — ส่งลิงก์เดียวให้ทุกคน เปิดแล้วเห็นข้อมูลครบทันที
 
-ถ้าเปิดโดยไม่ใส่ `?email=` ระบบจะแสดงหน้าให้กรอกอีเมล แล้วจำไว้ใน localStorage ครั้งถัดไป
-กดปุ่ม 🚪 มุมขวาบนเพื่อออกจากระบบ/เปลี่ยนผู้ใช้
+| ลิงก์ | ใช้ทำอะไร |
+|---|---|
+| `https://<username>.github.io/<repo>/` | Dashboard ปกติ |
+| `https://<username>.github.io/<repo>/?debug=1` | เปิด Debug Panel ดูจำนวน record / ชื่อสาขา / ตัวอย่าง JSON |
+
+> ไม่มีหน้าล็อกอินและไม่มี Access Denied แล้ว ถ้าเปิดมาแล้วว่าง แปลว่า build ดึงข้อมูลไม่ได้จริง ๆ (ดู log ของ Actions)
 
 ---
 
@@ -140,7 +139,7 @@ OK: index.html (82,388 bytes) | records=30 | users=65 | branches=14
 2. วางโค้ดนี้
 
 ```html
-<iframe src="https://<username>.github.io/kyc-daily-dashboard/index.html?email=GM-UD@dohome.co.th"
+<iframe src="https://<username>.github.io/<repo>/index.html"
         width="100%" height="2400" frameborder="0"></iframe>
 ```
 
@@ -176,8 +175,7 @@ OK: index.html (82,388 bytes) | records=30 | users=65 | branches=14
 | `404` ตอนดึง list | ชื่อ list ไม่ตรง — ลองใช้ GUID ของ list แทนชื่อ |
 | `Permission denied to github-actions[bot]` ตอน push | ยังไม่ได้ตั้ง **Read and write permissions** (ขั้นที่ 5) |
 | `! ไม่พบ raw_main.json -> ใช้ sample_main.json` | step ดึงข้อมูลล้มเหลว — ดู log ขั้นก่อนหน้า (ตอนนี้กำลังโชว์ข้อมูลตัวอย่าง ไม่ใช่ข้อมูลจริง) |
-| หน้าเว็บขึ้น **Access Denied** | อีเมลไม่มีใน list `Admin_KycNew` หรือถูกตั้ง `IsActive = No` |
-| Dashboard ว่างเปล่า | เปิด F12 → Console ดู error; ตรวจว่าโหลด CDN (Bootstrap/Chart.js) ได้ไหม |
+| Dashboard ว่างเปล่า | เปิดด้วย `?debug=1` ดูจำนวน record; ถ้าเป็น 0 แปลว่า fetch ไม่สำเร็จ; ถ้ามี record แต่ไม่แสดง ให้ดู F12 → Console ว่าโหลด CDN (Bootstrap/Chart.js/DataTables) ได้ไหม |
 
 ---
 
@@ -187,7 +185,7 @@ OK: index.html (82,388 bytes) | records=30 | users=65 | branches=14
 pip install requests
 python scripts/build_dashboard.py          # ไม่มี raw_*.json จะใช้ data/sample_*.json
 python -m http.server 8080
-# เปิด http://localhost:8080/index.html?email=phongsapan.mar@dohome.co.th
+# เปิด http://localhost:8080/index.html
 ```
 
 ทดสอบดึงข้อมูลจริงบนเครื่อง (ระวังอย่า commit ค่าเหล่านี้):

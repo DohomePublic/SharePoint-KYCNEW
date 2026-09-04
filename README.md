@@ -6,7 +6,7 @@ Dashboard รายวันจาก SharePoint Online List `DemoApp` + `Admin_
 ## 🔄 วิธีทำงาน
 1. **GitHub Actions รันทุกวัน 07:00 น. ICT** — `cron: "0 0 * * *"` (00:00 UTC = 07:00 ICT)
 2. `scripts/fetch_sharepoint.py` ดึงข้อมูลผ่าน **Microsoft Graph API** (client-credentials, paging รองรับ > 5,000 records)
-3. `scripts/build_dashboard.py` normalize + คำนวณ RBAC แล้วฝัง JSON ลง `templates/dashboard.html`
+3. `scripts/build_dashboard.py` normalize ข้อมูล แล้วฝัง JSON ลง `templates/dashboard.html`
 4. เขียน `index.html` ใหม่ → **Commit + Push** → **GitHub Pages อัปเดตอัตโนมัติ**
 
 ```
@@ -29,19 +29,14 @@ index.html                              ← ผลลัพธ์ที่ GitHu
 App Registration ต้องได้ **Application permission** `Sites.Selected` (แนะนำ) หรือ `Sites.Read.All` + admin consent
 และเปิด Settings → Pages → Source = **GitHub Actions**
 
-## 🔐 Security (RBAC by Email)
-ตรวจสิทธิ์จาก List `Admin_KycNew` (คอลัมน์ `Title` = อีเมล) — เปิดหน้าเว็บด้วย `?email=you@dohome.co.th` หรือกรอกในหน้า Sign-in (จำไว้ใน localStorage)
+## 🌐 โหมดการเข้าถึง : Public (ไม่มีการล็อกอิน)
+เปิดลิงก์ปุ๊บเห็นข้อมูลทันที ไม่ต้องกรอกอีเมล ไม่ต้องใส่ `?email=` — ทุกคนเห็นข้อมูลชุดเดียวกันครบทุก record
 
-| Role | เงื่อนไขที่ระบบแยกให้อัตโนมัติ | ขอบเขตข้อมูล |
-|---|---|---|
-| **Admin** | อยู่ใน `ADMIN_EMAILS` | ทุก record |
-| **Branch Manager** | `GM-XX@`, `BI-OperationXX_GM@`, `BI-VOperationXX_GM@`, `Dohometogogm-XX@` | เฉพาะสาขา `XX` (จับคู่ `XX` ↔ `XXOO`) |
-| **Owner** | อีเมลอื่นที่อยู่ใน list | เฉพาะงานที่ `OwnerEmail`/ชื่อ Owner ตรงกับตน |
-| **Access Denied** | ไม่พบอีเมล หรือ `IsActive = No` | ไม่เห็นข้อมูล |
+- ไม่มีหน้า Sign-in / Access Denied อีกต่อไป
+- ข้อมูลจาก `Admin_KycNew` ยังถูกดึงและฝังไว้ในตัวแปร `USERS` (เผื่อใช้ต่อยอด) แต่ **ไม่ถูกใช้กรองข้อมูล**
+- ถ้าอยากเปิด RBAC กลับมาในอนาคต แก้ที่ฟังก์ชันเดียวคือ `getScopedData()` ใน `templates/dashboard.html`
 
-> ถ้าเพิ่มคอลัมน์ `Role`, `Branch`, `IsActive`, `OwnerEmail` ใน SharePoint เมื่อใด สคริปต์จะใช้ค่าจาก List ทันที (override กติกาอัตโนมัติ)
->
-> ⚠️ GitHub Pages เป็น static hosting — RBAC ทำงานฝั่ง client จึงเป็นการ *แบ่งมุมมอง* ไม่ใช่การป้องกันระดับเซิร์ฟเวอร์ ถ้าข้อมูลเป็นความลับสูง ให้ใช้ **private repo + GitHub Pages แบบ private (Enterprise)** หรือ embed หน้านี้บน SharePoint Modern Page แล้วดึงข้อมูลด้วย REST API แบบ real-time แทน
+> ⚠️ เมื่อเป็น public repo + GitHub Pages ข้อมูลใน `index.html` จะเปิดเผยต่อสาธารณะ ถ้าข้อมูลเป็นความลับ ให้ใช้ private repo + Pages แบบ Enterprise หรือ embed บน SharePoint Modern Page แทน
 
 ## 🧩 ฟีเจอร์
 1. **Executive Summary** — Total / New Today / 7 วัน / 30 วัน / Pending / In Progress / Completed / Issue
@@ -59,7 +54,7 @@ UI: Bootstrap 5, Font Awesome 6, DataTables, Corporate Blue `#005BAC`, Responsiv
 ```bash
 pip install requests
 python scripts/build_dashboard.py    # ไม่มี raw_*.json จะใช้ data/sample_*.json
-python -m http.server 8080           # เปิด http://localhost:8080/index.html?email=you@dohome.co.th
+python -m http.server 8080           # เปิด http://localhost:8080/index.html  (debug: เติม ?debug=1)
 ```
 
 ## 📌 การจัดกลุ่มสถานะ
