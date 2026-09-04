@@ -1,174 +1,250 @@
-# SharePoint-KYCNEW — DemoApp Daily Dashboard
+# DemoApp · Daily Dashboard (SharePoint → GitHub Pages)
 
-Dashboard รายวันสำหรับ SharePoint List **DemoApp** (ไซต์ `AC-Accounting`)
-ไฟล์เดียวจบ: HTML + CSS + JavaScript · Bootstrap 5 · Chart.js · Dark Mode · Responsive
-
-🔗 **Live:** https://dohomepublic.github.io/SharePoint-KYCNEW/
-
----
-
-## 📁 โครงสร้าง repo
+Dashboard รายวันของ SharePoint List **DemoApp** (ไซต์ `AC-Accounting`)
+ดึงข้อมูลอัตโนมัติด้วย GitHub Actions แล้ว publish เป็นหน้าเว็บไฟล์เดียว
 
 ```
-SharePoint-KYCNEW/
-├── index.html                          ← Dashboard ทั้งหมด (ไฟล์เดียว)
-├── data.json                           ← ข้อมูลสำรอง (MODE C)
-├── .nojekyll                           ← ปิด Jekyll ของ GitHub Pages
-├── README.md
-└── .github/
-    └── workflows/
-        └── sync-sharepoint.yml         ← sync อัตโนมัติทุก 15 นาที
+sharepoint-web/
+├── .github/
+│   └── workflows/
+│       └── update-dashboard.yml   ← GitHub Actions workflow (ดึงข้อมูล + deploy)
+├── scripts/
+│   ├── build_dashboard.py         ← ดึงข้อมูล SharePoint + สร้าง HTML
+│   └── template.html              ← เทมเพลต (มี placeholder __DATA__/__ACL__/__GENAT__)
+├── data/                          ← CSV สำรองสำหรับ dev/offline (ไม่ใช้ใน CI)
+│   ├── DemoApp.csv
+│   └── Admin_KycNew.csv
+├── index.html                     ← Dashboard (auto-generated ห้ามแก้มือ)
+└── README.md
 ```
 
 ---
 
-## 🚀 นำขึ้น GitHub (3 ขั้นตอน)
+## 1. Data Flow
 
-### ขั้นที่ 1 — Push ไฟล์
-
-```bash
-git clone https://github.com/DohomePublic/SharePoint-KYCNEW.git
-cd SharePoint-KYCNEW
-
-# คัดลอกไฟล์ทั้งหมดจาก zip มาวางทับ (รวมโฟลเดอร์ .github และไฟล์ .nojekyll)
-
-git add -A
-git commit -m "feat: DemoApp dashboard v3 พร้อม live connect ผ่าน Microsoft Graph"
-git push origin main
+```
+SharePoint List DemoApp ─┐
+                         ├─► Microsoft Graph (app-only) ─► build_dashboard.py ─► index.html ─► GitHub Pages
+SharePoint List Admin_KycNew ─┘                                    │
+                                                                   └─► ACL 65 บัญชี (คอลัมน์ Title = อีเมล)
 ```
 
-> ⚠️ ไฟล์ `.nojekyll` และโฟลเดอร์ `.github` ขึ้นต้นด้วยจุด — บางระบบซ่อนไว้
-> ตรวจว่า push ขึ้นไปจริงด้วย `git status` ก่อน commit
+| ลิสต์ | บทบาท | คอลัมน์ที่ใช้ |
+|---|---|---|
+| `DemoApp` | ข้อมูลคำขอ KYC/สินเชื่อ | 31 คอลัมน์ (ดู `FIELD_MAP` ใน `build_dashboard.py`) |
+| `Admin_KycNew` | ทะเบียนผู้มีสิทธิ์ (ACL) | `Title` = อีเมล → แปลงเป็น role อัตโนมัติ |
 
-### ขั้นที่ 2 — เปิด GitHub Pages
+**กติกาแปลงอีเมล → สิทธิ์** (ตรงกันทั้งฝั่ง Python และ JavaScript)
 
-**Settings → Pages**
-- Source: `Deploy from a branch`
-- Branch: `main` · Folder: `/ (root)`
-- Save → รอ 1-2 นาที
-
-### ขั้นที่ 3 — ตั้งค่า Entra ID (สำคัญที่สุด ⚠️)
-
-ถ้าข้ามขั้นนี้ Dashboard จะแสดงข้อมูล snapshot อย่างเดียว ไม่ดึงสด
-
-ไปที่ **Entra admin center → App registrations → Sharepoint-web**
-
-**3.1 Authentication**
-- คลิก **Add a platform** → เลือก **Single-page application** (ห้ามเลือก "Web")
-- ใส่ Redirect URI ให้ครบทั้ง 2 บรรทัด:
-  ```
-  https://dohomepublic.github.io/SharePoint-KYCNEW/
-  https://dohomepublic.github.io/SharePoint-KYCNEW/index.html
-  ```
-- Save
-
-**3.2 API permissions**
-- **Add a permission** → Microsoft Graph → **Delegated permissions** → `Sites.Read.All`
-- คลิก **Grant admin consent for Dohome** (ต้องเป็น Global Admin)
-- สถานะต้องขึ้นเครื่องหมายถูกเขียวทั้งแถว
-
-**3.3 ทดสอบ**
-เปิด https://dohomepublic.github.io/SharePoint-KYCNEW/
-→ กดปุ่ม **"เชื่อมต่อ SharePoint"** → login → badge เปลี่ยนเป็นสีเขียว `GRAPH (MSAL)`
+| รูปแบบอีเมล | ประเภท | Role | ขอบเขต |
+|---|---|---|---|
+| `BI-Operation<XX>_GM@` / `BI-VOperation<XX>_GM@` | BI_OPERATION | `BIOPS` | สาขา `<XX>OO` |
+| `GM-<XX>@` | BRANCH_GM | `GM` | สาขา `<XX>OO` |
+| `GM-trainee@` | BRANCH_GM | `VIEWER` | ดูอย่างเดียว ไม่เห็น PII |
+| `Dohometogogm-<XX>@` | TOGO_GM | `GM` | สาขา `<XX>OO` |
+| อีเมลรายบุคคล (HQ) | NAMED_USER | `CREDIT` | ทุกสาขา |
 
 ---
 
-## 🔌 3 โหมดดึงข้อมูล (เลือกอัตโนมัติ + fallback ต่อกัน)
+## 2. ตั้งค่าครั้งแรก
 
-| โหมด | เงื่อนไข | ต้อง login | ใช้เมื่อไหร่ |
-|------|----------|-----------|-------------|
-| **A · EMBED** | หน้าอยู่บนโดเมน `sharepoint.com` | ไม่ต้อง | ฝังใน SharePoint Site Page |
-| **B · GRAPH** | มี clientId + tenantId | ครั้งแรกครั้งเดียว | GitHub Pages ← **ใช้อันนี้** |
-| **C · JSON** | มีไฟล์ `data.json` | ไม่ต้อง | หน้า public / ไม่มีสิทธิ์ Entra |
+### 2.1 สร้าง Azure AD App (app-only, ไม่ต้องมีผู้ใช้ล็อกอิน)
 
-ระบบไล่ลองตามลำดับ A → B → C → snapshot ในไฟล์
-แผง **"0. Data Connection"** บอกทุกครั้งว่าใช้โหมดไหน และโหมดที่ล้มเหลวเพราะอะไร
+1. Azure Portal → **Microsoft Entra ID → App registrations → New registration**
+   ตั้งชื่อเช่น `sp-demoapp-dashboard` → Register
+2. **Certificates & secrets → New client secret** → คัดลอกค่า **Value** (เห็นครั้งเดียว)
+3. **API permissions → Add a permission → Microsoft Graph → Application permissions**
+   - `Sites.Selected` *(แนะนำ — ให้สิทธิ์เฉพาะไซต์)* หรือ `Sites.Read.All`
+   - กด **Grant admin consent**
+4. ถ้าใช้ `Sites.Selected` ต้องให้สิทธิ์เฉพาะไซต์เพิ่ม (รันโดย SharePoint Admin):
 
-### ทางเลือก MODE A — ฝังใน SharePoint (ง่ายกว่า ไม่ต้องตั้ง Entra ID)
+```powershell
+# PowerShell + PnP.PowerShell
+Connect-PnPOnline -Url "https://dohomegroup.sharepoint.com/sites/AC-Accounting" -Interactive
+Grant-PnPAzureADAppSitePermission -AppId "<CLIENT_ID>" -DisplayName "sp-demoapp-dashboard" -Permissions Read
+```
 
-1. อัปโหลด `index.html` ไปที่ **Site Assets** ของ `/sites/AC-Accounting`
-2. สร้าง Site Page → เพิ่ม web part **Embed** → วาง:
-   ```html
-   <iframe src="https://dohomegroup.sharepoint.com/sites/AC-Accounting/SiteAssets/index.html"
-           width="100%" height="2400" frameborder="0"></iframe>
-   ```
-3. ถ้า Embed ถูกบล็อก ให้ admin เพิ่มโดเมนที่
-   **SharePoint admin center → Settings → Embed HTML**
+### 2.2 ใส่ Secrets ใน GitHub
 
----
-
-## 🤖 เปิด Auto-sync (MODE C)
-
-ให้ GitHub Action ดึงข้อมูลมาเขียน `data.json` ทุก 15 นาที — หน้าเว็บจะสดโดยไม่ต้อง login เลย
-
-**Settings → Secrets and variables → Actions → New repository secret** สร้าง 3 ตัว:
+**Settings → Secrets and variables → Actions → New repository secret**
 
 | ชื่อ | ค่า |
-|------|-----|
-| `AZ_TENANT_ID` | `7f8918d9-718a-495b-ac9a-17cba381c4a0` |
-| `AZ_CLIENT_ID` | `a37bd62d-e74d-4ea0-9546-1eb5aa96f604` |
-| `AZ_CLIENT_SECRET` | สร้างที่ Entra ID → Sharepoint-web → Certificates & secrets → New client secret |
+|---|---|
+| `TENANT_ID` | Directory (tenant) ID |
+| `CLIENT_ID` | Application (client) ID |
+| `CLIENT_SECRET` | ค่า secret จากข้อ 2.1.2 |
 
-จากนั้นเพิ่มสิทธิ์แบบ **Application** (คนละอันกับ Delegated ในขั้นที่ 3.2):
-Microsoft Graph → **Application permissions** → `Sites.Read.All` → **Grant admin consent**
+**Variables** (ไม่บังคับ — มีค่า default ในสคริปต์อยู่แล้ว)
 
-ทดสอบ: แท็บ **Actions** → `Sync SharePoint DemoApp` → **Run workflow**
+| ชื่อ | ค่า default |
+|---|---|
+| `SITE_HOSTNAME` | `dohomegroup.sharepoint.com` |
+| `SITE_PATH` | `/sites/AC-Accounting` |
+| `LIST_DEMOAPP` | `DemoApp` |
+| `LIST_ACL` | `Admin_KycNew` |
 
----
+### 2.3 เปิด GitHub Pages
 
-## 🩺 แก้ปัญหา
-
-| อาการ | สาเหตุ | วิธีแก้ |
-|-------|--------|---------|
-| badge แดง `SNAPSHOT` | ยังไม่ได้ login | กดปุ่ม "เชื่อมต่อ SharePoint" |
-| `AADSTS50011` | Redirect URI ไม่ตรง | คัดลอก URI จากหน้าเว็บไปใส่ใน Entra ID |
-| `AADSTS9002326` | เลือกแพลตฟอร์มผิด | ลบทิ้ง แล้วสร้างใหม่เป็น **SPA** |
-| `AADSTS65001` / Graph 403 | ยังไม่ได้ consent | Grant admin consent สิทธิ์ `Sites.Read.All` |
-| `AADSTS700016` | ไม่พบ Client ID | ตรวจ clientId/tenantId ใน `CONFIG` |
-| Graph 404 | ไม่พบ list | ตรวจชื่อ `CONFIG.list` = `DemoApp` |
-| หน้าเว็บยังเป็นของเก่า | CDN cache ของ GitHub Pages (~10 นาที) | Ctrl+Shift+R หรือรอสักครู่ |
-| CORS error ใน console | เรียก `/_api/` จากนอกโดเมน SharePoint | ปกติ — ระบบจะ fallback ไป Graph เอง |
-
-หมดทางแล้ว: ใช้ปุ่ม **CSV** อัปโหลดไฟล์ export จาก SharePoint โดยตรง (รองรับภาษาไทย)
+**Settings → Pages → Source = GitHub Actions**
 
 ---
 
-## ⚙️ ปรับแต่ง
+## 3. ตารางเวลาอัปเดต
 
-แก้ที่ block `CONFIG` บนสุดของ `<script>` ใน `index.html`
+| Trigger | เวลา |
+|---|---|
+| `schedule` | ทุก **30 นาที** ระหว่าง 07:00–20:00 น. (ไทย) จันทร์–ศุกร์ |
+| `schedule` | รอบสรุป 21:00 น. (ไทย) |
+| `workflow_dispatch` | กดรันเองได้ทันทีจากแท็บ **Actions** |
+| `push` | เมื่อแก้ `scripts/**` หรือไฟล์ workflow |
 
-```js
-const CONFIG = {
-  list: "DemoApp",              // ชื่อ list
-  autoRefreshSec: 300,          // refresh อัตโนมัติ (วินาที) · 0 = ปิด
-  staleHours: 24,               // เกินกี่ชั่วโมงถือว่างานค้าง
-  openStatuses:    ["รอดำเนินการ","รอการพิจารณาเบื้องต้น","รอผู้จัดการ D3 อนุมัติ","Draft"],
-  closedStatuses:  ["อนุมัติ-KYC","ผ่านการพิจารณาเบื้องต้น"],
-  problemStatuses: ["ไม่ผ่านการพิจารณาเบื้องต้น"]
-};
+> ⚠️ cron ของ GitHub Actions อาจดีเลย์ 5–15 นาทีในช่วงที่ระบบมีงานหนาแน่น เป็นพฤติกรรมปกติของ GitHub
+
+---
+
+## 4. รันในเครื่อง (dev)
+
+```bash
+# โหมด CSV — ใช้ไฟล์ใน data/ ไม่ต้องมี credential
+python scripts/build_dashboard.py --source csv
+
+# โหมด Graph — ดึงสดจาก SharePoint
+export TENANT_ID=... CLIENT_ID=... CLIENT_SECRET=...
+python scripts/build_dashboard.py --source graph
+
+# ปิดบัง PII ก่อนเขียนไฟล์ (เมื่อ deploy ที่สาธารณะ)
+python scripts/build_dashboard.py --mask-pii
 ```
 
+**Options ทั้งหมด**
+
+| Option | ค่า default | ความหมาย |
+|---|---|---|
+| `--out` | `index.html` | ไฟล์ผลลัพธ์ |
+| `--source` | `auto` | `auto` / `graph` / `csv` |
+| `--data-csv` | `data/DemoApp.csv` | CSV ของ DemoApp |
+| `--acl-csv` | `data/Admin_KycNew.csv` | CSV ของ Admin_KycNew |
+| `--min-records` | `1` | ถ้าดึงได้น้อยกว่านี้ **ไม่เขียนทับ** `index.html` (exit 2) |
+| `--mask-pii` | ปิด | ปิดบัง 7 คอลัมน์ PII ก่อนเขียนไฟล์ |
+
+`build_dashboard.py` ใช้เฉพาะ **standard library** ของ Python 3.10+ (ไม่ต้อง `pip install`)
+
 ---
 
-## 📊 ฟีเจอร์
+## 5. ความปลอดภัย (อ่านก่อน deploy)
 
-- **KPI 12 การ์ด** — Total, New Today, Closed Today, Pending, Success Rate, Avg Processing, ย้อนหลัง 7/30 วัน, กำลังดำเนินการ, เสร็จสิ้น, มีปัญหา, Pending Age
-- **Filter** — keyword, สาขา, ผู้ดูแล, สถานะ, ช่วงวันที่
-- **กราฟ 5 แบบ** — Bar (สาขา), Pie (สถานะ), Line (แนวโน้มรายวัน), Stacked Bar (สาขา×สถานะ), Top 10 Owner · คลิกกราฟเพื่อ drill down
-- **Branch / Owner Analytics** — ranking, %, งานเปิด/ปิด/ค้าง
-- **ตารางรายละเอียด** — sort ทุกคอลัมน์, ค้นหา, pagination, Export Excel/CSV, ลิงก์ไป DispForm
-- **Auto Insight** — สาขาสูงสุด, ผู้ดูแลงานมากสุด, growth เทียบวันก่อน, anomaly detection, ข้อเสนอแนะเชิงธุรกิจ
+| หัวข้อ | รายละเอียด |
+|---|---|
+| 🔴 **Repo ต้องเป็น Private** | `index.html` ฝังข้อมูลลูกค้าจริง (ชื่อ, เลขทะเบียน, เบอร์โทร, วงเงิน) — ถ้า repo เป็น public ข้อมูลจะเปิดสู่สาธารณะทันที |
+| 🔴 **GitHub Pages ของ repo private ยังเป็น public** ในแพ็กเกจ Free/Pro — ต้องใช้ **GitHub Enterprise Cloud** จึงจะจำกัดผู้เข้าถึงได้ ถ้าไม่มี ให้ deploy ด้วย `--mask-pii` |
+| 🟡 **Login ฝั่ง client เป็น UI-layer** | ผู้ที่ View Source ยังเห็น `RAW_DATA` ได้ — ต้องกันการเข้าถึงที่ระดับ repo/Pages ควบคู่เสมอ |
+| 🟢 **ไม่มีอีเมลใน UI ล็อกอิน** | หน้าล็อกอินไม่แสดง/ไม่ autocomplete รายชื่ออีเมล ผู้ใช้ต้องพิมพ์เอง และข้อความ error ไม่บอกว่าอีเมลมีอยู่จริงหรือไม่ (กัน account enumeration) |
+| 🟢 **Secret ไม่อยู่ในโค้ด** | `CLIENT_SECRET` อยู่ใน GitHub Secrets เท่านั้น ไม่ถูกพิมพ์ลง log |
+| 🟡 **หมุน Client Secret** | ตั้งอายุ 6–12 เดือน และจดวันหมดอายุไว้ ถ้าหมดอายุ workflow จะ fail ที่ขั้นขอ token |
 
 ---
 
-## ⚠️ ปัญหาข้อมูลที่ตรวจพบ
+## 6. Troubleshooting
 
-คอลัมน์ `Status` และ `Status_1` ไม่ sync กัน **11 รายการ**
-(ID 551, 554, 559, 563, 564, 565, 566, 567, 568, 570, 571)
+| อาการ | สาเหตุ / วิธีแก้ |
+|---|---|
+| `HTTP 401` ตอนขอ token | `TENANT_ID`/`CLIENT_ID`/`CLIENT_SECRET` ผิด หรือ secret หมดอายุ → สร้างใหม่ |
+| `HTTP 403` ตอนเรียก `/sites/...` | ยังไม่ได้ **Grant admin consent** หรือใช้ `Sites.Selected` แต่ยังไม่ได้ `Grant-PnPAzureADAppSitePermission` |
+| `HTTP 404` ที่ `/lists/DemoApp` | ชื่อลิสต์ไม่ตรง (ใช้ **ชื่อที่แสดง**) → ตั้ง variable `LIST_DEMOAPP` ให้ถูก |
+| ได้ข้อมูลไม่ครบ | สคริปต์ไล่ `@odata.nextLink` อยู่แล้ว ถ้ายังขาด ให้ตรวจ **View Threshold** และสิทธิ์ระดับ item |
+| คอลัมน์บางช่องว่างเปล่า | ชื่อ internal name เปลี่ยน → แก้ `FIELD_MAP` (สคริปต์ลอง fallback แบบไม่มี `_x0020_` ให้แล้ว) |
+| `exit code 2` | ดึงได้น้อยกว่า `--min-records` → ระบบ **ไม่เขียนทับ** `index.html` เดิมโดยตั้งใจ |
+| Pages ไม่อัปเดต | ตรวจ Settings → Pages → Source ต้องเป็น **GitHub Actions**; และดู job `deploy` ใน Actions |
+| หน้าเว็บขึ้น badge **OFFLINE** | ปกติเมื่อเปิดนอก SharePoint — ข้อมูลมาจาก snapshot ที่ workflow สร้าง (ดูเวลาที่ `srcDetail`) |
 
-Workflow เขียนค่าใหม่ลง `Status` แต่ `Status_1` ยังค้างค่าเดิม → รายงานที่ผูกกับ `Status_1` จะเห็นข้อมูลเก่า
+---
 
-Dashboard นี้อ่านจาก **`Status`** จึงถูกต้องเสมอ และขึ้นแบนเนอร์เตือนอัตโนมัติ
+## 6.1 🔴 "Workflow รันผ่าน (เขียว) แต่ข้อมูลไม่อัปเดต"
 
-**แก้ที่ต้นทาง:** ใน Power Automate ให้ action *Update item* เขียนทั้ง `Status` และ `Status_1` พร้อมกัน
-หรือเลิกใช้คอลัมน์คู่ แล้วให้ทุกรายงานอ่าน `Status` อย่างเดียว
+นี่คืออาการที่เจอบ่อยที่สุด และ **เกือบทุกครั้งเกิดจาก secret ไม่ถูกอ่าน** ทำให้สคริปต์เงียบ ๆ
+ถอยไปอ่าน CSV เก่าในโฟลเดอร์ `data/` แล้วจบด้วย exit 0 → Actions ขึ้นเขียว แต่ข้อมูลเป็นชุดเดิม
+
+### ตรวจ 4 จุดนี้ตามลำดับ
+
+**1) เปิด Actions log → ดูบรรทัด `| โหมด |` ในตาราง Job Summary**
+
+| ค่าที่เห็น | แปลว่า |
+|---|---|
+| `LIVE via Microsoft Graph` | ✅ ถูกต้อง ดึงจาก SharePoint จริง |
+| `CSV snapshot` | ❌ **นี่คือสาเหตุ** ไม่ได้ต่อ SharePoint เลย |
+
+**2) ดูบรรทัด `| ข้อมูลเปลี่ยนแปลง |`**
+ถ้าขึ้น `⚠️ ไม่เปลี่ยน` ทั้งที่ใน SharePoint มีรายการใหม่ = ดึงผิดลิสต์ หรือดึงมาไม่ครบ
+
+**3) ตรวจชื่อ Secrets ให้ตรงเป๊ะ** (Settings → Secrets and variables → **Actions**)
+ต้องเป็นตัวพิมพ์ใหญ่ทั้งหมด ห้ามมีช่องว่าง/ขึ้นบรรทัดใหม่ต่อท้ายตอน paste
+
+```
+TENANT_ID
+CLIENT_ID
+CLIENT_SECRET
+```
+
+> ⚠️ ถ้าใส่ไว้ใน **Environment secrets** หรือ **Dependabot secrets** workflow จะมองไม่เห็น
+> ⚠️ ค่าที่ต้องใส่ใน `CLIENT_SECRET` คือ **Value** ไม่ใช่ **Secret ID**
+
+**4) ตรวจ `build-info.json` ใน repo** — ไฟล์นี้ถูกเขียนใหม่ทุก build
+
+```json
+{ "mode": "LIVE via Microsoft Graph", "count": 27, "max_id": 571,
+  "latest_timestamp": "...", "sha256": "2fc5cbceeaddb06d" }
+```
+
+ถ้า `sha256` เท่าเดิมทุกรอบ = ข้อมูลไม่ขยับจริง ๆ
+
+### กลไกป้องกันที่ใส่ไว้แล้ว
+
+| กลไก | พฤติกรรม |
+|---|---|
+| **Preflight ตรวจ secrets** (step ที่ 3) | ถ้า secret ขาด → **fail ทันที** พร้อมบอกว่าตัวไหนหาย ไม่ปล่อยให้เขียวหลอก |
+| `REQUIRE_LIVE=true` (ตั้งใน workflow) | สคริปต์ **ห้าม** fallback ไป CSV → `exit 3` |
+| **Verify output** (step ที่ 6) | ถ้าผลลัพธ์ยังเป็น `CSV snapshot` → fail job |
+| `--min-records` | ดึงได้น้อยผิดปกติ → `exit 2` ไม่เขียนทับไฟล์เดิม |
+| fingerprint `sha256` | เทียบข้อมูลกับ build ก่อนหน้า แล้วรายงานใน Job Summary |
+
+รันในเครื่องเพื่อจำลอง:
+
+```bash
+REQUIRE_LIVE=true python scripts/build_dashboard.py     # ไม่มี secret -> exit 3
+echo $?                                                  # 3
+```
+
+### ถ้าโหมดขึ้น LIVE แล้วแต่ "หน้าเว็บ" ยังเก่า
+
+เป็นปัญหา **แคช** ไม่ใช่ปัญหาข้อมูล
+
+1. กด **Ctrl + Shift + R** (Mac: `Cmd + Shift + R`) — หน้ามี `<meta http-equiv="Cache-Control">` และ `build-version` ให้แล้ว
+2. Settings → **Pages** → Source ต้องเป็น **GitHub Actions** (ถ้าเป็น *Deploy from a branch* จะช้ากว่ามาก)
+3. ดู job `deploy` ว่าเขียวจริง
+4. CDN ของ GitHub Pages ใช้เวลา ~1–3 นาทีหลัง deploy
+5. ถ้าฝังใน SharePoint ให้กดปุ่ม **🔄 รีเฟรช** บน dashboard (โหมด LIVE ยิง REST ตรง ไม่ผ่าน Pages)
+6. บน dashboard จะมีป้ายเตือน **"ข้อมูลเก่า N ชม."** อัตโนมัติเมื่อ snapshot เกิน 24 ชม.
+
+### เรื่องเวลา cron
+
+`schedule:` ของ GitHub Actions **ไม่ตรงเวลาเป๊ะ** ปกติดีเลย์ 5–15 นาที และช่วง peak อาจข้ามรอบ
+ถ้าต้องการข้อมูลเดี๋ยวนั้น ให้กด **Run workflow** (`workflow_dispatch`) เอง
+
+> 🔐 **คำเตือนเรื่อง repo สาธารณะ**
+> ถ้า repo เป็น **Public** ข้อมูลใน `index.html` / `data/*.csv` (ชื่อลูกค้า เบอร์โทร อีเมลผู้ดูแล 65 บัญชี)
+> จะเปิดให้คนทั้งอินเทอร์เน็ตเห็น รวมถึงถูกเก็บไว้ใน **git history** ตลอดไป
+> → เปลี่ยนเป็น **Private** หรือรันด้วย `--mask-pii` (ตั้ง `MASK_PII: "true"` ใน workflow)
+
+---
+
+## 7. หมายเหตุการแสดงผล
+
+`index.html` รองรับ 2 โหมด
+
+| ที่ตั้ง | โหมด | ที่มาข้อมูล |
+|---|---|---|
+| GitHub Pages | `SNAPSHOT` | ข้อมูลที่ workflow ดึงมาตอน build (มี timestamp บนหน้าจอ) |
+| ฝังใน SharePoint (Embed WebPart ไซต์เดียวกัน) | `LIVE` | ยิง REST ตรงไปที่ลิสต์ `DemoApp` แบบ no-cache + ปุ่มรีเฟรช + auto-refresh 5 นาที |
+
+ปรับค่าได้ที่หัวสคริปต์ใน `scripts/template.html` ส่วน `[1] DATA BINDING`:
+`LIVE_MODE` (`"auto"`/`true`/`false`) · `SITE_URL` · `LIST_TITLE` · `PAGE_SIZE_API` · `AUTO_REFRESH_MIN`

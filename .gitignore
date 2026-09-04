@@ -1,5 +1,14 @@
+# credentials — ห้าม commit เด็ดขาด
+.env
+*.pem
+*.pfx
+secrets.json
+
+# python
 __pycache__/
 *.pyc
 .venv/
-dist/
-*.log
+
+# build scratch
+*.tmp.html
+.DS_Store
