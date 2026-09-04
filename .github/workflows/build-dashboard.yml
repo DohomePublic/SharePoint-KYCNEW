@@ -1,110 +1,153 @@
-name: Sync SharePoint DemoApp
+name: Update Dashboard
 
-# ดึงข้อมูลจาก SharePoint List "DemoApp" มาเขียนทับ data.json
-# ต้องสร้าง Repository secrets 3 ตัวก่อน (Settings > Secrets and variables > Actions):
-#   AZ_TENANT_ID     = 7f8918d9-718a-495b-ac9a-17cba381c4a0
-#   AZ_CLIENT_ID     = a37bd62d-e74d-4ea0-9546-1eb5aa96f604
-#   AZ_CLIENT_SECRET = <Entra ID > Sharepoint-web > Certificates & secrets > New client secret>
-# และต้องเพิ่ม API permission แบบ Application (ไม่ใช่ Delegated):
-#   Microsoft Graph > Application > Sites.Read.All  -> Grant admin consent
+# ─────────────────────────────────────────────────────────────
+# ดึงข้อมูลจาก SharePoint List (DemoApp + Admin_KycNew)
+# แล้ว build index.html ใหม่ → commit → deploy GitHub Pages
+#
+# ออกแบบให้ "ล้มเหลวแบบดัง" — ถ้าดึงข้อมูลสดไม่ได้ workflow จะเป็นสีแดง
+# ไม่ใช่เขียวทั้งที่ข้อมูลเก่า (REQUIRE_LIVE)
+# ─────────────────────────────────────────────────────────────
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    # ทุก 30 นาที ระหว่าง 00:00–13:00 UTC = 07:00–20:00 เวลาไทย (จ.-ศ.)
+    - cron: "0,30 0-13 * * 1-5"
+    # รอบสรุปสิ้นวัน 21:00 เวลาไทย
+    - cron: "0 14 * * 1-5"
   workflow_dispatch:
+    inputs:
+      mask_pii:
+        description: "ปิดบังข้อมูลส่วนบุคคล (ใช้เมื่อ Pages เป็น public)"
+        type: boolean
+        default: false
+      require_live:
+        description: "บังคับดึงสดเท่านั้น (ปิด = ยอมให้ fallback CSV)"
+        type: boolean
+        default: true
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - ".github/workflows/update-dashboard.yml"
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
-  group: sync-sharepoint
+  group: update-dashboard
   cancel-in-progress: false
 
 jobs:
-  sync:
+  build:
+    name: Build dashboard from SharePoint
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Fetch DemoApp from Microsoft Graph
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ── ตรวจ secret ก่อนเริ่ม เพื่อไม่ให้ไปตกโหมด CSV เงียบ ๆ ──
+      - name: Preflight · ตรวจ secrets
         env:
-          TENANT: ${{ secrets.AZ_TENANT_ID }}
-          CLIENT: ${{ secrets.AZ_CLIENT_ID }}
-          SECRET: ${{ secrets.AZ_CLIENT_SECRET }}
+          TENANT_ID: ${{ secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         run: |
-          set -euo pipefail
-
-          if [ -z "${SECRET:-}" ]; then
-            echo "::error::ยังไม่ได้ตั้ง secret AZ_CLIENT_SECRET"; exit 1
-          fi
-
-          TOKEN=$(curl -sS -X POST \
-            "https://login.microsoftonline.com/$TENANT/oauth2/v2.0/token" \
-            --data-urlencode "client_id=$CLIENT" \
-            --data-urlencode "client_secret=$SECRET" \
-            --data-urlencode "scope=https://graph.microsoft.com/.default" \
-            --data-urlencode "grant_type=client_credentials" | jq -r '.access_token // empty')
-
-          if [ -z "$TOKEN" ]; then
-            echo "::error::ขอ access token ไม่สำเร็จ - ตรวจ AZ_CLIENT_SECRET / AZ_CLIENT_ID / AZ_TENANT_ID"
+          missing=""
+          [ -z "$TENANT_ID" ]     && missing="$missing TENANT_ID"
+          [ -z "$CLIENT_ID" ]     && missing="$missing CLIENT_ID"
+          [ -z "$CLIENT_SECRET" ] && missing="$missing CLIENT_SECRET"
+          if [ -n "$missing" ]; then
+            echo "::error title=ไม่พบ Secrets::ขาด$missing -> ตั้งที่ Settings > Secrets and variables > Actions"
+            {
+              echo "## ❌ ไม่พบ GitHub Secrets"
+              echo ""
+              echo "ขาด: **$missing**"
+              echo ""
+              echo "นี่คือสาเหตุที่ workflow รันผ่านแต่ข้อมูลไม่อัปเดต — สคริปต์จะไปอ่าน CSV เก่าใน data/ แทน"
+            } >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
+          echo "✅ พบ secrets ครบ 3 ตัว (TENANT_ID / CLIENT_ID / CLIENT_SECRET)"
 
-          SITE=$(curl -sS -H "Authorization: Bearer $TOKEN" \
-            "https://graph.microsoft.com/v1.0/sites/dohomegroup.sharepoint.com:/sites/AC-Accounting" \
-            | jq -r '.id // empty')
+      - name: Verify script syntax
+        run: python -m py_compile scripts/build_dashboard.py
 
-          if [ -z "$SITE" ]; then
-            echo "::error::หา site AC-Accounting ไม่เจอ - ตรวจสิทธิ์ Sites.Read.All (Application) และ Grant admin consent"
+      - name: Build index.html from SharePoint
+        env:
+          TENANT_ID: ${{ secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          SITE_HOSTNAME: ${{ vars.SITE_HOSTNAME || 'dohomegroup.sharepoint.com' }}
+          SITE_PATH: ${{ vars.SITE_PATH || '/sites/AC-Accounting' }}
+          LIST_DEMOAPP: ${{ vars.LIST_DEMOAPP || 'DemoApp' }}
+          LIST_ACL: ${{ vars.LIST_ACL || 'Admin_KycNew' }}
+          MASK_PII: ${{ inputs.mask_pii }}
+          # schedule/push ไม่มี inputs -> default เป็น true (บังคับดึงสด)
+          REQUIRE_LIVE: ${{ inputs.require_live == false && 'false' || 'true' }}
+        run: python scripts/build_dashboard.py --out index.html --min-records 1
+
+      - name: Verify output
+        run: |
+          test -s index.html
+          grep -q "RAW_DATA"     index.html
+          grep -q "ACL_REGISTRY" index.html
+          # ต้องเป็นข้อมูลสดเท่านั้น — ถ้าพบ "CSV snapshot" แปลว่า fallback
+          if grep -q "CSV snapshot" index.html; then
+            echo "::error title=ข้อมูลไม่สด::index.html ถูกสร้างจาก CSV ไม่ใช่ SharePoint"
             exit 1
           fi
+          echo "--- build-info.json ---"
+          cat build-info.json
 
-          URL="https://graph.microsoft.com/v1.0/sites/$SITE/lists/DemoApp/items?expand=fields&\$top=999"
-          echo '[]' > raw.json
-          GUARD=0
-
-          while [ -n "$URL" ] && [ "$URL" != "null" ] && [ "$GUARD" -lt 50 ]; do
-            GUARD=$((GUARD+1))
-            PAGE=$(curl -sS -H "Authorization: Bearer $TOKEN" "$URL")
-            if echo "$PAGE" | jq -e '.error' >/dev/null 2>&1; then
-              echo "::error::Graph error: $(echo "$PAGE" | jq -r '.error.message')"; exit 1
-            fi
-            echo "$PAGE" | jq '.value' > page.json
-            jq -s '.[0] + .[1]' raw.json page.json > tmp.json && mv tmp.json raw.json
-            URL=$(echo "$PAGE" | jq -r '."@odata.nextLink" // ""')
-          done
-
-          jq '[ .[] | .fields | {
-                ID:           (.id | tonumber? // 0),
-                Title:        .Title,
-                Customer:     .Customer_x0020_Name,
-                Branch:       .branch,
-                Created:      .Request_x0020_TimeStamp,
-                Status:       .Status,
-                StatusMirror: .Status_1,
-                Owner:        .Owner,
-                Type:         .Type_Request,
-                Modified:     .Modified
-              } ] | sort_by(.ID)' raw.json > data.new.json
-
-          ROWS=$(jq length data.new.json)
-          echo "ดึงได้ $ROWS รายการ"
-
-          if [ "$ROWS" -eq 0 ]; then
-            echo "::error::ดึงได้ 0 รายการ - ยกเลิกการเขียนทับ data.json"; exit 1
-          fi
-
-          mv data.new.json data.json
-          rm -f raw.json page.json
-
-      - name: Commit if changed
+      - name: Commit & push if changed
+        id: commit
         run: |
           git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- data.json; then
-            echo "ไม่มีข้อมูลเปลี่ยนแปลง"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html build-info.json
+          if git diff --cached --quiet; then
+            echo "ℹ️ ไฟล์ไม่เปลี่ยนแปลง — ไม่ต้อง commit"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git add data.json
-            git commit -m "chore: sync DemoApp $(date -u +'%Y-%m-%d %H:%M UTC')"
-            git push
+            git commit -m "chore(data): update dashboard $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+            echo "✅ อัปเดต index.html แล้ว"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Summary
+        run: |
+          {
+            echo "## 🚀 Deploy สำเร็จ"
+            echo ""
+            echo "URL: ${{ steps.deployment.outputs.page_url }}"
+            echo ""
+            echo "ถ้าเปิดแล้วยังเห็นข้อมูลเก่า ให้กด Ctrl+Shift+R (hard refresh)"
+            echo "หรือต่อท้าย URL ด้วย ?v=$(date +%s) เพื่อข้ามแคชเบราว์เซอร์"
+          } >> "$GITHUB_STEP_SUMMARY"
