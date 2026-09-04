@@ -28,9 +28,22 @@ from urllib.parse import quote
 import requests
 
 # ----------------------------- CONFIG --------------------------------
-TENANT_ID = os.environ.get("TENANT_ID", "")
-CLIENT_ID = os.environ.get("CLIENT_ID", "")
-CLIENT_SECRET = os.environ.get("CLIENT_SECRET", "")
+def env_any(*names: str) -> str:
+    """
+    อ่าน environment variable ตัวแรกที่มีค่า
+    รองรับชื่อ Secret ได้หลายแบบ เช่น TENANT_ID หรือ AZ_TENANT_ID
+    (จะได้ไม่ต้องแก้ชื่อ Secret เดิมใน GitHub)
+    """
+    for n in names:
+        v = os.environ.get(n, "").strip()
+        if v:
+            return v
+    return ""
+
+
+TENANT_ID = env_any("TENANT_ID", "AZ_TENANT_ID", "AZURE_TENANT_ID")
+CLIENT_ID = env_any("CLIENT_ID", "AZ_CLIENT_ID", "AZURE_CLIENT_ID")
+CLIENT_SECRET = env_any("CLIENT_SECRET", "AZ_CLIENT_SECRET", "AZURE_CLIENT_SECRET")
 
 SP_HOSTNAME = os.environ.get("SP_HOSTNAME", "dohomegroup.sharepoint.com")
 SP_SITE_PATH = os.environ.get("SP_SITE_PATH", "/sites/AC-Accounting")
@@ -47,9 +60,14 @@ OUT_DIR = Path(__file__).resolve().parents[1] / "data"
 def get_token() -> str:
     """ขอ access token แบบ client-credentials (app-only)."""
     if not (TENANT_ID and CLIENT_ID and CLIENT_SECRET):
+        missing = [n for n, v in (("TENANT_ID", TENANT_ID),
+                                  ("CLIENT_ID", CLIENT_ID),
+                                  ("CLIENT_SECRET", CLIENT_SECRET)) if not v]
         raise SystemExit(
-            "ERROR: ไม่พบ TENANT_ID / CLIENT_ID / CLIENT_SECRET "
-            "(ตั้งค่าใน GitHub Secrets ก่อนรัน)"
+            "ERROR: ไม่พบค่า " + " / ".join(missing) + "\n"
+            "  รองรับชื่อ Secret ได้ทั้ง TENANT_ID / AZ_TENANT_ID / AZURE_TENANT_ID\n"
+            "  (และแบบเดียวกันสำหรับ CLIENT_ID, CLIENT_SECRET)\n"
+            "  ตรวจสอบว่า workflow ได้ map secrets เข้า env ของ step นี้แล้ว"
         )
     url = f"https://login.microsoftonline.com/{TENANT_ID}/oauth2/v2.0/token"
     data = {
@@ -58,8 +76,26 @@ def get_token() -> str:
         "client_secret": CLIENT_SECRET,
         "scope": "https://graph.microsoft.com/.default",
     }
-    r = requests.post(url, data=data, timeout=60)
-    r.raise_for_status()
+    print(f"  tenant={TENANT_ID[:8]}... client={CLIENT_ID[:8]}... "
+          f"secret_len={len(CLIENT_SECRET)}")
+    try:
+        r = requests.post(url, data=data, timeout=60)
+    except (requests.RequestException, OSError) as e:
+        raise SystemExit(f"ERROR: เชื่อมต่อ Azure AD ไม่ได้ -> {e}")
+
+    if r.status_code != 200:
+        # แสดงสาเหตุจริงจาก Azure AD (เช่น AADSTS7000215 = secret ผิด/หมดอายุ)
+        try:
+            j = r.json()
+            detail = f"{j.get('error')}: {j.get('error_description','')[:300]}"
+        except ValueError:
+            detail = r.text[:300]
+        raise SystemExit(
+            f"ERROR: ขอ token ไม่สำเร็จ (HTTP {r.status_code})\n  {detail}\n"
+            "  ตรวจสอบ: AZ_TENANT_ID / AZ_CLIENT_ID ถูกต้องหรือไม่, "
+            "client secret หมดอายุหรือยัง (ใช้ค่า 'Value' ไม่ใช่ 'Secret ID')"
+        )
+    print("  ได้ access token แล้ว")
     return r.json()["access_token"]
 
 
@@ -83,7 +119,19 @@ def graph_get(url: str, token: str) -> dict:
                   f"({attempt}/{MAX_RETRY})", flush=True)
             time.sleep(wait)
             continue
-        resp.raise_for_status()
+        if resp.status_code >= 400:
+            try:
+                j = resp.json().get("error", {})
+                detail = f"{j.get('code')}: {str(j.get('message'))[:300]}"
+            except ValueError:
+                detail = resp.text[:300]
+            hint = {
+                403: "  -> ยังไม่ได้ Grant admin consent หรือยังไม่ได้ผูก Sites.Selected กับไซต์นี้",
+                404: "  -> ตรวจสอบ SP_SITE_PATH / ชื่อ List ว่าสะกดถูกต้อง",
+                401: "  -> token ไม่ถูกต้องหรือหมดอายุ",
+            }.get(resp.status_code, "")
+            raise SystemExit(
+                f"ERROR: Graph HTTP {resp.status_code}\n  URL: {url}\n  {detail}\n{hint}")
         return resp.json()
     raise RuntimeError(f"Graph GET ล้มเหลวหลัง retry {MAX_RETRY} ครั้ง: {url}")
 
