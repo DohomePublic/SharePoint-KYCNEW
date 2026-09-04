@@ -156,6 +156,7 @@ python scripts/build_dashboard.py --mask-pii
 | คอลัมน์บางช่องว่างเปล่า | ชื่อ internal name เปลี่ยน → แก้ `FIELD_MAP` (สคริปต์ลอง fallback แบบไม่มี `_x0020_` ให้แล้ว) |
 | `exit code 2` | ดึงได้น้อยกว่า `--min-records` → ระบบ **ไม่เขียนทับ** `index.html` เดิมโดยตั้งใจ |
 | Pages ไม่อัปเดต | ตรวจ Settings → Pages → Source ต้องเป็น **GitHub Actions**; และดู job `deploy` ใน Actions |
+| `Current status: purging_cdn` แล้ว **Timeout reached, aborting!** | ขั้นเผยแพร่ CDN ของ Pages ค้าง — **index.html ถูก commit ขึ้น repo แล้ว ข้อมูลไม่หาย** → ดูหัวข้อ **6.2** |
 | หน้าเว็บขึ้น badge **OFFLINE** | ปกติเมื่อเปิดนอก SharePoint — ข้อมูลมาจาก snapshot ที่ workflow สร้าง (ดูเวลาที่ `srcDetail`) |
 
 ---
@@ -235,6 +236,35 @@ echo $?                                                  # 3
 > ถ้า repo เป็น **Public** ข้อมูลใน `index.html` / `data/*.csv` (ชื่อลูกค้า เบอร์โทร อีเมลผู้ดูแล 65 บัญชี)
 > จะเปิดให้คนทั้งอินเทอร์เน็ตเห็น รวมถึงถูกเก็บไว้ใน **git history** ตลอดไป
 > → เปลี่ยนเป็น **Private** หรือรันด้วย `--mask-pii` (ตั้ง `MASK_PII: "true"` ใน workflow)
+
+---
+
+## 6.2 🟠 Deploy ค้างที่ `purging_cdn` → `Timeout reached, aborting!`
+
+**สำคัญ: build ไม่ได้พัง** — `index.html` ถูกสร้างและ commit ขึ้น `main` เรียบร้อยแล้ว
+ที่ล้มเหลวคือขั้น **เผยแพร่ขึ้น CDN ของ GitHub Pages** เท่านั้น
+
+### สาเหตุและสิ่งที่แก้ไปแล้วใน workflow นี้
+
+| สาเหตุ | สิ่งที่แก้ |
+|---|---|
+| **artifact ใหญ่เกินจำเป็น** — เดิมใช้ `path: .` อัปโหลด **ทั้ง repo** (รวม `.git`, `data/`, `scripts/`) ทำให้ CDN purge ช้า | เพิ่ม step **Stage site files** เผยแพร่เฉพาะ `index.html` + `build-info.json` + `.nojekyll` → เหลือ **~160 KB** |
+| **คิว deployment ซ้อนกัน** — `schedule` ทุก 30 นาที deploy ทุกรอบแม้ข้อมูลไม่เปลี่ยน | job `deploy` มี `if: needs.build.outputs.changed == 'true'` → deploy เฉพาะตอนไฟล์เปลี่ยนจริง |
+| **concurrency group ไม่ตรงกับที่ Pages ใช้** | เปลี่ยนเป็น `pages-${{ github.ref }}` |
+| **timeout สั้นเกินไป** (ค่า default 10 นาที) | ตั้ง `timeout: 1200000` (20 นาที), `error_count: 15`, `reporting_interval: 10000` + `timeout-minutes: 20` ที่ job |
+| **อาการชั่วคราวฝั่ง GitHub** | เพิ่ม step **Deploy (retry)** ยิงซ้ำอัตโนมัติเมื่อรอบแรกล้ม |
+
+> 🔴 การใช้ `path: .` เดิมยัง **เผยแพร่ `data/DemoApp.csv` และ `data/Admin_KycNew.csv` สู่สาธารณะ** ด้วย
+> ตอนนี้มี guard ใน step Stage ที่จะ **fail ทันที** ถ้าพบ `.csv` หรือ `.py` หลุดเข้าไปใน `_site`
+
+### ถ้ายังค้างอีก ทำตามลำดับนี้
+
+1. เช็ค **https://www.githubstatus.com** ว่า GitHub Pages มีปัญหาอยู่หรือไม่
+2. ไปที่แท็บ **Actions → Deployments** (หรือหน้า repo ด้านขวา **Environments → github-pages**) แล้ว **ยกเลิก deployment ที่ค้าง**
+3. รอ 10–15 นาที แล้วสั่ง **Run workflow** ใหม่
+4. **ทางหนีที่ชัวร์ที่สุด** — ไปที่ **Settings → Pages → Source** เปลี่ยนเป็น **Deploy from a branch** เลือก `main` / `/ (root)`
+   วิธีนี้ **ไม่ต้องพึ่งขั้น CDN purge เลย** และ `index.html` ถูก commit ลง `main` อยู่แล้วทุกรอบ
+   (ข้อควรระวัง: โหมดนี้จะเสิร์ฟไฟล์ทุกอย่างใน repo รวมถึง `data/*.csv` → **repo ต้องเป็น Private** หรือย้าย `data/` ออก)
 
 ---
 
