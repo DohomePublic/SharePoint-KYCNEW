@@ -94,7 +94,14 @@ jobs:
           mkdir -p _site
           cp index.html _site/index.html
           cp index.html _site/404.html          # กันคนพิมพ์ path ผิด
+          touch _site/.nojekyll                 # ปิด Jekyll (เร็วขึ้น + ไม่กินไฟล์ที่ขึ้นต้นด้วย _)
           echo "Dashboard build $(date -u)" > _site/build.txt
+          # ตรวจซ้ำว่าไฟล์ที่จะขึ้นเว็บเป็นโหมด PUBLIC จริง (ไม่มีหน้าล็อกอินหลงเหลือ)
+          if grep -q -e 'id="gate"' -e 'gateEmail' -e 'validateUser' _site/index.html; then
+            echo "::error::index.html ยังมีโค้ดหน้าล็อกอินหลงเหลือ — ยกเลิก deploy"
+            exit 1
+          fi
+          echo "OK: index.html เป็นโหมด PUBLIC ($(wc -c < _site/index.html) bytes)"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
