@@ -26,9 +26,13 @@ SharePoint List **DemoApp** และอัปเดตอัตโนมัต�
 
 | Secret | Value |
 |---|---|
-| `AZURE_CLIENT_ID` | `a37bd62d-e74d-4ea0-9546-1eb5aa96f604` |
-| `AZURE_TENANT_ID` | `7f8918d9-718a-495b-ac9a-17cba381c4a0` |
-| `AZURE_CLIENT_SECRET` | (ค่า Client Secret จาก Azure AD — ห้าม commit ลงโค้ดเด็ดขาด) |
+| `AZ_CLIENT_ID` | `a37bd62d-e74d-4ea0-9546-1eb5aa96f604` |
+| `AZ_TENANT_ID` | `7f8918d9-718a-495b-ac9a-17cba381c4a0` |
+| `AZ_CLIENT_SECRET` | (ค่า Client Secret จาก Azure AD — ห้าม commit ลงโค้ดเด็ดขาด) |
+
+> สคริปต์รองรับชื่อ Secret **ทั้งสองแบบ**: `AZ_CLIENT_ID` / `AZ_TENANT_ID` / `AZ_CLIENT_SECRET` (ชื่อที่ใช้จริง)
+> และ `AZURE_CLIENT_ID` / `AZURE_TENANT_ID` / `AZURE_CLIENT_SECRET` (ชื่อเดิม) โดยจะเลือกตัวที่มีค่าให้อัตโนมัติ
+> และพิมพ์ลง log ว่าอ่านจากตัวแปรชื่อใด (ไม่แสดงค่า Secret จริง)
 
 ข้อมูล App registration ที่ใช้จริง
 
@@ -71,7 +75,9 @@ DemoApp-Dashboard/
 │       └── update-dashboard.yml     ← GitHub Actions workflow (รันทุกวัน 07:00 น.)
 ├── scripts/
 │   ├── build_dashboard.py           ← ดึงข้อมูล Graph API + สร้าง index.html
-│   └── template.html                ← เทมเพลต Dashboard (HTML/CSS/JS ทั้งหมด + คอมเมนต์)
+│   └── template.html                ← เทมเพลต Dashboard ต้นฉบับ (HTML/CSS/JS + คอมเมนต์)
+├── templates/
+│   └── dashboard.html               ← สำเนาเทมเพลต (รองรับสคริปต์รุ่นเดิมที่อ้าง path นี้)
 ├── data/
 │   ├── demoapp.csv                  ← ข้อมูล snapshot (ใช้กับโหมด --offline)
 │   └── demoapp.json                 ← ข้อมูลที่แปลงแล้ว (auto-generated)
