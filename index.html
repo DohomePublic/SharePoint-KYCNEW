@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  SharePoint-KYCNEW : KYC / Credit Limit Request Dashboard
+  ----------------------------------------------------------------------------
+  แหล่งข้อมูล : SharePoint List "DemoApp"
+                https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp
+  ลักษณะงาน  : Single Page Application (SPA) ล้วน HTML + CSS + JavaScript
+               ไม่ต้องมี backend, เปิดไฟล์ index.html ใน Browser ได้ทันที
+  โหมดข้อมูล : 1) Snapshot  -> assets/js/data.js (ข้อมูลฝังในไฟล์, ใช้ offline ได้)
+               2) Live      -> assets/js/sharepoint.js ดึงสดผ่าน SharePoint REST API
+  ธีม        : Microsoft Fluent Design (Fluent 2 color tokens)
+  ============================================================================
+-->
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KYC Dashboard | DemoApp - DOHOME</title>
+  <meta name="description" content="Dashboard วิเคราะห์คำขอเปิด/เพิ่มวงเงินลูกค้า (KYC) จาก SharePoint List DemoApp" />
+
+  <!-- ===== Fonts: Segoe UI (Fluent) + Noto Sans Thai สำหรับภาษาไทย ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ===== DataTables (ตารางแบบ Interactive) ===== -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" />
+
+  <!-- ===== Stylesheet ของโปรเจกต์ (Fluent theme) ===== -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body>
+<!-- ==========================================================================
+     1) TOP BAR : แถบหัวเรื่องแบบ Microsoft 365 (สีน้ำเงิน Fluent #0F6CBD)
+     ========================================================================== -->
+<header class="topbar">
+  <button class="hamburger" id="btnNav" aria-label="เปิด/ปิดเมนู">&#9776;</button>
+  <div class="brand">
+    <span class="brand-logo">KYC</span>
+    <div class="brand-text">
+      <strong>KYC &amp; Credit Limit Dashboard</strong>
+      <small>SharePoint List : DemoApp • AC-Accounting</small>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <!-- ตัวบอกสถานะแหล่งข้อมูลปัจจุบัน (Snapshot / Live) -->
+    <span class="badge-source" id="srcBadge" title="แหล่งข้อมูลปัจจุบัน">Snapshot</span>
+    <button class="btn btn-ghost" id="btnRefresh" title="โหลดข้อมูลใหม่จาก SharePoint">&#8635; Refresh</button>
+    <a class="btn btn-ghost" id="lnkList" href="#" target="_blank" rel="noopener">เปิด SharePoint</a>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- ========================================================================
+       2) SIDEBAR : เมนูนำทางระหว่างมุมมองต่าง ๆ ของ SPA
+       ======================================================================== -->
+  <nav class="sidebar" id="sidebar">
+    <a href="#overview"  class="nav-item active" data-view="overview">&#128202; ภาพรวม (Overview)</a>
+    <a href="#trend"     class="nav-item" data-view="trend">&#128200; แนวโน้ม (Trend)</a>
+    <a href="#top10"     class="nav-item" data-view="top10">&#127942; Top 10</a>
+    <a href="#data"      class="nav-item" data-view="data">&#128203; ตารางข้อมูล</a>
+    <a href="#insight"   class="nav-item" data-view="insight">&#128161; Insight &amp; ความเสี่ยง</a>
+    <a href="#dict"      class="nav-item" data-view="dict">&#128218; Data Dictionary</a>
+    <div class="nav-sep"></div>
+    <div class="nav-caption">ส่งออกข้อมูล (Export)</div>
+    <button class="nav-btn" id="expExcel">&#128196; Excel (.xlsx)</button>
+    <button class="nav-btn" id="expCsv">&#128441; CSV (UTF-8)</button>
+    <button class="nav-btn" id="expPdf">&#128442; PDF</button>
+    <button class="nav-btn" id="expPng">&#128247; รูปภาพ Dashboard (.png)</button>
+  </nav>
+
+  <!-- ========================================================================
+       3) MAIN CONTENT
+       ======================================================================== -->
+  <main class="content" id="captureArea">
+
+    <!-- ---------- 3.1 FILTER BAR : ค้นหา / กรอง / เรียงลำดับ ---------- -->
+    <section class="card filterbar">
+      <div class="f-item f-grow">
+        <label for="q">ค้นหาทุกคอลัมน์</label>
+        <input type="search" id="q" placeholder="พิมพ์ชื่อลูกค้า, จังหวัด, ผู้ดูแล, เลขทะเบียน ..." autocomplete="off" />
+      </div>
+      <div class="f-item">
+        <label for="fStatus">สถานะ (Status)</label>
+        <select id="fStatus"><option value="">ทั้งหมด</option></select>
+      </div>
+      <div class="f-item">
+        <label for="fType">ประเภทคำขอ (Type_Request)</label>
+        <select id="fType"><option value="">ทั้งหมด</option></select>
+      </div>
+      <div class="f-item">
+        <label for="fTeam">ทีม (type_teams)</label>
+        <select id="fTeam"><option value="">ทั้งหมด</option></select>
+      </div>
+      <div class="f-item">
+        <label for="fProv">จังหวัด</label>
+        <select id="fProv"><option value="">ทั้งหมด</option></select>
+      </div>
+      <div class="f-item">
+        <label for="dFrom">ตั้งแต่วันที่</label>
+        <input type="date" id="dFrom" />
+      </div>
+      <div class="f-item">
+        <label for="dTo">ถึงวันที่</label>
+        <input type="date" id="dTo" />
+      </div>
+      <div class="f-item">
+        <label for="sortBy">เรียงตาม</label>
+        <select id="sortBy">
+          <option value="Request TimeStamp">วันที่ยื่นคำขอ</option>
+          <option value="limit_num">วงเงินที่ขอ</option>
+          <option value="Customer Name">ชื่อลูกค้า</option>
+          <option value="Status">สถานะ</option>
+          <option value="province">จังหวัด</option>
+          <option value="_ID">รหัสรายการ</option>
+        </select>
+      </div>
+      <div class="f-item">
+        <label for="sortDir">ทิศทาง</label>
+        <select id="sortDir">
+          <option value="desc">มาก → น้อย (Desc)</option>
+          <option value="asc">น้อย → มาก (Asc)</option>
+        </select>
+      </div>
+      <div class="f-item f-actions">
+        <button class="btn btn-primary" id="btnApply">ใช้ตัวกรอง</button>
+        <button class="btn" id="btnReset">ล้างค่า</button>
+      </div>
+      <div class="filter-summary" id="filterSummary"></div>
+    </section>
+
+    <!-- ---------- 3.2 KPI CARDS ---------- -->
+    <section class="kpi-grid" id="kpiGrid">
+      <!-- ถูก render โดย JS : renderKpis() -->
+    </section>
+
+    <!-- ---------- 3.3 VIEW: OVERVIEW ---------- -->
+    <section class="view" id="view-overview">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>จำนวนคำขอตามสถานะ (Status)</h3><span class="hint">คลิกแท่ง = กรองข้อมูล</span></div>
+          <div class="chart-box"><canvas id="chStatus"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>สัดส่วนตามประเภทคำขอ (Type_Request)</h3><span class="hint">คลิกชิ้น = กรองข้อมูล</span></div>
+          <div class="chart-box"><canvas id="chType"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>คำขอตามทีมขาย (type_teams)</h3></div>
+          <div class="chart-box"><canvas id="chTeam"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>ประเภทธุรกิจ (business_type) 8 อันดับแรก</h3></div>
+          <div class="chart-box"><canvas id="chBiz"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>วงเงินรวมที่ขอ แยกตามจังหวัด (บาท)</h3></div>
+          <div class="chart-box"><canvas id="chProv"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>ประเภทลูกค้า (Type1)</h3></div>
+          <div class="chart-box"><canvas id="chType1"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 3.4 VIEW: TREND ---------- -->
+    <section class="view hidden" id="view-trend">
+      <div class="card">
+        <div class="card-head">
+          <h3>แนวโน้มจำนวนคำขอและวงเงิน</h3>
+          <div class="seg" id="grainSeg">
+            <button class="seg-btn active" data-grain="day">รายวัน</button>
+            <button class="seg-btn" data-grain="month">รายเดือน</button>
+            <button class="seg-btn" data-grain="year">รายปี</button>
+          </div>
+        </div>
+        <div class="chart-box tall"><canvas id="chTrend"></canvas></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>คำขอสะสม (Cumulative)</h3></div>
+          <div class="chart-box"><canvas id="chCum"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>สถานะแยกตามช่วงเวลา (Stacked)</h3></div>
+          <div class="chart-box"><canvas id="chStack"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 3.5 VIEW: TOP 10 ---------- -->
+    <section class="view hidden" id="view-top10">
+      <div class="card">
+        <div class="card-head"><h3>Top 10 คำขอวงเงินสูงสุด</h3><span class="hint">คลิกแถวเพื่อดูรายละเอียด (Drill Down)</span></div>
+        <div class="table-wrap"><table class="mini-table" id="tblTop10"></table></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><h3>Top 10 ผู้ดูแลคำขอ (Owner)</h3></div>
+          <div class="chart-box"><canvas id="chOwner"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Top 10 ลูกค้าตามวงเงินรวม</h3></div>
+          <div class="chart-box"><canvas id="chCust"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 3.6 VIEW: DATA TABLE ---------- -->
+    <section class="view hidden" id="view-data">
+      <div class="card">
+        <div class="card-head">
+          <h3>ตารางข้อมูลทั้งหมด (Interactive)</h3>
+          <span class="hint">คลิกที่แถวเพื่อ Drill Down ดูครบทุกฟิลด์</span>
+        </div>
+        <div class="table-wrap">
+          <table id="tblMain" class="table table-striped nowrap" style="width:100%"></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- 3.7 VIEW: INSIGHT ---------- -->
+    <section class="view hidden" id="view-insight">
+      <div class="grid-2" id="insightGrid"><!-- render โดย JS : renderInsights() --></div>
+      <div class="card">
+        <div class="card-head"><h3>&#9888;&#65039; รายการที่ตรวจพบความผิดปกติ (Anomaly Detection)</h3>
+          <span class="hint">เกณฑ์: วงเงินสูงผิดปกติ (z-score &gt; 2), รายการซ้ำ, ข้อมูลไม่ครบ, ค้างสถานะนาน</span></div>
+        <div class="table-wrap"><table class="mini-table" id="tblAnomaly"></table></div>
+      </div>
+    </section>
+
+    <!-- ---------- 3.8 VIEW: DATA DICTIONARY ---------- -->
+    <section class="view hidden" id="view-dict">
+      <div class="card">
+        <div class="card-head"><h3>Data Dictionary — SharePoint List: DemoApp</h3>
+          <span class="hint">คำนวณสถิติความสมบูรณ์ของข้อมูลแบบสด</span></div>
+        <div class="table-wrap"><table class="mini-table" id="tblDict"></table></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ==========================================================================
+     4) DRILL-DOWN MODAL : แสดงรายละเอียดของรายการเดียว
+     ========================================================================== -->
+<div class="modal-backdrop hidden" id="modal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3 id="modalTitle">รายละเอียดคำขอ</h3>
+      <button class="btn btn-ghost" id="modalClose" aria-label="ปิด">&#10005;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot">
+      <a class="btn btn-primary" id="modalSpLink" target="_blank" rel="noopener">เปิดใน SharePoint</a>
+      <button class="btn" id="modalCopy">คัดลอกข้อมูล</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast แจ้งเตือนสั้น ๆ -->
+<div class="toast hidden" id="toast"></div>
+
+<footer class="footer">
+  <span id="footMeta"></span> • สร้างโดย BI HQ • ธีม Microsoft Fluent Design
+</footer>
+
+<!-- ==========================================================================
+     5) LIBRARIES (CDN) — ถ้าใช้งาน offline ให้ดาวน์โหลดไฟล์เหล่านี้มาไว้ในเครื่อง
+     ========================================================================== -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<!-- ===== Data & Application scripts ===== -->
+<script src="assets/js/data.js"></script>         <!-- ข้อมูล snapshot (auto-generated) -->
+<script src="assets/js/sharepoint.js"></script>   <!-- ตัวเชื่อม SharePoint REST API (โหมด Live) -->
+<script src="assets/js/app.js"></script>          <!-- ตรรกะหลักของ Dashboard -->
+</body>
+</html>
