@@ -1,242 +1,345 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-=====================================================================
+============================================================================
  build_dashboard.py
- แปลง raw JSON (จาก Graph API) -> index.html (Static Dashboard)
-=====================================================================
- หน้าที่
-   1) Normalize ข้อมูล DemoApp ให้เหลือเฉพาะ field ที่ Dashboard ใช้
-   2) สร้าง Security Matrix (RBAC) จาก Admin_KycNew
-   3) ฝังข้อมูลเป็น JSON ลงใน template แล้วเขียนเป็น index.html
- หมายเหตุ
-   - ถ้าไม่มี raw_*.json (เช่นรัน local โดยไม่มี secret) จะใช้ data/sample_*.json
-=====================================================================
+----------------------------------------------------------------------------
+ ดึงข้อมูลจาก SharePoint List "DemoApp" ผ่าน Microsoft Graph API
+ แล้วสร้างไฟล์ index.html (Dashboard SPA) โดยฝังข้อมูลล่าสุดลงในไฟล์
+
+ การใช้งาน
+   1) โหมดออนไลน์ (ใช้ใน GitHub Actions)
+        python scripts/build_dashboard.py
+      ต้องมี environment variables:
+        AZURE_CLIENT_ID / AZURE_TENANT_ID / AZURE_CLIENT_SECRET
+        (ไม่บังคับ) SP_HOSTNAME, SP_SITE_PATH, SP_LIST_NAME
+
+   2) โหมดออฟไลน์ (ทดสอบ/สำรอง — อ่านจากไฟล์ CSV ที่ export ไว้)
+        python scripts/build_dashboard.py --offline data/demoapp.csv
+
+ ผลลัพธ์
+   ./index.html          Dashboard พร้อมข้อมูล (GitHub Pages เสิร์ฟไฟล์นี้)
+   ./data/demoapp.json   ข้อมูลดิบรูปแบบ JSON (เผื่อระบบอื่นเรียกใช้)
+============================================================================
 """
 
+import argparse
 import json
 import os
 import re
+import sys
+from collections import Counter
 from datetime import datetime, timezone, timedelta
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "data"
-TPL = ROOT / "templates" / "dashboard.html"
-OUT = ROOT / "index.html"
+# ---------------------------------------------------------------------------
+# 1) ค่าคงที่ของ SharePoint  (ปรับผ่าน environment variable ได้)
+# ---------------------------------------------------------------------------
+# ค่า default ของ Azure AD App registration ที่ใช้จริง
+# (Client ID / Tenant ID เป็น "ตัวระบุแอป" ไม่ใช่ความลับ — ส่วน Client Secret ต้องมาจาก
+#  environment variable / GitHub Secrets เท่านั้น ห้ามใส่ไว้ในโค้ด)
+DEFAULT_CLIENT_ID = "a37bd62d-e74d-4ea0-9546-1eb5aa96f604"
+DEFAULT_TENANT_ID = "7f8918d9-718a-495b-ac9a-17cba381c4a0"
+# Object ID ของ App registration (อ้างอิงเฉย ๆ ไม่ได้ใช้เรียก API): f4e84724-e3f8-444b-981b-74ead3130171
 
-TZ = timezone(timedelta(hours=7))          # Asia/Bangkok
-SLA_DAYS = int(os.environ.get("SLA_DAYS", "2"))
+HOSTNAME  = os.getenv("SP_HOSTNAME",  "dohomegroup.sharepoint.com")
+SITE_PATH = os.getenv("SP_SITE_PATH", "/sites/AC-Accounting")
+LIST_NAME = os.getenv("SP_LIST_NAME", "DemoApp")
+LIST_URL  = f"https://{HOSTNAME}{SITE_PATH}/Lists/{LIST_NAME}"
 
-# ---- Email ที่ถือเป็น Admin (เห็นข้อมูลทั้งหมด) --------------------
-#      แก้ไข/เพิ่มได้ที่นี่ หรือส่งผ่าน env ADMIN_EMAILS="a@x.com,b@x.com"
-DEFAULT_ADMINS = [
-    "phongsapan.mar@dohome.co.th",
-    "piyatida.mali@dohome.co.th",
-    "siratip.tha@dohome.co.th",
-    "samniang.jai@dohome.co.th",
-    "patcharapa.sri@dohome.co.th",
-    "siriya.jan@dohome.co.th",
-    "yutima.hem@dohome.co.th",
-    "nattaya.pho@dohome.co.th",
-    "patsachon.put@dohome.co.th",
-]
+ROOT      = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATE  = os.path.join(ROOT, "scripts", "template.html")
+OUT_HTML  = os.path.join(ROOT, "index.html")
+OUT_JSON  = os.path.join(ROOT, "data", "demoapp.json")
 
-# ---- จัดกลุ่มสถานะ (Status ภาษาไทย -> Status Group มาตรฐาน) --------
-STATUS_GROUP = {
-    "อนุมัติ-KYC": "Completed",
-    "ผ่านการพิจารณาเบื้องต้น": "Completed",
-    "รอดำเนินการ": "Pending",
-    "รอการพิจารณาเบื้องต้น": "Pending",
-    "Draft": "Pending",
-    "รอผู้จัดการ D3 อนุมัติ": "In Progress",
-    "ไม่ผ่านการพิจารณาเบื้องต้น": "Issue",
+# เวลาไทย (UTC+7) สำหรับ timestamp ที่แสดงบน Dashboard
+TZ_TH = timezone(timedelta(hours=7))
+
+# ---------------------------------------------------------------------------
+# 2) Data Dictionary — คำอธิบายของแต่ละคอลัมน์ (ใช้แสดงในหน้า Data Dictionary)
+# ---------------------------------------------------------------------------
+FIELD_DESC = {
+    "_ID": "รหัสรายการภายในของ SharePoint (ใช้เปิด DispForm.aspx?ID=)",
+    "Title": "ประเภทนิติบุคคล/หัวข้อรายการ เช่น บริษัท จํากัด, ห้างหุ้นส่วนจำกัด",
+    "Customer_id": "รหัสลูกค้าในระบบหลัก (9 หลัก) — ใช้ตรวจคำขอซ้ำ",
+    "Type1": "ประเภทลูกค้า: Existing (ลูกค้าเดิม) / Lead (ลูกค้าใหม่)",
+    "type_teams": "ทีมที่ยื่นคำขอ: Store Operation, Wholesales (WS), Project Sales (PS), Retail, Steel Key Account",
+    "Typr_Distribution": "เขตขายของทีมค้าส่ง/โครงการ เช่น WS-NE 2, PS-BMA 1",
+    "Typr_Retail": "เขตขายของทีมค้าปลีก",
+    "Customer Name": "ชื่อลูกค้าที่ใช้เรียกทั่วไป",
+    "branch": "รหัสสาขาที่ยื่นคำขอ เช่น UDOO, SNOO, PKOO",
+    "Request TimeStamp": "วันเวลาที่ยื่นคำขอ (UTC) — แกนเวลาหลักของทุกกราฟ",
+    "Status": "สถานะปัจจุบันของคำขอในกระบวนการอนุมัติ",
+    "Type_Request": "ประเภทคำขอ: เปิดวงเงินลูกค้าใหม่ / เพิ่มวงเงิน / ติดตามชุดเปิดตัวจริง",
+    "limit": "วงเงินที่ขอ (บาท, เก็บเป็นข้อความมีคอมมา)",
+    "CraditApprove": "วงเงินที่ได้รับอนุมัติจริง",
+    "1addmonney": "จำนวนเงินที่ขอเพิ่ม (รอบที่ 1)",
+    "1CreditApprove": "วงเงินที่อนุมัติในรอบที่ 1",
+    "Owner": "ผู้ยื่น/เจ้าของคำขอ (ชื่อเล่น + ชื่อจริง + รหัสหน่วยงาน)",
+    "Data": "วันที่จดทะเบียนจัดตั้งกิจการ",
+    "registration_number": "เลขทะเบียนนิติบุคคล 13 หลัก",
+    "building_road": "อาคาร/ถนน ของที่อยู่จดทะเบียน",
+    "county": "ตำบล/แขวง",
+    "district": "อำเภอ/เขต",
+    "province": "จังหวัด",
+    "post_office": "รหัสไปรษณีย์",
+    "telephone": "โทรศัพท์ของกิจการ",
+    "Registered_Name": "ชื่อนิติบุคคลตามหนังสือรับรอง",
+    "business_type": "ประเภทธุรกิจ (เลือกได้หลายค่า คั่นด้วยคอมมา)",
+    "Estimated_annual_income": "ประมาณการรายได้ต่อปี (ช่วงค่า)",
+    "contact_name": "ชื่อผู้ติดต่อ",
+    "position": "ตำแหน่งของผู้ติดต่อ",
+    "contact_number": "เบอร์โทรผู้ติดต่อ",
+    "Wholesale_retail_stores": "ข้อมูลร้านค้าส่ง/ค้าปลีกในเครือ",
+    "credit_semester1": "เครดิตเทอมที่ขอ ชุดที่ 1 (วัน)",
+    "Margin_type1": "อัตรากำไรขั้นต้นของชุดที่ 1",
+    "value": "คำอธิบายมูลค่าของชุดที่ 1",
+    "limit_other": "วงเงินอื่นที่ขอเพิ่มเติม (บาท)",
+    "credit_semester2": "เครดิตเทอมที่ขอ ชุดที่ 2 (วัน)",
+    "Margin_type2": "อัตรากำไรขั้นต้นของชุดที่ 2",
+    "value2": "คำอธิบายมูลค่าของชุดที่ 2",
+    "limit_OD": "วงเงิน O/D กับสถาบันการเงิน",
+    "Bank1": "ธนาคารของวงเงิน O/D",
+    "insurance_limit": "วงเงินค้ำประกัน/ประกัน",
+    "Bank2": "ธนาคารของวงเงินค้ำประกัน",
+    "leasing_limit": "วงเงินลีสซิ่ง",
+    "Bank3": "ธนาคารของวงเงินลีสซิ่ง",
+    "Other_limits": "วงเงินอื่น ๆ",
+    "Bank4": "ธนาคารของวงเงินอื่น ๆ",
+    "land": "หลักประกันประเภทที่ดิน (สถานะภาระผูกพัน/ขนาด)",
+    "Status_1": "สถานะสำรอง (ปกติมีค่าเท่ากับ Status)",
+    "other_property": "ทรัพย์สินอื่นที่ใช้เป็นหลักประกัน",
 }
 
-
-# --------------------------- UTILITIES -------------------------------
-def load(name, fallback):
-    """อ่านไฟล์ raw ถ้าไม่มีให้ใช้ sample (สำหรับรัน local/ทดสอบ)"""
-    p = DATA / name
-    if p.exists():
-        return json.loads(p.read_text(encoding="utf-8"))
-    q = DATA / fallback
-    if q.exists():
-        print(f"! ไม่พบ {name} -> ใช้ {fallback} แทน")
-        return json.loads(q.read_text(encoding="utf-8"))
-    return []
-
-
-def s(v):
-    """แปลงค่าใด ๆ เป็น string ที่สะอาด (None/NaN -> '')"""
-    if v is None:
-        return ""
-    t = str(v).strip()
-    return "" if t.lower() in ("nan", "none", "null") else t
-
-
-def num(v):
-    """แปลงข้อความจำนวนเงิน '2,000,000' -> 2000000.0"""
-    t = s(v).replace(",", "")
-    try:
-        return float(t)
-    except ValueError:
-        return 0.0
+# ---------------------------------------------------------------------------
+# 3) โหมดออนไลน์ — ดึงข้อมูลผ่าน Microsoft Graph API
+# ---------------------------------------------------------------------------
+def graph_token() -> str:
+    """ขอ access token ด้วย client-credentials flow (Application permission)"""
+    import requests
+    tid = os.getenv("AZURE_TENANT_ID") or DEFAULT_TENANT_ID
+    cid = os.getenv("AZURE_CLIENT_ID") or DEFAULT_CLIENT_ID
+    secret = os.getenv("AZURE_CLIENT_SECRET")
+    if not secret:
+        raise SystemExit("[error] ไม่พบ AZURE_CLIENT_SECRET — ตั้งค่าใน GitHub Secrets "
+                         "หรือ export ก่อนรัน (หรือใช้โหมด --offline)")
+    print(f"[auth] tenant={tid} client={cid}")
+    r = requests.post(
+        f"https://login.microsoftonline.com/{tid}/oauth2/v2.0/token",
+        data={
+            "client_id":     cid,
+            "client_secret": secret,
+            "scope":         "https://graph.microsoft.com/.default",
+            "grant_type":    "client_credentials",
+        },
+        timeout=60,
+    )
+    r.raise_for_status()
+    return r.json()["access_token"]
 
 
-def iso(v):
-    """normalize datetime string -> ISO UTC (หรือ '' ถ้า parse ไม่ได้)"""
-    t = s(v)
-    if not t:
-        return ""
-    for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S.%fZ",
-                "%Y-%m-%dT%H:%M:%S%z", "%m/%d/%Y %H:%M:%S", "%Y-%m-%d"):
-        try:
-            d = datetime.strptime(t, fmt)
-            if d.tzinfo is None:
-                d = d.replace(tzinfo=timezone.utc)
-            return d.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        except ValueError:
-            continue
-    return ""
+def fetch_graph() -> list:
+    """ดึงทุกรายการของ List พร้อม expand fields และวนอ่านจนครบทุกหน้า (paging)"""
+    import requests
+    tok = graph_token()
+    h = {"Authorization": f"Bearer {tok}", "Accept": "application/json"}
+
+    site = requests.get(
+        f"https://graph.microsoft.com/v1.0/sites/{HOSTNAME}:{SITE_PATH}",
+        headers=h, timeout=60).json()["id"]
+
+    url = (f"https://graph.microsoft.com/v1.0/sites/{site}/lists/{LIST_NAME}"
+           f"/items?expand=fields&$top=500")
+    items, guard = [], 0
+    while url and guard < 200:               # guard กัน loop ไม่รู้จบ
+        j = requests.get(url, headers=h, timeout=120).json()
+        if "error" in j:
+            raise RuntimeError(j["error"])
+        for it in j.get("value", []):
+            f = dict(it.get("fields", {}))
+            f["_ID"] = int(it.get("id", f.get("id", 0)))
+            items.append(f)
+        url = j.get("@odata.nextLink")
+        guard += 1
+    print(f"[graph] fetched {len(items)} items")
+    return items
 
 
-def branch_code(b):
-    """CMOO -> CM  (ใช้จับคู่สาขากับอีเมล GM-CM@)"""
-    t = s(b).upper().replace(" ", "")
-    return t[:-2] if t.endswith("OO") and len(t) > 2 else t
-
-
-# ----------------------- 1) NORMALIZE MAIN ---------------------------
-def normalize_main(rows):
-    """แปลง raw DemoApp -> record ที่ Dashboard ใช้งาน"""
+# ---------------------------------------------------------------------------
+# 4) โหมดออฟไลน์ — อ่านจาก CSV ที่ export จาก SharePoint
+# ---------------------------------------------------------------------------
+def fetch_csv(path: str) -> list:
+    import csv
+    with open(path, encoding="utf-8-sig", newline="") as fh:
+        rows = [dict(r) for r in csv.DictReader(fh)]
+    # แปลง "" → None และตัดช่องว่างหัว/ท้ายชื่อคอลัมน์
     out = []
     for r in rows:
-        req = iso(r.get("Request TimeStamp") or r.get("Request_x0020_TimeStamp"))
-        mod = iso(r.get("_Modified") or r.get("Modified"))
-        status = s(r.get("Status")) or s(r.get("Status_1")) or "ไม่ระบุ"
-        # ระยะเวลาดำเนินการ (ชั่วโมง) = Modified - Request
-        hours = None
-        if req and mod:
-            d1 = datetime.strptime(req, "%Y-%m-%dT%H:%M:%SZ")
-            d2 = datetime.strptime(mod, "%Y-%m-%dT%H:%M:%SZ")
-            if d2 >= d1:
-                hours = round((d2 - d1).total_seconds() / 3600, 2)
-        out.append({
-            "id": r.get("_ID") or r.get("ID") or 0,
-            "title": s(r.get("Title")),
-            "customerId": s(r.get("Customer_id")),
-            "customer": s(r.get("Customer Name") or r.get("Customer_x0020_Name")),
-            "branch": s(r.get("branch")).upper() or "ไม่ระบุสาขา",
-            "branchCode": branch_code(r.get("branch")) or "N/A",
-            "owner": s(r.get("Owner")) or "ไม่ระบุผู้ดูแล",
-            "ownerEmail": s(r.get("OwnerEmail") or r.get("Owner_Email")).lower(),
-            "status": status,
-            "statusGroup": STATUS_GROUP.get(status, "In Progress"),
-            "type": s(r.get("Type_Request")) or "ไม่ระบุประเภท",
-            "team": s(r.get("type_teams")),
-            "segment": s(r.get("Type1")),
-            "province": s(r.get("province")),
-            "district": s(r.get("district")),
-            "business": s(r.get("business_type")),
-            "limit": num(r.get("limit")),
-            "requestAt": req,
-            "modifiedAt": mod,
-            "hours": hours,
-        })
+        out.append({k.strip(): (v if v not in ("", None) else None) for k, v in r.items()})
+    print(f"[csv] loaded {len(out)} rows from {path}")
     return out
 
 
-# ------------------- 2) SECURITY MATRIX (RBAC) -----------------------
-def build_security(rows, branches):
-    """
-    สร้าง user directory จาก Admin_KycNew (คอลัมน์ Title = Email)
-    กติกาแยก Role อัตโนมัติ
-      - อยู่ใน ADMIN_EMAILS                       -> Admin        (เห็นทุกสาขา)
-      - GM-XX@ / BI-OperationXX_GM@ / BI-VOperationXX_GM@
-                                                  -> BranchManager (เห็นสาขา XX)
-      - นอกเหนือจากนั้น                            -> Owner        (เห็นเฉพาะงานตนเอง)
-    ทุก record มี isActive (ค่าเริ่มต้น Yes; ถ้า List มีคอลัมน์ IsActive จะใช้ค่านั้น)
-    """
-    admins = {e.strip().lower() for e in
-              os.environ.get("ADMIN_EMAILS", ",".join(DEFAULT_ADMINS)).split(",")
-              if e.strip()}
-    valid_codes = {branch_code(b) for b in branches}
-    users = {}
+# ---------------------------------------------------------------------------
+# 5) แปลงข้อมูลดิบ → โครงสร้างที่ Dashboard ใช้
+# ---------------------------------------------------------------------------
+def to_number(v):
+    """'20,000,000' → 20000000 ; ค่าที่แปลงไม่ได้ → 0"""
+    if v is None:
+        return 0
+    s = re.sub(r"[^\d.\-]", "", str(v))
+    try:
+        return float(s) if s not in ("", "-", ".") else 0
+    except ValueError:
+        return 0
 
-    for r in rows:
-        email = s(r.get("Email") or r.get("Title")).lower()
-        if "@" not in email:
+
+def norm_ts(v):
+    """ทำให้ timestamp อยู่ในรูป ISO 'YYYY-MM-DDTHH:MM:SSZ'"""
+    if not v:
+        return ""
+    s = str(v).strip()
+    if "T" in s:
+        return s if s.endswith("Z") else s + "Z"
+    for f in ("%m/%d/%Y %H:%M:%S", "%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M:%S"):
+        try:
+            return datetime.strptime(s, f).strftime("%Y-%m-%dT%H:%M:%SZ")
+        except ValueError:
             continue
-        active = s(r.get("IsActive") or r.get("Is_Active") or "Yes")
-        role = s(r.get("Role"))
-        br = [c.strip().upper() for c in
-              re.split(r"[;,]", s(r.get("Branch"))) if c.strip()]
+    return s
 
-        local = email.split("@")[0].lower()
-        if not role:
-            if email in admins:
-                role = "Admin"
-            else:
-                m = (re.match(r"^gm-([a-z0-9]+)$", local)
-                     or re.match(r"^bi-v?operation([a-z0-9]+)_gm$", local)
-                     or re.match(r"^dohometogogm-([a-z0-9]+)$", local))
-                if m and m.group(1).upper() in valid_codes | {"TRAINEE"}:
-                    role, br = "BranchManager", [m.group(1).upper()]
-                elif m:
-                    role, br = "BranchManager", [m.group(1).upper()]
-                else:
-                    role = "Owner"
-        users[email] = {
-            "email": email,
-            "role": role,
-            "branches": br,
-            "isActive": "No" if active.lower() in ("no", "false", "0") else "Yes",
-            "displayName": s(r.get("DisplayName")) or local,
+
+def build_payload(raw: list) -> dict:
+    """สร้าง dict ที่จะถูกฝังลงใน index.html เป็น window.DEMOAPP_DATA"""
+    rows, columns = [], []
+    for r in raw:
+        for k in r:
+            if k not in columns:
+                columns.append(k)
+
+    for r in raw:
+        clean = {k.strip(): v for k, v in r.items()
+                 if v not in (None, "") and not k.startswith("_Has")}
+        row = {
+            "id":           r.get("_ID"),
+            "title":        r.get("Title"),
+            "customerId":   r.get("Customer_id"),
+            "customerName": r.get("Customer Name") or r.get("Registered_Name") or f"รายการ {r.get('_ID')}",
+            "type1":        r.get("Type1"),
+            "team":         r.get("type_teams"),
+            "distribution": r.get("Typr_Distribution") or r.get("Typr_Retail"),
+            "branch":       r.get("branch"),
+            "ts":           norm_ts(r.get("Request TimeStamp")),
+            "status":       r.get("Status") or r.get("Status_1"),
+            "typeRequest":  r.get("Type_Request"),
+            "limitNum":     to_number(r.get("limit")),
+            "limitOther":   to_number(r.get("limit_other")),
+            "owner":        r.get("Owner"),
+            "province":     r.get("province"),
+            "district":     r.get("district"),
+            "businessType": r.get("business_type"),
+            "income":       r.get("Estimated_annual_income"),
+            "credit1":      r.get("credit_semester1"),
+            "credit2":      r.get("credit_semester2"),
+            "land":         r.get("land"),
+            "contact":      r.get("contact_name"),
+            "_raw":         clean,   # ใช้ในหน้า Drill Down
         }
-    return users
+        # ฟิลด์รวมข้อความทุกคอลัมน์ (lowercase) สำหรับ global search
+        row["_search"] = " ".join(str(v) for v in clean.values()).lower()
+        rows.append(row)
 
+    # ---- สถิติคุณภาพข้อมูล ----
+    n = max(len(raw), 1)
+    null_pct, dictionary = [], []
+    for c in columns:
+        if c.startswith("_Has"):
+            continue
+        vals = [r.get(c) for r in raw]
+        nonnull = [v for v in vals if v not in (None, "")]
+        pct = round((n - len(nonnull)) / n * 100, 1)
+        null_pct.append([c, pct])
+        sample = str(nonnull[0])[:40] if nonnull else ""
+        dictionary.append({
+            "name":    c,
+            "type":    guess_type(nonnull),
+            "desc":    FIELD_DESC.get(c.strip(), "—"),
+            "sample":  sample,
+            "unique":  len(set(map(str, nonnull))),
+            "nullPct": pct,
+        })
+    null_pct.sort(key=lambda x: -x[1])
 
-# ---------------------------- 3) BUILD -------------------------------
-def main():
-    raw_main = load("raw_main.json", "sample_main.json")
-    raw_sec = load("raw_security.json", "sample_security.json")
-
-    records = normalize_main(raw_main)
-    branches = sorted({r["branch"] for r in records})
-    users = build_security(raw_sec, branches)
-
-    now = datetime.now(TZ)
-    meta = {
-        "generatedAt": now.strftime("%Y-%m-%d %H:%M:%S"),
-        "generatedAtISO": now.astimezone(timezone.utc)
-                             .strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "totalRecords": len(records),
-        "totalUsers": len(users),
-        "slaDays": SLA_DAYS,
-        "listUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp",
-        "secUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/Admin_KycNew",
+    return {
+        "generatedAt":  datetime.now(TZ_TH).strftime("%Y-%m-%d %H:%M น. (เวลาไทย)"),
+        "listUrl":      LIST_URL,
+        "rowCount":     len(rows),
+        "columns":      columns,
+        "rows":         rows,
+        "dictionary":   dictionary,
+        "nullPercent":  null_pct,
+        "emptyColumns": [c for c, p in null_pct if p >= 100],
     }
 
-    html = TPL.read_text(encoding="utf-8")
-    html = (html
-            .replace("/*__META__*/null", json.dumps(meta, ensure_ascii=False))
-            .replace("/*__DATA__*/[]",
-                     json.dumps(records, ensure_ascii=False, separators=(",", ":")))
-            .replace("/*__USERS__*/{}",
-                     json.dumps(users, ensure_ascii=False, separators=(",", ":")))
-            .replace("__BUILD_TIME__", meta["generatedAt"]))
-    OUT.write_text(html, encoding="utf-8")
 
-    # เก็บ dataset ที่ normalize แล้วไว้ให้ Power BI / Power Apps ต่อยอด
-    (DATA / "dataset.json").write_text(
-        json.dumps({"meta": meta, "records": records,
-                    "users": list(users.values())},
-                   ensure_ascii=False, indent=1), encoding="utf-8")
+def guess_type(vals) -> str:
+    """เดาชนิดข้อมูลจากค่าที่มีอยู่จริง"""
+    if not vals:
+        return "ว่างทั้งหมด"
+    s = [str(v) for v in vals[:50]]
+    if all(re.fullmatch(r"\d{4}-\d{2}-\d{2}T.*", x) for x in s):
+        return "DateTime"
+    if all(re.fullmatch(r"[\d,\.]+", x) for x in s):
+        return "Number"
+    return "Text"
 
-    print(f"OK: index.html ({OUT.stat().st_size:,} bytes) | "
-          f"records={len(records)} | users={len(users)} | "
-          f"branches={len(branches)}")
+
+# ---------------------------------------------------------------------------
+# 6) เขียนไฟล์ index.html โดยแทนที่ placeholder ใน template
+# ---------------------------------------------------------------------------
+def render(payload: dict) -> None:
+    with open(TEMPLATE, encoding="utf-8") as fh:
+        html = fh.read()
+
+    data_js = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+    # กัน </script> ในข้อมูลทำให้ HTML พัง
+    data_js = data_js.replace("</", "<\\/")
+
+    start, end = "/*__DATA__*/", "/*__ENDDATA__*/"
+    i, j = html.index(start), html.index(end)
+    html = html[: i + len(start)] + data_js + html[j:]
+
+    os.makedirs(os.path.dirname(OUT_JSON), exist_ok=True)
+    with open(OUT_HTML, "w", encoding="utf-8") as fh:
+        fh.write(html)
+    with open(OUT_JSON, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, ensure_ascii=False, indent=1)
+
+    print(f"[build] wrote {OUT_HTML}  ({len(html):,} bytes, {payload['rowCount']} rows)")
+    print(f"[build] wrote {OUT_JSON}")
+
+
+# ---------------------------------------------------------------------------
+# 7) main
+# ---------------------------------------------------------------------------
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Build DemoApp dashboard")
+    ap.add_argument("--offline", metavar="CSV",
+                    help="สร้าง dashboard จากไฟล์ CSV แทนการเรียก Graph API")
+    a = ap.parse_args()
+
+    raw = fetch_csv(a.offline) if a.offline else fetch_graph()
+    if not raw:
+        print("[error] ไม่พบข้อมูล — ยกเลิกการสร้างไฟล์", file=sys.stderr)
+        return 1
+
+    payload = build_payload(raw)
+    render(payload)
+
+    # สรุปสั้น ๆ ลง log ของ GitHub Actions
+    print("[summary] status:", dict(Counter(r["status"] for r in payload["rows"])))
+    print("[summary] total limit:", f'{sum(r["limitNum"] for r in payload["rows"]):,.0f}')
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
