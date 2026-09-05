@@ -169,6 +169,44 @@ def fetch_list_items(token: str, site_id: str, list_name: str) -> list:
     return items
 
 
+def fetch_list_columns(token: str, site_id: str, list_name: str) -> list:
+    """
+    ดึง "แผนที่ชื่อคอลัมน์" ของ List : displayName (ชื่อที่เห็นในหน้าเว็บ)
+    คู่กับ name (internal name ที่ Graph ส่งกลับมาใน fields)
+
+    ทำไมต้องมี?
+      SharePoint เก็บ internal name ที่มักไม่ตรงกับชื่อที่เห็น เช่น
+      คอลัมน์ชื่อ "สาขา" -> internal name เป็น "_x0e2a__x0e32__x0e02__x0e32_"
+      หรือคอลัมน์ Person "ผู้รับผิดชอบ" -> Graph ส่งมาเป็น "xxxLookupId"
+      ถ้าไม่มีแผนที่นี้ build_dashboard.py จะจับคู่คอลัมน์ไม่ได้
+      ทำให้ Dashboard ขึ้นว่า "ไม่ระบุสาขา / ไม่ระบุผู้ดูแล"
+    """
+    url = f"{GRAPH}/sites/{site_id}/lists/{quote(list_name)}/columns"
+    try:
+        payload = graph_get(url, token)
+    except SystemExit as e:
+        print(f"  ! ดึง columns ของ {list_name} ไม่ได้ ({e}) — ข้ามไป")
+        return []
+
+    cols = []
+    for c in payload.get("value", []):
+        cols.append({
+            "name": c.get("name"),
+            "displayName": c.get("displayName"),
+            "type": next((k for k in (
+                "text", "number", "dateTime", "choice", "boolean",
+                "lookup", "personOrGroup", "currency", "calculated")
+                if k in c), "unknown"),
+            "hidden": c.get("hidden", False),
+        })
+
+    visible = [c for c in cols if not c["hidden"]]
+    print(f"  {list_name}: พบ {len(cols)} คอลัมน์ (แสดงผล {len(visible)})")
+    for c in visible[:60]:
+        print(f"     - {c['displayName']!r:38} -> {c['name']!r} [{c['type']}]")
+    return cols
+
+
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     print("== 1) ขอ Access Token ==", flush=True)
@@ -183,12 +221,18 @@ def main() -> int:
     print(f"== 4) ดึง Security Data: {SEC_LIST} ==", flush=True)
     sec_items = fetch_list_items(token, site_id, SEC_LIST)
 
+    print(f"== 5) ดึงแผนที่ชื่อคอลัมน์ของ {MAIN_LIST} ==", flush=True)
+    main_cols = fetch_list_columns(token, site_id, MAIN_LIST)
+
     (OUT_DIR / "raw_main.json").write_text(
         json.dumps(main_items, ensure_ascii=False, indent=1), encoding="utf-8")
     (OUT_DIR / "raw_security.json").write_text(
         json.dumps(sec_items, ensure_ascii=False, indent=1), encoding="utf-8")
+    (OUT_DIR / "raw_main_columns.json").write_text(
+        json.dumps(main_cols, ensure_ascii=False, indent=1), encoding="utf-8")
 
-    print(f"OK: main={len(main_items)} rows, security={len(sec_items)} rows")
+    print(f"OK: main={len(main_items)} rows, security={len(sec_items)} rows, "
+          f"columns={len(main_cols)}")
     return 0
 
 
