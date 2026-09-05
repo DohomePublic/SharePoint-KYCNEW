@@ -1,0 +1,23 @@
+# ระบบปฏิบัติการ
+.DS_Store
+Thumbs.db
+
+# ไฟล์ที่ export ออกจาก Dashboard (ไม่ควร commit)
+KYC_DemoApp_*.csv
+KYC_DemoApp_*.xlsx
+KYC_Dashboard_*.pdf
+KYC_Dashboard_*.png
+
+# CSV ดิบที่ export จาก SharePoint (อาจมีข้อมูลส่วนบุคคลที่ยังไม่ mask)
+raw/
+*.raw.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Editor
+.vscode/
+.idea/
