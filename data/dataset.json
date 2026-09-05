@@ -1,7 +1,7 @@
 {
  "meta": {
-  "generatedAt": "2026-09-04 20:10:26",
-  "generatedAtISO": "2026-09-04T13:10:26Z",
+  "generatedAt": "2026-09-05 07:22:25",
+  "generatedAtISO": "2026-09-05T00:22:25Z",
   "totalRecords": 32,
   "totalUsers": 65,
   "slaDays": 2,
@@ -626,28 +626,6 @@
    "hours": null
   },
   {
-   "id": 573,
-   "title": "บริษัท จํากัด",
-   "customerId": "",
-   "customer": "",
-   "branch": "ไม่ระบุสาขา",
-   "branchCode": "N/A",
-   "owner": "ไม่ระบุผู้ดูแล",
-   "ownerEmail": "",
-   "status": "ไม่ระบุ",
-   "statusGroup": "In Progress",
-   "type": "ไม่ระบุประเภท",
-   "team": "",
-   "segment": "",
-   "province": "",
-   "district": "",
-   "business": "",
-   "limit": 0.0,
-   "requestAt": "",
-   "modifiedAt": "2026-09-04T09:37:20Z",
-   "hours": null
-  },
-  {
    "id": 574,
    "title": "บริษัท โนชั่น (ประเทศไทย) จำกัด",
    "customerId": "",
@@ -711,6 +689,28 @@
    "limit": 0.0,
    "requestAt": "",
    "modifiedAt": "2026-09-04T12:29:44Z",
+   "hours": null
+  },
+  {
+   "id": 577,
+   "title": "บริษัท จํากัด",
+   "customerId": "",
+   "customer": "",
+   "branch": "ไม่ระบุสาขา",
+   "branchCode": "N/A",
+   "owner": "ไม่ระบุผู้ดูแล",
+   "ownerEmail": "",
+   "status": "ไม่ระบุ",
+   "statusGroup": "In Progress",
+   "type": "ไม่ระบุประเภท",
+   "team": "",
+   "segment": "",
+   "province": "",
+   "district": "",
+   "business": "",
+   "limit": 0.0,
+   "requestAt": "",
+   "modifiedAt": "2026-09-04T17:24:07Z",
    "hours": null
   }
  ],
