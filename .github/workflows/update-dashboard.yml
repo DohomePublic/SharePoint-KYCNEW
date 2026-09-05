@@ -1,0 +1,71 @@
+# ============================================================================
+#  Update DemoApp Dashboard
+#  ---------------------------------------------------------------------------
+#  ทำงานอัตโนมัติทุกวันเวลา 07:00 น. (เวลาไทย) = 00:00 UTC
+#  ขั้นตอน: ดึงข้อมูลจาก SharePoint (Graph API) → สร้าง index.html → commit → push
+#           GitHub Pages จะอัปเดตหน้าเว็บให้เองหลัง push
+# ============================================================================
+name: Update DemoApp Dashboard
+
+on:
+  schedule:
+    - cron: "0 0 * * *"        # 00:00 UTC = 07:00 น. เวลาไทย
+  workflow_dispatch:            # ปุ่ม Run workflow ในแท็บ Actions
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - ".github/workflows/update-dashboard.yml"
+
+permissions:
+  contents: write               # ต้องมีสิทธิ์ commit กลับเข้า repo
+
+concurrency:
+  group: update-dashboard
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      # ป้องกัน FileNotFoundError: templates/dashboard.html
+      # โดยซิงก์เทมเพลตต้นฉบับ (scripts/template.html) ไปยังตำแหน่งสำรองเสมอ
+      - name: Sync template locations
+        run: |
+          mkdir -p templates
+          cp scripts/template.html templates/dashboard.html
+          ls -l scripts/template.html templates/dashboard.html
+
+      - name: Build dashboard from SharePoint
+        env:
+          AZURE_CLIENT_ID:     ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID:     ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          SP_HOSTNAME:  dohomegroup.sharepoint.com
+          SP_SITE_PATH: /sites/AC-Accounting
+          SP_LIST_NAME: DemoApp
+        run: python scripts/build_dashboard.py
+
+      - name: Commit & push updated dashboard
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html data/demoapp.json
+          # commit เฉพาะเมื่อมีการเปลี่ยนแปลงจริง
+          if git diff --staged --quiet; then
+            echo "ไม่มีข้อมูลเปลี่ยนแปลง — ข้ามการ commit"
+          else
+            git commit -m "chore: update DemoApp dashboard $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
