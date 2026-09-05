@@ -8,14 +8,20 @@
  แหล่งข้อมูล    : SharePoint List "DemoApp" + "Admin_KycNew"
  ลำดับการแสดงผล : 1 Executive Summary -> 2 KPI -> 3 Filter -> 4 Branch
                   -> 5 Owner -> 6 Charts -> 7 Table -> 8 Auto Insight
- Build time     : 2026-09-05 12:00:29
+ โหมดเข้าถึง    : PUBLIC — ไม่มีการตรวจสอบสิทธิ์ ใครเปิดลิงก์ก็เห็นข้อมูลครบ
+ Build time     : 2026-09-05 12:04:50
+ Access mode    : PUBLIC-NO-AUTH
 =======================================================================
 -->
 <html lang="th" data-bs-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DOHOME | KYC Daily Dashboard</title>
+<!-- กันเบราว์เซอร์/CDN แคชไฟล์เก่า (สำคัญมากบน GitHub Pages หลังแก้ไฟล์) -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>DOHOME | KYC Daily Dashboard (Public)</title>
 
 <!-- ============ LIBRARIES (CDN) ============ -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -55,7 +61,6 @@ table.dataTable thead th{position:sticky;top:0;z-index:5;background:var(--brand)
 .badge-status{font-weight:600}
 #loader{position:fixed;inset:0;background:linear-gradient(135deg,#003F78,#005BAC 60%,#0A7CD6);
         color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;z-index:2000}
-#gate{display:none;min-height:100vh}
 .insight{border-left:4px solid var(--brand);background:var(--card);border-radius:12px;padding:.85rem 1rem;margin-bottom:.6rem}
 .insight.up{border-left-color:var(--ok)}.insight.down{border-left-color:var(--bad)}
 .insight.alert{border-left-color:var(--warn)}
@@ -74,28 +79,10 @@ table.dataTable thead th{position:sticky;top:0;z-index:5;background:var(--brand)
   <i class="fa-solid fa-chart-line fa-beat-fade fa-3x"></i>
   <h4 class="mb-0">กำลังโหลด Dashboard...</h4>
   <div class="spinner-border" role="status"></div>
-  <small id="loaderMsg">ตรวจสอบสิทธิ์ผู้ใช้งาน</small>
+  <small id="loaderMsg">กำลังเตรียมข้อมูลจาก SharePoint...</small>
 </div>
 
-<!-- ================= ACCESS DENIED / LOGIN GATE ================= -->
-<div id="gate" class="container py-5">
-  <div class="row justify-content-center"><div class="col-md-7 col-lg-5">
-    <div class="card-x p-4 text-center">
-      <i id="gateIcon" class="fa-solid fa-user-shield fa-3x mb-3" style="color:var(--brand)"></i>
-      <h4 id="gateTitle" class="fw-bold">ยืนยันตัวตนผู้ใช้งาน</h4>
-      <p id="gateMsg" class="text-secondary small">กรอกอีเมลบริษัทเพื่อเข้าใช้งาน Dashboard</p>
-      <div class="input-group mb-2">
-        <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
-        <input id="gateEmail" type="email" class="form-control" placeholder="name@dohome.co.th">
-      </div>
-      <button class="btn text-white w-100" style="background:var(--brand)" onclick="signIn()">
-        <i class="fa-solid fa-right-to-bracket me-1"></i> เข้าสู่ระบบ</button>
-      <div id="gateErr" class="text-danger small mt-2"></div>
-    </div>
-  </div></div>
-</div>
-
-<!-- ================= MAIN APP ================= -->
+<!-- ================= MAIN APP (Public View : ไม่มีการตรวจสอบสิทธิ์) ================= -->
 <div id="app" style="display:none">
 
 <!-- HEADER -->
@@ -106,12 +93,12 @@ table.dataTable thead th{position:sticky;top:0;z-index:5;background:var(--brand)
     <div class="d-flex align-items-center gap-2 text-white flex-wrap">
       <span class="badge bg-light text-dark d-none d-md-inline"><i class="fa-regular fa-clock me-1"></i>
         อัปเดต: <span id="hdrBuild"></span></span>
-      <span class="badge bg-warning text-dark" id="hdrRole"></span>
-      <span class="small d-none d-lg-inline" id="hdrUser"></span>
+      <span class="badge bg-light text-dark"><i class="fa-solid fa-globe me-1"></i>Public View</span>
+      <span class="badge bg-warning text-dark" id="hdrCount"></span>
       <button class="btn btn-sm btn-outline-light" onclick="toggleTheme()" title="สลับโหมดสว่าง/มืด">
         <i class="fa-solid fa-circle-half-stroke"></i></button>
-      <button class="btn btn-sm btn-outline-light" onclick="signOut()" title="ออกจากระบบ">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      <button class="btn btn-sm btn-outline-light" onclick="location.reload()" title="โหลดข้อมูลใหม่">
+        <i class="fa-solid fa-rotate"></i></button>
     </div>
   </div>
 </nav>
@@ -271,7 +258,7 @@ table.dataTable thead th{position:sticky;top:0;z-index:5;background:var(--brand)
    DATA  = records จาก SharePoint List "DemoApp" (normalize แล้ว)
    USERS = security matrix จาก "Admin_KycNew"  (key = email)
 =================================================================== */
-const META  = {"generatedAt": "2026-09-05 12:00:29", "generatedAtISO": "2026-09-05T05:00:29Z", "totalRecords": 37, "totalUsers": 65, "slaDays": 2, "listUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp", "secUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/Admin_KycNew"};
+const META  = {"generatedAt": "2026-09-05 12:04:50", "generatedAtISO": "2026-09-05T05:04:50Z", "totalRecords": 37, "totalUsers": 65, "slaDays": 2, "listUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp", "secUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/Admin_KycNew"};
 const DATA  = [{"id":541,"title":"ห้างหุ้นส่วนจำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-01T08:26:42Z","hours":null},{"id":542,"title":"ห้างหุ้นส่วนจำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-08-26T05:47:54Z","hours":null},{"id":546,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-01T07:54:43Z","hours":null},{"id":547,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-01T07:53:08Z","hours":null},{"id":548,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-08-27T09:45:20Z","hours":null},{"id":549,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-08-31T05:50:51Z","hours":null},{"id":550,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-01T07:55:24Z","hours":null},{"id":551,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-08-28T08:16:15Z","hours":null},{"id":552,"title":"ติดตามชุดเปิดตัวจริง 104369023","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T08:56:09Z","hours":null},{"id":554,"title":"ห้างหุ้นส่วนจำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-02T08:31:19Z","hours":null},{"id":555,"title":"ห้างหุ้นส่วนจำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T02:43:16Z","hours":null},{"id":556,"title":"ห้างหุ้นส่วนจำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T02:43:57Z","hours":null},{"id":557,"title":"ห้างหุ้นส่วนจำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T10:43:24Z","hours":null},{"id":558,"title":"บริษัท ชาญธารา กรุ๊ป จำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-04T03:47:47Z","hours":null},{"id":559,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-02T11:04:50Z","hours":null},{"id":560,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-02T13:24:02Z","hours":null},{"id":561,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-02T13:35:43Z","hours":null},{"id":562,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T02:31:40Z","hours":null},{"id":563,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T03:40:40Z","hours":null},{"id":564,"title":"ห้างหุ้นส่วนจำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T04:22:14Z","hours":null},{"id":565,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-04T05:51:34Z","hours":null},{"id":566,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T12:28:18Z","hours":null},{"id":567,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T04:44:37Z","hours":null},{"id":568,"title":"หน่วยงานราชการ","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T09:30:47Z","hours":null},{"id":569,"title":"บริษัท อุดรธนะดีวิศวกรรม จำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-04T03:47:53Z","hours":null},{"id":570,"title":"หน่วยงานราชการ","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T10:20:52Z","hours":null},{"id":571,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-03T15:55:06Z","hours":null},{"id":572,"title":"บริษัท เดอะ บี คอร์ปอเรชั่น จำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-04T06:48:39Z","hours":null},{"id":574,"title":"บริษัท โนชั่น (ประเทศไทย) จำกัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-04T10:31:54Z","hours":null},{"id":575,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-04T12:35:06Z","hours":null},{"id":576,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-04T12:29:44Z","hours":null},{"id":577,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-04T17:24:07Z","hours":null},{"id":578,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-05T01:51:58Z","hours":null},{"id":579,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-05T03:11:54Z","hours":null},{"id":580,"title":"หน่วยงานราชการ","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-05T04:37:31Z","hours":null},{"id":581,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-05T04:51:44Z","hours":null},{"id":582,"title":"บริษัท จํากัด","customerId":"","customer":"","branch":"ไม่ระบุสาขา","branchCode":"N/A","owner":"ไม่ระบุผู้ดูแล","ownerEmail":"","status":"ไม่ระบุ","statusGroup":"In Progress","type":"ไม่ระบุประเภท","team":"","segment":"","province":"","district":"","business":"","limit":0.0,"requestAt":"","modifiedAt":"2026-09-05T04:53:02Z","hours":null}];
 const USERS = {"bi-voperationcr_gm@dohome.co.th":{"email":"bi-voperationcr_gm@dohome.co.th","role":"BranchManager","branches":["CR"],"isActive":"Yes","displayName":"bi-voperationcr_gm"},"bi-voperationay_gm@dohome.co.th":{"email":"bi-voperationay_gm@dohome.co.th","role":"BranchManager","branches":["AY"],"isActive":"Yes","displayName":"bi-voperationay_gm"},"bi-operationbn_gm@dohome.co.th":{"email":"bi-operationbn_gm@dohome.co.th","role":"BranchManager","branches":["BN"],"isActive":"Yes","displayName":"bi-operationbn_gm"},"bi-voperationbp_gm@dohome.co.th":{"email":"bi-voperationbp_gm@dohome.co.th","role":"BranchManager","branches":["BP"],"isActive":"Yes","displayName":"bi-voperationbp_gm"},"bi-operationbr_gm@dohome.co.th":{"email":"bi-operationbr_gm@dohome.co.th","role":"BranchManager","branches":["BR"],"isActive":"Yes","displayName":"bi-operationbr_gm"},"bi-operationbt_gm@dohome.co.th":{"email":"bi-operationbt_gm@dohome.co.th","role":"BranchManager","branches":["BT"],"isActive":"Yes","displayName":"bi-operationbt_gm"},"bi-operationbw_gm@dohome.co.th":{"email":"bi-operationbw_gm@dohome.co.th","role":"BranchManager","branches":["BW"],"isActive":"Yes","displayName":"bi-operationbw_gm"},"bi-operationcb_gm@dohome.co.th":{"email":"bi-operationcb_gm@dohome.co.th","role":"BranchManager","branches":["CB"],"isActive":"Yes","displayName":"bi-operationcb_gm"},"bi-operationcm_gm@dohome.co.th":{"email":"bi-operationcm_gm@dohome.co.th","role":"BranchManager","branches":["CM"],"isActive":"Yes","displayName":"bi-operationcm_gm"},"bi-operationcp_gm@dohome.co.th":{"email":"bi-operationcp_gm@dohome.co.th","role":"BranchManager","branches":["CP"],"isActive":"Yes","displayName":"bi-operationcp_gm"},"bi-operationhy_gm@dohome.co.th":{"email":"bi-operationhy_gm@dohome.co.th","role":"BranchManager","branches":["HY"],"isActive":"Yes","displayName":"bi-operationhy_gm"},"bi-operationkk_gm@dohome.co.th":{"email":"bi-operationkk_gm@dohome.co.th","role":"BranchManager","branches":["KK"],"isActive":"Yes","displayName":"bi-operationkk_gm"},"bi-operationkn_gm@dohome.co.th":{"email":"bi-operationkn_gm@dohome.co.th","role":"BranchManager","branches":["KN"],"isActive":"Yes","displayName":"bi-operationkn_gm"},"bi-operationkr_gm@dohome.co.th":{"email":"bi-operationkr_gm@dohome.co.th","role":"BranchManager","branches":["KR"],"isActive":"Yes","displayName":"bi-operationkr_gm"},"bi-operationlb_gm@dohome.co.th":{"email":"bi-operationlb_gm@dohome.co.th","role":"BranchManager","branches":["LB"],"isActive":"Yes","displayName":"bi-operationlb_gm"},"bi-operationmp_gm@dohome.co.th":{"email":"bi-operationmp_gm@dohome.co.th","role":"BranchManager","branches":["MP"],"isActive":"Yes","displayName":"bi-operationmp_gm"},"bi-operationpk_gm@dohome.co.th":{"email":"bi-operationpk_gm@dohome.co.th","role":"BranchManager","branches":["PK"],"isActive":"Yes","displayName":"bi-operationpk_gm"},"bi-operationpl_gm@dohome.co.th":{"email":"bi-operationpl_gm@dohome.co.th","role":"BranchManager","branches":["PL"],"isActive":"Yes","displayName":"bi-operationpl_gm"},"bi-operationpr2_gm@dohome.co.th":{"email":"bi-operationpr2_gm@dohome.co.th","role":"BranchManager","branches":["PR2"],"isActive":"Yes","displayName":"bi-operationpr2_gm"},"bi-operationrs_gm@dohome.co.th":{"email":"bi-operationrs_gm@dohome.co.th","role":"BranchManager","branches":["RS"],"isActive":"Yes","displayName":"bi-operationrs_gm"},"bi-operationsn_gm@dohome.co.th":{"email":"bi-operationsn_gm@dohome.co.th","role":"BranchManager","branches":["SN"],"isActive":"Yes","displayName":"bi-operationsn_gm"},"bi-operationsr_gm@dohome.co.th":{"email":"bi-operationsr_gm@dohome.co.th","role":"BranchManager","branches":["SR"],"isActive":"Yes","displayName":"bi-operationsr_gm"},"bi-operationub_gm@dohome.co.th":{"email":"bi-operationub_gm@dohome.co.th","role":"BranchManager","branches":["UB"],"isActive":"Yes","displayName":"bi-operationub_gm"},"bi-operationud_gm@dohome.co.th":{"email":"bi-operationud_gm@dohome.co.th","role":"BranchManager","branches":["UD"],"isActive":"Yes","displayName":"bi-operationud_gm"},"gm-trainee@dohome.co.th":{"email":"gm-trainee@dohome.co.th","role":"BranchManager","branches":["TRAINEE"],"isActive":"Yes","displayName":"gm-trainee"},"gm-br@dohome.co.th":{"email":"gm-br@dohome.co.th","role":"BranchManager","branches":["BR"],"isActive":"Yes","displayName":"gm-br"},"gm-pk@dohome.co.th":{"email":"gm-pk@dohome.co.th","role":"BranchManager","branches":["PK"],"isActive":"Yes","displayName":"gm-pk"},"gm-sn@dohome.co.th":{"email":"gm-sn@dohome.co.th","role":"BranchManager","branches":["SN"],"isActive":"Yes","displayName":"gm-sn"},"gm-kk@dohome.co.th":{"email":"gm-kk@dohome.co.th","role":"BranchManager","branches":["KK"],"isActive":"Yes","displayName":"gm-kk"},"gm-cp@dohome.co.th":{"email":"gm-cp@dohome.co.th","role":"BranchManager","branches":["CP"],"isActive":"Yes","displayName":"gm-cp"},"gm-cm@dohome.co.th":{"email":"gm-cm@dohome.co.th","role":"BranchManager","branches":["CM"],"isActive":"Yes","displayName":"gm-cm"},"gm-cr@dohome.co.th":{"email":"gm-cr@dohome.co.th","role":"BranchManager","branches":["CR"],"isActive":"Yes","displayName":"gm-cr"},"gm-cb@dohome.co.th":{"email":"gm-cb@dohome.co.th","role":"BranchManager","branches":["CB"],"isActive":"Yes","displayName":"gm-cb"},"gm-pr@dohome.co.th":{"email":"gm-pr@dohome.co.th","role":"BranchManager","branches":["PR"],"isActive":"Yes","displayName":"gm-pr"},"gm-lb@dohome.co.th":{"email":"gm-lb@dohome.co.th","role":"BranchManager","branches":["LB"],"isActive":"Yes","displayName":"gm-lb"},"gm-kn@dohome.co.th":{"email":"gm-kn@dohome.co.th","role":"BranchManager","branches":["KN"],"isActive":"Yes","displayName":"gm-kn"},"gm-rs@dohome.co.th":{"email":"gm-rs@dohome.co.th","role":"BranchManager","branches":["RS"],"isActive":"Yes","displayName":"gm-rs"},"gm-ud@dohome.co.th":{"email":"gm-ud@dohome.co.th","role":"BranchManager","branches":["UD"],"isActive":"Yes","displayName":"gm-ud"},"gm-tp@dohome.co.th":{"email":"gm-tp@dohome.co.th","role":"BranchManager","branches":["TP"],"isActive":"Yes","displayName":"gm-tp"},"gm-bw@dohome.co.th":{"email":"gm-bw@dohome.co.th","role":"BranchManager","branches":["BW"],"isActive":"Yes","displayName":"gm-bw"},"gm-mp@dohome.co.th":{"email":"gm-mp@dohome.co.th","role":"BranchManager","branches":["MP"],"isActive":"Yes","displayName":"gm-mp"},"gm-dc@dohome.co.th":{"email":"gm-dc@dohome.co.th","role":"BranchManager","branches":["DC"],"isActive":"Yes","displayName":"gm-dc"},"gm-ns@dohome.co.th":{"email":"gm-ns@dohome.co.th","role":"BranchManager","branches":["NS"],"isActive":"Yes","displayName":"gm-ns"},"gm-bt@dohome.co.th":{"email":"gm-bt@dohome.co.th","role":"BranchManager","branches":["BT"],"isActive":"Yes","displayName":"gm-bt"},"gm-pt@dohome.co.th":{"email":"gm-pt@dohome.co.th","role":"BranchManager","branches":["PT"],"isActive":"Yes","displayName":"gm-pt"},"gm-sr@dohome.co.th":{"email":"gm-sr@dohome.co.th","role":"BranchManager","branches":["SR"],"isActive":"Yes","displayName":"gm-sr"},"dohometogogm-tsb@dohome.co.th":{"email":"dohometogogm-tsb@dohome.co.th","role":"BranchManager","branches":["TSB"],"isActive":"Yes","displayName":"dohometogogm-tsb"},"dohometogogm-tty@dohome.co.th":{"email":"dohometogogm-tty@dohome.co.th","role":"BranchManager","branches":["TTY"],"isActive":"Yes","displayName":"dohometogogm-tty"},"dohometogogm-trc@dohome.co.th":{"email":"dohometogogm-trc@dohome.co.th","role":"BranchManager","branches":["TRC"],"isActive":"Yes","displayName":"dohometogogm-trc"},"gm-bp@dohome.co.th":{"email":"gm-bp@dohome.co.th","role":"BranchManager","branches":["BP"],"isActive":"Yes","displayName":"gm-bp"},"gm-pl@dohome.co.th":{"email":"gm-pl@dohome.co.th","role":"BranchManager","branches":["PL"],"isActive":"Yes","displayName":"gm-pl"},"gm-bn@dohome.co.th":{"email":"gm-bn@dohome.co.th","role":"BranchManager","branches":["BN"],"isActive":"Yes","displayName":"gm-bn"},"gm-hy@dohome.co.th":{"email":"gm-hy@dohome.co.th","role":"BranchManager","branches":["HY"],"isActive":"Yes","displayName":"gm-hy"},"gm-kr@dohome.co.th":{"email":"gm-kr@dohome.co.th","role":"BranchManager","branches":["KR"],"isActive":"Yes","displayName":"gm-kr"},"gm-ub@dohome.co.th":{"email":"gm-ub@dohome.co.th","role":"BranchManager","branches":["UB"],"isActive":"Yes","displayName":"gm-ub"},"gm-ay@dohome.co.th":{"email":"gm-ay@dohome.co.th","role":"BranchManager","branches":["AY"],"isActive":"Yes","displayName":"gm-ay"},"phongsapan.mar@dohome.co.th":{"email":"phongsapan.mar@dohome.co.th","role":"Owner","branches":[],"isActive":"Yes","displayName":"phongsapan.mar"},"piyatida.mali@dohome.co.th":{"email":"piyatida.mali@dohome.co.th","role":"Owner","branches":[],"isActive":"Yes","displayName":"piyatida.mali"},"siratip.tha@dohome.co.th":{"email":"siratip.tha@dohome.co.th","role":"Owner","branches":[],"isActive":"Yes","displayName":"siratip.tha"},"samniang.jai@dohome.co.th":{"email":"samniang.jai@dohome.co.th","role":"Owner","branches":[],"isActive":"Yes","displayName":"samniang.jai"},"patcharapa.sri@dohome.co.th":{"email":"patcharapa.sri@dohome.co.th","role":"Owner","branches":[],"isActive":"Yes","displayName":"patcharapa.sri"},"siriya.jan@dohome.co.th":{"email":"siriya.jan@dohome.co.th","role":"Owner","branches":[],"isActive":"Yes","displayName":"siriya.jan"},"yutima.hem@dohome.co.th":{"email":"yutima.hem@dohome.co.th","role":"Owner","branches":[],"isActive":"Yes","displayName":"yutima.hem"},"nattaya.pho@dohome.co.th":{"email":"nattaya.pho@dohome.co.th","role":"Owner","branches":[],"isActive":"Yes","displayName":"nattaya.pho"},"patsachon.put@dohome.co.th":{"email":"patsachon.put@dohome.co.th","role":"Owner","branches":[],"isActive":"Yes","displayName":"patsachon.put"}};
 
@@ -280,81 +267,21 @@ const SLA_DAYS   = (META && META.slaDays) ? META.slaDays : 2;
 const CLOSED     = ["Completed"];                 // กลุ่มสถานะที่ถือว่าปิดงาน
 const COLORS     = ["#005BAC","#0A7CD6","#12A150","#F5A524","#E5484D","#7C3AED",
                     "#0EA5E9","#EC4899","#14B8A6","#A16207","#64748B","#DB2777"];
-let   CURRENT_USER = null;   // ผู้ใช้ที่ผ่านการตรวจสอบสิทธิ์
-let   SCOPED = [];           // ข้อมูลหลัง RBAC (ขอบเขตที่ผู้ใช้เห็นได้)
+let   SCOPED = [];           // ชุดข้อมูลตั้งต้น (Public = ทุก record)
 let   VIEW   = [];           // ข้อมูลหลัง Filter (ที่แสดงบนจอ)
 let   CHARTS = {};           // instance ของ Chart.js
 let   DT     = null;         // instance ของ DataTables
 
 /* ===================================================================
-   ส่วนที่ 9 : SECURITY VALIDATION LOGIC  (RBAC by Email)
+   ส่วนที่ 9 : DATA SCOPE  (Public Mode — ไม่มีการตรวจสอบสิทธิ์)
    ------------------------------------------------------------------
-   1) หา email ของผู้ใช้ : ?email=  ->  localStorage  ->  ฟอร์ม
-   2) ตรวจใน USERS (มาจาก List Admin_KycNew)
-        - ไม่พบ email          -> Access Denied
-        - IsActive = No        -> Access Denied
-   3) กำหนดขอบเขตข้อมูลตาม Role
-        - Admin          : เห็นทุก record
-        - BranchManager  : เห็นเฉพาะสาขาที่รับผิดชอบ
-        - Owner          : เห็นเฉพาะงานที่ Owner ตรงกับตนเอง
+   เดิมส่วนนี้เป็น RBAC ตรวจอีเมลจาก List Admin_KycNew
+   ตามคำสั่งล่าสุด : เปิดสาธารณะ ใครเปิดลิงก์ก็เห็นข้อมูลทั้งหมดทันที
+   ถ้าต้องการเปิด RBAC กลับมาในอนาคต ให้แก้เฉพาะฟังก์ชัน getScopedData()
+   ให้กรอง DATA ตามข้อมูลใน USERS (ยังถูกฝังไว้ในไฟล์เหมือนเดิม)
 =================================================================== */
-function resolveEmail(){
-  const q = new URLSearchParams(location.search).get("email");
-  if(q) return q.trim().toLowerCase();
-  return (localStorage.getItem("kyc_email")||"").trim().toLowerCase();
-}
-
-function validateUser(email){
-  if(!email)              return {ok:false, reason:"NO_EMAIL"};
-  const u = USERS[email];
-  if(!u)                  return {ok:false, reason:"NOT_FOUND"};
-  if(u.isActive === "No") return {ok:false, reason:"INACTIVE"};
-  return {ok:true, user:u};
-}
-
-/* คืนค่า record ที่ผู้ใช้มีสิทธิ์เห็น */
-function applyRbac(user){
-  if(user.role === "Admin") return DATA.slice();
-
-  if(user.role === "BranchManager"){
-    const codes = (user.branches||[]).map(b=>b.toUpperCase().replace(/OO$/,""));
-    return DATA.filter(r => codes.includes((r.branchCode||"").toUpperCase()));
-  }
-  /* Owner : จับคู่ด้วย OwnerEmail ถ้ามี, ไม่มีก็เทียบชื่อ/รหัสท้ายชื่อกับ local-part */
-  const local = user.email.split("@")[0].toLowerCase();
-  const key   = local.split(/[._-]/)[0];
-  return DATA.filter(r =>
-      (r.ownerEmail && r.ownerEmail === user.email) ||
-      (r.owner||"").toLowerCase().includes(key));
-}
-
-function signIn(){
-  const email = (document.getElementById("gateEmail").value||"").trim().toLowerCase();
-  const v = validateUser(email);
-  if(!v.ok){ showDenied(v.reason, email); return; }
-  localStorage.setItem("kyc_email", email);
-  startApp(v.user);
-}
-function signOut(){ localStorage.removeItem("kyc_email"); location.href = location.pathname; }
-
-function showDenied(reason, email){
-  document.getElementById("loader").style.display="none";
-  document.getElementById("app").style.display="none";
-  const g = document.getElementById("gate"); g.style.display="block";
-  const msg = {
-    NO_EMAIL : ["ยืนยันตัวตนผู้ใช้งาน","กรอกอีเมลบริษัทเพื่อเข้าใช้งาน Dashboard",""],
-    NOT_FOUND: ["Access Denied","ไม่พบอีเมลนี้ในรายชื่อผู้มีสิทธิ์ (Admin_KycNew)",
-                "อีเมล "+(email||"-")+" ไม่มีสิทธิ์เข้าถึง กรุณาติดต่อผู้ดูแลระบบ"],
-    INACTIVE : ["Access Denied","บัญชีนี้ถูกปิดการใช้งาน (IsActive = No)",
-                "กรุณาติดต่อผู้ดูแลระบบเพื่อเปิดสิทธิ์"]
-  }[reason] || ["Access Denied","ไม่สามารถตรวจสอบสิทธิ์ได้",""];
-  document.getElementById("gateTitle").textContent = msg[0];
-  document.getElementById("gateMsg").textContent   = msg[1];
-  document.getElementById("gateErr").textContent   = msg[2];
-  document.getElementById("gateIcon").className =
-      reason==="NO_EMAIL" ? "fa-solid fa-user-shield fa-3x mb-3"
-                          : "fa-solid fa-ban fa-3x mb-3 text-danger";
-  if(email) document.getElementById("gateEmail").value = email;
+function getScopedData(){
+  return DATA.slice();      // Public : เห็นครบทุก record
 }
 
 /* ===================================================================
@@ -389,7 +316,7 @@ function renderExec(rows){
   const t=today(), d7=daysAgo(7), d30=daysAgo(30);
   const cnt = g => rows.filter(r=>r.statusGroup===g).length;
   const cards = [
-    ["Total Records", nf(rows.length), "ทุกรายการในขอบเขตสิทธิ์", "fa-database", ""],
+    ["Total Records", nf(rows.length), "ทุกรายการจาก SharePoint", "fa-database", ""],
     ["New Today", nf(rows.filter(r=>dOnly(r.requestAt)===t).length), "วันที่ "+t, "fa-calendar-day", "info"],
     ["Last 7 Days", nf(rows.filter(r=>dOnly(r.requestAt)>=d7).length), "ตั้งแต่ "+d7, "fa-calendar-week", "info"],
     ["Last 30 Days", nf(rows.filter(r=>dOnly(r.requestAt)>=d30).length), "ตั้งแต่ "+d30, "fa-calendar", "info"],
@@ -477,7 +404,7 @@ function applyFilters(){
   });
   document.getElementById("filterInfo").innerHTML =
     `<i class="fa-solid fa-circle-info me-1"></i>แสดง <b>${nf(VIEW.length)}</b> จาก
-     <b>${nf(SCOPED.length)}</b> รายการที่คุณมีสิทธิ์เข้าถึง`;
+     <b>${nf(SCOPED.length)}</b> รายการทั้งหมด`;
   renderAll();
 }
 function clearFilters(){
@@ -795,7 +722,7 @@ function toggleTheme(){
 }
 
 /* แสดงแถบเตือนบนสุดเมื่อข้อมูลว่าง พร้อมบอกสาเหตุที่เป็นไปได้ */
-function showDataWarning(user){
+function showDataWarning(){
   const el = document.getElementById("dataWarn");
   if(!el) return;
   if(DATA.length === 0){
@@ -805,32 +732,18 @@ function showDataWarning(user){
       ตรวจ log ของ GitHub Actions ที่ step <code>Fetch SharePoint data</code> และ <code>Build dashboard</code></div>`;
     return;
   }
-  if(SCOPED.length === 0){
-    el.style.display = "block";
-    el.innerHTML = `<b><i class="fa-solid fa-user-lock me-2"></i>คุณมีสิทธิ์เข้าใช้งาน แต่ยังไม่มีข้อมูลในขอบเขตของคุณ</b>
-      <div class="small mt-1">
-        ไฟล์นี้มีทั้งหมด <b>${nf(DATA.length)}</b> รายการ แต่ Role <b>${user.role}</b>
-        ${user.role==="BranchManager" ? "สาขา <b>"+(user.branches.join(",")||"-")+"</b>" : ""}
-        มองเห็น 0 รายการ<br>
-        ${user.role==="BranchManager"
-          ? "สาขาที่มีข้อมูลจริง: <b>"+[...new Set(DATA.map(r=>r.branch))].join(", ")+"</b>"
-          : "ลองเข้าด้วยอีเมล Admin หรือเพิ่มอีเมลของคุณใน ADMIN_EMAILS"}
-      </div>`;
-    return;
-  }
   el.style.display = "none";
 }
 
 /* Debug Panel : เปิดด้วย ?debug=1 เพื่อดูข้อมูลดิบเมื่อ dashboard ว่าง */
-function showDebug(user){
+function showDebug(){
   if(new URLSearchParams(location.search).get("debug") !== "1") return;
   const el = document.getElementById("dataWarn");
   const sample = DATA[0] ? JSON.stringify(DATA[0], null, 1) : "(ไม่มี record)";
   el.style.display = "block";
   el.innerHTML += `<hr><b><i class="fa-solid fa-bug me-2"></i>Debug</b>
     <div class="small">
-      build = ${META.generatedAt} · DATA = ${DATA.length} · USERS = ${Object.keys(USERS).length}<br>
-      user = ${user.email} · role = ${user.role} · branches = [${user.branches}] · scoped = ${SCOPED.length}<br>
+      build = ${META.generatedAt} · DATA = ${DATA.length} · scoped = ${SCOPED.length}<br>
       branches ในข้อมูล = ${[...new Set(DATA.map(r=>r.branch))].join(", ")}<br>
       statuses = ${[...new Set(DATA.map(r=>r.status))].join(" | ")}<br>
       มี requestAt = ${DATA.filter(r=>r.requestAt).length}/${DATA.length}
@@ -838,53 +751,78 @@ function showDebug(user){
     <pre class="small mt-2 mb-0" style="max-height:220px;overflow:auto">${sample}</pre>`;
 }
 
-function startApp(user){
-  CURRENT_USER = user;
-  SCOPED = applyRbac(user);
+function startApp(){
+  SCOPED = getScopedData();
   VIEW   = SCOPED.slice();
 
-  document.getElementById("hdrUser").textContent = user.email;
-  document.getElementById("hdrRole").textContent =
-    ({Admin:"ADMIN (ทุกสาขา)", BranchManager:"BRANCH MANAGER"+(user.branches.length?" · "+user.branches.join(","):""),
-      Owner:"OWNER (เฉพาะงานของฉัน)"})[user.role] || user.role;
+  document.getElementById("hdrCount").textContent = nf(SCOPED.length) + " รายการ";
   document.getElementById("hdrBuild").textContent = META.generatedAt;
   document.getElementById("ftrBuild").textContent = META.generatedAt;
   document.getElementById("ftrList").href = META.listUrl;
   document.getElementById("ftrSec").href  = META.secUrl;
 
   fillFilters(SCOPED);
-  document.getElementById("gate").style.display="none";
   document.getElementById("app").style.display="block";
   document.getElementById("loader").style.display="none";
   applyFilters();
-  showDataWarning(user);
-  showDebug(user);
+  showDataWarning();
+  showDebug();
 }
 
-/* ---------- ENTRY POINT ---------- */
+/* ---------- ENTRY POINT (PUBLIC : ไม่มีการตรวจสอบสิทธิ์ใด ๆ) ---------- */
 window.addEventListener("DOMContentLoaded", ()=>{
+  /* ลบค่าที่เวอร์ชันเก่า (แบบมีล็อกอิน) เคยเก็บไว้ กันสับสน */
+  try{ localStorage.removeItem("kyc_email"); }catch(e){}
+
   /* คืนค่าธีมที่ผู้ใช้เลือกไว้ */
-  const th = localStorage.getItem("kyc_theme");
-  if(th) document.documentElement.setAttribute("data-bs-theme", th);
-
-  /* enter = sign in */
-  document.getElementById("gateEmail")
-          .addEventListener("keyup", e=>{ if(e.key==="Enter") signIn(); });
-  /* พิมพ์ keyword แล้วกรองทันที (debounce) */
-  let tmr; document.getElementById("fKeyword")
-          .addEventListener("input", ()=>{ clearTimeout(tmr); tmr=setTimeout(applyFilters,300); });
-  ["fBranch","fOwner","fStatus","fFrom","fTo"].forEach(id=>
-     document.getElementById(id).addEventListener("change", applyFilters));
-
-  /* ตรวจสอบสิทธิ์ */
   try{
-    const v = validateUser(resolveEmail());
-    if(v.ok) startApp(v.user); else showDenied(v.reason, resolveEmail());
+    const th = localStorage.getItem("kyc_theme");
+    if(th) document.documentElement.setAttribute("data-bs-theme", th);
+  }catch(e){}
+
+  /* ผูก event ของ Filter (ห่อ try เผื่อ element ใดหาย จะได้ไม่ล้มทั้งหน้า) */
+  try{
+    let tmr; document.getElementById("fKeyword")
+            .addEventListener("input", ()=>{ clearTimeout(tmr); tmr=setTimeout(applyFilters,300); });
+    ["fBranch","fOwner","fStatus","fFrom","fTo"].forEach(id=>
+       document.getElementById(id).addEventListener("change", applyFilters));
+  }catch(e){ console.error("bind filter failed", e); }
+
+  /* เริ่มแสดง Dashboard ทันที */
+  try{
+    startApp();
   }catch(err){
     console.error(err);
-    document.getElementById("loaderMsg").textContent = "เกิดข้อผิดพลาด: " + err.message;
+    /* FAIL-SAFE : ถึงจะ error ก็ต้องไม่ค้างอยู่ที่หน้า Loading
+       ให้เปิดหน้า Dashboard พร้อมแจ้ง error เพื่อให้ยังใช้งานส่วนที่ทำงานได้ */
+    forceShowApp("เกิดข้อผิดพลาดระหว่างเรนเดอร์: " + err.message);
   }
 });
+
+/* บังคับเปิดหน้า Dashboard และแสดงข้อความ error (ใช้ตอนมีปัญหา) */
+function forceShowApp(msg){
+  const ld = document.getElementById("loader");
+  const ap = document.getElementById("app");
+  if(ld) ld.style.display = "none";
+  if(ap) ap.style.display = "block";
+  const el = document.getElementById("dataWarn");
+  if(el){
+    el.style.display = "block";
+    el.className = "alert alert-danger";
+    el.innerHTML = `<b><i class="fa-solid fa-circle-exclamation me-2"></i>${msg}</b>
+      <div class="small mt-1">กด F12 → Console เพื่อดูรายละเอียด ·
+      ข้อมูลในไฟล์นี้มี <b>${DATA.length}</b> รายการ</div>`;
+  }
+}
+
+/* กันจอค้างที่หน้า Loading : ถ้าเกิน 8 วินาทีแล้ว app ยังไม่โผล่ ให้บังคับเปิด
+   (เช่น กรณี CDN ของ Chart.js / DataTables โหลดไม่ขึ้น) */
+setTimeout(()=>{
+  const ap = document.getElementById("app");
+  if(ap && ap.style.display !== "block"){
+    forceShowApp("โหลดไลบรารีบางตัวไม่สำเร็จ (อาจถูกไฟร์วอลล์บล็อก CDN) — แสดงหน้าเท่าที่ทำได้");
+  }
+}, 8000);
 </script>
 </body>
 </html>
