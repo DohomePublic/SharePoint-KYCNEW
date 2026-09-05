@@ -143,16 +143,41 @@ FIELD_DESC = {
 # ---------------------------------------------------------------------------
 # 3) โหมดออนไลน์ — ดึงข้อมูลผ่าน Microsoft Graph API
 # ---------------------------------------------------------------------------
+def env_any(names, default=None):
+    """อ่าน environment variable ตัวแรกที่มีค่า จากรายชื่อที่รองรับ
+
+    รองรับชื่อ Secret ได้หลายแบบ เพื่อไม่ต้องแก้สคริปต์เวลาชื่อ Secret ในองค์กรต่างกัน
+    เช่น AZ_CLIENT_ID (ที่ใช้จริง) หรือ AZURE_CLIENT_ID
+    """
+    for n in names:
+        v = os.getenv(n)
+        if v and v.strip():
+            return v.strip(), n
+    return default, None
+
+
 def graph_token() -> str:
     """ขอ access token ด้วย client-credentials flow (Application permission)"""
     import requests
-    tid = os.getenv("AZURE_TENANT_ID") or DEFAULT_TENANT_ID
-    cid = os.getenv("AZURE_CLIENT_ID") or DEFAULT_CLIENT_ID
-    secret = os.getenv("AZURE_CLIENT_SECRET")
+
+    # ---- รองรับชื่อ Secret ทั้งแบบ AZ_* (ที่ใช้จริง) และ AZURE_* ----
+    tid, tid_src = env_any(["AZ_TENANT_ID", "AZURE_TENANT_ID"], DEFAULT_TENANT_ID)
+    cid, cid_src = env_any(["AZ_CLIENT_ID", "AZURE_CLIENT_ID"], DEFAULT_CLIENT_ID)
+    secret, sec_src = env_any(["AZ_CLIENT_SECRET", "AZURE_CLIENT_SECRET"])
+
     if not secret:
-        raise SystemExit("[error] ไม่พบ AZURE_CLIENT_SECRET — ตั้งค่าใน GitHub Secrets "
-                         "หรือ export ก่อนรัน (หรือใช้โหมด --offline)")
-    print(f"[auth] tenant={tid} client={cid}")
+        raise SystemExit(
+            "[error] ไม่พบ Client Secret ใน environment\n"
+            "        รองรับชื่อ: AZ_CLIENT_SECRET หรือ AZURE_CLIENT_SECRET\n"
+            "        • GitHub Actions: Settings > Secrets and variables > Actions\n"
+            "          แล้ว map ใน workflow เช่น  AZ_CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET }}\n"
+            "        • รันในเครื่อง: export AZ_CLIENT_SECRET=...\n"
+            "        • หรือใช้โหมดออฟไลน์: python scripts/build_dashboard.py --offline data/demoapp.csv"
+        )
+
+    print(f"[auth] tenant={tid} (จาก {tid_src or 'ค่า default ในสคริปต์'})")
+    print(f"[auth] client={cid} (จาก {cid_src or 'ค่า default ในสคริปต์'})")
+    print(f"[auth] secret  = *** (จาก {sec_src}, ความยาว {len(secret)} อักขระ)")
     r = requests.post(
         f"https://login.microsoftonline.com/{tid}/oauth2/v2.0/token",
         data={
