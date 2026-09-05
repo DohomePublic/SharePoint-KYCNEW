@@ -1,219 +1,158 @@
-# SharePoint-KYCNEW — KYC & Credit Limit Dashboard
+# 📊 DemoApp Dashboard — คำขอวงเงินลูกค้า / KYC
 
-Dashboard วิเคราะห์ข้อมูล **คำขอเปิด/เพิ่มวงเงินลูกค้า (KYC)** จาก SharePoint List **DemoApp**
-(ไซต์ `AC-Accounting`) สร้างเป็น **Single Page Application** ด้วย HTML + CSS + JavaScript ล้วน
-เปิดไฟล์ `index.html` ใน Browser ได้ทันที ไม่ต้องติดตั้ง server
+Dashboard แบบ Single Page Application (HTML + CSS + JavaScript) ที่ดึงข้อมูลจาก
+SharePoint List **DemoApp** และอัปเดตอัตโนมัติทุกวันผ่าน GitHub Actions + GitHub Pages
 
-> แหล่งข้อมูล: <https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp>
+- แหล่งข้อมูล: <https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/AllItems.aspx>
+- ข้อมูลชุดปัจจุบัน: **42 รายการ • 50 คอลัมน์ • ช่วงวันที่ 2026-08-26 ถึง 2026-09-05**
 
 ---
 
-## 1. สรุปโครงสร้างข้อมูล (Data Profile)
+## 🔄 วิธีทำงาน
 
-| หัวข้อ | ค่า |
+1. GitHub Actions รันทุกวัน **07:00 น. เวลาไทย** (`cron: 0 0 * * *` = 00:00 UTC)
+2. `scripts/build_dashboard.py` ดึงข้อมูลจาก SharePoint List `DemoApp` ผ่าน **Microsoft Graph API**
+3. สร้าง `index.html` ใหม่ โดยฝังข้อมูลล่าสุดไว้ในตัวแปร `window.DEMOAPP_DATA`
+4. Commit + Push → **GitHub Pages อัปเดตอัตโนมัติ**
+
+> ไฟล์ `index.html` เป็นแบบ self-contained — ดาวน์โหลดไปเปิดในเครื่อง (แม้ไม่มีเน็ตองค์กร) ก็ยังใช้งานได้
+> (ต้องมีอินเทอร์เน็ตเพื่อโหลด Chart.js / DataTables จาก CDN)
+
+---
+
+## ⚙️ การตั้งค่า GitHub Secrets
+
+ไปที่ **Settings > Secrets and variables > Actions** แล้วเพิ่ม:
+
+| Secret | Value |
 |---|---|
-| จำนวนรายการทั้งหมด | **39 รายการ** |
-| จำนวนคอลัมน์ใน List | **50 คอลัมน์** (ใช้งานจริง 34 คอลัมน์ + 16 คอลัมน์ที่ไม่มีข้อมูลเลย) |
-| ช่วงเวลาของข้อมูล | 26 ส.ค. 2026 – 5 ก.ย. 2026 |
-| คีย์หลัก | `_ID` (SharePoint Item ID) |
-| แกนเวลาหลัก | `Request TimeStamp` |
-| ตัวชี้วัดเชิงมูลค่า | `limit` (วงเงินที่ขอ) → แปลงเป็น `limit_num` |
-| วงเงินรวมที่ขอ | **321,300,000 บาท** (เฉลี่ย 8,238,462 บาท/คำขอ, สูงสุด 50,000,000 บาท) |
+| `AZURE_CLIENT_ID` | `a37bd62d-e74d-4ea0-9546-1eb5aa96f604` |
+| `AZURE_TENANT_ID` | `7f8918d9-718a-495b-ac9a-17cba381c4a0` |
+| `AZURE_CLIENT_SECRET` | (ค่า Client Secret จาก Azure AD — ห้าม commit ลงโค้ดเด็ดขาด) |
 
-### 1.1 การกระจายตามสถานะ (Status)
+ข้อมูล App registration ที่ใช้จริง
 
-| สถานะ | จำนวน | สัดส่วน |
-|---|---:|---:|
-| รอการพิจารณาเบื้องต้น | 14 | 35.9% |
-| รอดำเนินการ | 12 | 30.8% |
-| ไม่ผ่านการพิจารณาเบื้องต้น | 6 | 15.4% |
-| ผ่านการพิจารณาเบื้องต้น | 2 | 5.1% |
-| อนุมัติ-KYC | 2 | 5.1% |
-| Draft | 2 | 5.1% |
-| รอผู้จัดการ D3 อนุมัติ | 1 | 2.6% |
+| รายการ | ค่า |
+|---|---|
+| Application (client) ID | `a37bd62d-e74d-4ea0-9546-1eb5aa96f604` |
+| Object ID | `f4e84724-e3f8-444b-981b-74ead3130171` |
+| Directory (tenant) ID | `7f8918d9-718a-495b-ac9a-17cba381c4a0` |
 
-### 1.2 การกระจายตามประเภทคำขอ (Type_Request)
+> Client ID / Tenant ID / Object ID ไม่ใช่ความลับ (เป็นตัวระบุแอป) แต่ **Client Secret เป็นความลับ** ต้องเก็บใน GitHub Secrets เท่านั้น
 
-| ประเภทคำขอ | จำนวน |
-|---|---:|
-| คำขอเปิดวงเงินลูกค้าใหม่ | 32 |
-| คำขอเพิ่มวงเงิน | 6 |
-| C.ติดตามชุดเปิดตัวจริง | 1 |
+ตัวแปรเสริม (ตั้งเป็น Variables ได้ ไม่บังคับ — มีค่า default ในสคริปต์แล้ว)
 
-### 1.3 การกระจายตามทีม (type_teams)
-
-| ทีม | จำนวน |
-|---|---:|
-| Store Operation | 30 |
-| Project Sales (PS) | 4 |
-| Wholesales (WS) | 3 |
-| Retail | 1 |
-| (ไม่ระบุ) | 1 |
-
-### 1.4 ประเภทลูกค้า (Type1)
-
-Existing 17 · Lead 12 · ไม่ระบุ 6 · ค้าปลีก 2 · (ค่าผิดพลาดเป็นอีเมล `thossarat.cha@dohome.co.th`) 2
-
-### 1.5 แนวโน้มรายวัน (จำนวนคำขอ)
-
-| วันที่ | จำนวน |
-|---|---:|
-| 2026-08-26 | 2 |
-| 2026-08-27 | 5 |
-| 2026-08-28 | 1 |
-| 2026-09-01 | 1 |
-| 2026-09-02 | 7 |
-| 2026-09-03 | 11 |
-| 2026-09-04 | 5 |
-| 2026-09-05 | 7 |
-
-รายเดือน: ส.ค. 2026 = 8 รายการ, ก.ย. 2026 = 31 รายการ · รายปี: 2026 = 39 รายการ
-
-### 1.6 Top 10 คำขอวงเงินสูงสุด
-
-| # | ลูกค้า | วงเงินที่ขอ (บาท) | สถานะ | ทีม | จังหวัด |
-|---:|---|---:|---|---|---|
-| 1 | บริษัท หาดใหญ่เรืองชัยการโยธา จำกัด | 50,000,000 | รอการพิจารณาเบื้องต้น | Project Sales (PS) | สงขลา |
-| 2 | UDONTHANADEE ENGINEERING COMPANY LIMITED | 45,000,000 | รอดำเนินการ | Store Operation | อุดรธานี |
-| 3 | UDONTHANADEE ENGINEERING COMPANY LIMITED | 45,000,000 | รอดำเนินการ | Store Operation | อุดรธานี |
-| 4 | UDONTHANADEE ENGINEERING COMPANY LIMITED | 45,000,000 | รอการพิจารณาเบื้องต้น | Store Operation | อุดรธานี |
-| 5 | ปัตตานีสหพันธ์ก่อสร้าง | 20,000,000 | ผ่านการพิจารณาเบื้องต้น | Project Sales (PS) | ปัตตานี |
-| 6 | ปัตตานีสหพันธ์ก่อสร้าง | 20,000,000 | ไม่ผ่านการพิจารณาเบื้องต้น | Project Sales (PS) | ปัตตานี |
-| 7 | ปัตตานีสหพันธ์ก่อสร้าง | 20,000,000 | รอดำเนินการ | Store Operation | ปัตตานี |
-| 8 | ปัตตานีสหพันธ์ก่อสร้าง | 20,000,000 | อนุมัติ-KYC | Store Operation | ปัตตานี |
-| 9 | บริษัท ชนะสุ พร็อพเพอร์ตี้ จำกัด | 6,000,000 | ผ่านการพิจารณาเบื้องต้น | Store Operation | นครปฐม |
-| 10 | จำลองชัยคอนกรีต | 5,000,000 | รอดำเนินการ | Wholesales (WS) | ขอนแก่น |
-
-Data Dictionary ฉบับเต็มดูที่ [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md)
-บทวิเคราะห์เชิงธุรกิจดูที่ [`docs/BUSINESS_INSIGHTS.md`](docs/BUSINESS_INSIGHTS.md)
-Mockup หน้าจอดูที่ [`docs/mockup.svg`](docs/mockup.svg)
+| Variable | Default |
+|---|---|
+| `SP_HOSTNAME` | `dohomegroup.sharepoint.com` |
+| `SP_SITE_PATH` | `/sites/AC-Accounting` |
+| `SP_LIST_NAME` | `DemoApp` |
 
 ---
 
-## 2. คุณสมบัติของ Dashboard
+## 🔑 การตั้งค่า Azure AD (IT Admin ทำครั้งเดียว)
 
-**KPI Cards (8 ใบ)** — คำขอทั้งหมด, วงเงินรวม, วงเงินเฉลี่ย, ลูกค้าไม่ซ้ำ, อนุมัติ-KYC, ผ่านพิจารณา, รอดำเนินการ, ไม่ผ่านพิจารณา
-
-**กราฟ 11 ชุด (Chart.js)**
-- Bar แนวนอน: จำนวนคำขอตามสถานะ *(คลิกแท่ง = กรองข้อมูลทันที)*
-- Pie: สัดส่วนประเภทคำขอ *(คลิกชิ้น = กรอง)*
-- Doughnut: ทีมขาย · PolarArea: ประเภทลูกค้า
-- Bar: ประเภทธุรกิจ 8 อันดับ · Bar: วงเงินรวมตามจังหวัด
-- Line + Bar ผสม: แนวโน้มจำนวนคำขอและวงเงิน (สลับ **รายวัน / รายเดือน / รายปี**)
-- Line: คำขอสะสม · Stacked Bar: สถานะตามช่วงเวลา
-- Bar: Top 10 Owner · Bar: Top 10 ลูกค้าตามวงเงินรวม
-
-**ระบบค้นหาและกรอง** — Search Box ค้นทุกคอลัมน์ (debounce 250 ms), Filter: Status / Type_Request / type_teams / province, Filter ช่วงวันที่ (จาก–ถึง), Sort 6 ฟิลด์ ทั้ง Ascending และ Descending
-
-**ตาราง Interactive (DataTables)** — 14 คอลัมน์, ค้นหาในตาราง, แบ่งหน้า 10/25/50/100/ทั้งหมด, `deferRender` รองรับข้อมูลจำนวนมาก, **คลิกแถวเพื่อ Drill Down** เห็นครบทุกฟิลด์พร้อมลิงก์เปิดรายการจริงใน SharePoint
-
-**Export 4 รูปแบบ** — Excel (.xlsx 3 ชีต), CSV (UTF-8 BOM อ่านภาษาไทยได้), PDF (แนวนอน A4 หลายหน้า), รูปภาพ Dashboard (.png)
-
-**วิเคราะห์อัตโนมัติ** — 6 การ์ด Insight + ตาราง Anomaly Detection 5 เกณฑ์ (วงเงิน z-score > 2, คำขอซ้ำ, ข้อมูลไม่ครบ, ค้างสถานะเกิน 7 วัน, Status ไม่ตรงกับ Status_1)
+1. เปิด **Azure Portal**
+2. ไปที่ **Azure Active Directory > App registrations**
+3. เปิด App ID: `a37bd62d-e74d-4ea0-9546-1eb5aa96f604` (Object ID `f4e84724-e3f8-444b-981b-74ead3130171`)
+4. **Certificates & secrets → New client secret → Copy value**
+5. **API permissions → Add permission → Microsoft Graph → Application permissions**
+6. เพิ่ม **`Sites.Read.All`**
+7. กด **Grant admin consent**
 
 ---
 
-## 3. โครงสร้างโปรเจกต์
+## 📁 โครงสร้างไฟล์
 
 ```
-SharePoint-KYCNEW/
-├─ index.html                    # โครงหน้า SPA ทั้งหมด (มี comment อธิบายทุกบล็อก)
-├─ assets/
-│  ├─ css/style.css              # ธีม Microsoft Fluent Design + responsive
-│  └─ js/
-│     ├─ data.js                 # ข้อมูล snapshot (สร้างอัตโนมัติจาก tools/gen_data.py)
-│     ├─ sharepoint.js           # ตัวเชื่อม SharePoint REST API (โหมด Live)
-│     └─ app.js                  # ตรรกะหลัก 9 ส่วน: filter, KPI, chart, table, insight, export
-├─ data/demoapp_snapshot.json    # snapshot รูปแบบ JSON
-├─ docs/
-│  ├─ DATA_DICTIONARY.md         # คำอธิบายทุกคอลัมน์
-│  ├─ BUSINESS_INSIGHTS.md       # บทวิเคราะห์เชิงธุรกิจ + ข้อเสนอแนะ + ความเสี่ยง
-│  ├─ DEPLOYMENT.md              # วิธีติดตั้ง 3 แบบ
-│  └─ mockup.svg                 # Mockup หน้าจอ Dashboard
-├─ tools/gen_data.py             # สคริปต์ refresh snapshot จาก CSV ที่ export จาก SharePoint
-├─ .github/workflows/pages.yml   # Deploy อัตโนมัติขึ้น GitHub Pages
-└─ README.md
+DemoApp-Dashboard/
+├── .github/
+│   └── workflows/
+│       └── update-dashboard.yml     ← GitHub Actions workflow (รันทุกวัน 07:00 น.)
+├── scripts/
+│   ├── build_dashboard.py           ← ดึงข้อมูล Graph API + สร้าง index.html
+│   └── template.html                ← เทมเพลต Dashboard (HTML/CSS/JS ทั้งหมด + คอมเมนต์)
+├── data/
+│   ├── demoapp.csv                  ← ข้อมูล snapshot (ใช้กับโหมด --offline)
+│   └── demoapp.json                 ← ข้อมูลที่แปลงแล้ว (auto-generated)
+├── docs/
+│   ├── DATA_DICTIONARY.md           ← พจนานุกรมข้อมูลครบทั้ง 50 คอลัมน์
+│   ├── BUSINESS_ANALYSIS.md         ← Insight / Anomaly / Risk / ข้อเสนอแนะ
+│   ├── USER_GUIDE.md                ← คู่มือใช้งาน + ตัวอย่างการ Export
+│   └── mockup.svg                   ← Mockup / Wireframe ของหน้า Dashboard
+├── index.html                       ← Dashboard (auto-generated) ← GitHub Pages เสิร์ฟไฟล์นี้
+└── README.md
 ```
 
 ---
 
-## 4. การติดตั้งและใช้งาน
+## 🚀 การติดตั้ง
 
-### 4.1 ใช้งานทันที (ง่ายที่สุด)
-ดาวน์โหลดโฟลเดอร์ทั้งหมด → ดับเบิลคลิก `index.html` → ใช้งานได้เลย (ต้องต่ออินเทอร์เน็ตเพื่อโหลด CDN ของ Chart.js/DataTables)
-
-### 4.2 รันเป็น local server (แนะนำ ป้องกันปัญหา CORS)
+### 1) สร้าง repository และอัปโหลดไฟล์
 ```bash
-cd SharePoint-KYCNEW
-python -m http.server 8080
-# เปิด http://localhost:8080
-```
-
-### 4.3 อัปโหลดขึ้น GitHub และเปิด GitHub Pages
-```bash
-cd SharePoint-KYCNEW
-git init -b main
+git init
 git add .
-git commit -m "feat: KYC dashboard from SharePoint DemoApp"
-git remote add origin https://github.com/DohomePublic/SharePoint-KYCNEW.git
+git commit -m "feat: DemoApp dashboard"
+git branch -M main
+git remote add origin https://github.com/<org>/<repo>.git
 git push -u origin main
 ```
-จากนั้นที่ GitHub → **Settings › Pages › Source = GitHub Actions**
-ไฟล์ `.github/workflows/pages.yml` จะ deploy ให้อัตโนมัติทุกครั้งที่ push
-URL ที่ได้: `https://dohomepublic.github.io/SharePoint-KYCNEW/`
 
-> ⚠️ **ก่อน push ขึ้น repo สาธารณะ** — ชุดข้อมูลนี้มีชื่อลูกค้า เลขทะเบียนนิติบุคคล และผู้ติดต่อ
-> ระบบได้ mask เบอร์โทรศัพท์ให้แล้ว (`telephone`, `contact_number`) แต่ฟิลด์อื่นยังเป็นข้อมูลจริง
-> หากต้องเผยแพร่สาธารณะ แนะนำใช้ repo แบบ **Private** หรือแทน `assets/js/data.js` ด้วยข้อมูลจำลอง
+### 2) เปิด GitHub Pages
+**Settings → Pages → Source: Deploy from a branch → Branch: `main` / root → Save**
+จากนั้นเปิด `https://<org>.github.io/<repo>/`
 
-### 4.4 ติดตั้งใน SharePoint เพื่อดึงข้อมูล "สด"
-1. อัปโหลดทั้งโฟลเดอร์ไปที่ `Site Assets` ของไซต์ `AC-Accounting`
-2. เปิด `index.html` จาก URL ของ SharePoint
-3. `sharepoint.js` จะตรวจพบว่าอยู่บนโดเมน `sharepoint.com` แล้วดึงข้อมูลผ่าน REST API อัตโนมัติ (แบ่งหน้า 2,000 แถว/ครั้ง) ป้ายมุมขวาบนจะเปลี่ยนเป็น **Live SharePoint**
-4. หากดึงไม่สำเร็จ ระบบจะย้อนไปใช้ snapshot ให้เองโดยไม่ล่ม
+### 3) ใส่ Secrets ตามตารางด้านบน แล้วรัน workflow ครั้งแรก
+**Actions → Update DemoApp Dashboard → Run workflow**
 
-### 4.5 อัปเดตข้อมูล snapshot
-Export List เป็น CSV จาก SharePoint แล้วรัน:
+### 4) รันในเครื่อง (ทดสอบ)
 ```bash
-python tools/gen_data.py path/to/exported.csv
+pip install requests
+
+# โหมดออนไลน์ (ต้องมี Secrets ใน environment)
+export AZURE_CLIENT_ID=... AZURE_TENANT_ID=... AZURE_CLIENT_SECRET=...
+python scripts/build_dashboard.py
+
+# โหมดออฟไลน์ (ใช้ไฟล์ CSV snapshot — ไม่ต้องมี credential)
+python scripts/build_dashboard.py --offline data/demoapp.csv
+
+# เปิดดู
+python -m http.server 8080     # → http://localhost:8080/index.html
 ```
-สคริปต์จะ mask เบอร์โทร ตัดคอลัมน์ว่าง และเขียนทับ `assets/js/data.js` + `data/demoapp_snapshot.json`
 
 ---
 
-## 5. ตัวอย่างการ Export
-
-| ปุ่ม | ไฟล์ที่ได้ | รายละเอียด |
-|---|---|---|
-| Excel (.xlsx) | `KYC_DemoApp_2026-09-05.xlsx` | ชีต `Data` (ข้อมูลตามตัวกรอง 14 คอลัมน์), `Summary_Status` (สถานะ/จำนวน/วงเงินรวม), `Summary_Team` (ทีม/จำนวน/วงเงินรวม) |
-| CSV | `KYC_DemoApp_2026-09-05.csv` | UTF-8 + BOM เปิดใน Excel ภาษาไทยไม่เพี้ยน |
-| PDF | `KYC_Dashboard_2026-09-05.pdf` | A4 แนวนอน จับภาพ KPI + กราฟของมุมมองปัจจุบัน แบ่งหน้าอัตโนมัติ |
-| PNG | `KYC_Dashboard_2026-09-05.png` | ภาพ Dashboard ความละเอียด 2x สำหรับแนบในสไลด์ |
-
-ตัวอย่างเนื้อหาชีต `Summary_Status` ที่ได้เมื่อไม่ใส่ตัวกรอง:
-
-| สถานะ | จำนวนคำขอ | วงเงินรวม (บาท) |
-|---|---:|---:|
-| รอการพิจารณาเบื้องต้น | 14 | 114,400,000 |
-| รอดำเนินการ | 12 | 125,200,000 |
-| ไม่ผ่านการพิจารณาเบื้องต้น | 6 | 33,000,000 |
-| ผ่านการพิจารณาเบื้องต้น | 2 | 26,000,000 |
-| อนุมัติ-KYC | 2 | 21,000,000 |
-| Draft | 2 | 1,400,000 |
-| รอผู้จัดการ D3 อนุมัติ | 1 | 300,000 |
-
-*(ตัวเลขวงเงินรวมคำนวณสดจากข้อมูลขณะกดปุ่ม จึงเปลี่ยนตามตัวกรองที่เลือก)*
+## 🖱️ รันด้วยตนเอง
+ไปที่แท็บ **Actions** → เลือก **"Update DemoApp Dashboard"** → กด **Run workflow**
 
 ---
 
-## 6. ด้านเทคนิค
+## 🧩 ความสามารถของ Dashboard
 
-| หัวข้อ | รายละเอียด |
+| หมวด | รายละเอียด |
 |---|---|
-| สถาปัตยกรรม | SPA แบบ client-side ล้วน ไม่มี build step ไม่มี backend |
-| ไลบรารี | Chart.js 4.4.1, DataTables 1.13.8 + Responsive, jQuery 3.7.1, SheetJS 0.18.5, jsPDF 2.5.1, html2canvas 1.4.1 (ทั้งหมดผ่าน CDN) |
-| ธีม | Microsoft Fluent 2 tokens — Communication Blue `#0F6CBD`, Success `#107C10`, Warning `#F7630C`, Danger `#C50F1F` |
-| Responsive | Breakpoint 1024px และ 820px, สไลด์เมนูด้านข้างบนมือถือ, มี print stylesheet |
-| ประสิทธิภาพ | `deferRender` ของ DataTables, destroy chart ก่อน re-render กัน memory leak, debounce การค้นหา, ตัด 16 คอลัมน์ว่างออกจาก payload |
-| ความปลอดภัย | escape HTML ทุกค่าที่ render ป้องกัน XSS, mask เบอร์โทรใน snapshot |
-| รองรับเบราว์เซอร์ | Edge / Chrome / Firefox / Safari รุ่นปัจจุบัน |
+| **KPI Cards** | คำขอทั้งหมด, วงเงินที่ขอรวม, อนุมัติ/ผ่านเบื้องต้น, อยู่ระหว่างรอ, ไม่ผ่านพิจารณา, Draft |
+| **Bar Chart** | สถานะ, ประเภทธุรกิจ, จังหวัด Top 10, Owner Top 10, สาขา, มูลค่าวงเงินรายช่วงเวลา, Stacked สถานะรายช่วงเวลา, คุณภาพข้อมูล |
+| **Pie / Doughnut** | ประเภทคำขอ (Type_Request), ทีมผู้ยื่น (type_teams) |
+| **Line Chart** | แนวโน้มคำขอ **รายวัน / รายเดือน / รายปี** + เส้นค่าเฉลี่ยเคลื่อนที่ 3 ช่วง |
+| **ค้นหา** | Search box ค้นทุกคอลัมน์ (debounce 250ms) |
+| **Filter** | Status, ประเภทคำขอ (Category), ทีม, จังหวัด, ช่วงวันที่ (จาก–ถึง) |
+| **Sort** | เรียงตามวันที่ / วงเงิน / ชื่อลูกค้า / สถานะ / ผู้ยื่น — Ascending & Descending |
+| **Data Table** | DataTables แบ่งหน้า 10–250 แถว, `deferRender` รองรับข้อมูลจำนวนมาก |
+| **Drill Down** | คลิกแถวในตาราง หรือคลิกแท่ง/ชิ้นกราฟ → เปิด Panel รายละเอียดทุกฟิลด์ + ลิงก์กลับ SharePoint |
+| **Export** | Excel (.xlsx 2 ชีต), CSV (มี BOM อ่านภาษาไทยได้), PDF (A4 แนวนอน), PNG ของ Dashboard |
+| **UX/UI** | Fluent Design (Pivot nav, depth shadow, Fluent color ramp), Responsive, Dark mode, รองรับปุ่ม Esc |
+
+---
+
+## 📌 สรุปข้อมูลชุดปัจจุบัน (ณ 2026-09-05)
+
+- **จำนวนรายการทั้งหมด: 42 คำขอ** จากลูกค้าไม่ซ้ำ **30 ราย**
+- **วงเงินที่ขอรวม 327,800,000 บาท** — เฉลี่ย 7,804,762 บาท/คำขอ, มัธยฐาน 2,000,000 บาท (ต่ำสุด 200,000 / สูงสุด 50,000,000)
+- **สถานะ:** รอการพิจารณาเบื้องต้น 15 • รอดำเนินการ 13 • ไม่ผ่านการพิจารณาเบื้องต้น 6 • Draft 3 • ผ่านการพิจารณาเบื้องต้น 2 • อนุมัติ-KYC 2 • รอผู้จัดการ D3 อนุมัติ 1
+- **ประเภทคำขอ:** คำขอเปิดวงเงินลูกค้าใหม่ 35 • คำขอเพิ่มวงเงิน 6 • C.ติดตามชุดเปิดตัวจริง 1
+- **ทีม:** Store Operation 31 • Project Sales (PS) 4 • Wholesales (WS) 3 • Steel Key Account 2 • Retail 1 • ไม่ระบุ 1
+- **แนวโน้ม:** ส.ค. 2026 = 8 คำขอ, ก.ย. 2026 = 34 คำขอ (สูงสุดวันที่ 2026-09-03 จำนวน 11 คำขอ)
+
+ดูรายละเอียดเชิงลึกที่ [`docs/BUSINESS_ANALYSIS.md`](docs/BUSINESS_ANALYSIS.md)
+และคำอธิบายทุกคอลัมน์ที่ [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md)
