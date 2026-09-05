@@ -47,11 +47,28 @@ jobs:
           cp scripts/template.html templates/dashboard.html
           ls -l scripts/template.html templates/dashboard.html
 
+      # ตรวจว่า Secrets ถูกตั้งค่าครบก่อนเริ่ม build (ไม่พิมพ์ค่าจริงออก log)
+      - name: Verify secrets
+        env:
+          AZ_CLIENT_ID:     ${{ secrets.AZ_CLIENT_ID }}
+          AZ_TENANT_ID:     ${{ secrets.AZ_TENANT_ID }}
+          AZ_CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET }}
+        run: |
+          missing=0
+          if [ -z "$AZ_CLIENT_ID" ];     then echo "::error::ไม่พบ Secret: AZ_CLIENT_ID";     missing=1; else echo "ok: AZ_CLIENT_ID"; fi
+          if [ -z "$AZ_TENANT_ID" ];     then echo "::error::ไม่พบ Secret: AZ_TENANT_ID";     missing=1; else echo "ok: AZ_TENANT_ID"; fi
+          if [ -z "$AZ_CLIENT_SECRET" ]; then echo "::error::ไม่พบ Secret: AZ_CLIENT_SECRET"; missing=1; else echo "ok: AZ_CLIENT_SECRET"; fi
+          if [ "$missing" -ne 0 ]; then
+            echo "::error::ตั้งค่า Secrets ให้ครบที่ Settings > Secrets and variables > Actions"
+            exit 1
+          fi
+
       - name: Build dashboard from SharePoint
         env:
-          AZURE_CLIENT_ID:     ${{ secrets.AZURE_CLIENT_ID }}
-          AZURE_TENANT_ID:     ${{ secrets.AZURE_TENANT_ID }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          # ชื่อ Secret ที่ใช้จริงในองค์กรคือ AZ_* (สคริปต์รองรับทั้ง AZ_* และ AZURE_*)
+          AZ_CLIENT_ID:     ${{ secrets.AZ_CLIENT_ID }}
+          AZ_TENANT_ID:     ${{ secrets.AZ_TENANT_ID }}
+          AZ_CLIENT_SECRET: ${{ secrets.AZ_CLIENT_SECRET }}
           SP_HOSTNAME:  dohomegroup.sharepoint.com
           SP_SITE_PATH: /sites/AC-Accounting
           SP_LIST_NAME: DemoApp
