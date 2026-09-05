@@ -39,6 +39,14 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
+      # ป้องกัน FileNotFoundError: templates/dashboard.html
+      # โดยซิงก์เทมเพลตต้นฉบับ (scripts/template.html) ไปยังตำแหน่งสำรองเสมอ
+      - name: Sync template locations
+        run: |
+          mkdir -p templates
+          cp scripts/template.html templates/dashboard.html
+          ls -l scripts/template.html templates/dashboard.html
+
       - name: Build dashboard from SharePoint
         env:
           AZURE_CLIENT_ID:     ${{ secrets.AZURE_CLIENT_ID }}
