@@ -130,6 +130,41 @@ python -m http.server 8080     # → http://localhost:8080/index.html
 
 ## 🖱️ รันด้วยตนเอง
 ไปที่แท็บ **Actions** → เลือก **"Update DemoApp Dashboard"** → กด **Run workflow**
+(ติ๊ก **diagnose** ถ้าต้องการแค่ตรวจการเชื่อมต่อโดยไม่สร้างไฟล์)
+
+---
+
+## 🩺 แก้ปัญหา: workflow รันผ่าน แต่ข้อมูลไม่แสดง / ไม่ดึงจาก SharePoint
+
+ขั้นแรกให้รัน **โหมดตรวจสอบ** เพื่อดูว่าติดขั้นไหน
+
+```bash
+# บนเครื่อง
+export AZ_CLIENT_ID=...  AZ_TENANT_ID=...  AZ_CLIENT_SECRET=...
+python scripts/build_dashboard.py --diagnose
+
+# หรือบน GitHub: Actions → Run workflow → ติ๊ก diagnose
+```
+
+โหมดนี้จะพิมพ์: access token → site id → List ที่เจอ → **ชื่อคอลัมน์จริง (internal → display)** → ตัวอย่างข้อมูล 1 รายการ
+
+| อาการใน log | สาเหตุ | วิธีแก้ |
+|---|---|---|
+| `HTTP 401` / `HTTP 403 AccessDenied` | ยังไม่ได้ให้สิทธิ์แอป | Azure AD → App registrations → API permissions → Microsoft Graph → **Application permissions** → `Sites.Read.All` → กด **Grant admin consent** |
+| `HTTP 401 invalid_client` ตอนขอ token | Client Secret หมดอายุ/ผิด | สร้าง secret ใหม่แล้วอัปเดต `AZ_CLIENT_SECRET` |
+| `ไม่พบ List ชื่อ 'DemoApp'` (พร้อมรายชื่อ List ที่มี) | Display name ไม่ตรงกับชื่อใน URL | ตั้ง `SP_LIST_NAME` ให้ตรง หรือใส่ `SP_LIST_ID` เป็น GUID ของ List |
+| `HTTP 404` ตอนหา site | Site path ผิด | ตรวจ `SP_SITE_PATH` (ต้องเป็น `/sites/AC-Accounting`) |
+| `fetched 0 items` | ลิสต์ว่าง หรือแอปเห็นเฉพาะบางรายการ | ตรวจข้อมูลใน SharePoint / สิทธิ์ระดับ item |
+| `ดึงรายการมาได้ แต่ฟิลด์สำคัญว่างทั้งหมด` | ชื่อคอลัมน์ internal ≠ display | สคริปต์เวอร์ชันนี้แปลงให้อัตโนมัติแล้ว ถ้ายังพลาดให้ดูชื่อจริงจาก `--diagnose` แล้วเพิ่มชื่อใน `pick(...)` |
+| workflow เขียว แต่หน้าเว็บเป็นข้อมูลเก่า | GitHub Pages ตั้ง source ผิด | Settings → Pages → Source = **Deploy from a branch** → `main` / `/ (root)` |
+| หน้าเว็บ 404 หรือ CSS เพี้ยน | Jekyll กรองไฟล์ | ต้องมีไฟล์ `.nojekyll` ที่ root (มีให้แล้วในแพ็กเกจ) |
+
+**หมายเหตุเชิงเทคนิคที่แก้ไปแล้วในเวอร์ชันนี้**
+1. เดิมเรียก `?expand=fields&$top=500` → ผิด 2 จุด: ต้องเป็น `$expand` (มี `$`) และเมื่อใช้ `$expand=fields` ค่า `$top` สูงสุดคือ **200** — ของเดิมทำให้ Graph ตอบ error
+2. เดิมเรียก `/lists/DemoApp` ตรง ๆ → 404 ถ้า display name ไม่ตรง — ตอนนี้ไล่หาจากรายการ List ทั้งหมด
+3. เดิมไม่แปลง internal name (`Customer_x0020_Name`) เป็น display name (`Customer Name`) → ทุกฟิลด์ว่าง กราฟไม่ขึ้น
+4. เดิมไม่มี error handling → เจอ `KeyError: 'id'` แทนข้อความบอกสาเหตุ
+5. เพิ่มการตรวจก่อน push: ถ้าข้อมูลว่าง จะ **ไม่** เขียนทับ `index.html` เดิม
 
 ---
 
