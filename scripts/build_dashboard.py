@@ -192,31 +192,179 @@ def graph_token() -> str:
     return r.json()["access_token"]
 
 
+def graph_get(url: str, tok: str, timeout: int = 120) -> dict:
+    """เรียก Graph API พร้อมแนบ token และแปล error ให้อ่านรู้เรื่อง
+
+    รวมการเรียก GET ไว้ที่เดียว เพื่อให้ทุก request มี error handling เหมือนกัน
+    (ของเดิมเรียก .json()["id"] ตรง ๆ ถ้า API ตอบ error จะได้ KeyError ที่หาสาเหตุไม่ได้)
+    """
+    import requests
+    r = requests.get(
+        url,
+        headers={"Authorization": "Bearer " + tok, "Accept": "application/json"},
+        timeout=timeout,
+    )
+    try:
+        j = r.json()
+    except Exception:
+        j = {}
+    if r.status_code >= 400 or (isinstance(j, dict) and "error" in j):
+        err = j.get("error", {}) if isinstance(j, dict) else {}
+        code = err.get("code", "")
+        msg = err.get("message", r.text[:400])
+        hint = ""
+        if r.status_code in (401, 403) or code in ("AccessDenied", "unauthenticated"):
+            hint = ("\n        แนวทางแก้: Azure AD > App registrations > API permissions\n"
+                    "        เพิ่ม Microsoft Graph > Application permissions > Sites.Read.All\n"
+                    "        แล้วกด Grant admin consent (ต้องให้ IT Admin เป็นคนกด)")
+        elif r.status_code == 404:
+            hint = ("\n        แนวทางแก้: ตรวจค่า SP_HOSTNAME / SP_SITE_PATH / SP_LIST_NAME\n"
+                    "        หรือรันโหมดตรวจสอบ: python scripts/build_dashboard.py --diagnose")
+        raise RuntimeError(
+            f"[graph] HTTP {r.status_code} {code}\n        URL: {url}\n        {msg}{hint}")
+    return j
+
+
+def norm_key(s) -> str:
+    """ทำชื่อคอลัมน์ให้เทียบกันได้ เช่น Customer_x0020_Name / Customer Name / customername"""
+    s = str(s or "")
+    s = re.sub(r"_x([0-9a-fA-F]{4})_", lambda m: chr(int(m.group(1), 16)), s)  # ถอด _x0020_
+    return re.sub(r"[^0-9a-z]", "", s.lower())
+
+
+def resolve_site(tok: str) -> str:
+    """หา site id จาก hostname + site path"""
+    j = graph_get(f"https://graph.microsoft.com/v1.0/sites/{HOSTNAME}:{SITE_PATH}", tok, 60)
+    print(f"[graph] site: {j.get('displayName') or j.get('name')}  id={j['id']}")
+    return j["id"]
+
+
+def resolve_list(tok: str, site: str) -> dict:
+    """หา List ที่ต้องการ — รองรับทั้ง GUID (SP_LIST_ID), ชื่อใน URL และ Display name
+
+    ปัญหาที่พบบ่อย: ชื่อใน URL (/Lists/DemoApp) ไม่ตรงกับ Display name จริงของ List
+    ทำให้เรียก /lists/DemoApp แล้วได้ 404 → ดึงข้อมูลไม่ได้
+    ฟังก์ชันนี้จึงไล่ดู List ทั้งหมดในไซต์แล้วจับคู่ชื่อแบบยืดหยุ่น
+    """
+    list_id = os.getenv("SP_LIST_ID", "").strip()
+    if list_id:
+        j = graph_get(f"https://graph.microsoft.com/v1.0/sites/{site}/lists/{list_id}", tok, 60)
+        print(f"[graph] list (จาก SP_LIST_ID): {j.get('displayName')}  id={j['id']}")
+        return j
+
+    all_lists = graph_get(
+        f"https://graph.microsoft.com/v1.0/sites/{site}/lists?$top=200", tok, 60).get("value", [])
+    print(f"[graph] ไซต์นี้มี List ทั้งหมด {len(all_lists)} รายการ")
+    want = norm_key(LIST_NAME)
+    for L in all_lists:                       # 1) ชื่อตรงเป๊ะ (display name หรือ internal name)
+        if norm_key(L.get("displayName")) == want or norm_key(L.get("name")) == want:
+            print(f"[graph] list: {L.get('displayName')}  id={L['id']}")
+            return L
+    for L in all_lists:                       # 2) ชื่อมีคำที่ต้องการอยู่ข้างใน
+        if want and want in norm_key(L.get("displayName", "")):
+            print(f"[graph] list (จับคู่บางส่วน): {L.get('displayName')}  id={L['id']}")
+            return L
+    names = ", ".join(sorted(str(L.get("displayName", "?")) for L in all_lists))
+    raise RuntimeError(
+        f"[graph] ไม่พบ List ชื่อ '{LIST_NAME}' ในไซต์ {SITE_PATH}\n"
+        f"        List ที่มีอยู่: {names}\n"
+        f"        แก้โดยตั้ง SP_LIST_NAME ให้ตรง หรือระบุ SP_LIST_ID เป็น GUID ของ List")
+
+
+def column_map(tok: str, site: str, lid: str) -> dict:
+    """สร้างตารางแปลง internal name → display name ของทุกคอลัมน์
+
+    เหตุผลสำคัญ: Graph คืนชื่อฟิลด์เป็น internal name (เช่น Customer_x0020_Name)
+    แต่ Dashboard อ้างชื่อคอลัมน์แบบที่เห็นในหน้า SharePoint (เช่น 'Customer Name')
+    ถ้าไม่แปลง ทุกฟิลด์จะกลายเป็นค่าว่าง → KPI/กราฟ/ตารางจะไม่มีข้อมูล
+    (นี่คือสาเหตุหลักที่ dashboard ขึ้นแต่ข้อมูลว่างเปล่า)
+    """
+    cols = graph_get(
+        f"https://graph.microsoft.com/v1.0/sites/{site}/lists/{lid}/columns?$top=500",
+        tok, 60).get("value", [])
+    m = {}
+    for c in cols:
+        internal, display = c.get("name"), c.get("displayName")
+        if internal and display:
+            m[internal] = display
+    print(f"[graph] อ่าน schema คอลัมน์ได้ {len(m)} คอลัมน์")
+    return m
+
+
+def remap_fields(f: dict, cmap: dict) -> dict:
+    """แปลงชื่อฟิลด์ของ 1 รายการเป็น display name (และเก็บชื่อ internal ไว้ด้วยเผื่อ map ไม่ครบ)"""
+    out = {}
+    for k, v in f.items():
+        if isinstance(v, (dict, list)):       # ฟิลด์ lookup / multi-value → ทำให้เป็นข้อความ
+            v = json.dumps(v, ensure_ascii=False)
+        disp = cmap.get(k)
+        if disp:
+            out[disp] = v
+        out.setdefault(k, v)                  # ไม่ทับค่าที่แปลงชื่อแล้ว
+    return out
+
+
 def fetch_graph() -> list:
     """ดึงทุกรายการของ List พร้อม expand fields และวนอ่านจนครบทุกหน้า (paging)"""
-    import requests
-    tok = graph_token()
-    h = {"Authorization": f"Bearer {tok}", "Accept": "application/json"}
+    tok  = graph_token()
+    site = resolve_site(tok)
+    L    = resolve_list(tok, site)
+    lid  = L["id"]
+    cmap = column_map(tok, site, lid)
 
-    site = requests.get(
-        f"https://graph.microsoft.com/v1.0/sites/{HOSTNAME}:{SITE_PATH}",
-        headers=h, timeout=60).json()["id"]
-
-    url = (f"https://graph.microsoft.com/v1.0/sites/{site}/lists/{LIST_NAME}"
-           f"/items?expand=fields&$top=500")
+    # หมายเหตุสำคัญ 2 ข้อ (ของเดิมผิดทั้งคู่ ทำให้ Graph ตอบ error / ได้ข้อมูลว่าง):
+    #   1) ต้องใช้ $expand (มีเครื่องหมาย $) ไม่ใช่ expand
+    #   2) เมื่อใช้ $expand=fields ค่า $top สูงสุดคือ 200 (ของเดิมใส่ 500)
+    url = (f"https://graph.microsoft.com/v1.0/sites/{site}/lists/{lid}"
+           f"/items?$expand=fields&$top=200")
     items, guard = [], 0
-    while url and guard < 200:               # guard กัน loop ไม่รู้จบ
-        j = requests.get(url, headers=h, timeout=120).json()
-        if "error" in j:
-            raise RuntimeError(j["error"])
+    while url and guard < 500:               # guard กัน loop ไม่รู้จบ
+        j = graph_get(url, tok)
         for it in j.get("value", []):
-            f = dict(it.get("fields", {}))
-            f["_ID"] = int(it.get("id", f.get("id", 0)))
+            f = remap_fields(dict(it.get("fields", {})), cmap)
+            f["_ID"] = int(it.get("id", f.get("id", 0)) or 0)
             items.append(f)
         url = j.get("@odata.nextLink")
         guard += 1
+        if url:
+            print(f"[graph] ...อ่านแล้ว {len(items)} รายการ กำลังดึงหน้าถัดไป")
     print(f"[graph] fetched {len(items)} items")
+    if items:
+        keys = [k for k in items[0] if not k.startswith("@")][:12]
+        print(f"[graph] ตัวอย่างชื่อคอลัมน์ที่ได้: {keys}")
     return items
+
+
+def diagnose() -> int:
+    """โหมดตรวจสอบการเชื่อมต่อ — ใช้หาสาเหตุเวลาข้อมูลไม่ขึ้น
+
+        python scripts/build_dashboard.py --diagnose
+    """
+    print("=" * 72)
+    print(" โหมดตรวจสอบการเชื่อมต่อ SharePoint / Microsoft Graph")
+    print("=" * 72)
+    tok = graph_token()
+    print(f"[ok] ได้ access token แล้ว (ความยาว {len(tok)} อักขระ)")
+    site = resolve_site(tok)
+    L    = resolve_list(tok, site)
+    cmap = column_map(tok, site, L["id"])
+    print("\n--- คอลัมน์ (internal → display) 30 ตัวแรก ---")
+    for i, (k, v) in enumerate(cmap.items()):
+        if i >= 30:
+            break
+        print(f"  {k:38s} → {v}")
+    j = graph_get(f"https://graph.microsoft.com/v1.0/sites/{site}/lists/{L['id']}"
+                  f"/items?$expand=fields&$top=1", tok)
+    val = j.get("value", [])
+    print(f"\n--- ตัวอย่างรายการแรก (ดึงมา {len(val)} รายการ) ---")
+    if val:
+        f = remap_fields(dict(val[0].get("fields", {})), cmap)
+        for k, v in list(f.items())[:40]:
+            print(f"  {k:38s} = {str(v)[:60]}")
+    else:
+        print("  (List ว่าง — ไม่มีรายการในลิสต์)")
+    print("\n[ok] ตรวจสอบเสร็จสมบูรณ์ — การเชื่อมต่อใช้งานได้")
+    return 0
 
 
 # ---------------------------------------------------------------------------
@@ -263,6 +411,26 @@ def norm_ts(v):
     return s
 
 
+def pick(r: dict, *names):
+    """ดึงค่าจาก dict โดยเทียบชื่อคอลัมน์แบบยืดหยุ่น
+
+    รองรับความต่างของชื่อคอลัมน์ระหว่าง CSV export กับ Microsoft Graph เช่น
+    'Customer Name' / 'Customer_x0020_Name' / 'customer_name' → ถือว่าเป็นคอลัมน์เดียวกัน
+    """
+    idx = r.get("__norm__")
+    if idx is None:
+        idx = {norm_key(k): v for k, v in r.items()}
+        r["__norm__"] = idx
+    for n in names:
+        v = r.get(n)                       # 1) ชื่อตรงเป๊ะก่อน
+        if v not in (None, ""):
+            return v
+        v = idx.get(norm_key(n))           # 2) เทียบแบบ normalize
+        if v not in (None, ""):
+            return v
+    return None
+
+
 def build_payload(raw: list) -> dict:
     """สร้าง dict ที่จะถูกฝังลงใน index.html เป็น window.DEMOAPP_DATA"""
     rows, columns = [], []
@@ -273,30 +441,36 @@ def build_payload(raw: list) -> dict:
 
     for r in raw:
         clean = {k.strip(): v for k, v in r.items()
-                 if v not in (None, "") and not k.startswith("_Has")}
+                 if v not in (None, "") and not k.startswith("_Has")
+                 and k not in ("__norm__",)}
+        # ใช้ pick() แทน r.get() เพื่อให้รองรับชื่อคอลัมน์ทั้งจาก CSV และจาก Graph API
         row = {
             "id":           r.get("_ID"),
-            "title":        r.get("Title"),
-            "customerId":   r.get("Customer_id"),
-            "customerName": r.get("Customer Name") or r.get("Registered_Name") or f"รายการ {r.get('_ID')}",
-            "type1":        r.get("Type1"),
-            "team":         r.get("type_teams"),
-            "distribution": r.get("Typr_Distribution") or r.get("Typr_Retail"),
-            "branch":       r.get("branch"),
-            "ts":           norm_ts(r.get("Request TimeStamp")),
-            "status":       r.get("Status") or r.get("Status_1"),
-            "typeRequest":  r.get("Type_Request"),
-            "limitNum":     to_number(r.get("limit")),
-            "limitOther":   to_number(r.get("limit_other")),
-            "owner":        r.get("Owner"),
-            "province":     r.get("province"),
-            "district":     r.get("district"),
-            "businessType": r.get("business_type"),
-            "income":       r.get("Estimated_annual_income"),
-            "credit1":      r.get("credit_semester1"),
-            "credit2":      r.get("credit_semester2"),
-            "land":         r.get("land"),
-            "contact":      r.get("contact_name"),
+            "title":        pick(r, "Title"),
+            "customerId":   pick(r, "Customer_id", "CustomerId", "Customer ID"),
+            "customerName": (pick(r, "Customer Name", "Customer_Name", "CustomerName",
+                                  "Registered_Name", "Registered Name")
+                             or f"รายการ {r.get('_ID')}"),
+            "type1":        pick(r, "Type1", "Type 1"),
+            "team":         pick(r, "type_teams", "Type_Teams", "type teams"),
+            "distribution": pick(r, "Typr_Distribution", "Type_Distribution",
+                                 "Typr_Retail", "Type_Retail"),
+            "branch":       pick(r, "branch", "Branch"),
+            "ts":           norm_ts(pick(r, "Request TimeStamp", "Request_TimeStamp",
+                                         "RequestTimeStamp", "Created")),
+            "status":       pick(r, "Status", "Status_1", "Status1"),
+            "typeRequest":  pick(r, "Type_Request", "Type Request", "TypeRequest"),
+            "limitNum":     to_number(pick(r, "limit", "Limit")),
+            "limitOther":   to_number(pick(r, "limit_other", "Limit_Other")),
+            "owner":        pick(r, "Owner"),
+            "province":     pick(r, "province", "Province"),
+            "district":     pick(r, "district", "District"),
+            "businessType": pick(r, "business_type", "Business_Type"),
+            "income":       pick(r, "Estimated_annual_income", "Estimated Annual Income"),
+            "credit1":      pick(r, "credit_semester1", "Credit_Semester1"),
+            "credit2":      pick(r, "credit_semester2", "Credit_Semester2"),
+            "land":         pick(r, "land", "Land"),
+            "contact":      pick(r, "contact_name", "Contact_Name", "Contact Name"),
             "_raw":         clean,   # ใช้ในหน้า Drill Down
         }
         # ฟิลด์รวมข้อความทุกคอลัมน์ (lowercase) สำหรับ global search
@@ -388,14 +562,51 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Build DemoApp dashboard")
     ap.add_argument("--offline", metavar="CSV",
                     help="สร้าง dashboard จากไฟล์ CSV แทนการเรียก Graph API")
+    ap.add_argument("--fallback", metavar="CSV",
+                    help="ถ้าดึงจาก Graph ไม่สำเร็จ ให้ใช้ CSV นี้แทน (dashboard จะไม่ว่าง)")
+    ap.add_argument("--diagnose", action="store_true",
+                    help="ตรวจสอบการเชื่อมต่อ/สิทธิ์/ชื่อคอลัมน์ โดยไม่สร้างไฟล์")
     a = ap.parse_args()
 
-    raw = fetch_csv(a.offline) if a.offline else fetch_graph()
+    if a.diagnose:                                   # โหมดตรวจสอบอย่างเดียว
+        return diagnose()
+
+    # ---- ดึงข้อมูล ----
+    if a.offline:
+        raw = fetch_csv(a.offline)
+    else:
+        try:
+            raw = fetch_graph()
+        except Exception as e:
+            print(f"[error] ดึงข้อมูลจาก SharePoint ไม่สำเร็จ:\n{e}", file=sys.stderr)
+            if a.fallback and os.path.exists(a.fallback):
+                print(f"[fallback] ใช้ข้อมูลสำรองจาก {a.fallback} แทน", file=sys.stderr)
+                raw = fetch_csv(a.fallback)
+            else:
+                return 1
+
     if not raw:
-        print("[error] ไม่พบข้อมูล — ยกเลิกการสร้างไฟล์", file=sys.stderr)
+        print("[error] ไม่พบข้อมูล — ยกเลิกการสร้างไฟล์ (ไม่เขียนทับ index.html เดิม)",
+              file=sys.stderr)
         return 1
 
     payload = build_payload(raw)
+
+    # ---- ตรวจคุณภาพก่อนเขียนไฟล์ (กันกรณี "ดึงมาได้แต่ทุกช่องว่าง") ----
+    rows = payload["rows"]
+    filled_status = sum(1 for r in rows if r.get("status"))
+    filled_limit  = sum(1 for r in rows if r.get("limitNum"))
+    filled_ts     = sum(1 for r in rows if r.get("ts"))
+    print(f"[check] มีค่า Status {filled_status}/{len(rows)} | "
+          f"วงเงิน {filled_limit}/{len(rows)} | วันที่ {filled_ts}/{len(rows)}")
+    if filled_status == 0 and filled_limit == 0:
+        print("[error] ดึงรายการมาได้ แต่ฟิลด์สำคัญว่างทั้งหมด — "
+              "แปลว่าชื่อคอลัมน์ไม่ตรง (internal name vs display name)\n"
+              "        รันคำสั่งนี้เพื่อดูชื่อคอลัมน์จริง: "
+              "python scripts/build_dashboard.py --diagnose", file=sys.stderr)
+        if not os.getenv("ALLOW_EMPTY"):
+            return 1
+
     render(payload)
 
     # สรุปสั้น ๆ ลง log ของ GitHub Actions
