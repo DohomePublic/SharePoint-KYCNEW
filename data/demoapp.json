@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-07 07:06 น. (เวลาไทย)",
+ "generatedAt": "2026-09-07 09:23 น. (เวลาไทย)",
  "listUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp",
  "rowCount": 43,
  "columns": [
@@ -5428,7 +5428,7 @@
    "distribution": null,
    "branch": "PLOO",
    "ts": "2026-09-05T01:51:56Z",
-   "status": "รอดำเนินการ",
+   "status": "รอการพิจารณาเบื้องต้น",
    "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
    "limitNum": 500000.0,
    "limitOther": 500000.0,
@@ -5442,7 +5442,7 @@
    "land": "ปลอดภาระ",
    "contact": "นายชรรจน์ กาญจนกิจ",
    "_raw": {
-    "@odata.etag": "\"5f923806-6b7f-401f-b511-135014ca484d,1\"",
+    "@odata.etag": "\"5f923806-6b7f-401f-b511-135014ca484d,14\"",
     "Title": "บริษัท จํากัด",
     "LinkTitle": "บริษัท จํากัด",
     "Customer_id": "104861640",
@@ -5457,8 +5457,8 @@
     "field_7": "PLOO",
     "Request TimeStamp": "2026-09-05T01:51:56Z",
     "field_8": "2026-09-05T01:51:56Z",
-    "Status": "รอดำเนินการ",
-    "field_9": "รอดำเนินการ",
+    "Status": "รอการพิจารณาเบื้องต้น",
+    "field_9": "รอการพิจารณาเบื้องต้น",
     "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
     "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
     "limit": "500,000",
@@ -5541,24 +5541,33 @@
     "field_119": "1078367",
     "Else": "0",
     "field_145": "0",
-    "site1": "อาคารพาณิชย์",
-    "field_160": "อาคารพาณิชย์",
+    "linkPicture": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/01_รายละเอียดโครงการจัดสรร-messageImage_1788744407039.jpg",
+    "field_154": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/01_รายละเอียดโครงการจัดสรร-messageImage_1788744407039.jpg",
+    "LinkPictureCustomer": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/02_ภาพถ่ายหน้างานโครงการที่ขอสินเชื่อ-S__440385557_0.jpg",
+    "field_155": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/02_ภาพถ่ายหน้างานโครงการที่ขอสินเชื่อ-S__440385557_0.jpg",
+    "Picture2": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/03_แหล่งเงินทุนที่ใช้ในโครงการ-S__440385542_0.jpg",
+    "field_156": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/03_แหล่งเงินทุนที่ใช้ในโครงการ-S__440385542_0.jpg",
+    "site1": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/06_ผลตรวจคดี (กรณีขอสินเชื่อมากกว่า 1 ล้านบาท)-แบบฟอร์มตรวจคดี-06.06.68 (1).pdf",
+    "field_160": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/06_ผลตรวจคดี (กรณีขอสินเชื่อมากกว่า 1 ล้านบาท)-แบบฟอร์มตรวจคดี-06.06.68 (1).pdf",
+    "int_id": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/04_ภาพแผนที่ตั้ง-S__440385561_0.jpg",
+    "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/04_ภาพแผนที่ตั้ง-S__440385561_0.jpg",
     "Approve Edit": "jeeranan.kae@dohome.co.th",
     "field_166": "jeeranan.kae@dohome.co.th",
     "Group": "อสังหาริมทรัพย์",
     "field_170": "อสังหาริมทรัพย์",
+    "URL": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/578/05_ตัวอย่างสัญญาซื้อขาย-messageImage_1788744407039.jpg",
     "id": "578",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-09-05T01:51:58Z",
-    "Modified": "2026-09-05T01:51:58Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-07T01:28:57Z",
+    "Modified": "2026-09-07T01:28:57Z",
     "Created": "2026-09-05T01:51:58Z",
     "AuthorLookupId": "4314",
-    "EditorLookupId": "4314",
-    "เวอร์ชัน": "1.0",
-    "_UIVersionString": "1.0",
-    "สิ่งที่แนบมา": false,
-    "Attachments": false,
+    "EditorLookupId": "18",
+    "เวอร์ชัน": "14.0",
+    "_UIVersionString": "14.0",
+    "สิ่งที่แนบมา": true,
+    "Attachments": true,
     "ชื่อเรื่อง": "บริษัท จํากัด",
     "LinkTitleNoMenu": "บริษัท จํากัด",
     "จำนวนรายการย่อย": "0",
@@ -5569,7 +5578,7 @@
     "AppEditorLookupId": "40",
     "_ID": 578
    },
-   "_search": "\"5f923806-6b7f-401f-b511-135014ca484d,1\" บริษัท จํากัด บริษัท จํากัด 104861640 104861640 lead lead store operation store operation บริษัท บัณฑิตทะเลแก้ว จำกัด บริษัท บัณฑิตทะเลแก้ว จำกัด ploo ploo 2026-09-05t01:51:56z 2026-09-05t01:51:56z รอดำเนินการ รอดำเนินการ คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 500,000 500,000 การ์ตูน จีรนันท์ sg pl การ์ตูน จีรนันท์ sg pl 01/24/2012 17:00:00 01/24/2012 17:00:00 0655555000141 0655555000141 ในเมือง ในเมือง เมืองพิษณุโลก เมืองพิษณุโลก พิษณุโลก พิษณุโลก 0856057422 0856057422 บริษัท บัณฑิตทะเลแก้ว จำกัด บริษัท บัณฑิตทะเลแก้ว จำกัด อสังหาริมทรัพย์ อสังหาริมทรัพย์ นายชรรจน์ กาญจนกิจ นายชรรจน์ กาญจนกิจ เจ้าของ  เจ้าของ  0856057422 0856057422 30 30 500,000 500,000 30 30 ปลอดภาระ ปลอดภาระ รอดำเนินการ รอดำเนินการ ปลอดภาระ ปลอดภาระ 01/10/2569 01/10/2569 1000 ตรม. 1000 ตรม. 50 50 เป็นเจ้าของ เป็นเจ้าของ 221/3 หมู่ที่ 5 ต.พลายชุมพล อ.เมืองพิษณุโลก จ.พิษณุโลก 221/3 หมู่ที่ 5 ต.พลายชุมพล อ.เมืองพิษณุโลก จ.พิษณุโลก 20,000,000 20,000,000 10,000,000 10,000,000 อำเภอเมือง จังหวัด พิษณุโลก อำเภอเมือง จังหวัด พิษณุโลก d2-pl@dohome.co.th d2-pl@dohome.co.th 0910939674 0910939674 gm-pl@dohome.co.th gm-pl@dohome.co.th d3-pl@dohome.co.th d3-pl@dohome.co.th 05/09/2026 08:51 05/09/2026 08:51 2026-09-05t01:51:58z 05/09/2026 08:51 powerplatform powerplatform การ์ตูน จีรนันท์ sg pl การ์ตูน จีรนันท์ sg pl 221/3 หมู่ที่ 5 ต.พลายชุมพล อ.เมืองพิษณุโลก จ.พิษณุโลก พิษณุโลก เมืองพิษณุโลก ในเมือง 65010 221/3 หมู่ที่ 5 ต.พลายชุมพล อ.เมืองพิษณุโลก จ.พิษณุโลก พิษณุโลก เมืองพิษณุโลก ในเมือง 65010 65010 65010 การ์ตูน จีรนันท์ sg pl การ์ตูน จีรนันท์ sg pl 1078367 1078367 0 0 อาคารพาณิชย์ อาคารพาณิชย์ jeeranan.kae@dohome.co.th jeeranan.kae@dohome.co.th อสังหาริมทรัพย์ อสังหาริมทรัพย์ 578 item item 2026-09-05t01:51:58z 2026-09-05t01:51:58z 2026-09-05t01:51:58z 4314 4314 1.0 1.0 false false บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 578"
+   "_search": "\"5f923806-6b7f-401f-b511-135014ca484d,14\" บริษัท จํากัด บริษัท จํากัด 104861640 104861640 lead lead store operation store operation บริษัท บัณฑิตทะเลแก้ว จำกัด บริษัท บัณฑิตทะเลแก้ว จำกัด ploo ploo 2026-09-05t01:51:56z 2026-09-05t01:51:56z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 500,000 500,000 การ์ตูน จีรนันท์ sg pl การ์ตูน จีรนันท์ sg pl 01/24/2012 17:00:00 01/24/2012 17:00:00 0655555000141 0655555000141 ในเมือง ในเมือง เมืองพิษณุโลก เมืองพิษณุโลก พิษณุโลก พิษณุโลก 0856057422 0856057422 บริษัท บัณฑิตทะเลแก้ว จำกัด บริษัท บัณฑิตทะเลแก้ว จำกัด อสังหาริมทรัพย์ อสังหาริมทรัพย์ นายชรรจน์ กาญจนกิจ นายชรรจน์ กาญจนกิจ เจ้าของ  เจ้าของ  0856057422 0856057422 30 30 500,000 500,000 30 30 ปลอดภาระ ปลอดภาระ รอดำเนินการ รอดำเนินการ ปลอดภาระ ปลอดภาระ 01/10/2569 01/10/2569 1000 ตรม. 1000 ตรม. 50 50 เป็นเจ้าของ เป็นเจ้าของ 221/3 หมู่ที่ 5 ต.พลายชุมพล อ.เมืองพิษณุโลก จ.พิษณุโลก 221/3 หมู่ที่ 5 ต.พลายชุมพล อ.เมืองพิษณุโลก จ.พิษณุโลก 20,000,000 20,000,000 10,000,000 10,000,000 อำเภอเมือง จังหวัด พิษณุโลก อำเภอเมือง จังหวัด พิษณุโลก d2-pl@dohome.co.th d2-pl@dohome.co.th 0910939674 0910939674 gm-pl@dohome.co.th gm-pl@dohome.co.th d3-pl@dohome.co.th d3-pl@dohome.co.th 05/09/2026 08:51 05/09/2026 08:51 2026-09-05t01:51:58z 05/09/2026 08:51 powerplatform powerplatform การ์ตูน จีรนันท์ sg pl การ์ตูน จีรนันท์ sg pl 221/3 หมู่ที่ 5 ต.พลายชุมพล อ.เมืองพิษณุโลก จ.พิษณุโลก พิษณุโลก เมืองพิษณุโลก ในเมือง 65010 221/3 หมู่ที่ 5 ต.พลายชุมพล อ.เมืองพิษณุโลก จ.พิษณุโลก พิษณุโลก เมืองพิษณุโลก ในเมือง 65010 65010 65010 การ์ตูน จีรนันท์ sg pl การ์ตูน จีรนันท์ sg pl 1078367 1078367 0 0 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/01_รายละเอียดโครงการจัดสรร-messageimage_1788744407039.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/01_รายละเอียดโครงการจัดสรร-messageimage_1788744407039.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/02_ภาพถ่ายหน้างานโครงการที่ขอสินเชื่อ-s__440385557_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/02_ภาพถ่ายหน้างานโครงการที่ขอสินเชื่อ-s__440385557_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/03_แหล่งเงินทุนที่ใช้ในโครงการ-s__440385542_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/03_แหล่งเงินทุนที่ใช้ในโครงการ-s__440385542_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/06_ผลตรวจคดี (กรณีขอสินเชื่อมากกว่า 1 ล้านบาท)-แบบฟอร์มตรวจคดี-06.06.68 (1).pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/06_ผลตรวจคดี (กรณีขอสินเชื่อมากกว่า 1 ล้านบาท)-แบบฟอร์มตรวจคดี-06.06.68 (1).pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/04_ภาพแผนที่ตั้ง-s__440385561_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/04_ภาพแผนที่ตั้ง-s__440385561_0.jpg jeeranan.kae@dohome.co.th jeeranan.kae@dohome.co.th อสังหาริมทรัพย์ อสังหาริมทรัพย์ https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/578/05_ตัวอย่างสัญญาซื้อขาย-messageimage_1788744407039.jpg 578 item item 2026-09-07t01:28:57z 2026-09-07t01:28:57z 2026-09-05t01:51:58z 4314 18 14.0 14.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 578"
   },
   {
    "id": 579,
@@ -7993,64 +8002,64 @@
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 23,
-   "nullPct": 46.5
+   "unique": 24,
+   "nullPct": 44.2
   },
   {
    "name": "field_154",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 23,
-   "nullPct": 46.5
+   "unique": 24,
+   "nullPct": 44.2
   },
   {
    "name": "LinkPictureCustomer",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 23,
-   "nullPct": 46.5
+   "unique": 24,
+   "nullPct": 44.2
   },
   {
    "name": "field_155",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 23,
-   "nullPct": 46.5
+   "unique": 24,
+   "nullPct": 44.2
   },
   {
    "name": "Picture2",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 22,
-   "nullPct": 48.8
+   "unique": 23,
+   "nullPct": 46.5
   },
   {
    "name": "field_156",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 22,
-   "nullPct": 48.8
+   "unique": 23,
+   "nullPct": 46.5
   },
   {
    "name": "int_id",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 19,
-   "nullPct": 55.8
+   "unique": 20,
+   "nullPct": 53.5
   },
   {
    "name": "field_165",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 19,
-   "nullPct": 55.8
+   "unique": 20,
+   "nullPct": 53.5
   },
   {
    "name": "Approve Edit",
@@ -8137,8 +8146,8 @@
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 15,
-   "nullPct": 65.1
+   "unique": 16,
+   "nullPct": 62.8
   },
   {
    "name": "id",
@@ -8201,7 +8210,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "2285",
-   "unique": 20,
+   "unique": 19,
    "nullPct": 0.0
   },
   {
@@ -8441,7 +8450,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "ตึก/อาคาร",
-   "unique": 11,
+   "unique": 12,
    "nullPct": 48.8
   },
   {
@@ -8449,7 +8458,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "ตึก/อาคาร",
-   "unique": 11,
+   "unique": 12,
    "nullPct": 48.8
   },
   {
@@ -8807,10 +8816,6 @@
    67.4
   ],
   [
-   "URL",
-   65.1
-  ],
-  [
    "limit_other",
    65.1
   ],
@@ -8827,6 +8832,10 @@
    65.1
   ],
   [
+   "URL",
+   62.8
+  ],
+  [
    "project",
    58.1
   ],
@@ -8836,19 +8845,11 @@
   ],
   [
    "int_id",
-   55.8
+   53.5
   ],
   [
    "field_165",
-   55.8
-  ],
-  [
-   "Picture2",
-   48.8
-  ],
-  [
-   "field_156",
-   48.8
+   53.5
   ],
   [
    "site1",
@@ -8859,20 +8860,28 @@
    48.8
   ],
   [
-   "linkPicture",
+   "Picture2",
    46.5
+  ],
+  [
+   "field_156",
+   46.5
+  ],
+  [
+   "linkPicture",
+   44.2
   ],
   [
    "field_154",
-   46.5
+   44.2
   ],
   [
    "LinkPictureCustomer",
-   46.5
+   44.2
   ],
   [
    "field_155",
-   46.5
+   44.2
   ],
   [
    "Executive_history",
