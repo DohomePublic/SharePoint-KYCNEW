@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เอกสาร KYC สำหรับลูกค้านิติบุคคลและองค์กร — บริษัท ดูโฮม จำกัด (มหาชน)</title>
+
+<!-- ฟอนต์ Sarabun: อ่านง่าย รองรับภาษาไทย และเหมาะกับงานพิมพ์เอกสารราชการ/ธุรกิจ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================================
+   1) ตัวแปรสี + รีเซ็ตพื้นฐาน
+      ใช้โทน Microsoft Fluent Design ให้เข้าชุดกับหน้า Dashboard หลัก
+   ========================================================================= */
+:root{
+  --ink:#000;              /* สีเส้นตาราง/ตัวอักษรบนกระดาษ (ดำสนิทเพื่อให้พิมพ์คมชัด) */
+  --line:#000;
+  --label:#1a1a1a;
+  --fill:#f3f2f1;          /* พื้นหลังช่องหัวข้อ */
+  --band:#e1dfdd;          /* แถบหัวข้อกลุ่ม */
+  --brand:#0078D4;         /* สีหลัก Fluent */
+  --brand-dark:#005a9e;
+  --bg:#f5f5f5;            /* พื้นหลังนอกกระดาษ (เห็นเฉพาะบนจอ) */
+  --edit:#fff8e1;          /* พื้นหลังช่องที่แก้ไขได้ */
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Sarabun','TH Sarabun New',Tahoma,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  -webkit-print-color-adjust:exact;   /* บังคับให้พิมพ์สีพื้นหลังออกมาด้วย */
+  print-color-adjust:exact;
+}
+
+/* =========================================================================
+   2) แถบเครื่องมือด้านบน (ไม่พิมพ์ออกกระดาษ — class .no-print)
+   ========================================================================= */
+.toolbar{
+  position:sticky; top:0; z-index:50;
+  background:var(--brand); color:#fff;
+  padding:10px 16px;
+  display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+}
+.toolbar h1{font-size:16px;margin:0 12px 0 0;font-weight:700;white-space:nowrap;}
+.toolbar .grow{flex:1 1 240px;min-width:180px;}
+.toolbar select,.toolbar input{
+  width:100%; padding:7px 10px; border:none; border-radius:4px;
+  font-family:inherit; font-size:14px;
+}
+.btn{
+  padding:7px 14px; border:1px solid rgba(255,255,255,.6); border-radius:4px;
+  background:rgba(255,255,255,.12); color:#fff; cursor:pointer;
+  font-family:inherit; font-size:14px; white-space:nowrap;
+}
+.btn:hover{background:#fff;color:var(--brand-dark);}
+.btn.primary{background:#fff;color:var(--brand-dark);font-weight:600;}
+.hint{
+  background:#fff4ce;border-left:4px solid #ffb900;color:#3b3a39;
+  padding:8px 16px;font-size:13px;
+}
+
+/* =========================================================================
+   3) กระดาษ A4
+      - ขนาดจริง 210x297mm หักขอบ 8mm เหลือพื้นที่พิมพ์ 194mm
+      - บนจอแสดงเป็นการ์ดสีขาวมีเงา / ตอนพิมพ์ตัดเงาและระยะห่างออก
+   ========================================================================= */
+.sheet{
+  width:194mm; min-height:281mm;
+  margin:14px auto; padding:0;
+  background:#fff; color:#000;
+  box-shadow:0 2px 14px rgba(0,0,0,.2);
+  position:relative;
+  display:flex; flex-direction:column;
+}
+
+/* ---- หัวกระดาษ: ชื่อบริษัท + ที่อยู่ + เลขหน้า ---- */
+.head{padding:4mm 6mm 2mm;position:relative;text-align:center;}
+.head .co{font-size:16px;font-weight:700;line-height:1.2;}
+.head .addr{font-size:11px;line-height:1.3;margin-top:.8mm;}
+.head .pageno{
+  position:absolute; right:6mm; top:6mm;
+  font-size:12px; font-weight:600;
+  border:1px solid var(--line); padding:1px 7px; border-radius:2px;
+}
+.head .doctitle{
+  margin-top:2mm; font-size:15px; font-weight:700;
+  background:var(--band); border:1px solid var(--line);
+  padding:1.2mm 0; letter-spacing:.5px;
+}
+.body{padding:0 6mm 6mm;flex:1;}
+
+/* =========================================================================
+   4) ระบบตารางฟอร์ม (CSS Grid 12 คอลัมน์)
+      ทุกช่องเป็น .cell ที่มีเส้นขอบบาง ๆ เหมือนฟอร์มกระดาษจริง
+   ========================================================================= */
+.band{                                   /* แถบหัวข้อกลุ่ม เช่น "ข้อมูลผู้ติดต่อ" */
+  background:var(--band); border:1px solid var(--line); border-bottom:none;
+  font-weight:700; font-size:13px; padding:1.2mm 2mm; margin-top:2.5mm;
+}
+.grid{
+  display:grid; grid-template-columns:repeat(12,1fr);
+  border-left:1px solid var(--line); border-top:1px solid var(--line);
+}
+.cell{
+  border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+  padding:1mm 1.6mm; min-height:8.5mm;
+  display:flex; flex-direction:column; justify-content:center;
+  overflow:hidden;
+}
+.cell .lb{font-size:10px;color:#3b3a39;line-height:1.15;}   /* ป้ายชื่อช่อง */
+.cell .vl{
+  font-size:12.5px; font-weight:600; line-height:1.25;
+  min-height:4.6mm; word-break:break-word;
+}
+.cell.h{                                  /* ช่องหัวคอลัมน์ของตาราง */
+  background:var(--fill); font-size:11px; font-weight:700;
+  text-align:center; min-height:6.5mm;
+  justify-content:center; align-items:center;
+}
+.cell.lbl{background:var(--fill);font-size:11.5px;font-weight:600;justify-content:center;}
+.cell.num .vl{text-align:right;font-variant-numeric:tabular-nums;}
+.cell.ctr .vl{text-align:center;}
+.cell.tall{min-height:11mm;}
+.cell.dense{min-height:7mm;padding:.6mm 1.4mm;}        /* ตารางแถวถี่ (หน้า 1 มีเนื้อหาเยอะ) */
+.cell.dense .vl{font-size:11.5px;min-height:4mm;}
+.cell.memo{min-height:34mm;justify-content:flex-start;}/* กล่องข้อความยาว เช่น ประวัติผู้บริหาร */
+.cell.memo .vl{font-size:12px;font-weight:400;line-height:1.6;min-height:32mm;white-space:pre-wrap;}
+.cell.memo .vl:empty::after{
+  /* กล่องเปล่า → พิมพ์เส้นบรรทัดให้เขียนมือ 5 บรรทัด */
+  content:'';display:block;height:32mm;border-bottom:none;
+  background:repeating-linear-gradient(to bottom,transparent 0 6.2mm,#c8c8c8 6.2mm 6.2mm);
+}
+
+/* -------------------------------------------------------------------------
+   โหมดบีบอัดเฉพาะ "หน้า 1"
+   หน้า 1 ของฟอร์มกระดาษจริงบรรจุถึง 8 หัวข้อ (33 แถว) ในกระดาษ A4 แผ่นเดียว
+   จึงต้องลดความสูงแถว/ขนาดตัวอักษรลง เพื่อไม่ให้ล้นไปหน้าที่ 3
+   ------------------------------------------------------------------------- */
+#page1 .cell{min-height:5.6mm;padding:.3mm 1.2mm;}
+#page1 .cell .lb{font-size:8px;line-height:1.05;}
+#page1 .cell .vl{font-size:10.5px;line-height:1.15;min-height:3.4mm;}
+#page1 .cell.h{min-height:4.6mm;font-size:9.5px;}
+#page1 .cell.dense{min-height:4.6mm;padding:.3mm 1.2mm;}
+#page1 .cell.dense .vl{font-size:10.5px;min-height:3.4mm;}
+#page1 .band{margin-top:1mm;padding:.4mm 2mm;font-size:11px;}
+#page1 .vl:empty::after{height:3.2mm;}
+#page1 .foot{margin-top:1.5mm;}
+
+/* คำขวัญบริษัทมุมขวาบนของหน้า 2 */
+.head .slogan{
+  position:absolute; left:6mm; top:6mm;
+  font-size:12px; font-weight:700; color:var(--brand-dark);
+  border:1px solid var(--line); border-radius:2px; padding:1px 7px; letter-spacing:2px;
+}
+/* ช่องติ๊กหน้าโครงการ */
+.chk{display:inline-block;width:3.6mm;height:3.6mm;border:1px solid #000;margin-right:2mm;
+     vertical-align:-.5mm;text-align:center;line-height:3.4mm;font-size:11px;font-weight:700;}
+
+/* ความกว้างคอลัมน์ (span) */
+.c1{grid-column:span 1}.c2{grid-column:span 2}.c3{grid-column:span 3}
+.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}
+.c7{grid-column:span 7}.c8{grid-column:span 8}.c9{grid-column:span 9}
+.c10{grid-column:span 10}.c11{grid-column:span 11}.c12{grid-column:span 12}
+
+/* ช่องที่ไม่มีข้อมูลใน SharePoint → พิมพ์เส้นประให้เขียนมือ */
+.vl:empty::after{content:'';display:block;border-bottom:1px dotted #9a9a9a;height:4.4mm;}
+/* กรณีช่องว่างอยู่ใน span (เช่น ชื่อโครงการที่มีเครื่องหมายติ๊กนำหน้า) */
+.vl span[data-f]:empty::after{content:'';display:inline-block;width:70%;border-bottom:1px dotted #9a9a9a;height:4mm;}
+
+/* ช่องที่พิมพ์แก้ไขได้บนหน้าจอก่อนสั่งพิมพ์ */
+[contenteditable="true"]{outline:none;}
+body.editmode [contenteditable="true"]{background:var(--edit);border-radius:2px;}
+
+/* ท้ายกระดาษ */
+.foot{
+  border-top:1px solid var(--line); margin-top:2.5mm; padding-top:1.2mm;
+  font-size:10px; display:flex; justify-content:space-between; color:#3b3a39;
+}
+.sign{display:grid;grid-template-columns:repeat(3,1fr);gap:8mm;margin-top:8mm;}
+.sign div{text-align:center;font-size:11.5px;}
+.sign .ln{border-bottom:1px dotted #000;height:9mm;margin-bottom:1.5mm;}
+
+/* =========================================================================
+   5) กฎเฉพาะตอนสั่งพิมพ์
+   ========================================================================= */
+@page{ size:A4 portrait; margin:8mm; }
+@media print{
+  body{background:#fff;}
+  .no-print{display:none !important;}
+  .sheet{
+    width:auto; min-height:auto; margin:0; box-shadow:none;
+    page-break-after:always;          /* 1 .sheet = 1 หน้ากระดาษ */
+    break-after:page;
+  }
+  .sheet:last-of-type{page-break-after:auto;break-after:auto;}
+  .grid{page-break-inside:avoid;break-inside:avoid;}
+  body.editmode [contenteditable="true"]{background:transparent;}
+}
+
+/* =========================================================================
+   6) Responsive — บนมือถือย่อกระดาษให้พอดีจอ (ไม่กระทบตอนพิมพ์)
+   ========================================================================= */
+@media screen and (max-width:820px){
+  .sheet{
+    width:194mm;
+    transform:scale(.52); transform-origin:top left;
+    margin:8px 0 -140mm 4px;
+  }
+  .toolbar h1{font-size:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- =======================================================================
+     แถบเครื่องมือ (ไม่ถูกพิมพ์)
+     ======================================================================= -->
+<div class="toolbar no-print">
+  <h1>🖨️ พิมพ์เอกสาร KYC</h1>
+  <div class="grow">
+    <input id="q" type="search" placeholder="🔍 ค้นหา: ชื่อนิติบุคคล / รหัสสมาชิก / เลขทะเบียน / สาขา">
+  </div>
+  <div class="grow">
+    <select id="pick"></select>
+  </div>
+  <button class="btn" id="prev" title="รายการก่อนหน้า">◀</button>
+  <button class="btn" id="next" title="รายการถัดไป">▶</button>
+  <button class="btn" id="edit">✏️ แก้ไขก่อนพิมพ์</button>
+  <button class="btn primary" id="print">🖨️ พิมพ์ / บันทึก PDF</button>
+  <button class="btn" id="back" onclick="location.href='index.html'">← กลับ Dashboard</button>
+</div>
+<div class="hint no-print">
+  ช่องที่เป็น <b>เส้นประ</b> คือข้อมูลที่ SharePoint List ยังไม่มี — กด “แก้ไขก่อนพิมพ์” เพื่อพิมพ์เติมลงไปได้ทันที
+  หรือปล่อยว่างไว้ให้ลูกค้าเขียนมือ · สั่งพิมพ์แล้วเลือกปลายทางเป็น “Save as PDF” เพื่อได้ไฟล์ PDF
+</div>
+
+<!-- =======================================================================
+     หน้าที่ 1 / 2
+     ======================================================================= -->
+<section class="sheet" id="page1">
+  <div class="head">
+    <div class="pageno">1/2</div>
+    <div class="co">บริษัท ดูโฮม จำกัด (มหาชน)</div>
+    <div class="addr">เลขที่ 88/111 หมู่ที่ 3 ตำบลบางพูน อำเภอเมืองปทุมธานี จังหวัดปทุมธานี 12000</div>
+    <div class="doctitle">เอกสาร KYC สำหรับลูกค้านิติบุคคลและองค์กร</div>
+  </div>
+
+  <div class="body">
+
+    <!-- ---------- ส่วนที่ 1: ข้อมูลนิติบุคคล ---------- -->
+    <div class="band">1. ข้อมูลนิติบุคคล</div>
+    <div class="grid">
+      <div class="cell c3"><div class="lb">สาขา</div><div class="vl" data-f="branch"></div></div>
+      <div class="cell c3"><div class="lb">รหัสสมาชิก</div><div class="vl" data-f="customerId"></div></div>
+      <div class="cell c6"><div class="lb">ชื่อนิติบุคคล</div><div class="vl" data-f="registeredName"></div></div>
+
+      <div class="cell c6"><div class="lb">ชื่อนิติบุคคล (Eng)</div><div class="vl" data-f="nameEng" data-edit="1"></div></div>
+      <div class="cell c3"><div class="lb">เลขทะเบียนนิติบุคคล</div><div class="vl" data-f="registrationNumber"></div></div>
+      <div class="cell c3"><div class="lb">วันจดทะเบียน</div><div class="vl" data-f="registerDate" data-edit="1"></div></div>
+
+      <div class="cell c12"><div class="lb">เลขที่ / อาคาร / ถนน</div><div class="vl" data-f="address"></div></div>
+
+      <div class="cell c3"><div class="lb">ตำบล / เขต</div><div class="vl" data-f="county"></div></div>
+      <div class="cell c3"><div class="lb">อำเภอ</div><div class="vl" data-f="district"></div></div>
+      <div class="cell c2"><div class="lb">จังหวัด</div><div class="vl" data-f="province"></div></div>
+      <div class="cell c2"><div class="lb">รหัสไปรษณีย์</div><div class="vl" data-f="postOffice"></div></div>
+      <div class="cell c2"><div class="lb">เบอร์โทร / FAX</div><div class="vl" data-f="telephone"></div></div>
+    </div>
+
+    <!-- ---------- ส่วนที่ 2: ข้อมูลผู้ติดต่อ ---------- -->
+    <div class="band">2. ข้อมูลผู้ติดต่อ</div>
+    <div class="grid">
+      <div class="cell c5"><div class="lb">ชื่อผู้ติดต่อ (ลูกค้า)</div><div class="vl" data-f="contactName"></div></div>
+      <div class="cell c4"><div class="lb">ตำแหน่งงาน</div><div class="vl" data-f="position"></div></div>
+      <div class="cell c3"><div class="lb">เบอร์โทรผู้ติดต่อ</div><div class="vl" data-f="contactNumber"></div></div>
+    </div>
+
+    <!-- ---------- ส่วนที่ 3: ธุรกิจ / รายได้ / วงเงิน ---------- -->
+    <div class="band">3. ประเภทธุรกิจ / ประมาณการรายได้ / วงเงินที่ขอสินเชื่อ</div>
+    <div class="grid">
+      <div class="cell c8"><div class="lb">ประเภทธุรกิจ</div><div class="vl" data-f="businessType"></div></div>
+      <div class="cell c4"><div class="lb">ประมาณการรายได้</div><div class="vl" data-f="income"></div></div>
+
+      <div class="cell c4 num"><div class="lb">วงเงินที่ขอสินเชื่อกับดูโฮม (บาท)</div><div class="vl" data-f="limit"></div></div>
+      <div class="cell c2 ctr"><div class="lb">เครดิตเทอม (วัน)</div><div class="vl" data-f="credit1"></div></div>
+      <div class="cell c3"><div class="lb">ประเภทหลักประกัน</div><div class="vl" data-f="marginType1"></div></div>
+      <div class="cell c3 num"><div class="lb">มูลค่า (บาท)</div><div class="vl" data-f="value1"></div></div>
+
+      <div class="cell c4 num"><div class="lb">วงเงินซัพพลายเออร์อื่น (บาท)</div><div class="vl" data-f="limitOther"></div></div>
+      <div class="cell c2 ctr"><div class="lb">เครดิตเทอม (วัน)</div><div class="vl" data-f="credit2"></div></div>
+      <div class="cell c3"><div class="lb">ประเภทหลักประกัน</div><div class="vl" data-f="marginType2"></div></div>
+      <div class="cell c3 num"><div class="lb">มูลค่า (บาท)</div><div class="vl" data-f="value2"></div></div>
+    </div>
+
+    <!-- วงเงินสถาบันการเงิน 4 ประเภท -->
+    <div class="grid" style="margin-top:-1px">
+      <div class="cell h c3">ประเภทวงเงิน</div>
+      <div class="cell h c3">จำนวนเงิน (บาท)</div>
+      <div class="cell h c3">ประเภทวงเงิน</div>
+      <div class="cell h c3">จำนวนเงิน (บาท)</div>
+
+      <div class="cell lbl c3">วงเงิน OD</div>
+      <div class="cell c3 num"><div class="vl" data-f="limitOD"></div></div>
+      <div class="cell lbl c3">วงเงินประกัน BG</div>
+      <div class="cell c3 num"><div class="vl" data-f="insuranceLimit"></div></div>
+
+      <div class="cell lbl c3">ธนาคาร</div>
+      <div class="cell c3"><div class="vl" data-f="bank1"></div></div>
+      <div class="cell lbl c3">ธนาคาร</div>
+      <div class="cell c3"><div class="vl" data-f="bank2"></div></div>
+
+      <div class="cell lbl c3">วงเงินเช่าซื้อ / ลิสซิ่ง</div>
+      <div class="cell c3 num"><div class="vl" data-f="leasingLimit"></div></div>
+      <div class="cell lbl c3">วงเงินอื่น ๆ</div>
+      <div class="cell c3 num"><div class="vl" data-f="otherLimits"></div></div>
+
+      <div class="cell lbl c3">ธนาคาร</div>
+      <div class="cell c3"><div class="vl" data-f="bank3"></div></div>
+      <div class="cell lbl c3">ธนาคาร</div>
+      <div class="cell c3"><div class="vl" data-f="bank4"></div></div>
+    </div>
+
+    <!-- ---------- ส่วนที่ 4: ทรัพย์สินค้ำประกัน ---------- -->
+    <div class="band">4. ทรัพย์สินของนิติบุคคลที่สามารถนำมาเป็นหลักทรัพย์ค้ำประกันได้</div>
+    <div class="grid">
+      <div class="cell h c3">รายการ</div>
+      <div class="cell h c5">รายละเอียด</div>
+      <div class="cell h c4">สถานะ</div>
+
+      <!-- ที่ดิน ← คอลัมน์ land / สถานะ ← คอลัมน์ Status_1 -->
+      <div class="cell lbl c3">ที่ดิน</div>
+      <div class="cell c5"><div class="vl" data-f="land" data-edit="1"></div></div>
+      <div class="cell c4"><div class="vl" data-f="landStatus" data-edit="1"></div></div>
+
+      <!-- ทรัพย์สินอื่น ← คอลัมน์ other_property / สถานะ ← คอลัมน์ Status_2 -->
+      <div class="cell lbl c3">ทรัพย์สินอื่น</div>
+      <div class="cell c5"><div class="vl" data-f="otherProperty" data-edit="1"></div></div>
+      <div class="cell c4"><div class="vl" data-f="otherPropertyStatus" data-edit="1"></div></div>
+    </div>
+
+    <!-- ---------- ส่วนที่ 5: พื้นที่ประกอบการ ---------- -->
+    <div class="band">5. พื้นที่ประกอบการ</div>
+    <div class="grid">
+      <div class="cell c5"><div class="lb">พื้นที่ประกอบการ</div><div class="vl" data-f="premises" data-edit="1"></div></div>
+      <div class="cell c3"><div class="lb">ประเภทประกอบการ</div><div class="vl" data-f="premisesType" data-edit="1"></div></div>
+      <div class="cell c2 ctr"><div class="lb">จำนวนพนักงาน</div><div class="vl" data-f="employees" data-edit="1"></div></div>
+      <div class="cell c2"><div class="lb">กรรมสิทธิ์</div><div class="vl" data-f="ownership" data-edit="1"></div></div>
+    </div>
+
+    <!-- ---------- ส่วนที่ 6: ชื่อโครงการ (อดีต / ปัจจุบัน / อนาคต) ---------- -->
+    <div class="band">6. ชื่อโครงการ (ผู้รับเหมา / เจ้าของโครงการ / อสังหาริมทรัพย์)</div>
+
+    <!-- 6.1 โครงการอดีต -->
+    <div class="grid">
+      <div class="cell h c3">โครงการอดีต</div>
+      <div class="cell h c2">มูลค่างาน</div>
+      <div class="cell h c2">ผู้ว่าจ้าง</div>
+      <div class="cell h c2">กำหนดส่งมอบ</div>
+      <div class="cell h c1">% สำเร็จ</div>
+      <div class="cell h c2">การโอนสิทธิ์รับเงิน</div>
+    </div>
+    <div class="grid" id="tblPast" style="margin-top:-1px"></div>
+
+    <!-- 6.2 โครงการปัจจุบัน -->
+    <div class="grid" style="margin-top:1.5mm">
+      <div class="cell h c3">โครงการปัจจุบัน</div>
+      <div class="cell h c2">มูลค่างาน</div>
+      <div class="cell h c2">สถานะ</div>
+      <div class="cell h c2">กำหนดเริ่มก่อสร้าง</div>
+      <div class="cell h c3">ที่ตั้งโครงการ</div>
+    </div>
+    <div class="grid" id="tblNow" style="margin-top:-1px"></div>
+
+    <!-- 6.3 โครงการอนาคต -->
+    <div class="grid" style="margin-top:1.5mm">
+      <div class="cell h c3">โครงการอนาคต</div>
+      <div class="cell h c2">มูลค่างาน</div>
+      <div class="cell h c2">สถานะ</div>
+      <div class="cell h c2">กำหนดก่อสร้าง</div>
+      <div class="cell h c3">ที่ตั้งโครงการ</div>
+    </div>
+    <div class="grid" id="tblFuture" style="margin-top:-1px"></div>
+
+    <!-- ---------- ส่วนที่ 7: ข้อมูลการขายสินค้า ---------- -->
+    <div class="band">7. ข้อมูลการขายสินค้า</div>
+    <div class="grid">
+      <div class="cell dense c5"><div class="lb">กลุ่มสินค้าที่ขาย</div><div class="vl" data-f="productGroup" data-edit="1"></div></div>
+      <div class="cell dense c4 num"><div class="lb">เฉลี่ยยอดขาย / เดือน (บาท)</div><div class="vl" data-f="avgSales" data-edit="1"></div></div>
+      <div class="cell dense c3"><div class="lb">ร้านค้าส่ง / ค้าปลีก</div><div class="vl" data-f="wholesaleRetail"></div></div>
+
+      <div class="cell dense c5"><div class="lb">บริษัทที่ส่งสินค้า</div><div class="vl" data-f="supplier" data-edit="1"></div></div>
+      <div class="cell dense c3 ctr"><div class="lb">เครดิตเทอมปัจจุบัน (วัน)</div><div class="vl" data-f="currentCredit"></div></div>
+      <div class="cell dense c4"><div class="lb">ประเภทสินค้า</div><div class="vl" data-f="productType" data-edit="1"></div></div>
+    </div>
+
+    <!-- ---------- ส่วนที่ 8: แผนการตลาด ---------- -->
+    <div class="band">8. แผนการตลาด</div>
+    <div class="grid">
+      <div class="cell h c6">แผนการตลาด</div>
+      <div class="cell h c3">ระยะเวลา</div>
+      <div class="cell h c3">ยอดขายที่คาดหวัง (บาท)</div>
+
+      <div class="cell dense c6"><div class="vl" data-f="mkPlan1" data-edit="1"></div></div>
+      <div class="cell dense c3"><div class="vl" data-f="mkTerm1" data-edit="1"></div></div>
+      <div class="cell dense c3 num"><div class="vl" data-f="mkTarget1" data-edit="1"></div></div>
+
+      <div class="cell dense c6"><div class="vl" data-f="mkPlan2" data-edit="1"></div></div>
+      <div class="cell dense c3"><div class="vl" data-f="mkTerm2" data-edit="1"></div></div>
+      <div class="cell dense c3 num"><div class="vl" data-f="mkTarget2" data-edit="1"></div></div>
+    </div>
+
+    <div class="foot">
+      <span data-f="footLeft"></span>
+      <span>หน้า 1 จาก 2</span>
+    </div>
+  </div>
+</section>
+
+<!-- =======================================================================
+     หน้าที่ 2 / 2
+     ======================================================================= -->
+<section class="sheet" id="page2">
+  <div class="head">
+    <div class="pageno">2/2</div>
+    <div class="slogan">ครบ ถูก ดี</div>
+    <div class="co">บริษัท ดูโฮม จำกัด (มหาชน)</div>
+    <div class="addr">อาคารออรัตนชัย เลขที่ 60 ถนนวิภาวดีรังสิต แขวงสามเสนใน เขตพญาไท กรุงเทพมหานคร 10400</div>
+    <div class="doctitle">ประวัติผู้ขอสินเชื่อและผู้ที่เกี่ยวข้อง</div>
+  </div>
+
+  <div class="body">
+
+    <!-- ---------- ส่วนที่ 9: ประวัติผู้บริหาร / ประวัติกิจการ ---------- -->
+    <div class="band">9. ประวัติผู้ขอสินเชื่อและผู้ที่เกี่ยวข้อง</div>
+    <div class="grid">
+      <div class="cell h c6">ประวัติผู้บริหาร</div>
+      <div class="cell h c6">ประวัติผู้ขอสินเชื่อ (กิจการ)</div>
+
+      <!-- กล่องข้อความยาว: ถ้าไม่มีข้อมูลจะพิมพ์เส้นบรรทัดให้เขียนมือ -->
+      <div class="cell memo c6"><div class="vl" data-f="execProfile" data-edit="1"></div></div>
+      <div class="cell memo c6"><div class="vl" data-f="bizProfile" data-edit="1"></div></div>
+
+      <div class="cell c12"><div class="lb">บุคคลอ้างอิง</div><div class="vl" data-f="reference" data-edit="1"></div></div>
+    </div>
+
+    <!-- ---------- ส่วนที่ 10: สรุปคำขอ (ข้อมูลสมาชิก + โครงการ) ---------- -->
+    <div class="band">10. ข้อมูลสรุปคำขอ</div>
+    <div class="grid">
+      <div class="cell dense c3"><div class="lb">สมาชิก</div><div class="vl" data-f="customerId"></div></div>
+      <div class="cell dense c6"><div class="lb">ชื่อนิติบุคคล</div><div class="vl" data-f="registeredName"></div></div>
+      <div class="cell dense c3"><div class="lb">งบประมาณโครงการ</div><div class="vl" data-f="projectBudget" data-edit="1"></div></div>
+
+      <div class="cell dense c4"><div class="lb">เลขทะเบียนนิติบุคคล</div><div class="vl" data-f="registrationNumber"></div></div>
+      <div class="cell dense c8"><div class="lb">ที่อยู่</div><div class="vl" data-f="fullAddress"></div></div>
+
+      <div class="cell dense c12">
+        <div class="lb">โครงการ</div>
+        <div class="vl"><span class="chk">&#10003;</span><span data-f="projectName" data-edit="1"></span></div>
+      </div>
+    </div>
+
+    <!-- ---------- ส่วนที่ 11: ผู้อนุมัติเอกสารเปิดวงเงินลูกค้าใหม่ ---------- -->
+    <div class="band">11. ผู้อนุมัติเอกสารเปิดวงเงินลูกค้าใหม่</div>
+    <div class="grid">
+      <div class="cell h c4">ตำแหน่ง / หน้าที่</div>
+      <div class="cell h c4">ชื่อ - นามสกุล</div>
+      <div class="cell h c2">เบอร์โทร</div>
+      <div class="cell h c2">เวลาทำรายการ / อนุมัติ</div>
+
+      <!-- 1) ผู้ทำรายการ -->
+      <div class="cell dense lbl c4">ผู้ทำรายการ</div>
+      <div class="cell dense c4"><div class="vl" data-f="maker" data-edit="1"></div></div>
+      <div class="cell dense c2"><div class="vl" data-f="makerPhone" data-edit="1"></div></div>
+      <div class="cell dense c2 ctr"><div class="vl" data-f="makerTime"></div></div>
+
+      <!-- 2) ผู้แทนขาย / ผจก.D2 -->
+      <div class="cell dense lbl c4">ผู้แทนขาย / ผจก. D2</div>
+      <div class="cell dense c4"><div class="vl" data-f="d2Name" data-edit="1"></div></div>
+      <div class="cell dense c2"><div class="vl" data-f="d2Phone" data-edit="1"></div></div>
+      <div class="cell dense c2 ctr"><div class="vl" data-f="d2Time" data-edit="1"></div></div>
+
+      <!-- 3) ฝ่ายขาย Backoffice -->
+      <div class="cell dense lbl c4">ฝ่ายขาย Backoffice</div>
+      <div class="cell dense c4"><div class="vl" data-f="boName" data-edit="1"></div></div>
+      <div class="cell dense c2"><div class="vl" data-f="boPhone" data-edit="1"></div></div>
+      <div class="cell dense c2 ctr"><div class="vl" data-f="boTime" data-edit="1"></div></div>
+
+      <!-- 4) D3 / ผู้จัดการสาขา -->
+      <div class="cell dense lbl c4">D3 / ผู้จัดการสาขา</div>
+      <div class="cell dense c4"><div class="vl" data-f="d3Name" data-edit="1"></div></div>
+      <div class="cell dense c2"><div class="vl" data-f="d3Phone" data-edit="1"></div></div>
+      <div class="cell dense c2 ctr"><div class="vl" data-f="d3Time" data-edit="1"></div></div>
+
+      <!-- 5) ผู้จัดการสาขา / ผจก.ผน. -->
+      <div class="cell dense lbl c4">ผู้จัดการสาขา / ผจก. ผน.</div>
+      <div class="cell dense c4"><div class="vl" data-f="mgrName" data-edit="1"></div></div>
+      <div class="cell dense c2"><div class="vl" data-f="mgrPhone" data-edit="1"></div></div>
+      <div class="cell dense c2 ctr"><div class="vl" data-f="mgrTime" data-edit="1"></div></div>
+
+      <!-- 6) (อาวุโส) สนับสนุนงานขาย POS -->
+      <div class="cell dense lbl c4">(อาวุโส) สนับสนุนงานขาย POS</div>
+      <div class="cell dense c4"><div class="vl" data-f="posName" data-edit="1"></div></div>
+      <div class="cell dense c2"><div class="vl" data-f="posPhone" data-edit="1"></div></div>
+      <div class="cell dense c2 ctr"><div class="vl" data-f="posTime" data-edit="1"></div></div>
+    </div>
+
+    <!-- ---------- ส่วนที่ 12: วงเงินที่สินเชื่ออนุมัติ ----------
+         หมายเหตุ: ตัวเลขวงเงินในส่วนนี้ดึงจากคอลัมน์ SharePoint "CraditApprove" เท่านั้น
+         (ไม่ใช่คอลัมน์ limit ซึ่งเป็น "วงเงินที่ขอ" และแสดงไว้ในส่วนที่ 3 หน้า 1 แล้ว) -->
+    <div class="band">12. วงเงินที่สินเชื่ออนุมัติ</div>
+    <div class="grid">
+      <div class="cell c6 num"><div class="lb">วงเงินที่สินเชื่ออนุมัติ (บาท)</div><div class="vl" data-f="approvedLimit" data-edit="1"></div></div>
+      <div class="cell c3"><div class="lb">ประเภทคำขอ</div><div class="vl" data-f="typeRequest"></div></div>
+      <div class="cell c3"><div class="lb">สถานะคำขอในระบบ</div><div class="vl" data-f="status"></div></div>
+    </div>
+
+    <div class="sign">
+      <div><div class="ln"></div>ลงชื่อผู้ให้ข้อมูล (ลูกค้า)<br><span style="font-size:10px">วันที่ ......../......../........</span></div>
+      <div><div class="ln"></div>ลงชื่อพนักงานผู้รับเรื่อง<br><span style="font-size:10px">วันที่ ......../......../........</span></div>
+      <div><div class="ln"></div>ลงชื่อผู้อนุมัติ<br><span style="font-size:10px">วันที่ ......../......../........</span></div>
+    </div>
+
+    <div class="foot">
+      <span data-f="footLeft"></span>
+      <span>หน้า 2 จาก 2</span>
+    </div>
+  </div>
+</section>
+
+<script>
+/* =========================================================================
+   ข้อมูลถูกฝังโดย scripts/build_dashboard.py ตอน build
+   (placeholder ด้านล่างจะถูกแทนที่ด้วย JSON ของ SharePoint List)
+   ========================================================================= */
+window.DEMOAPP_DATA = /*__DATA__*/null/*__ENDDATA__*/;
+
+/* =========================================================================
+   ส่วนที่ 1) Utilities — ฟังก์ชันช่วยจัดรูปแบบข้อมูล
+   ========================================================================= */
+
+/** แปลงตัวเลข/สตริงตัวเลขให้อยู่ในรูปมีคอมมา เช่น 500000 -> "500,000.00" */
+function money(v){
+  if(v===null||v===undefined||v==='') return '';
+  var n = typeof v === 'number' ? v : parseFloat(String(v).replace(/[^\d.\-]/g,''));
+  if(!isFinite(n)||n===0) return '';
+  return n.toLocaleString('th-TH',{minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+/** แปลง ISO timestamp -> วันที่ไทย เช่น "02/09/2026 10:53" */
+function thDate(iso){
+  if(!iso) return '';
+  var d = new Date(iso);
+  if(isNaN(d)) return String(iso);
+  var p = function(x){ return String(x).padStart(2,'0'); };
+  return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes());
+}
+
+/**
+ * แปลงค่าวันที่ให้เป็น "วันที่อย่างเดียว" แบบไทย เช่น "25/02/2015"
+ * ใช้กับช่อง "วันจดทะเบียน" ที่ดึงจากคอลัมน์ `Data` ของลิสต์ DemoApp
+ * ค่าในลิสต์เก็บเป็นข้อความรูปแบบอเมริกัน MM/DD/YYYY hh:mm:ss เช่น "02/25/2015 17:00:00"
+ * จึงต้องแยกเดือน/วันเองก่อน (ถ้าปล่อยให้ new Date() เดา บางเบราว์เซอร์จะสลับวัน-เดือน)
+ * รองรับทั้ง MM/DD/YYYY, DD/MM/YYYY (เดาจากค่าที่ > 12) และ ISO 8601
+ */
+function thDay(v){
+  if(v === null || v === undefined) return '';
+  var s = String(v).trim();
+  if(!s) return '';
+  var p = function(x){ return String(x).padStart(2,'0'); };
+
+  // รูปแบบ ISO: 2015-02-25 หรือ 2015-02-25T10:00:00Z
+  var iso = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if(iso) return p(iso[3]) + '/' + p(iso[2]) + '/' + iso[1];
+
+  // รูปแบบคั่นด้วย / หรือ - เช่น 02/25/2015 17:00:00
+  var m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  if(m){
+    var a = parseInt(m[1],10), b = parseInt(m[2],10), y = parseInt(m[3],10);
+    var day, mon;
+    if(a > 12){ day = a; mon = b; }        // ต้องเป็น DD/MM/YYYY แน่นอน
+    else { mon = a; day = b; }             // ค่าเริ่มต้น = MM/DD/YYYY (ตามที่ลิสต์เก็บจริง)
+    if(mon < 1 || mon > 12 || day < 1 || day > 31) return s;
+    return p(day) + '/' + p(mon) + '/' + y;
+  }
+
+  // เผื่อรูปแบบอื่น ๆ ที่ Date อ่านได้
+  var d = new Date(s);
+  if(!isNaN(d)) return p(d.getDate()) + '/' + p(d.getMonth()+1) + '/' + d.getFullYear();
+  return s;   // อ่านไม่ออก → แสดงค่าดิบไปเลย ดีกว่าทิ้งช่องว่าง
+}
+
+/**
+ * ทำชื่อคอลัมน์ให้เทียบกันได้
+ * SharePoint เก็บชื่อ internal แบบเข้ารหัส เช่น 'Customer_x0020_Name'
+ * (_x0020_ = ช่องว่าง) ต้องถอดรหัสก่อน ไม่งั้นจะเทียบกับ 'Customer Name' ไม่ติด
+ */
+function normKey(s){
+  s = String(s || '').replace(/_x([0-9a-fA-F]{4})_/g, function(_, h){
+    return String.fromCharCode(parseInt(h, 16));
+  });
+  return s.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+/** อ่านค่าจาก _raw ของแถว โดยลองหลายชื่อคอลัมน์ (CSV vs Graph internal name) */
+function raw(row, /* ...names */){
+  var r = (row && row._raw) || {};
+  for(var i=1;i<arguments.length;i++){
+    var k = arguments[i];
+    if(r[k]!==undefined && r[k]!==null && r[k]!=='') return r[k];
+    // เทียบแบบไม่สนช่องว่าง/ตัวพิมพ์/ขีดล่าง/รหัส _x0020_
+    var want = normKey(k);
+    for(var kk in r){
+      if(normKey(kk) === want && r[kk]!==null && r[kk]!=='') return r[kk];
+    }
+  }
+  return '';
+}
+
+/**
+ * อ่านค่าจาก _raw โดยเทียบ "ชื่อคอลัมน์ที่ขึ้นต้นด้วย prefix"
+ * ใช้กับคอลัมน์ที่ผู้ใช้ระบุชื่อมาไม่ครบ เช่น `establishment_...`
+ * (SharePoint อาจตั้งชื่อจริงเป็น establishment_area / establishment_type ฯลฯ)
+ * @param {object} row  แถวข้อมูล
+ * @param {string} pre  คำนำหน้าชื่อคอลัมน์ (ไม่สนตัวพิมพ์/ขีดล่าง)
+ * @param {string} [not] คำนำหน้าที่ต้องข้าม (กันชนกับช่องอื่น)
+ */
+function rawStarts(row, pre, not){
+  var r = (row && row._raw) || {};
+  var p = normKey(pre), n = not ? normKey(not) : null;
+  for(var kk in r){
+    var k = normKey(kk);
+    if(k.indexOf(p) === 0 && (!n || k.indexOf(n) !== 0)
+       && r[kk] !== null && r[kk] !== undefined && r[kk] !== '') return r[kk];
+  }
+  return '';
+}
+
+/**
+ * ประกอบที่อยู่เต็มบรรทัดเดียวสำหรับหน้า 2
+ * รูปแบบ: "35/38 หมู่ที่ 3 ต.วิชิต อ.เมืองภูเก็ต จ.ภูเก็ต 83000"
+ * เติมคำนำหน้า ต./อ./จ. ให้เอง ถ้าค่าที่มาจากลิสต์ยังไม่มีคำนำหน้า
+ */
+function fullAddr(r){
+  var pre = function(p, v){
+    v = String(v || '').trim();
+    if(!v) return '';
+    return /^(ต\.|อ\.|จ\.|ตำบล|อำเภอ|จังหวัด|แขวง|เขต)/.test(v) ? v : p + v;
+  };
+  var parts = [
+    /* เลขที่/อาคาร/ถนน ใช้แหล่งเดียวกับหน้า 1 คือ project_location1 */
+    String(raw(r,'project_location1','Project_Location1','projectlocation1',
+                 'building_road','Building_Road') || '').trim(),
+    pre('ต.', raw(r,'county','County')),
+    pre('อ.', r.district || raw(r,'district')),
+    pre('จ.', r.province || raw(r,'province')),
+    /* รหัสไปรษณีย์ ← คอลัมน์ `Postcode` (คอลัมน์ post_office เดิมว่างทั้งลิสต์) */
+    String(raw(r,'Postcode','post_code','post_office','PostOffice','postcode') || '').trim()
+  ];
+  return parts.filter(function(x){ return x; }).join(' ');
+}
+
+/* =========================================================================
+   ส่วนที่ 2) State — ข้อมูลทั้งหมด + รายการที่กำลังแสดง
+   ========================================================================= */
+var DATA = window.DEMOAPP_DATA || {rows:[]};
+var ROWS = DATA.rows || [];
+var view = ROWS.slice();     // รายการหลังกรองด้วยช่องค้นหา
+var cur  = 0;                // index ของรายการที่กำลังแสดง
+
+/* =========================================================================
+   ส่วนที่ 3) Mapping — แปลง 1 แถวของ SharePoint เป็นค่าที่ใช้เติมในฟอร์ม
+      key ตรงกับ attribute data-f="..." ใน HTML ด้านบน
+   ========================================================================= */
+function mapRow(r){
+  if(!r) return {};
+  return {
+    /* --- ส่วนที่ 1 ข้อมูลนิติบุคคล --- */
+    branch:             r.branch || '',
+    customerId:         r.customerId || '',
+    registeredName:     raw(r,'Registered_Name') || r.customerName || r.title || '',
+    nameEng:            raw(r,'Registered_Name_Eng','Name_Eng','NameEng'),
+    registrationNumber: raw(r,'registration_number','RegistrationNumber'),
+    /* วันจดทะเบียน ← คอลัมน์ `Data` ของลิสต์ DemoApp (เก็บเป็นข้อความ MM/DD/YYYY hh:mm:ss)
+       แปลงเป็นวันที่ไทย dd/mm/yyyy ด้วย thDay() */
+    registerDate:       thDay(raw(r,'Data','register_date','RegisterDate','registration_date')),
+    /* เลขที่ / อาคาร / ถนน ← คอลัมน์ `project_location1`
+       (คอลัมน์ `building_road` เดิมว่างทั้งลิสต์ จึงใช้เป็นตัวสำรองเท่านั้น) */
+    address:            raw(r,'project_location1','Project_Location1','projectlocation1',
+                                'building_road','Building_Road'),
+    county:             raw(r,'county','County'),
+    district:           r.district || raw(r,'district'),
+    province:           r.province || raw(r,'province'),
+    /* รหัสไปรษณีย์ ← คอลัมน์ `Postcode` ของลิสต์ DemoApp
+       (คอลัมน์ `post_office` เดิมว่างทั้งลิสต์ จึงเหลือไว้เป็นตัวสำรองเท่านั้น) */
+    postOffice:         raw(r,'Postcode','post_code','PostCode',
+                                'post_office','PostOffice','postcode'),
+    telephone:          raw(r,'telephone','Telephone'),
+
+    /* --- ส่วนที่ 2 ผู้ติดต่อ --- */
+    contactName:        r.contact || raw(r,'contact_name'),
+    position:           raw(r,'position','Position'),
+    contactNumber:      raw(r,'contact_number','ContactNumber'),
+
+    /* --- ส่วนที่ 3 ธุรกิจ / วงเงิน --- */
+    businessType:       r.businessType || raw(r,'business_type'),
+    income:             r.income || raw(r,'Estimated_annual_income'),
+    limit:              money(r.limitNum || raw(r,'limit')),
+    credit1:            r.credit1 || raw(r,'credit_semester1'),
+    marginType1:        raw(r,'Margin_type1','MarginType1'),
+    value1:             money(raw(r,'value')),
+    limitOther:         money(r.limitOther || raw(r,'limit_other')),
+    credit2:            r.credit2 || raw(r,'credit_semester2'),
+    marginType2:        raw(r,'Margin_type2','MarginType2'),
+    value2:             money(raw(r,'value2')),
+    limitOD:            money(raw(r,'limit_OD','limitOD')),
+    bank1:              raw(r,'Bank1'),
+    insuranceLimit:     money(raw(r,'insurance_limit')),
+    bank2:              raw(r,'Bank2'),
+    leasingLimit:       money(raw(r,'leasing_limit')),
+    bank3:              raw(r,'Bank3'),
+    otherLimits:        money(raw(r,'Other_limits')),
+    bank4:              raw(r,'Bank4'),
+
+    /* --- ส่วนที่ 4 ทรัพย์สินค้ำประกัน ---
+       ที่ดิน          ← คอลัมน์ `land`
+       สถานะ (ที่ดิน)  ← คอลัมน์ `Status_1`
+       ทรัพย์สินอื่น    ← คอลัมน์ `other_property`  (ชื่อจริงในลิสต์มีช่องว่างนำหน้า
+                         คือ ' other_property' — normKey() ตัดช่องว่างให้แล้ว)
+       สถานะ (อื่น)    ← คอลัมน์ `Status_2` */
+    land:                 raw(r,'land','Land') || r.land || '',
+    landStatus:           raw(r,'Status_1','status1','land_status'),
+    otherProperty:        raw(r,'other_property','other property','OtherProperty'),
+    otherPropertyStatus:  raw(r,'Status_2','status2','other_property_status'),
+
+    /* --- ส่วนที่ 5 พื้นที่ประกอบการ ---
+       พื้นที่ประกอบการ ← คอลัมน์ `establishment_...` (ชื่อเต็มในลิสต์อาจยาวกว่านี้
+       จึงใช้ rawStarts() จับคู่แบบ "ขึ้นต้นด้วย establishment" แต่ข้าม
+       establishment_type ที่ใช้เป็นประเภทประกอบการ)
+       จำนวนพนักงาน   ← คอลัมน์ `number_employees` */
+    premises:     raw(r,'establishment_area','establishment')
+                    || rawStarts(r,'establishment','establishment_type')
+                    || raw(r,'premises','operating_area'),
+    premisesType: raw(r,'establishment_type','premises_type','operating_type'),
+    employees:    raw(r,'number_employees','NumberEmployees','number_of_employees',
+                        'employees','employee_count'),
+    ownership:    raw(r,'ownership'),
+
+    /* --- ส่วนที่ 6.2 โครงการปัจจุบัน (แถวแรกดึงจากลิสต์ อีก 2 แถวเว้นให้กรอกมือ) ---
+       ชื่อโครงการ   ← `future_project`
+       มูลค่างาน     ← `work_value3`
+       สถานะ        ← `status3_3`
+       ที่ตั้งโครงการ ← `project_location2` */
+    nowProject:  raw(r,'future_project','FutureProject'),
+    nowValue:    raw(r,'work_value3','WorkValue3'),
+    nowStatus:   raw(r,'status3_3','Status3_3','status33'),
+    nowLocation: raw(r,'project_location2','Project_Location2','projectlocation2'),
+
+    /* --- ส่วนที่ 7 ข้อมูลการขายสินค้า --- */
+    productGroup:    raw(r,'product_group'),
+    avgSales:        money(raw(r,'avg_sales','average_sales')),
+    wholesaleRetail: raw(r,'Wholesale_retail_stores'),
+    supplier:        raw(r,'supplier'),
+    currentCredit:   r.credit1 || raw(r,'credit_semester1'),
+    productType:     raw(r,'product_type'),
+
+    /* --- สถานะคำขอ --- */
+    typeRequest: r.typeRequest || '',
+    status:      r.status || '',
+    owner:       r.owner || '',
+    requestDate: thDate(r.ts),
+
+    /* =====================================================================
+       หน้า 2 — ประวัติผู้ขอสินเชื่อและผู้ที่เกี่ยวข้อง
+       ===================================================================== */
+
+    /* --- ส่วนที่ 9 ประวัติ ---
+       ประวัติผู้บริหาร              ← คอลัมน์ `referral`
+       ประวัติผู้ขอสินเชื่อ (กิจการ) ← คอลัมน์ `Executive_history`
+       (ถ้าคอลัมน์ยังว่าง ช่องจะขึ้นเส้นบรรทัดให้เขียนมือ / กด "แก้ไขก่อนพิมพ์" พิมพ์เติมได้) */
+    execProfile: raw(r,'referral','Referral',
+                       'executive_profile','ExecutiveProfile','history_executive','ประวัติผู้บริหาร'),
+    bizProfile:  raw(r,'Executive_history','executive_history','ExecutiveHistory',
+                       'business_profile','BusinessProfile','history_business','ประวัติกิจการ'),
+    reference:   raw(r,'reference_person','ReferencePerson','reference','บุคคลอ้างอิง'),
+
+    /* --- ส่วนที่ 10 ข้อมูลสรุปคำขอ --- */
+    projectBudget: raw(r,'project_budget','ProjectBudget','budget'),
+    projectName:   raw(r,'project_name','ProjectName','project'),
+    fullAddress:   fullAddr(r),
+
+    /* --- ส่วนที่ 11 ผู้อนุมัติเอกสารเปิดวงเงินลูกค้าใหม่ ---
+       Owner ในลิสต์ = ผู้ยื่นคำขอ (ผู้ทำรายการ / ผู้แทนขาย D2)
+       ตำแหน่งอื่น ๆ ถ้าลิสต์ยังไม่มีคอลัมน์ จะเว้นเส้นประให้เซ็น/เขียนมือ */
+    maker:      r.owner || raw(r,'Maker','Author','Created_x0020_By'),
+    makerPhone: raw(r,'maker_phone','MakerPhone','owner_phone'),
+    makerTime:  thDate(r.ts),
+
+    d2Name:  raw(r,'D2','Sales_D2','sale_representative') || r.owner || '',
+    d2Phone: raw(r,'D2_phone','d2_phone'),
+    d2Time:  thDate(raw(r,'D2_time','d2_approve_time')),
+
+    boName:  raw(r,'Backoffice','back_office','BackOffice'),
+    boPhone: raw(r,'Backoffice_phone','back_office_phone'),
+    boTime:  thDate(raw(r,'Backoffice_time','back_office_time')),
+
+    d3Name:  raw(r,'D3','Manager_D3','manager_d3'),
+    d3Phone: raw(r,'D3_phone','d3_phone'),
+    d3Time:  thDate(raw(r,'D3_time','d3_approve_time','Approve_time')),
+
+    mgrName:  raw(r,'Branch_Manager','branch_manager','Manager'),
+    mgrPhone: raw(r,'Manager_phone','branch_manager_phone'),
+    mgrTime:  thDate(raw(r,'Manager_time','branch_manager_time')),
+
+    posName:  raw(r,'POS_support','pos_support','Sale_support','GM'),
+    posPhone: raw(r,'POS_phone','pos_phone'),
+    posTime:  thDate(raw(r,'POS_time','pos_time')),
+
+    /* --- ส่วนที่ 12 วงเงินที่สินเชื่ออนุมัติ ---
+       ⚠️ ต้องดึงจากคอลัมน์ "CraditApprove" เท่านั้น (สะกดตามชื่อจริงในลิสต์ DemoApp)
+       ห้ามใช้คอลัมน์ 'limit' เพราะนั่นคือ "วงเงินที่ขอ" ซึ่งอยู่ในส่วนที่ 3 หน้า 1 แล้ว
+       รายชื่อสำรองด้านล่างเผื่อกรณีมีการแก้ชื่อคอลัมน์ในอนาคต แต่ไม่มี 'limit' อยู่ในรายการ */
+    approvedLimit: money(raw(r,
+      'CraditApprove',          /* ← ชื่อจริงในลิสต์ (สะกดผิดตั้งแต่ต้นทาง) */
+      'CreditApprove','1CreditApprove','CraditApproved','CreditApproved',
+      'Cradit_Approve','Credit_Approve','credit_approve','approved_limit',
+      'ApprovedLimit','Approve_limit','วงเงินที่สินเชื่ออนุมัติ','วงเงินอนุมัติ')),
+
+    /* --- ส่วนที่ 8 แผนการตลาด ---
+       ยังไม่มีคอลัมน์ใน SharePoint List → คืนค่าว่างเพื่อให้ขึ้นเส้นประ
+       (ผู้ใช้กด "แก้ไขก่อนพิมพ์" แล้วพิมพ์เติมได้ หรือเขียนมือบนกระดาษ) */
+    mkPlan1: raw(r,'marketing_plan1'),  mkTerm1: raw(r,'marketing_term1'),
+    mkTarget1: money(raw(r,'marketing_target1')),
+    mkPlan2: raw(r,'marketing_plan2'),  mkTerm2: raw(r,'marketing_term2'),
+    mkTarget2: money(raw(r,'marketing_target2')),
+
+    /* --- ท้ายกระดาษ --- */
+    footLeft: 'เลขที่คำขอ ' + (r.id||'-') + ' · พิมพ์เมื่อ ' + thDate(new Date().toISOString())
+  };
+}
+
+/* =========================================================================
+   ส่วนที่ 4) Render — เติมค่าลงทุกช่องที่มี data-f
+   ========================================================================= */
+
+/**
+ * สร้างแถวของตารางโครงการ
+ * @param {string}   containerId  id ของ .grid ที่จะใส่แถว
+ * @param {number[]} spans        ความกว้าง (c1–c12) ของแต่ละคอลัมน์ในหนึ่งแถว
+ * @param {number}   count        จำนวนแถว
+ * @param {string[]} [fields]     ชื่อ data-f ของ "แถวแรก" (ยาวเท่ากับ spans)
+ *                                ใส่ '' เพื่อให้ช่องนั้นเว้นว่างให้กรอกมือ
+ *                                แถวที่ 2 เป็นต้นไปเว้นว่างเสมอ
+ */
+function projectRows(containerId, spans, count, fields){
+  var el = document.getElementById(containerId);
+  if(!el) return;
+  var html = '';
+  for(var i=0;i<count;i++){
+    for(var j=0;j<spans.length;j++){
+      // เฉพาะแถวแรกเท่านั้นที่ผูกกับคอลัมน์ใน SharePoint
+      var f = (i === 0 && fields && fields[j]) ? ' data-f="'+fields[j]+'"' : '';
+      html += '<div class="cell dense c'+spans[j]+'"><div class="vl"'+f+' data-edit="1"></div></div>';
+    }
+  }
+  el.innerHTML = html;
+}
+
+/** เติมข้อมูลของรายการที่เลือกลงในฟอร์มทั้ง 2 หน้า */
+function render(){
+  var r = view[cur];
+  var m = mapRow(r);
+  document.querySelectorAll('[data-f]').forEach(function(el){
+    var k = el.getAttribute('data-f');
+    el.textContent = (m[k]===undefined || m[k]===null) ? '' : String(m[k]);
+  });
+  // อัปเดตชื่อไฟล์ตอน Save as PDF ให้เป็นชื่อลูกค้า
+  document.title = 'KYC-' + (m.customerId||'') + '-' + (m.registeredName||'ไม่ระบุ');
+  var sel = document.getElementById('pick');
+  if(sel.selectedIndex !== cur) sel.selectedIndex = cur;
+}
+
+/* =========================================================================
+   ส่วนที่ 5) ตัวเลือกรายการ + ค้นหา
+   ========================================================================= */
+
+/** สร้าง <option> จากรายการที่กรองแล้ว */
+function fillPicker(){
+  var sel = document.getElementById('pick');
+  sel.innerHTML = view.map(function(r,i){
+    var name = (r._raw && r._raw['Registered_Name']) || r.customerName || ('รายการ '+r.id);
+    return '<option value="'+i+'">#'+r.id+' · '+name+' · '+(r.branch||'ไม่ระบุสาขา')+'</option>';
+  }).join('');
+  if(!view.length) sel.innerHTML = '<option>— ไม่พบรายการที่ค้นหา —</option>';
+}
+
+/** กรองรายการตามคำค้น (ค้นทุกคอลัมน์ผ่านฟิลด์ _search) */
+function doSearch(){
+  var q = document.getElementById('q').value.trim().toLowerCase();
+  view = q ? ROWS.filter(function(r){ return (r._search||'').indexOf(q) >= 0; }) : ROWS.slice();
+  cur = 0;
+  fillPicker();
+  render();
+}
+
+/* =========================================================================
+   ส่วนที่ 6) เริ่มทำงาน + ผูก event
+   ========================================================================= */
+(function init(){
+  // ตารางโครงการ: อดีต 3 แถว / ปัจจุบัน 3 แถว / อนาคต 2 แถว
+  projectRows('tblPast',   [3,2,2,2,1,2], 3);
+  // โครงการปัจจุบัน: แถวแรกดึงค่าจากลิสต์
+  // (ชื่อโครงการ / มูลค่างาน / สถานะ / กำหนดเริ่มก่อสร้าง(เว้น) / ที่ตั้งโครงการ)
+  projectRows('tblNow',    [3,2,2,2,3],   3,
+              ['nowProject','nowValue','nowStatus','','nowLocation']);
+  projectRows('tblFuture', [3,2,2,2,3],   2);
+
+  fillPicker();
+  render();
+
+  // ---- เลือกจาก dropdown ----
+  document.getElementById('pick').addEventListener('change', function(e){
+    cur = parseInt(e.target.value,10) || 0; render();
+  });
+  // ---- ค้นหา ----
+  document.getElementById('q').addEventListener('input', doSearch);
+  // ---- ปุ่มก่อนหน้า/ถัดไป ----
+  document.getElementById('prev').addEventListener('click', function(){
+    if(!view.length) return; cur = (cur-1+view.length)%view.length; render();
+  });
+  document.getElementById('next').addEventListener('click', function(){
+    if(!view.length) return; cur = (cur+1)%view.length; render();
+  });
+  // ---- โหมดแก้ไขก่อนพิมพ์: เปิด contenteditable ให้ช่องที่ data-edit="1" ----
+  document.getElementById('edit').addEventListener('click', function(){
+    var on = !document.body.classList.contains('editmode');
+    document.body.classList.toggle('editmode', on);
+    document.querySelectorAll('[data-edit="1"]').forEach(function(el){
+      el.setAttribute('contenteditable', on ? 'true' : 'false');
+    });
+    this.textContent = on ? '✅ เสร็จสิ้นการแก้ไข' : '✏️ แก้ไขก่อนพิมพ์';
+  });
+  // ---- สั่งพิมพ์ ----
+  document.getElementById('print').addEventListener('click', function(){ window.print(); });
+
+  // ---- รองรับ ?id=558 เพื่อเปิดตรงรายการนั้น (ใช้จากปุ่มใน Dashboard) ----
+  var qs = new URLSearchParams(location.search);
+  var wantId = qs.get('id');
+  if(wantId){
+    var idx = view.findIndex(function(r){ return String(r.id) === String(wantId); });
+    if(idx >= 0){ cur = idx; render(); }
+  }
+
+  // ---- คีย์ลัด: Ctrl+P พิมพ์ / ลูกศรซ้าย-ขวา เปลี่ยนรายการ ----
+  document.addEventListener('keydown', function(e){
+    if(document.body.classList.contains('editmode')) return;
+    if(e.key === 'ArrowLeft')  document.getElementById('prev').click();
+    if(e.key === 'ArrowRight') document.getElementById('next').click();
+  });
+})();
+</script>
+</body>
+</html>
