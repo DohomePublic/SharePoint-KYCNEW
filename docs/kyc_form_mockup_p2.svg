@@ -69,66 +69,34 @@
 <rect x="641.6666666666666" y="404" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
 <text x="702.8333333333333" y="418.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">02/09/2026 10:53</text>
 <rect x="30" y="425" width="244.66666666666666" height="21" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
-<text x="34" y="439.5" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ผู้แทนขาย / ผจก. D2</text>
+<text x="34" y="439.5" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">เจ้าหน้าที่สินเชื่อพิจารณา</text>
 <rect x="274.66666666666663" y="425" width="244.66666666666666" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<text x="278.66666666666663" y="439.5" font-size="9" font-weight="bold" fill="#000" text-anchor="start">ท๊อป สายสินธิ์ SG UB</text>
+<line x1="279.66666666666663" y1="437.5" x2="514.3333333333333" y2="437.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
 <rect x="519.3333333333333" y="425" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
 <line x1="524.3333333333333" y1="437.5" x2="636.6666666666666" y2="437.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
 <rect x="641.6666666666666" y="425" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
 <line x1="646.6666666666666" y1="437.5" x2="759.0" y2="437.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="30" y="446" width="244.66666666666666" height="21" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
-<text x="34" y="460.5" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ฝ่ายขาย Backoffice</text>
-<rect x="274.66666666666663" y="446" width="244.66666666666666" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="279.66666666666663" y1="458.5" x2="514.3333333333333" y2="458.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="519.3333333333333" y="446" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="524.3333333333333" y1="458.5" x2="636.6666666666666" y2="458.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="641.6666666666666" y="446" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="646.6666666666666" y1="458.5" x2="759.0" y2="458.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="30" y="467" width="244.66666666666666" height="21" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
-<text x="34" y="481.5" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">D3 / ผู้จัดการสาขา</text>
-<rect x="274.66666666666663" y="467" width="244.66666666666666" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="279.66666666666663" y1="479.5" x2="514.3333333333333" y2="479.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="519.3333333333333" y="467" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="524.3333333333333" y1="479.5" x2="636.6666666666666" y2="479.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="641.6666666666666" y="467" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="646.6666666666666" y1="479.5" x2="759.0" y2="479.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="30" y="488" width="244.66666666666666" height="21" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
-<text x="34" y="502.5" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ผู้จัดการสาขา / ผจก. ผน.</text>
-<rect x="274.66666666666663" y="488" width="244.66666666666666" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="279.66666666666663" y1="500.5" x2="514.3333333333333" y2="500.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="519.3333333333333" y="488" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="524.3333333333333" y1="500.5" x2="636.6666666666666" y2="500.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="641.6666666666666" y="488" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="646.6666666666666" y1="500.5" x2="759.0" y2="500.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="30" y="509" width="244.66666666666666" height="21" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
-<text x="34" y="523.5" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">(อาวุโส) สนับสนุนงานขาย POS</text>
-<rect x="274.66666666666663" y="509" width="244.66666666666666" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="279.66666666666663" y1="521.5" x2="514.3333333333333" y2="521.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="519.3333333333333" y="509" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="524.3333333333333" y1="521.5" x2="636.6666666666666" y2="521.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="641.6666666666666" y="509" width="122.33333333333333" height="21" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="646.6666666666666" y1="521.5" x2="759.0" y2="521.5" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="30" y="530" width="734" height="16" fill="#e1dfdd" stroke="#000"/>
-<text x="35" y="542" font-size="10" font-weight="bold" fill="#000" text-anchor="start">12. วงเงินที่สินเชื่ออนุมัติ</text>
-<rect x="30" y="546" width="367.0" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<text x="34" y="555.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">วงเงินที่สินเชื่ออนุมัติ (บาท)</text>
-<line x1="35" y1="565" x2="392.0" y2="565" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<rect x="397.0" y="546" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<text x="401.0" y="555.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ประเภทคำขอ</text>
-<text x="401.0" y="567" font-size="9" font-weight="bold" fill="#000" text-anchor="start">คำขอเปิดวงเงินลูกค้าใหม่</text>
-<rect x="580.5" y="546" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<text x="584.5" y="555.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">สถานะคำขอในระบบ</text>
-<text x="584.5" y="567" font-size="9" font-weight="bold" fill="#000" text-anchor="start">รอดำเนินการ</text>
-<line x1="72.33333333333331" y1="594" x2="232.33333333333331" y2="594" stroke="#000" stroke-width="0.7" stroke-dasharray="2,2"/>
-<text x="152.33333333333331" y="608" font-size="9" font-weight="normal" fill="#000" text-anchor="middle">ลงชื่อผู้ให้ข้อมูล (ลูกค้า)</text>
-<text x="152.33333333333331" y="620" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="middle">วันที่ ......../......../........</text>
-<line x1="317.0" y1="594" x2="477.0" y2="594" stroke="#000" stroke-width="0.7" stroke-dasharray="2,2"/>
-<text x="397.0" y="608" font-size="9" font-weight="normal" fill="#000" text-anchor="middle">ลงชื่อพนักงานผู้รับเรื่อง</text>
-<text x="397.0" y="620" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="middle">วันที่ ......../......../........</text>
-<line x1="561.6666666666666" y1="594" x2="721.6666666666666" y2="594" stroke="#000" stroke-width="0.7" stroke-dasharray="2,2"/>
-<text x="641.6666666666666" y="608" font-size="9" font-weight="normal" fill="#000" text-anchor="middle">ลงชื่อผู้อนุมัติ</text>
-<text x="641.6666666666666" y="620" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="middle">วันที่ ......../......../........</text>
-<line x1="30" y1="628" x2="764" y2="628" stroke="#8a8886" stroke-width="0.7"/>
-<text x="30" y="640" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="start">เลขที่คำขอ 558 · พิมพ์เมื่อ 09/09/2026 03:30</text>
-<text x="764" y="640" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="end">หน้า 2 จาก 2</text>
+<rect x="30" y="446" width="734" height="16" fill="#e1dfdd" stroke="#000"/>
+<text x="35" y="458" font-size="10" font-weight="bold" fill="#000" text-anchor="start">12. วงเงินที่สินเชื่ออนุมัติ</text>
+<rect x="30" y="462" width="367.0" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="471.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">วงเงินที่สินเชื่ออนุมัติ (บาท)</text>
+<line x1="35" y1="481" x2="392.0" y2="481" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="397.0" y="462" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="401.0" y="471.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ประเภทคำขอ</text>
+<text x="401.0" y="483" font-size="9" font-weight="bold" fill="#000" text-anchor="start">คำขอเปิดวงเงินลูกค้าใหม่</text>
+<rect x="580.5" y="462" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="584.5" y="471.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">สถานะคำขอในระบบ</text>
+<text x="584.5" y="483" font-size="9" font-weight="bold" fill="#000" text-anchor="start">รอดำเนินการ</text>
+<line x1="72.33333333333331" y1="510" x2="232.33333333333331" y2="510" stroke="#000" stroke-width="0.7" stroke-dasharray="2,2"/>
+<text x="152.33333333333331" y="524" font-size="9" font-weight="normal" fill="#000" text-anchor="middle">ลงชื่อผู้ให้ข้อมูล (ลูกค้า)</text>
+<text x="152.33333333333331" y="536" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="middle">วันที่ ......../......../........</text>
+<line x1="317.0" y1="510" x2="477.0" y2="510" stroke="#000" stroke-width="0.7" stroke-dasharray="2,2"/>
+<text x="397.0" y="524" font-size="9" font-weight="normal" fill="#000" text-anchor="middle">ลงชื่อพนักงานผู้รับเรื่อง</text>
+<text x="397.0" y="536" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="middle">วันที่ ......../......../........</text>
+<line x1="561.6666666666666" y1="510" x2="721.6666666666666" y2="510" stroke="#000" stroke-width="0.7" stroke-dasharray="2,2"/>
+<text x="641.6666666666666" y="524" font-size="9" font-weight="normal" fill="#000" text-anchor="middle">ลงชื่อผู้อนุมัติ</text>
+<text x="641.6666666666666" y="536" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="middle">วันที่ ......../......../........</text>
+<line x1="30" y1="544" x2="764" y2="544" stroke="#8a8886" stroke-width="0.7"/>
+<text x="30" y="556" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="start">เลขที่คำขอ 558 · พิมพ์เมื่อ 09/09/2026 03:30</text>
+<text x="764" y="556" font-size="8" font-weight="normal" fill="#3b3a39" text-anchor="end">หน้า 2 จาก 2</text>
 </svg>
