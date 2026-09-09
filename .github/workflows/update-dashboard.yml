@@ -49,8 +49,9 @@ jobs:
       - name: Sync template locations
         run: |
           mkdir -p templates
-          cp scripts/template.html templates/dashboard.html
-          ls -l scripts/template.html templates/dashboard.html
+          cp scripts/template.html       templates/dashboard.html
+          cp scripts/print_template.html templates/print.html
+          ls -l scripts/template.html scripts/print_template.html templates/dashboard.html templates/print.html
 
       # ตรวจว่า Secrets ถูกตั้งค่าครบก่อนเริ่ม build (ไม่พิมพ์ค่าจริงออก log)
       - name: Verify secrets
@@ -102,7 +103,12 @@ jobs:
         if: ${{ !inputs.diagnose }}
         run: |
           set -e
-          ls -l index.html data/demoapp.json
+          ls -l index.html print.html data/demoapp.json
+          # print.html ต้องถูกฝังข้อมูลจริง (placeholder ที่ยังว่างจะเป็น /*__DATA__*/null/*__ENDDATA__*/)
+          if grep -q 'DATA__\*/null/\*__END' print.html; then
+            echo "::error::print.html ยังไม่ถูกฝังข้อมูล (ยังเป็น null)"; exit 1
+          fi
+          echo "ok: print.html ฝังข้อมูลแล้ว"
           python - <<'PY'
           import json, sys
           d = json.load(open("data/demoapp.json", encoding="utf-8"))
@@ -124,7 +130,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html data/demoapp.json
+          git add index.html print.html data/demoapp.json
           # commit เฉพาะเมื่อมีการเปลี่ยนแปลงจริง
           if git diff --staged --quiet; then
             echo "ไม่มีข้อมูลเปลี่ยนแปลง — ข้ามการ commit"
