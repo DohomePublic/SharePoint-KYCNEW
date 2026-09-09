@@ -49,6 +49,7 @@ LIST_URL  = f"https://{HOSTNAME}{SITE_PATH}/Lists/{LIST_NAME}"
 ROOT      = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_HTML  = os.path.join(ROOT, "index.html")
 OUT_JSON  = os.path.join(ROOT, "data", "demoapp.json")
+OUT_PRINT = os.path.join(ROOT, "print.html")     # หน้าพิมพ์เอกสาร KYC (A4 2 หน้า)
 
 # ---------------------------------------------------------------------------
 # 1.1) ค้นหาไฟล์เทมเพลต
@@ -67,6 +68,16 @@ TEMPLATE_CANDIDATES = [
 ]
 
 
+# ตำแหน่งเทมเพลตของ "หน้าพิมพ์เอกสาร KYC" (print.html)
+PRINT_TEMPLATE_CANDIDATES = [
+    os.getenv("PRINT_TEMPLATE_PATH", ""),
+    os.path.join(ROOT, "scripts",   "print_template.html"),
+    os.path.join(ROOT, "templates", "print.html"),
+    os.path.join(ROOT, "templates", "kyc_print.html"),
+    os.path.join(ROOT, "print_template.html"),
+]
+
+
 def find_template() -> str:
     """คืน path ของเทมเพลตตัวแรกที่มีอยู่จริง — ถ้าไม่พบเลยให้ error ที่อ่านเข้าใจได้"""
     for p in TEMPLATE_CANDIDATES:
@@ -80,6 +91,16 @@ def find_template() -> str:
         "วิธีแก้: วางไฟล์เทมเพลตไว้ที่ scripts/template.html หรือ templates/dashboard.html\n"
         "        หรือกำหนด environment variable TEMPLATE_PATH ให้ชี้ไปยังไฟล์เทมเพลตโดยตรง"
     )
+
+
+def find_print_template():
+    """คืน path ของเทมเพลตหน้าพิมพ์ (ถ้าไม่มีให้คืน None — ข้ามการสร้าง print.html)"""
+    for p in PRINT_TEMPLATE_CANDIDATES:
+        if p and os.path.isfile(p):
+            print(f"[template] ใช้เทมเพลตหน้าพิมพ์: {p}")
+            return p
+    print("[template] ไม่พบเทมเพลตหน้าพิมพ์ — ข้ามการสร้าง print.html")
+    return None
 
 # เวลาไทย (UTC+7) สำหรับ timestamp ที่แสดงบน Dashboard
 TZ_TH = timezone(timedelta(hours=7))
@@ -525,8 +546,8 @@ def guess_type(vals) -> str:
 # ---------------------------------------------------------------------------
 # 6) เขียนไฟล์ index.html โดยแทนที่ placeholder ใน template
 # ---------------------------------------------------------------------------
-def render(payload: dict) -> None:
-    template = find_template()
+def inject(template: str, payload: dict) -> str:
+    """อ่านเทมเพลต แล้วแทน placeholder /*__DATA__*/ ... /*__ENDDATA__*/ ด้วย JSON ของข้อมูล"""
     with open(template, encoding="utf-8") as fh:
         html = fh.read()
 
@@ -534,7 +555,7 @@ def render(payload: dict) -> None:
     if "/*__DATA__*/" not in html or "/*__ENDDATA__*/" not in html:
         raise SystemExit(
             f"[error] เทมเพลต {template} ไม่มี placeholder /*__DATA__*/ ... /*__ENDDATA__*/\n"
-            "        กรุณาใช้ไฟล์ scripts/template.html ที่มาพร้อมแพ็กเกจนี้"
+            "        กรุณาใช้ไฟล์เทมเพลตที่มาพร้อมแพ็กเกจนี้"
         )
 
     data_js = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
@@ -543,7 +564,12 @@ def render(payload: dict) -> None:
 
     start, end = "/*__DATA__*/", "/*__ENDDATA__*/"
     i, j = html.index(start), html.index(end)
-    html = html[: i + len(start)] + data_js + html[j:]
+    return html[: i + len(start)] + data_js + html[j:]
+
+
+def render(payload: dict) -> None:
+    """สร้างไฟล์ผลลัพธ์ทั้งหมด: index.html (Dashboard), print.html (ฟอร์ม KYC), demoapp.json"""
+    html = inject(find_template(), payload)
 
     os.makedirs(os.path.dirname(OUT_JSON), exist_ok=True)
     with open(OUT_HTML, "w", encoding="utf-8") as fh:
@@ -553,6 +579,14 @@ def render(payload: dict) -> None:
 
     print(f"[build] wrote {OUT_HTML}  ({len(html):,} bytes, {payload['rowCount']} rows)")
     print(f"[build] wrote {OUT_JSON}")
+
+    # ---- หน้าพิมพ์เอกสาร KYC (A4 2 หน้า) ใช้ข้อมูลชุดเดียวกัน ----
+    ptpl = find_print_template()
+    if ptpl:
+        phtml = inject(ptpl, payload)
+        with open(OUT_PRINT, "w", encoding="utf-8") as fh:
+            fh.write(phtml)
+        print(f"[build] wrote {OUT_PRINT}  ({len(phtml):,} bytes)")
 
 
 # ---------------------------------------------------------------------------
