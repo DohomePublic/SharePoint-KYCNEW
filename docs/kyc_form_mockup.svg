@@ -139,15 +139,15 @@
 <rect x="30" y="490" width="183.5" height="22" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
 <text x="34" y="505.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ที่ดิน</text>
 <rect x="213.5" y="490" width="305.8333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="218.5" y1="503.0" x2="514.3333333333333" y2="503.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<text x="217.5" y="505.0" font-size="9" font-weight="bold" fill="#000" text-anchor="start">ปลอดภาระ</text>
 <rect x="519.3333333333333" y="490" width="244.66666666666666" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<text x="523.3333333333333" y="505.0" font-size="9" font-weight="bold" fill="#000" text-anchor="start">ปลอดภาระ</text>
+<text x="523.3333333333333" y="505.0" font-size="9" font-weight="bold" fill="#000" text-anchor="start">รอผู้จัดการ D3 อนุมัติ</text>
 <rect x="30" y="512" width="183.5" height="22" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
 <text x="34" y="527.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ทรัพย์สินอื่น</text>
 <rect x="213.5" y="512" width="305.8333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<line x1="218.5" y1="525.0" x2="514.3333333333333" y2="525.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<text x="217.5" y="527.0" font-size="9" font-weight="bold" fill="#000" text-anchor="start">ปลอดภาระ</text>
 <rect x="519.3333333333333" y="512" width="244.66666666666666" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
-<text x="523.3333333333333" y="527.0" font-size="9" font-weight="bold" fill="#000" text-anchor="start">ปลอดภาระ</text>
+<line x1="524.3333333333333" y1="525.0" x2="758.9999999999999" y2="525.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
 <rect x="30" y="534" width="734" height="16" fill="#e1dfdd" stroke="#000"/>
 <text x="35" y="546" font-size="10" font-weight="bold" fill="#000" text-anchor="start">5. พื้นที่ประกอบการ</text>
 <rect x="30" y="550" width="305.8333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
@@ -162,8 +162,40 @@
 <rect x="641.6666666666666" y="550" width="122.33333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
 <text x="645.6666666666666" y="559.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">กรรมสิทธิ์</text>
 <line x1="646.6666666666666" y1="569" x2="759.0" y2="569" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
-<line x1="30" y1="582" x2="764" y2="582" stroke="#000" stroke-width="0.7"/>
-<text x="30" y="593" font-size="7.5" font-weight="normal" fill="#3b3a39" text-anchor="start">เลขที่คำขอ 558 · พิมพ์เมื่อ 09/09/2026 10:17</text>
-<text x="764" y="593" font-size="7.5" font-weight="normal" fill="#3b3a39" text-anchor="end">หน้า 1 จาก 2</text>
+<rect x="30" y="576" width="734" height="16" fill="#e1dfdd" stroke="#000"/>
+<text x="35" y="588" font-size="10" font-weight="bold" fill="#000" text-anchor="start">6. ชื่อโครงการ (ผู้รับเหมา / เจ้าของโครงการ / อสังหาริมทรัพย์)</text>
+<rect x="30" y="592" width="183.5" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="121.75" y="604.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">โครงการปัจจุบัน</text>
+<rect x="213.5" y="592" width="122.33333333333333" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="274.6666666666667" y="604.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">มูลค่างาน</text>
+<rect x="335.8333333333333" y="592" width="122.33333333333333" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="397.0" y="604.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">สถานะ</text>
+<rect x="458.16666666666663" y="592" width="122.33333333333333" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="519.3333333333333" y="604.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">กำหนดเริ่มก่อสร้าง</text>
+<rect x="580.5" y="592" width="183.5" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="672.25" y="604.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">ที่ตั้งโครงการ</text>
+<rect x="30" y="609" width="183.5" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="35" y1="622.0" x2="208.5" y2="622.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="213.5" y="609" width="122.33333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="218.5" y1="622.0" x2="330.8333333333333" y2="622.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="335.8333333333333" y="609" width="122.33333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="340.8333333333333" y1="622.0" x2="453.16666666666663" y2="622.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="458.16666666666663" y="609" width="122.33333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="463.16666666666663" y1="622.0" x2="575.5" y2="622.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="580.5" y="609" width="183.5" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="585.5" y1="622.0" x2="759.0" y2="622.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="30" y="631" width="183.5" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="35" y1="644.0" x2="208.5" y2="644.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="213.5" y="631" width="122.33333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="218.5" y1="644.0" x2="330.8333333333333" y2="644.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="335.8333333333333" y="631" width="122.33333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="340.8333333333333" y1="644.0" x2="453.16666666666663" y2="644.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="458.16666666666663" y="631" width="122.33333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="463.16666666666663" y1="644.0" x2="575.5" y2="644.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="580.5" y="631" width="183.5" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="585.5" y1="644.0" x2="759.0" y2="644.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<line x1="30" y1="659" x2="764" y2="659" stroke="#000" stroke-width="0.7"/>
+<text x="30" y="670" font-size="7.5" font-weight="normal" fill="#3b3a39" text-anchor="start">เลขที่คำขอ 558 · พิมพ์เมื่อ 09/09/2026 10:17</text>
+<text x="764" y="670" font-size="7.5" font-weight="normal" fill="#3b3a39" text-anchor="end">หน้า 1 จาก 2</text>
 <text x="30" y="1109" font-size="8.5" font-weight="normal" fill="#605e5c" text-anchor="start">ตัวอย่างผลลัพธ์จริงจาก print.html — ช่องเส้นประคือข้อมูลที่ SharePoint List ยังไม่มี (กรอกเพิ่มหรือเขียนมือได้)</text>
 </svg>
