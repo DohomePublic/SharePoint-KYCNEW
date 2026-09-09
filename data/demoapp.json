@@ -1,7 +1,7 @@
 {
- "generatedAt": "2026-09-09 15:44 น. (เวลาไทย)",
+ "generatedAt": "2026-09-09 15:54 น. (เวลาไทย)",
  "listUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp",
- "rowCount": 69,
+ "rowCount": 70,
  "columns": [
   "@odata.etag",
   "Title",
@@ -205,7 +205,9 @@
   "Other_limits",
   "field_45",
   "status2_2",
-  "field_63"
+  "field_63",
+  "delivery_deadline",
+  "field_59"
  ],
  "rows": [
   {
@@ -11226,6 +11228,169 @@
     "_ID": 617
    },
    "_search": "\"a0ac6c29-f3c0-47c8-9299-ab29ab93cb9a,12\" บริษัท จํากัด บริษัท จํากัด 100924608 100924608 store operation store operation บริษัท เอสวายทีเอ็นจิเนียริ่งจำกัด บริษัท เอสวายทีเอ็นจิเนียริ่งจำกัด knoo knoo 2026-09-09t07:10:07z 2026-09-09t07:10:07z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเพิ่มวงเงิน คำขอเพิ่มวงเงิน 1,000,000 1,000,000 แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 09/09/2026 07:10:07 09/09/2026 07:10:07 0105559035580 0105559035580 กระทุ่มราย กระทุ่มราย หนองจอก หนองจอก กรุงเทพมหานคร กรุงเทพมหานคร 0879142324 0879142324 บริษัท เอสวายทีเอ็นจิเนียริ่งจำกัด บริษัท เอสวายทีเอ็นจิเนียริ่งจำกัด รับเหมาก่อสร้าง(เพิ่ม) รับเหมาก่อสร้าง(เพิ่ม) สัญญา ดำรงค์ไทย สัญญา ดำรงค์ไทย กรรมการ กรรมการ 0879142324 0879142324 30 30 30 30 - - รอดำเนินการ รอดำเนินการ - - ระหว่างดำเนินการ ระหว่างดำเนินการ 200 200 10 10 เป็นเจ้าของ เป็นเจ้าของ สร้างเสาส่งสัญณานให้กับบริษัทที่เป็น vender กับ ais สร้างเสาส่งสัญณานให้กับบริษัทที่เป็น vender กับ ais บริษัท ทีซีซี อินดัสตรี แอนท์ เอ็นจิเนียริ่ง จำกัด บริษัท ทีซีซี อินดัสตรี แอนท์ เอ็นจิเนียริ่ง จำกัด 2000000 2000000 ไม่มี ไม่มี 41002 41002 25000000 25000000 สถานี อบต.สวนผึ้ง สถานี อบต.สวนผึ้ง 2026-07-14t17:00:00z 2026-07-14t17:00:00z รับเหมาก่อสร้าง ให้กับ บริษัท ทีซีซี อินดัสตรี แอนท์ เอ็นจิเนียริ่ง จำกัด ที่เป็น vender กับทางบริษัท ais  ทำเกี่ยวกับสร้างเสาส่งสัญญาน ตามพื้นที่ที่ทาง ais กำหนดมา และมีรับงานก่อสร้าง กับเจ้าของโดยตรง ไม่ว่าเป็น บ้าน หรือ รีสอร์ท   รับเหมาก่อสร้าง ให้กับ บริษัท ทีซีซี อินดัสตรี แอนท์ เอ็นจิเนียริ่ง จำกัด ที่เป็น vender กับทางบริษัท ais  ทำเกี่ยวกับสร้างเสาส่งสัญญาน ตามพื้นที่ที่ทาง ais กำหนดมา และมีรับงานก่อสร้าง กับเจ้าของโดยตรง ไม่ว่าเป็น บ้าน หรือ รีสอร์ท   แมงปอ ชนิดา แมงปอ ชนิดา 0863532828 0863532828 0863532828 0863532828 แอ๊นท์ กานต์รวี แอ๊นท์ กานต์รวี กุ่ย ชัยพงษ์ กุ่ย ชัยพงษ์ 09/09/2026 14:10 09/09/2026 14:10 แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 238 ถนนอยู่วิทยา กระทุ่มราย หนองจอก กรุงเทพมหานคร 10,530 238 ถนนอยู่วิทยา กระทุ่มราย หนองจอก กรุงเทพมหานคร 10,530 10,530 10,530 แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 1066598 1066598 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/617/01_สัญญางานระหว่างทำ-scan2569-07-24_191940.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/617/01_สัญญางานระหว่างทำ-scan2569-07-24_191940.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/617/02_ภาพถ่ายหน้างานปัจจุบัน-image (5).png https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/617/02_ภาพถ่ายหน้างานปัจจุบัน-image (5).png https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/617/03_ภพ 30 ปีก่อนหน้า-pp30เอสวายที_merged.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/617/03_ภพ 30 ปีก่อนหน้า-pp30เอสวายที_merged.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/617/04_ภาพเข้าพบลูกค้า-สถานที่ตั้ง เอสวายที.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/617/04_ภาพเข้าพบลูกค้า-สถานที่ตั้ง เอสวายที.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/617/05_ผลตรวจคดี-เช็คคดีsyt.pdf 617 item item 2026-09-09t07:53:06z 2026-09-09t07:53:06z 2026-09-09t07:10:10z 2026-09-09t07:10:10z 1547 18 12.0 12.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 617"
+  },
+  {
+   "id": 618,
+   "title": "บริษัท จํากัด",
+   "customerId": "101556208",
+   "customerName": "บริษัท กีรติฐาปนาจำกัด",
+   "type1": "Lead",
+   "team": "Store Operation",
+   "distribution": null,
+   "branch": "KNOO",
+   "ts": "2026-09-09T08:46:30Z",
+   "status": "รอดำเนินการ",
+   "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
+   "limitNum": 1000000.0,
+   "limitOther": 0,
+   "owner": "แมงปอ ชนิดา SG KN",
+   "province": "สมุทรปราการ",
+   "district": "เมืองสมุทรปราการ",
+   "businessType": "รับเหมาก่อสร้าง",
+   "income": null,
+   "credit1": "30",
+   "credit2": "30",
+   "land": "-",
+   "contact": "วิวัฒน์ กีรติชูวงศ์",
+   "_raw": {
+    "@odata.etag": "\"2d8fbae9-8e6c-4985-af13-a482c294a6d7,1\"",
+    "Title": "บริษัท จํากัด",
+    "LinkTitle": "บริษัท จํากัด",
+    "Customer_id": "101556208",
+    "field_0": "101556208",
+    "Type1": "Lead",
+    "field_2": "Lead",
+    "type_teams": "Store Operation",
+    "field_3": "Store Operation",
+    "Customer Name": "บริษัท กีรติฐาปนาจำกัด",
+    "field_6": "บริษัท กีรติฐาปนาจำกัด",
+    "branch": "KNOO",
+    "field_7": "KNOO",
+    "Request TimeStamp": "2026-09-09T08:46:30Z",
+    "field_8": "2026-09-09T08:46:30Z",
+    "Status": "รอดำเนินการ",
+    "field_9": "รอดำเนินการ",
+    "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
+    "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
+    "limit": "1,000,000",
+    "field_12": "1,000,000",
+    "Owner": "แมงปอ ชนิดา SG KN",
+    "field_16": "แมงปอ ชนิดา SG KN",
+    "Data": "11/19/1991 17:00:00",
+    "field_17": "11/19/1991 17:00:00",
+    "registration_number": "0105534110090",
+    "field_18": "0105534110090",
+    "county": "บางเมือง",
+    "field_20": "บางเมือง",
+    "district": "เมืองสมุทรปราการ",
+    "field_21": "เมืองสมุทรปราการ",
+    "province": "สมุทรปราการ",
+    "field_22": "สมุทรปราการ",
+    "telephone": "0866328989",
+    "field_24": "0866328989",
+    "Registered_Name": "บริษัท กีรติฐาปนาจำกัด",
+    "field_25": "บริษัท กีรติฐาปนาจำกัด",
+    "business_type": "รับเหมาก่อสร้าง",
+    "field_26": "รับเหมาก่อสร้าง",
+    "contact_name": "วิวัฒน์ กีรติชูวงศ์",
+    "field_28": "วิวัฒน์ กีรติชูวงศ์",
+    "position": "กรรมการ",
+    "field_29": "กรรมการ",
+    "contact_number": "0866328989",
+    "field_30": "0866328989",
+    "credit_semester1": "30",
+    "field_32": "30",
+    "credit_semester2": "30",
+    "field_36": "30",
+    "Other_limits": "-",
+    "field_45": "-",
+    "land": "-",
+    "field_47": "-",
+    "Status_1": "ปลอดภาระ",
+    "field_48": "ปลอดภาระ",
+    "Status_2": "ปลอดภาระ",
+    "field_50": "ปลอดภาระ",
+    "establishment_area": "200",
+    "field_51": "200",
+    "number_employees": "10",
+    "field_52": "10",
+    "Ownership1": "เป็นเจ้าของ",
+    "field_54": "เป็นเจ้าของ",
+    "employer": "ร้าน ANNUN Cafe Kanchanaburi",
+    "field_56": "ร้าน ANNUN Cafe Kanchanaburi",
+    "work_value1": "20,000,000",
+    "field_57": "20,000,000",
+    "delivery_deadline": "22/01/2569",
+    "field_59": "22/01/2569",
+    "transfer_of_ownership": "ไม่มี",
+    "field_60": "ไม่มี",
+    "work_value2": "40,000,000",
+    "field_62": "40,000,000",
+    "status2_2": "ลงนาม",
+    "field_63": "ลงนาม",
+    "project_location1": "ซอยพุรางนิมิต 1 ต.ปากแพรก อ.เมืองกาญจนบุรี จ.กาญจนบุรี",
+    "field_64": "ซอยพุรางนิมิต 1 ต.ปากแพรก อ.เมืองกาญจนบุรี จ.กาญจนบุรี",
+    "start_of_construction1": "2568-03-09T17:00:00Z",
+    "field_65": "2568-03-09T17:00:00Z",
+    "loan_history": "ผู้รับเหมาก่อสร้าง โรงแรมร้านค้า ร้านกาแฟ  มีเครดิตกับเจ้าอื่น รับแต่งานเอกชน ไม่ทำงานหน่วยงานราชการ",
+    "field_79": "ผู้รับเหมาก่อสร้าง โรงแรมร้านค้า ร้านกาแฟ  มีเครดิตกับเจ้าอื่น รับแต่งานเอกชน ไม่ทำงานหน่วยงานราชการ",
+    "Executive_history": "ผู้รับเหมาก่อสร้าง โรงแรมร้านค้า ร้านกาแฟ  มีเครดิตกับเจ้าอื่น รับแต่งานเอกชน ไม่ทำงานหน่วยงานราชการ",
+    "field_81": "ผู้รับเหมาก่อสร้าง โรงแรมร้านค้า ร้านกาแฟ  มีเครดิตกับเจ้าอื่น รับแต่งานเอกชน ไม่ทำงานหน่วยงานราชการ",
+    "sale_representative": "Chanida.Onc@dohome.co.th",
+    "field_82": "Chanida.Onc@dohome.co.th",
+    "phone_number1": "0863532828",
+    "field_84": "0863532828",
+    "sale_branch1": "GM-KN@dohome.co.th",
+    "field_85": "GM-KN@dohome.co.th",
+    "D31": "D3-KN@dohome.co.th",
+    "field_87": "D3-KN@dohome.co.th",
+    "timeStartcreate": "09/09/2026 15:46",
+    "field_92": "09/09/2026 15:46",
+    "สร้างเมื่อ": "2026-09-09T08:46:32Z",
+    "field_98": "09/09/2026 15:46",
+    "ปรับเปลี่ยนโดย": "PowerPlatForm",
+    "field_99": "PowerPlatForm",
+    "สร้างโดย": "แมงปอ ชนิดา SG KN",
+    "field_100": "แมงปอ ชนิดา SG KN",
+    "Address": "205/284 หมู่ที่ 10 ถนนศรีนครินทร์ สมุทรปราการ เมืองสมุทรปราการ บางเมือง 10270",
+    "field_103": "205/284 หมู่ที่ 10 ถนนศรีนครินทร์ สมุทรปราการ เมืองสมุทรปราการ บางเมือง 10270",
+    "Postcode": "10270",
+    "field_106": "10270",
+    "CreateDocument": "แมงปอ ชนิดา SG KN",
+    "field_112": "แมงปอ ชนิดา SG KN",
+    "NumberRespresentative": "1066598",
+    "field_119": "1066598",
+    "Else": "41002",
+    "field_145": "41002",
+    "site1": "บ้าน",
+    "field_160": "บ้าน",
+    "Approve Edit": "chanida.onc@dohome.co.th",
+    "field_166": "chanida.onc@dohome.co.th",
+    "Group": "รับเหมาก่อสร้าง",
+    "field_170": "รับเหมาก่อสร้าง",
+    "id": "618",
+    "ชนิดเนื้อหา": "Item",
+    "ContentType": "Item",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-09T08:46:32Z",
+    "Modified": "2026-09-09T08:46:32Z",
+    "Created": "2026-09-09T08:46:32Z",
+    "AuthorLookupId": "1547",
+    "EditorLookupId": "1547",
+    "เวอร์ชัน": "1.0",
+    "_UIVersionString": "1.0",
+    "สิ่งที่แนบมา": false,
+    "Attachments": false,
+    "ชื่อเรื่อง": "บริษัท จํากัด",
+    "LinkTitleNoMenu": "บริษัท จํากัด",
+    "จำนวนรายการย่อย": "0",
+    "ItemChildCount": "0",
+    "จำนวนโฟลเดอร์ย่อย": "0",
+    "FolderChildCount": "0",
+    "AppAuthorLookupId": "40",
+    "AppEditorLookupId": "40",
+    "_ID": 618
+   },
+   "_search": "\"2d8fbae9-8e6c-4985-af13-a482c294a6d7,1\" บริษัท จํากัด บริษัท จํากัด 101556208 101556208 lead lead store operation store operation บริษัท กีรติฐาปนาจำกัด บริษัท กีรติฐาปนาจำกัด knoo knoo 2026-09-09t08:46:30z 2026-09-09t08:46:30z รอดำเนินการ รอดำเนินการ คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 1,000,000 1,000,000 แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 11/19/1991 17:00:00 11/19/1991 17:00:00 0105534110090 0105534110090 บางเมือง บางเมือง เมืองสมุทรปราการ เมืองสมุทรปราการ สมุทรปราการ สมุทรปราการ 0866328989 0866328989 บริษัท กีรติฐาปนาจำกัด บริษัท กีรติฐาปนาจำกัด รับเหมาก่อสร้าง รับเหมาก่อสร้าง วิวัฒน์ กีรติชูวงศ์ วิวัฒน์ กีรติชูวงศ์ กรรมการ กรรมการ 0866328989 0866328989 30 30 30 30 - - - - ปลอดภาระ ปลอดภาระ ปลอดภาระ ปลอดภาระ 200 200 10 10 เป็นเจ้าของ เป็นเจ้าของ ร้าน annun cafe kanchanaburi ร้าน annun cafe kanchanaburi 20,000,000 20,000,000 22/01/2569 22/01/2569 ไม่มี ไม่มี 40,000,000 40,000,000 ลงนาม ลงนาม ซอยพุรางนิมิต 1 ต.ปากแพรก อ.เมืองกาญจนบุรี จ.กาญจนบุรี ซอยพุรางนิมิต 1 ต.ปากแพรก อ.เมืองกาญจนบุรี จ.กาญจนบุรี 2568-03-09t17:00:00z 2568-03-09t17:00:00z ผู้รับเหมาก่อสร้าง โรงแรมร้านค้า ร้านกาแฟ  มีเครดิตกับเจ้าอื่น รับแต่งานเอกชน ไม่ทำงานหน่วยงานราชการ ผู้รับเหมาก่อสร้าง โรงแรมร้านค้า ร้านกาแฟ  มีเครดิตกับเจ้าอื่น รับแต่งานเอกชน ไม่ทำงานหน่วยงานราชการ ผู้รับเหมาก่อสร้าง โรงแรมร้านค้า ร้านกาแฟ  มีเครดิตกับเจ้าอื่น รับแต่งานเอกชน ไม่ทำงานหน่วยงานราชการ ผู้รับเหมาก่อสร้าง โรงแรมร้านค้า ร้านกาแฟ  มีเครดิตกับเจ้าอื่น รับแต่งานเอกชน ไม่ทำงานหน่วยงานราชการ chanida.onc@dohome.co.th chanida.onc@dohome.co.th 0863532828 0863532828 gm-kn@dohome.co.th gm-kn@dohome.co.th d3-kn@dohome.co.th d3-kn@dohome.co.th 09/09/2026 15:46 09/09/2026 15:46 2026-09-09t08:46:32z 09/09/2026 15:46 powerplatform powerplatform แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 205/284 หมู่ที่ 10 ถนนศรีนครินทร์ สมุทรปราการ เมืองสมุทรปราการ บางเมือง 10270 205/284 หมู่ที่ 10 ถนนศรีนครินทร์ สมุทรปราการ เมืองสมุทรปราการ บางเมือง 10270 10270 10270 แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 1066598 1066598 41002 41002 บ้าน บ้าน chanida.onc@dohome.co.th chanida.onc@dohome.co.th รับเหมาก่อสร้าง รับเหมาก่อสร้าง 618 item item 2026-09-09t08:46:32z 2026-09-09t08:46:32z 2026-09-09t08:46:32z 1547 1547 1.0 1.0 false false บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 618"
   }
  ],
  "dictionary": [
@@ -11234,7 +11399,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "\"11209d1c-4f9e-41b9-8f36-3205e1818bd2,13",
-   "unique": 69,
+   "unique": 70,
    "nullPct": 0.0
   },
   {
@@ -11258,7 +11423,7 @@
    "type": "Number",
    "desc": "รหัสลูกค้าในระบบหลัก (9 หลัก) — ใช้ตรวจคำขอซ้ำ",
    "sample": "100059672",
-   "unique": 52,
+   "unique": 53,
    "nullPct": 0.0
   },
   {
@@ -11266,7 +11431,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "100059672",
-   "unique": 52,
+   "unique": 53,
    "nullPct": 0.0
   },
   {
@@ -11275,7 +11440,7 @@
    "desc": "ประเภทลูกค้า: Existing (ลูกค้าเดิม) / Lead (ลูกค้าใหม่)",
    "sample": "Existing",
    "unique": 4,
-   "nullPct": 14.5
+   "nullPct": 14.3
   },
   {
    "name": "field_2",
@@ -11283,7 +11448,7 @@
    "desc": "—",
    "sample": "Existing",
    "unique": 4,
-   "nullPct": 14.5
+   "nullPct": 14.3
   },
   {
    "name": "type_teams",
@@ -11291,7 +11456,7 @@
    "desc": "ทีมที่ยื่นคำขอ: Store Operation, Wholesales (WS), Project Sales (PS), Retail, Steel Key Account",
    "sample": "Store Operation",
    "unique": 5,
-   "nullPct": 5.8
+   "nullPct": 5.7
   },
   {
    "name": "field_3",
@@ -11299,14 +11464,14 @@
    "desc": "—",
    "sample": "Store Operation",
    "unique": 5,
-   "nullPct": 5.8
+   "nullPct": 5.7
   },
   {
    "name": "Customer Name",
    "type": "Text",
    "desc": "ชื่อลูกค้าที่ใช้เรียกทั่วไป",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง",
-   "unique": 52,
+   "unique": 53,
    "nullPct": 0.0
   },
   {
@@ -11314,7 +11479,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง",
-   "unique": 52,
+   "unique": 53,
    "nullPct": 0.0
   },
   {
@@ -11323,7 +11488,7 @@
    "desc": "รหัสสาขาที่ยื่นคำขอ เช่น UDOO, SNOO, PKOO",
    "sample": "CMOO",
    "unique": 21,
-   "nullPct": 15.9
+   "nullPct": 15.7
   },
   {
    "name": "field_7",
@@ -11331,14 +11496,14 @@
    "desc": "—",
    "sample": "CMOO",
    "unique": 21,
-   "nullPct": 15.9
+   "nullPct": 15.7
   },
   {
    "name": "Request TimeStamp",
    "type": "DateTime",
    "desc": "วันเวลาที่ยื่นคำขอ (UTC) — แกนเวลาหลักของทุกกราฟ",
    "sample": "2026-08-26T04:55:22Z",
-   "unique": 69,
+   "unique": 70,
    "nullPct": 0.0
   },
   {
@@ -11346,7 +11511,7 @@
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-08-26T04:55:22Z",
-   "unique": 69,
+   "unique": 70,
    "nullPct": 0.0
   },
   {
@@ -11418,7 +11583,7 @@
    "type": "Text",
    "desc": "วันที่จดทะเบียนจัดตั้งกิจการ",
    "sample": "02/25/2015 17:00:00",
-   "unique": 58,
+   "unique": 59,
    "nullPct": 4.3
   },
   {
@@ -11426,7 +11591,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "02/25/2015 17:00:00",
-   "unique": 58,
+   "unique": 59,
    "nullPct": 4.3
   },
   {
@@ -11434,7 +11599,7 @@
    "type": "Number",
    "desc": "เลขทะเบียนนิติบุคคล 13 หลัก",
    "sample": "0503556002081",
-   "unique": 52,
+   "unique": 53,
    "nullPct": 0.0
   },
   {
@@ -11442,7 +11607,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "0503556002081",
-   "unique": 52,
+   "unique": 53,
    "nullPct": 0.0
   },
   {
@@ -11450,7 +11615,7 @@
    "type": "Text",
    "desc": "ตำบล/แขวง",
    "sample": "ท่าวังตาล",
-   "unique": 43,
+   "unique": 44,
    "nullPct": 1.4
   },
   {
@@ -11458,7 +11623,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "ท่าวังตาล",
-   "unique": 43,
+   "unique": 44,
    "nullPct": 1.4
   },
   {
@@ -11498,7 +11663,7 @@
    "type": "Number",
    "desc": "โทรศัพท์ของกิจการ",
    "sample": "0858634774",
-   "unique": 55,
+   "unique": 56,
    "nullPct": 0.0
   },
   {
@@ -11506,7 +11671,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "0858634774",
-   "unique": 55,
+   "unique": 56,
    "nullPct": 0.0
   },
   {
@@ -11514,7 +11679,7 @@
    "type": "Text",
    "desc": "ชื่อนิติบุคคลตามหนังสือรับรอง",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง",
-   "unique": 54,
+   "unique": 55,
    "nullPct": 0.0
   },
   {
@@ -11522,7 +11687,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง",
-   "unique": 54,
+   "unique": 55,
    "nullPct": 0.0
   },
   {
@@ -11546,7 +11711,7 @@
    "type": "Text",
    "desc": "ชื่อผู้ติดต่อ",
    "sample": "นายวัชรพงษ์ อินต๊ะโตด",
-   "unique": 54,
+   "unique": 55,
    "nullPct": 0.0
   },
   {
@@ -11554,7 +11719,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "นายวัชรพงษ์ อินต๊ะโตด",
-   "unique": 54,
+   "unique": 55,
    "nullPct": 0.0
   },
   {
@@ -11578,7 +11743,7 @@
    "type": "Number",
    "desc": "เบอร์โทรผู้ติดต่อ",
    "sample": "0858634774",
-   "unique": 55,
+   "unique": 56,
    "nullPct": 0.0
   },
   {
@@ -11586,7 +11751,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "0858634774",
-   "unique": 55,
+   "unique": 56,
    "nullPct": 0.0
   },
   {
@@ -11627,7 +11792,7 @@
    "desc": "หลักประกันประเภทที่ดิน (สถานะภาระผูกพัน/ขนาด)",
    "sample": "ปลอดภาระ",
    "unique": 12,
-   "nullPct": 15.9
+   "nullPct": 15.7
   },
   {
    "name": "field_47",
@@ -11635,7 +11800,7 @@
    "desc": "—",
    "sample": "ปลอดภาระ",
    "unique": 12,
-   "nullPct": 15.9
+   "nullPct": 15.7
   },
   {
    "name": "Status_1",
@@ -11659,7 +11824,7 @@
    "desc": "ทรัพย์สินอื่นที่ใช้เป็นหลักประกัน",
    "sample": "ปลอดภาระ",
    "unique": 7,
-   "nullPct": 17.4
+   "nullPct": 18.6
   },
   {
    "name": "field_49",
@@ -11667,23 +11832,23 @@
    "desc": "—",
    "sample": "ปลอดภาระ",
    "unique": 7,
-   "nullPct": 17.4
+   "nullPct": 18.6
   },
   {
    "name": "Status_2",
    "type": "Text",
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
-   "unique": 7,
-   "nullPct": 29.0
+   "unique": 8,
+   "nullPct": 28.6
   },
   {
    "name": "field_50",
    "type": "Text",
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
-   "unique": 7,
-   "nullPct": 29.0
+   "unique": 8,
+   "nullPct": 28.6
   },
   {
    "name": "establishment_area",
@@ -11691,7 +11856,7 @@
    "desc": "—",
    "sample": "1000",
    "unique": 44,
-   "nullPct": 13.0
+   "nullPct": 12.9
   },
   {
    "name": "field_51",
@@ -11699,7 +11864,7 @@
    "desc": "—",
    "sample": "1000",
    "unique": 44,
-   "nullPct": 13.0
+   "nullPct": 12.9
   },
   {
    "name": "number_employees",
@@ -11707,7 +11872,7 @@
    "desc": "—",
    "sample": "50",
    "unique": 16,
-   "nullPct": 14.5
+   "nullPct": 14.3
   },
   {
    "name": "field_52",
@@ -11715,7 +11880,7 @@
    "desc": "—",
    "sample": "50",
    "unique": 16,
-   "nullPct": 14.5
+   "nullPct": 14.3
   },
   {
    "name": "Ownership1",
@@ -11723,7 +11888,7 @@
    "desc": "—",
    "sample": "เป็นเจ้าของ",
    "unique": 4,
-   "nullPct": 13.0
+   "nullPct": 12.9
   },
   {
    "name": "field_54",
@@ -11731,23 +11896,23 @@
    "desc": "—",
    "sample": "เป็นเจ้าของ",
    "unique": 4,
-   "nullPct": 13.0
+   "nullPct": 12.9
   },
   {
    "name": "employer",
    "type": "Text",
    "desc": "—",
    "sample": "บจก.ชอยส์มินิสโตร์",
-   "unique": 39,
-   "nullPct": 27.5
+   "unique": 40,
+   "nullPct": 27.1
   },
   {
    "name": "field_56",
    "type": "Text",
    "desc": "—",
    "sample": "บจก.ชอยส์มินิสโตร์",
-   "unique": 39,
-   "nullPct": 27.5
+   "unique": 40,
+   "nullPct": 27.1
   },
   {
    "name": "work_value1",
@@ -11755,7 +11920,7 @@
    "desc": "—",
    "sample": "5,100,000",
    "unique": 30,
-   "nullPct": 29.0
+   "nullPct": 28.6
   },
   {
    "name": "field_57",
@@ -11763,7 +11928,7 @@
    "desc": "—",
    "sample": "5,100,000",
    "unique": 30,
-   "nullPct": 29.0
+   "nullPct": 28.6
   },
   {
    "name": "transfer_of_ownership",
@@ -11771,7 +11936,7 @@
    "desc": "—",
    "sample": "ไม่มี",
    "unique": 3,
-   "nullPct": 30.4
+   "nullPct": 30.0
   },
   {
    "name": "field_60",
@@ -11779,39 +11944,39 @@
    "desc": "—",
    "sample": "ไม่มี",
    "unique": 3,
-   "nullPct": 30.4
+   "nullPct": 30.0
   },
   {
    "name": "work_value2",
    "type": "Number",
    "desc": "—",
    "sample": "42,000,000",
-   "unique": 37,
-   "nullPct": 30.4
+   "unique": 38,
+   "nullPct": 30.0
   },
   {
    "name": "field_62",
    "type": "Number",
    "desc": "—",
    "sample": "42,000,000",
-   "unique": 37,
-   "nullPct": 30.4
+   "unique": 38,
+   "nullPct": 30.0
   },
   {
    "name": "project_location1",
    "type": "Text",
    "desc": "—",
    "sample": "มหาวิทยาลัยราชภัฏเชียงใหม่ ศูนย์แม่ริม ต",
-   "unique": 43,
-   "nullPct": 29.0
+   "unique": 44,
+   "nullPct": 28.6
   },
   {
    "name": "field_64",
    "type": "Text",
    "desc": "—",
    "sample": "มหาวิทยาลัยราชภัฏเชียงใหม่ ศูนย์แม่ริม ต",
-   "unique": 43,
-   "nullPct": 29.0
+   "unique": 44,
+   "nullPct": 28.6
   },
   {
    "name": "future_project",
@@ -11819,7 +11984,7 @@
    "desc": "—",
    "sample": "7-Eleven สาขา5287 บ้านโป่งแยง",
    "unique": 14,
-   "nullPct": 75.4
+   "nullPct": 75.7
   },
   {
    "name": "field_66",
@@ -11827,7 +11992,7 @@
    "desc": "—",
    "sample": "7-Eleven สาขา5287 บ้านโป่งแยง",
    "unique": 14,
-   "nullPct": 75.4
+   "nullPct": 75.7
   },
   {
    "name": "work_value3",
@@ -11835,7 +12000,7 @@
    "desc": "—",
    "sample": "6,000,000",
    "unique": 10,
-   "nullPct": 76.8
+   "nullPct": 77.1
   },
   {
    "name": "field_67",
@@ -11843,7 +12008,7 @@
    "desc": "—",
    "sample": "6,000,000",
    "unique": 10,
-   "nullPct": 76.8
+   "nullPct": 77.1
   },
   {
    "name": "status3_3",
@@ -11851,7 +12016,7 @@
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
    "unique": 3,
-   "nullPct": 73.9
+   "nullPct": 74.3
   },
   {
    "name": "field_68",
@@ -11859,7 +12024,7 @@
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
    "unique": 3,
-   "nullPct": 73.9
+   "nullPct": 74.3
   },
   {
    "name": "project_location2",
@@ -11867,7 +12032,7 @@
    "desc": "—",
    "sample": "ตำบลโป่งแยง อำเภอแม่ริม จังหวัดเชียงใหม่",
    "unique": 14,
-   "nullPct": 75.4
+   "nullPct": 75.7
   },
   {
    "name": "field_69",
@@ -11875,23 +12040,23 @@
    "desc": "—",
    "sample": "ตำบลโป่งแยง อำเภอแม่ริม จังหวัดเชียงใหม่",
    "unique": 14,
-   "nullPct": 75.4
+   "nullPct": 75.7
   },
   {
    "name": "loan_history",
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง\nประกอบธุรกิจ : ร",
-   "unique": 37,
-   "nullPct": 36.2
+   "unique": 38,
+   "nullPct": 35.7
   },
   {
    "name": "field_79",
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง\nประกอบธุรกิจ : ร",
-   "unique": 37,
-   "nullPct": 36.2
+   "unique": 38,
+   "nullPct": 35.7
   },
   {
    "name": "referral",
@@ -11899,7 +12064,7 @@
    "desc": "—",
    "sample": "คุณแพท ผู้บริหาร บจก.บ้านม่วนใจ๋ เป็นเพื",
    "unique": 11,
-   "nullPct": 73.9
+   "nullPct": 74.3
   },
   {
    "name": "field_80",
@@ -11907,23 +12072,23 @@
    "desc": "—",
    "sample": "คุณแพท ผู้บริหาร บจก.บ้านม่วนใจ๋ เป็นเพื",
    "unique": 11,
-   "nullPct": 73.9
+   "nullPct": 74.3
   },
   {
    "name": "Executive_history",
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง\nประกอบธุรกิจ : ร",
-   "unique": 34,
-   "nullPct": 40.6
+   "unique": 35,
+   "nullPct": 40.0
   },
   {
    "name": "field_81",
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง\nประกอบธุรกิจ : ร",
-   "unique": 34,
-   "nullPct": 40.6
+   "unique": 35,
+   "nullPct": 40.0
   },
   {
    "name": "sale_representative",
@@ -11931,7 +12096,7 @@
    "desc": "—",
    "sample": "Sahasan.Tee@dohome.co.th",
    "unique": 39,
-   "nullPct": 23.2
+   "nullPct": 22.9
   },
   {
    "name": "field_82",
@@ -11939,7 +12104,7 @@
    "desc": "—",
    "sample": "Sahasan.Tee@dohome.co.th",
    "unique": 39,
-   "nullPct": 23.2
+   "nullPct": 22.9
   },
   {
    "name": "phone_number1",
@@ -11947,7 +12112,7 @@
    "desc": "—",
    "sample": "0814693553",
    "unique": 37,
-   "nullPct": 14.5
+   "nullPct": 14.3
   },
   {
    "name": "field_84",
@@ -11955,7 +12120,7 @@
    "desc": "—",
    "sample": "0814693553",
    "unique": 37,
-   "nullPct": 14.5
+   "nullPct": 14.3
   },
   {
    "name": "sale_branch1",
@@ -11963,7 +12128,7 @@
    "desc": "—",
    "sample": "GM-CM@dohome.co.th",
    "unique": 23,
-   "nullPct": 34.8
+   "nullPct": 34.3
   },
   {
    "name": "field_85",
@@ -11971,7 +12136,7 @@
    "desc": "—",
    "sample": "GM-CM@dohome.co.th",
    "unique": 23,
-   "nullPct": 34.8
+   "nullPct": 34.3
   },
   {
    "name": "phone_number2",
@@ -11979,7 +12144,7 @@
    "desc": "—",
    "sample": "0814693553",
    "unique": 16,
-   "nullPct": 65.2
+   "nullPct": 65.7
   },
   {
    "name": "field_86",
@@ -11987,7 +12152,7 @@
    "desc": "—",
    "sample": "0814693553",
    "unique": 16,
-   "nullPct": 65.2
+   "nullPct": 65.7
   },
   {
    "name": "D31",
@@ -11995,7 +12160,7 @@
    "desc": "—",
    "sample": "D3-CM@dohome.co.th",
    "unique": 34,
-   "nullPct": 20.3
+   "nullPct": 20.0
   },
   {
    "name": "field_87",
@@ -12003,7 +12168,7 @@
    "desc": "—",
    "sample": "D3-CM@dohome.co.th",
    "unique": 34,
-   "nullPct": 20.3
+   "nullPct": 20.0
   },
   {
    "name": "phone_number3",
@@ -12011,7 +12176,7 @@
    "desc": "—",
    "sample": "0644782291",
    "unique": 14,
-   "nullPct": 72.5
+   "nullPct": 72.9
   },
   {
    "name": "field_88",
@@ -12019,14 +12184,14 @@
    "desc": "—",
    "sample": "0644782291",
    "unique": 14,
-   "nullPct": 72.5
+   "nullPct": 72.9
   },
   {
    "name": "timeStartcreate",
    "type": "Text",
    "desc": "—",
    "sample": "26/08/2026 11:55",
-   "unique": 66,
+   "unique": 67,
    "nullPct": 0.0
   },
   {
@@ -12034,7 +12199,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "26/08/2026 11:55",
-   "unique": 66,
+   "unique": 67,
    "nullPct": 0.0
   },
   {
@@ -12043,7 +12208,7 @@
    "desc": "—",
    "sample": "09/01/2026 08:26:40",
    "unique": 21,
-   "nullPct": 69.6
+   "nullPct": 70.0
   },
   {
    "name": "field_95",
@@ -12051,14 +12216,14 @@
    "desc": "—",
    "sample": "09/01/2026 08:26:40",
    "unique": 21,
-   "nullPct": 69.6
+   "nullPct": 70.0
   },
   {
    "name": "สร้างเมื่อ",
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-08-26T04:55:27Z",
-   "unique": 69,
+   "unique": 70,
    "nullPct": 0.0
   },
   {
@@ -12066,8 +12231,8 @@
    "type": "Text",
    "desc": "—",
    "sample": "26/08/2026 11:55",
-   "unique": 55,
-   "nullPct": 15.9
+   "unique": 56,
+   "nullPct": 15.7
   },
   {
    "name": "ปรับเปลี่ยนโดย",
@@ -12075,7 +12240,7 @@
    "desc": "—",
    "sample": "PowerPlatForm",
    "unique": 2,
-   "nullPct": 15.9
+   "nullPct": 15.7
   },
   {
    "name": "field_99",
@@ -12083,7 +12248,7 @@
    "desc": "—",
    "sample": "PowerPlatForm",
    "unique": 2,
-   "nullPct": 15.9
+   "nullPct": 15.7
   },
   {
    "name": "สร้างโดย",
@@ -12106,7 +12271,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "58/1 หมู่ที่ 2 เชียงใหม่ สารภี ท่าวังตาล",
-   "unique": 56,
+   "unique": 57,
    "nullPct": 0.0
   },
   {
@@ -12114,7 +12279,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "58/1 หมู่ที่ 2 เชียงใหม่ สารภี ท่าวังตาล",
-   "unique": 56,
+   "unique": 57,
    "nullPct": 0.0
   },
   {
@@ -12122,7 +12287,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "50140",
-   "unique": 42,
+   "unique": 43,
    "nullPct": 0.0
   },
   {
@@ -12130,7 +12295,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "50140",
-   "unique": 42,
+   "unique": 43,
    "nullPct": 0.0
   },
   {
@@ -12155,7 +12320,7 @@
    "desc": "—",
    "sample": "ฝ้าย ณัฐญา CF HQ",
    "unique": 6,
-   "nullPct": 69.6
+   "nullPct": 70.0
   },
   {
    "name": "field_115",
@@ -12163,7 +12328,7 @@
    "desc": "—",
    "sample": "ฝ้าย ณัฐญา CF HQ",
    "unique": 6,
-   "nullPct": 69.6
+   "nullPct": 70.0
   },
   {
    "name": "NumberRespresentative",
@@ -12187,7 +12352,7 @@
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
    "unique": 47,
-   "nullPct": 31.9
+   "nullPct": 32.9
   },
   {
    "name": "field_154",
@@ -12195,7 +12360,7 @@
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
    "unique": 47,
-   "nullPct": 31.9
+   "nullPct": 32.9
   },
   {
    "name": "LinkPictureCustomer",
@@ -12203,7 +12368,7 @@
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
    "unique": 47,
-   "nullPct": 31.9
+   "nullPct": 32.9
   },
   {
    "name": "field_155",
@@ -12211,7 +12376,7 @@
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
    "unique": 47,
-   "nullPct": 31.9
+   "nullPct": 32.9
   },
   {
    "name": "Picture2",
@@ -12219,7 +12384,7 @@
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
    "unique": 46,
-   "nullPct": 33.3
+   "nullPct": 34.3
   },
   {
    "name": "field_156",
@@ -12227,7 +12392,7 @@
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
    "unique": 46,
-   "nullPct": 33.3
+   "nullPct": 34.3
   },
   {
    "name": "int_id",
@@ -12235,7 +12400,7 @@
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
    "unique": 39,
-   "nullPct": 43.5
+   "nullPct": 44.3
   },
   {
    "name": "field_165",
@@ -12243,7 +12408,7 @@
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
    "unique": 39,
-   "nullPct": 43.5
+   "nullPct": 44.3
   },
   {
    "name": "Approve Edit",
@@ -12251,7 +12416,7 @@
    "desc": "—",
    "sample": "sahasan.tee@dohome.co.th",
    "unique": 40,
-   "nullPct": 17.4
+   "nullPct": 17.1
   },
   {
    "name": "field_166",
@@ -12259,7 +12424,7 @@
    "desc": "—",
    "sample": "sahasan.tee@dohome.co.th",
    "unique": 40,
-   "nullPct": 17.4
+   "nullPct": 17.1
   },
   {
    "name": "Approve History",
@@ -12267,7 +12432,7 @@
    "desc": "—",
    "sample": "<div class=\"ExternalClass9683424E19E1438",
    "unique": 21,
-   "nullPct": 69.6
+   "nullPct": 70.0
   },
   {
    "name": "field_167",
@@ -12275,7 +12440,7 @@
    "desc": "—",
    "sample": "<div class=\"ExternalClass9683424E19E1438",
    "unique": 21,
-   "nullPct": 69.6
+   "nullPct": 70.0
   },
   {
    "name": "Approve Up",
@@ -12283,7 +12448,7 @@
    "desc": "—",
    "sample": "ฝ้าย ณัฐญา CF HQ",
    "unique": 6,
-   "nullPct": 69.6
+   "nullPct": 70.0
   },
   {
    "name": "field_168",
@@ -12291,7 +12456,7 @@
    "desc": "—",
    "sample": "ฝ้าย ณัฐญา CF HQ",
    "unique": 6,
-   "nullPct": 69.6
+   "nullPct": 70.0
   },
   {
    "name": "Comment_Approve",
@@ -12299,7 +12464,7 @@
    "desc": "—",
    "sample": "เอกสารประกอบการพิจารณาแนบมาไม่ครบค่ะ",
    "unique": 8,
-   "nullPct": 87.0
+   "nullPct": 87.1
   },
   {
    "name": "field_169",
@@ -12307,7 +12472,7 @@
    "desc": "—",
    "sample": "เอกสารประกอบการพิจารณาแนบมาไม่ครบค่ะ",
    "unique": 8,
-   "nullPct": 87.0
+   "nullPct": 87.1
   },
   {
    "name": "Group",
@@ -12315,7 +12480,7 @@
    "desc": "—",
    "sample": "รับเหมาก่อสร้าง",
    "unique": 5,
-   "nullPct": 15.9
+   "nullPct": 15.7
   },
   {
    "name": "field_170",
@@ -12323,7 +12488,7 @@
    "desc": "—",
    "sample": "รับเหมาก่อสร้าง",
    "unique": 5,
-   "nullPct": 15.9
+   "nullPct": 15.7
   },
   {
    "name": "URL",
@@ -12331,14 +12496,14 @@
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
    "unique": 33,
-   "nullPct": 52.2
+   "nullPct": 52.9
   },
   {
    "name": "id",
    "type": "Number",
    "desc": "—",
    "sample": "541",
-   "unique": 69,
+   "unique": 70,
    "nullPct": 0.0
   },
   {
@@ -12362,7 +12527,7 @@
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-09-01T08:26:42Z",
-   "unique": 69,
+   "unique": 70,
    "nullPct": 0.0
   },
   {
@@ -12370,7 +12535,7 @@
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-09-01T08:26:42Z",
-   "unique": 69,
+   "unique": 70,
    "nullPct": 0.0
   },
   {
@@ -12378,7 +12543,7 @@
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-08-26T04:55:27Z",
-   "unique": 69,
+   "unique": 70,
    "nullPct": 0.0
   },
   {
@@ -12394,7 +12559,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "2285",
-   "unique": 23,
+   "unique": 24,
    "nullPct": 0.0
   },
   {
@@ -12571,14 +12736,14 @@
    "desc": "—",
    "sample": "40",
    "unique": 1,
-   "nullPct": 5.8
+   "nullPct": 5.7
   },
   {
    "name": "_ID",
    "type": "Number",
    "desc": "รหัสรายการภายในของ SharePoint (ใช้เปิด DispForm.aspx?ID=)",
    "sample": "541",
-   "unique": 69,
+   "unique": 70,
    "nullPct": 0.0
   },
   {
@@ -12587,7 +12752,7 @@
    "desc": "เขตขายของทีมค้าส่ง/โครงการ เช่น WS-NE 2, PS-BMA 1",
    "sample": "WS-NE 2",
    "unique": 5,
-   "nullPct": 84.1
+   "nullPct": 84.3
   },
   {
    "name": "field_4",
@@ -12595,7 +12760,7 @@
    "desc": "—",
    "sample": "WS-NE 2",
    "unique": 5,
-   "nullPct": 84.1
+   "nullPct": 84.3
   },
   {
    "name": "limit_other",
@@ -12603,7 +12768,7 @@
    "desc": "วงเงินอื่นที่ขอเพิ่มเติม (บาท)",
    "sample": "0",
    "unique": 7,
-   "nullPct": 72.5
+   "nullPct": 72.9
   },
   {
    "name": "field_35",
@@ -12611,7 +12776,7 @@
    "desc": "—",
    "sample": "0",
    "unique": 7,
-   "nullPct": 72.5
+   "nullPct": 72.9
   },
   {
    "name": "branch_manager",
@@ -12619,7 +12784,7 @@
    "desc": "—",
    "sample": "thossarat.cha@dohome.co.th",
    "unique": 12,
-   "nullPct": 75.4
+   "nullPct": 75.7
   },
   {
    "name": "field_89",
@@ -12627,23 +12792,23 @@
    "desc": "—",
    "sample": "thossarat.cha@dohome.co.th",
    "unique": 12,
-   "nullPct": 75.4
+   "nullPct": 75.7
   },
   {
    "name": "site1",
    "type": "Text",
    "desc": "—",
    "sample": "ตึก/อาคาร",
-   "unique": 12,
-   "nullPct": 66.7
+   "unique": 13,
+   "nullPct": 65.7
   },
   {
    "name": "field_160",
    "type": "Text",
    "desc": "—",
    "sample": "ตึก/อาคาร",
-   "unique": 12,
-   "nullPct": 66.7
+   "unique": 13,
+   "nullPct": 65.7
   },
   {
    "name": "project",
@@ -12651,7 +12816,7 @@
    "desc": "—",
    "sample": "4597",
    "unique": 14,
-   "nullPct": 66.7
+   "nullPct": 67.1
   },
   {
    "name": "field_61",
@@ -12659,7 +12824,7 @@
    "desc": "—",
    "sample": "4597",
    "unique": 14,
-   "nullPct": 66.7
+   "nullPct": 67.1
   },
   {
    "name": "phone_number4",
@@ -12667,7 +12832,7 @@
    "desc": "—",
    "sample": "0890000000",
    "unique": 10,
-   "nullPct": 76.8
+   "nullPct": 77.1
   },
   {
    "name": "field_90",
@@ -12675,7 +12840,7 @@
    "desc": "—",
    "sample": "0890000000",
    "unique": 10,
-   "nullPct": 76.8
+   "nullPct": 77.1
   },
   {
    "name": "value",
@@ -12715,7 +12880,7 @@
    "desc": "—",
    "sample": "ปั๊ม PT คลอง7",
    "unique": 11,
-   "nullPct": 84.1
+   "nullPct": 84.3
   },
   {
    "name": "field_55",
@@ -12723,23 +12888,23 @@
    "desc": "—",
    "sample": "ปั๊ม PT คลอง7",
    "unique": 11,
-   "nullPct": 84.1
+   "nullPct": 84.3
   },
   {
    "name": "start_of_construction1",
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-06-30T17:00:00Z",
-   "unique": 7,
-   "nullPct": 85.5
+   "unique": 8,
+   "nullPct": 84.3
   },
   {
    "name": "field_65",
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-06-30T17:00:00Z",
-   "unique": 7,
-   "nullPct": 85.5
+   "unique": 8,
+   "nullPct": 84.3
   },
   {
    "name": "Estimated_annual_income",
@@ -12762,16 +12927,16 @@
    "type": "Text",
    "desc": "—",
    "sample": "-",
-   "unique": 19,
-   "nullPct": 55.1
+   "unique": 20,
+   "nullPct": 54.3
   },
   {
    "name": "field_145",
    "type": "Text",
    "desc": "—",
    "sample": "-",
-   "unique": 19,
-   "nullPct": 55.1
+   "unique": 20,
+   "nullPct": 54.3
   },
   {
    "name": "Typr_Retail",
@@ -12826,30 +12991,46 @@
    "type": "Text",
    "desc": "วงเงินอื่น ๆ",
    "sample": "2 คู่หา",
-   "unique": 1,
-   "nullPct": 98.6
+   "unique": 2,
+   "nullPct": 97.1
   },
   {
    "name": "field_45",
    "type": "Text",
    "desc": "—",
    "sample": "2 คู่หา",
-   "unique": 1,
-   "nullPct": 98.6
+   "unique": 2,
+   "nullPct": 97.1
   },
   {
    "name": "status2_2",
    "type": "Text",
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
-   "unique": 1,
-   "nullPct": 98.6
+   "unique": 2,
+   "nullPct": 97.1
   },
   {
    "name": "field_63",
    "type": "Text",
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
+   "unique": 2,
+   "nullPct": 97.1
+  },
+  {
+   "name": "delivery_deadline",
+   "type": "Text",
+   "desc": "—",
+   "sample": "22/01/2569",
+   "unique": 1,
+   "nullPct": 98.6
+  },
+  {
+   "name": "field_59",
+   "type": "Text",
+   "desc": "—",
+   "sample": "22/01/2569",
    "unique": 1,
    "nullPct": 98.6
   }
@@ -12920,19 +13101,11 @@
    98.6
   ],
   [
-   "Other_limits",
+   "delivery_deadline",
    98.6
   ],
   [
-   "field_45",
-   98.6
-  ],
-  [
-   "status2_2",
-   98.6
-  ],
-  [
-   "field_63",
+   "field_59",
    98.6
   ],
   [
@@ -12952,6 +13125,22 @@
    97.1
   ],
   [
+   "Other_limits",
+   97.1
+  ],
+  [
+   "field_45",
+   97.1
+  ],
+  [
+   "status2_2",
+   97.1
+  ],
+  [
+   "field_63",
+   97.1
+  ],
+  [
    "Estimated_annual_income",
    95.7
   ],
@@ -12961,399 +13150,399 @@
   ],
   [
    "Comment_Approve",
-   87.0
+   87.1
   ],
   [
    "field_169",
-   87.0
-  ],
-  [
-   "start_of_construction1",
-   85.5
-  ],
-  [
-   "field_65",
-   85.5
+   87.1
   ],
   [
    "Typr_Distribution",
-   84.1
+   84.3
   ],
   [
    "field_4",
-   84.1
+   84.3
   ],
   [
    "past_project ",
-   84.1
+   84.3
   ],
   [
    "field_55",
-   84.1
+   84.3
+  ],
+  [
+   "start_of_construction1",
+   84.3
+  ],
+  [
+   "field_65",
+   84.3
   ],
   [
    "work_value3",
-   76.8
+   77.1
   ],
   [
    "field_67",
-   76.8
+   77.1
   ],
   [
    "phone_number4",
-   76.8
+   77.1
   ],
   [
    "field_90",
-   76.8
+   77.1
   ],
   [
    "future_project",
-   75.4
+   75.7
   ],
   [
    "field_66",
-   75.4
+   75.7
   ],
   [
    "project_location2",
-   75.4
+   75.7
   ],
   [
    "field_69",
-   75.4
+   75.7
   ],
   [
    "branch_manager",
-   75.4
+   75.7
   ],
   [
    "field_89",
-   75.4
+   75.7
   ],
   [
    "status3_3",
-   73.9
+   74.3
   ],
   [
    "field_68",
-   73.9
+   74.3
   ],
   [
    "referral",
-   73.9
+   74.3
   ],
   [
    "field_80",
-   73.9
+   74.3
   ],
   [
    "phone_number3",
-   72.5
+   72.9
   ],
   [
    "field_88",
-   72.5
+   72.9
   ],
   [
    "limit_other",
-   72.5
+   72.9
   ],
   [
    "field_35",
-   72.5
+   72.9
   ],
   [
    "Credit Action Timestamp",
-   69.6
+   70.0
   ],
   [
    "field_95",
-   69.6
+   70.0
   ],
   [
    "AppCredit",
-   69.6
+   70.0
   ],
   [
    "field_115",
-   69.6
+   70.0
   ],
   [
    "Approve History",
-   69.6
+   70.0
   ],
   [
    "field_167",
-   69.6
+   70.0
   ],
   [
    "Approve Up",
-   69.6
+   70.0
   ],
   [
    "field_168",
-   69.6
-  ],
-  [
-   "site1",
-   66.7
-  ],
-  [
-   "field_160",
-   66.7
+   70.0
   ],
   [
    "project",
-   66.7
+   67.1
   ],
   [
    "field_61",
-   66.7
+   67.1
   ],
   [
    "phone_number2",
-   65.2
+   65.7
   ],
   [
    "field_86",
-   65.2
+   65.7
+  ],
+  [
+   "site1",
+   65.7
+  ],
+  [
+   "field_160",
+   65.7
   ],
   [
    "Else",
-   55.1
+   54.3
   ],
   [
    "field_145",
-   55.1
+   54.3
   ],
   [
    "URL",
-   52.2
+   52.9
   ],
   [
    "int_id",
-   43.5
+   44.3
   ],
   [
    "field_165",
-   43.5
+   44.3
   ],
   [
    "Executive_history",
-   40.6
+   40.0
   ],
   [
    "field_81",
-   40.6
+   40.0
   ],
   [
    "loan_history",
-   36.2
+   35.7
   ],
   [
    "field_79",
-   36.2
+   35.7
   ],
   [
    "sale_branch1",
-   34.8
+   34.3
   ],
   [
    "field_85",
-   34.8
+   34.3
   ],
   [
    "Picture2",
-   33.3
+   34.3
   ],
   [
    "field_156",
-   33.3
+   34.3
   ],
   [
    "linkPicture",
-   31.9
+   32.9
   ],
   [
    "field_154",
-   31.9
+   32.9
   ],
   [
    "LinkPictureCustomer",
-   31.9
+   32.9
   ],
   [
    "field_155",
-   31.9
+   32.9
   ],
   [
    "transfer_of_ownership",
-   30.4
+   30.0
   ],
   [
    "field_60",
-   30.4
+   30.0
   ],
   [
    "work_value2",
-   30.4
+   30.0
   ],
   [
    "field_62",
-   30.4
+   30.0
   ],
   [
    "Status_2",
-   29.0
+   28.6
   ],
   [
    "field_50",
-   29.0
+   28.6
   ],
   [
    "work_value1",
-   29.0
+   28.6
   ],
   [
    "field_57",
-   29.0
+   28.6
   ],
   [
    "project_location1",
-   29.0
+   28.6
   ],
   [
    "field_64",
-   29.0
+   28.6
   ],
   [
    "employer",
-   27.5
+   27.1
   ],
   [
    "field_56",
-   27.5
+   27.1
   ],
   [
    "sale_representative",
-   23.2
+   22.9
   ],
   [
    "field_82",
-   23.2
+   22.9
   ],
   [
    "D31",
-   20.3
+   20.0
   ],
   [
    "field_87",
-   20.3
+   20.0
   ],
   [
    " other_property",
-   17.4
+   18.6
   ],
   [
    "field_49",
-   17.4
+   18.6
   ],
   [
    "Approve Edit",
-   17.4
+   17.1
   ],
   [
    "field_166",
-   17.4
+   17.1
   ],
   [
    "branch",
-   15.9
+   15.7
   ],
   [
    "field_7",
-   15.9
+   15.7
   ],
   [
    "land",
-   15.9
+   15.7
   ],
   [
    "field_47",
-   15.9
+   15.7
   ],
   [
    "field_98",
-   15.9
+   15.7
   ],
   [
    "ปรับเปลี่ยนโดย",
-   15.9
+   15.7
   ],
   [
    "field_99",
-   15.9
+   15.7
   ],
   [
    "Group",
-   15.9
+   15.7
   ],
   [
    "field_170",
-   15.9
+   15.7
   ],
   [
    "Type1",
-   14.5
+   14.3
   ],
   [
    "field_2",
-   14.5
+   14.3
   ],
   [
    "number_employees",
-   14.5
+   14.3
   ],
   [
    "field_52",
-   14.5
+   14.3
   ],
   [
    "phone_number1",
-   14.5
+   14.3
   ],
   [
    "field_84",
-   14.5
+   14.3
   ],
   [
    "establishment_area",
-   13.0
+   12.9
   ],
   [
    "field_51",
-   13.0
+   12.9
   ],
   [
    "Ownership1",
-   13.0
+   12.9
   ],
   [
    "field_54",
-   13.0
+   12.9
   ],
   [
    "type_teams",
-   5.8
+   5.7
   ],
   [
    "field_3",
-   5.8
+   5.7
   ],
   [
    "AppEditorLookupId",
-   5.8
+   5.7
   ],
   [
    "Data",
