@@ -4,7 +4,10 @@ Dashboard แบบ Single Page Application (HTML + CSS + JavaScript) ที่�
 SharePoint List **DemoApp** และอัปเดตอัตโนมัติทุกวันผ่าน GitHub Actions + GitHub Pages
 
 - แหล่งข้อมูล: <https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/AllItems.aspx>
-- ข้อมูลชุดปัจจุบัน: **42 รายการ • 50 คอลัมน์ • ช่วงวันที่ 2026-08-26 ถึง 2026-09-05**
+- ข้อมูลชุดปัจจุบัน: **67 รายการ • 50 คอลัมน์**
+
+> 🚀 **เพิ่งได้ไฟล์ .zip มา?** อ่าน [`docs/INSTALL_GITHUB.md`](docs/INSTALL_GITHUB.md) —
+> คู่มือติดตั้งบน GitHub + GitHub Pages แบบทีละขั้น (6 ขั้นตอน ~15 นาที)
 
 ---
 
@@ -84,6 +87,7 @@ DemoApp-Dashboard/
 │   ├── demoapp.csv                  ← ข้อมูล snapshot (ใช้กับโหมด --offline)
 │   └── demoapp.json                 ← ข้อมูลที่แปลงแล้ว (auto-generated)
 ├── docs/
+│   ├── INSTALL_GITHUB.md            ← 🚀 คู่มือติดตั้งบน GitHub + Pages (เริ่มที่นี่)
 │   ├── DATA_DICTIONARY.md           ← พจนานุกรมข้อมูลครบทั้ง 50 คอลัมน์
 │   ├── BUSINESS_ANALYSIS.md         ← Insight / Anomaly / Risk / ข้อเสนอแนะ
 │   ├── USER_GUIDE.md                ← คู่มือใช้งาน + ตัวอย่างการ Export
