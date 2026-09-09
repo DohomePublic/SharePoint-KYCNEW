@@ -74,10 +74,12 @@ DemoApp-Dashboard/
 │   └── workflows/
 │       └── update-dashboard.yml     ← GitHub Actions workflow (รันทุกวัน 07:00 น.)
 ├── scripts/
-│   ├── build_dashboard.py           ← ดึงข้อมูล Graph API + สร้าง index.html
-│   └── template.html                ← เทมเพลต Dashboard ต้นฉบับ (HTML/CSS/JS + คอมเมนต์)
+│   ├── build_dashboard.py           ← ดึงข้อมูล Graph API + สร้าง index.html / print.html
+│   ├── template.html                ← เทมเพลต Dashboard ต้นฉบับ (HTML/CSS/JS + คอมเมนต์)
+│   └── print_template.html          ← เทมเพลตฟอร์มพิมพ์ KYC (A4 2 หน้า)
 ├── templates/
-│   └── dashboard.html               ← สำเนาเทมเพลต (รองรับสคริปต์รุ่นเดิมที่อ้าง path นี้)
+│   ├── dashboard.html               ← สำเนาเทมเพลต (รองรับสคริปต์รุ่นเดิมที่อ้าง path นี้)
+│   └── print.html                   ← สำเนาเทมเพลตฟอร์มพิมพ์
 ├── data/
 │   ├── demoapp.csv                  ← ข้อมูล snapshot (ใช้กับโหมด --offline)
 │   └── demoapp.json                 ← ข้อมูลที่แปลงแล้ว (auto-generated)
@@ -85,8 +87,12 @@ DemoApp-Dashboard/
 │   ├── DATA_DICTIONARY.md           ← พจนานุกรมข้อมูลครบทั้ง 50 คอลัมน์
 │   ├── BUSINESS_ANALYSIS.md         ← Insight / Anomaly / Risk / ข้อเสนอแนะ
 │   ├── USER_GUIDE.md                ← คู่มือใช้งาน + ตัวอย่างการ Export
-│   └── mockup.svg                   ← Mockup / Wireframe ของหน้า Dashboard
+│   ├── KYC_FORM_MAPPING.md          ← คู่มือหน้าพิมพ์ + Mapping คอลัมน์ → ช่องในฟอร์ม
+│   ├── mockup.svg                   ← Mockup / Wireframe ของหน้า Dashboard
+│   ├── kyc_form_mockup.svg          ← ตัวอย่างฟอร์ม KYC หน้า 1 (ข้อมูลจริง)
+│   └── kyc_form_mockup_p2.svg       ← ตัวอย่างฟอร์ม KYC หน้า 2 (ข้อมูลจริง)
 ├── index.html                       ← Dashboard (auto-generated) ← GitHub Pages เสิร์ฟไฟล์นี้
+├── print.html                       ← ฟอร์มพิมพ์เอกสาร KYC A4 2 หน้า (auto-generated)
 └── README.md
 ```
 
@@ -183,6 +189,34 @@ python scripts/build_dashboard.py --diagnose
 | **Drill Down** | คลิกแถวในตาราง หรือคลิกแท่ง/ชิ้นกราฟ → เปิด Panel รายละเอียดทุกฟิลด์ + ลิงก์กลับ SharePoint |
 | **Export** | Excel (.xlsx 2 ชีต), CSV (มี BOM อ่านภาษาไทยได้), PDF (A4 แนวนอน), PNG ของ Dashboard |
 | **UX/UI** | Fluent Design (Pivot nav, depth shadow, Fluent color ramp), Responsive, Dark mode, รองรับปุ่ม Esc |
+| **หน้าพิมพ์ KYC** | `print.html` — ฟอร์มกระดาษ A4 2 หน้าตามแบบทางการของดูโฮม ดึงข้อมูลจากลิสต์อัตโนมัติ |
+
+---
+
+## 🖨️ หน้าพิมพ์เอกสาร KYC (`print.html`)
+
+ฟอร์ม **"เอกสาร KYC สำหรับลูกค้านิติบุคคลและองค์กร"** ขนาด **A4 แนวตั้ง 2 หน้า**
+สร้างอัตโนมัติพร้อม `index.html` ทุกครั้งที่ build
+
+**เข้าใช้งานได้ 2 ทาง**
+1. กดปุ่ม **🖨️ พิมพ์เอกสาร KYC** บนเมนูหลักของ Dashboard
+2. คลิกแถวในตาราง → หน้ารายละเอียด (drill-down) → ปุ่ม **🖨️ พิมพ์เอกสาร KYC**
+   (เปิดตรงรายการนั้นทันที ผ่าน `print.html?id=558`)
+
+**ความสามารถ**
+
+| หัวข้อ | รายละเอียด |
+|---|---|
+| ช่องข้อมูล | **83 ช่อง** แบ่งเป็น **13 ส่วน**<br>**หน้า 1** (ที่อยู่ปทุมธานี): ① ข้อมูลนิติบุคคล → ② ผู้ติดต่อ → ③ ธุรกิจ/ประมาณการรายได้/วงเงิน → ④ ทรัพย์สินค้ำประกัน → ⑤ พื้นที่ประกอบการ → ⑥ โครงการอดีต/ปัจจุบัน/อนาคต → ⑦ ข้อมูลการขายสินค้า → ⑧ แผนการตลาด<br>**หน้า 2** (ที่อยู่อาคารออรัตนชัย กรุงเทพฯ + สโลแกน "ครบ ถูก ดี"): ⑨ ประวัติผู้บริหาร/กิจการ + บุคคลอ้างอิง → ⑩ ข้อมูลสรุปคำขอ → ⑪ ผู้อนุมัติ 6 ตำแหน่ง (ชื่อ/เบอร์โทร/เวลาอนุมัติ) → ⑫ วงเงินที่สินเชื่ออนุมัติ (ดึงจากคอลัมน์ **`CraditApprove`**) + ลายเซ็น 3 ช่อง |
+| เลือกรายการ | ค้นหาด้วยชื่อบริษัท / รหัสสมาชิก / เลขทะเบียนนิติบุคคล |
+| แก้ไขก่อนพิมพ์ | ปุ่มเปิดโหมด `contenteditable` เติมช่องที่ SharePoint ยังไม่มีคอลัมน์ |
+| ช่องที่ไม่มีข้อมูล | แสดงเป็น **เส้นประ** ให้เขียนมือได้ |
+| บันทึก PDF | ปุ่ม "พิมพ์ / บันทึก PDF" → ชื่อไฟล์ตั้งอัตโนมัติ `KYC-{รหัสสมาชิก}-{ชื่อบริษัท}` |
+| ตัวอย่างหน้าจอ | `docs/kyc_form_mockup.svg` (หน้า 1) · `docs/kyc_form_mockup_p2.svg` (หน้า 2) |
+| ผลทดสอบ | JS **100/100** · grid ครบ 12 คอลัมน์ทุกบล็อก · พอดีกระดาษ หน้า 1 = 267.8/281 มม. (95.3%), หน้า 2 = 243.7/281 มม. (86.7%) |
+| Mapping คอลัมน์ | ดูตารางเต็มใน [`docs/KYC_FORM_MAPPING.md`](docs/KYC_FORM_MAPPING.md) |
+
+> ⚠️ ตั้งค่าเครื่องพิมพ์: A4 · Portrait · Scale 100% · เปิด **Background graphics**
 
 ---
 
