@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="794" height="1123" viewBox="0 0 794 1123" font-family="Sarabun, TH Sarabun New, Tahoma, sans-serif">
+<rect width="794" height="1123" fill="#fff"/>
+<rect x="0" y="0" width="794" height="1123" fill="none" stroke="#ccc"/>
+<text x="397.0" y="48" font-size="15" font-weight="bold" fill="#000" text-anchor="middle">บริษัท ดูโฮม จำกัด (มหาชน)</text>
+<text x="397.0" y="64" font-size="9.5" font-weight="normal" fill="#000" text-anchor="middle">เลขที่ 88/111 หมู่ที่ 3 ตำบลบางพูน อำเภอเมืองปทุมธานี จังหวัดปทุมธานี 12000</text>
+<rect x="722" y="36" width="34" height="17" fill="none" stroke="#000"/>
+<text x="739" y="48" font-size="10" font-weight="bold" fill="#000" text-anchor="middle">1/2</text>
+<rect x="30" y="74" width="734" height="22" fill="#e1dfdd" stroke="#000"/>
+<text x="397.0" y="89" font-size="13" font-weight="bold" fill="#000" text-anchor="middle">เอกสาร KYC สำหรับลูกค้านิติบุคคลและองค์กร</text>
+<rect x="30" y="104" width="734" height="16" fill="#e1dfdd" stroke="#000"/>
+<text x="35" y="116" font-size="10" font-weight="bold" fill="#000" text-anchor="start">1. ข้อมูลนิติบุคคล</text>
+<rect x="30" y="120" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="129.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">สาขา</text>
+<text x="34" y="141" font-size="9" font-weight="bold" fill="#000" text-anchor="start">UBOO</text>
+<rect x="213.5" y="120" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="217.5" y="129.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">รหัสสมาชิก</text>
+<text x="217.5" y="141" font-size="9" font-weight="bold" fill="#000" text-anchor="start">101703648</text>
+<rect x="397.0" y="120" width="367.0" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="401.0" y="129.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ชื่อนิติบุคคล</text>
+<text x="401.0" y="141" font-size="9" font-weight="bold" fill="#000" text-anchor="start">บริษัท ชาญธารา กรุ๊ป จำกัด</text>
+<rect x="30" y="146" width="367.0" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="155.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ชื่อนิติบุคคล (Eng)</text>
+<line x1="35" y1="165" x2="392.0" y2="165" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="397.0" y="146" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="401.0" y="155.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">เลขทะเบียนนิติบุคคล</text>
+<text x="401.0" y="167" font-size="9" font-weight="bold" fill="#000" text-anchor="start">0335564000908</text>
+<rect x="580.5" y="146" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="584.5" y="155.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">วันจดทะเบียน</text>
+<text x="584.5" y="167" font-size="9" font-weight="bold" fill="#000" text-anchor="start">02/09/2026</text>
+<rect x="30" y="172" width="734.0" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="181.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">เลขที่ / อาคาร / ถนน</text>
+<line x1="35" y1="191" x2="759.0" y2="191" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="30" y="198" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="207.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ตำบล / เขต</text>
+<text x="34" y="219" font-size="9" font-weight="bold" fill="#000" text-anchor="start">คูบ</text>
+<rect x="213.5" y="198" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="217.5" y="207.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">อำเภอ</text>
+<text x="217.5" y="219" font-size="9" font-weight="bold" fill="#000" text-anchor="start">น้ำเกลี้ยง</text>
+<rect x="397.0" y="198" width="122.33333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="401.0" y="207.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">จังหวัด</text>
+<text x="401.0" y="219" font-size="9" font-weight="bold" fill="#000" text-anchor="start">ศรีสะเกษ</text>
+<rect x="519.3333333333334" y="198" width="122.33333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="523.3333333333334" y="207.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">รหัสไปรษณีย์</text>
+<line x1="524.3333333333334" y1="217" x2="636.6666666666667" y2="217" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="641.6666666666667" y="198" width="122.33333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="645.6666666666667" y="207.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">เบอร์โทร / FAX</text>
+<text x="645.6666666666667" y="219" font-size="9" font-weight="bold" fill="#000" text-anchor="start">0654149789</text>
+<rect x="30" y="224" width="734" height="16" fill="#e1dfdd" stroke="#000"/>
+<text x="35" y="236" font-size="10" font-weight="bold" fill="#000" text-anchor="start">2. ข้อมูลผู้ติดต่อ</text>
+<rect x="30" y="240" width="305.8333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="249.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ชื่อผู้ติดต่อ (ลูกค้า)</text>
+<text x="34" y="261" font-size="9" font-weight="bold" fill="#000" text-anchor="start">นายพลวรรธน์ ชาญประดิษฐ์</text>
+<rect x="335.8333333333333" y="240" width="244.66666666666666" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="339.8333333333333" y="249.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ตำแหน่งงาน</text>
+<text x="339.8333333333333" y="261" font-size="9" font-weight="bold" fill="#000" text-anchor="start">ผูจัดการ</text>
+<rect x="580.5" y="240" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="584.5" y="249.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">เบอร์โทรผู้ติดต่อ</text>
+<text x="584.5" y="261" font-size="9" font-weight="bold" fill="#000" text-anchor="start">0654149789</text>
+<rect x="30" y="266" width="734" height="16" fill="#e1dfdd" stroke="#000"/>
+<text x="35" y="278" font-size="10" font-weight="bold" fill="#000" text-anchor="start">3. ประเภทธุรกิจ / ประมาณการรายได้ / วงเงินที่ขอสินเชื่อ</text>
+<rect x="30" y="282" width="489.3333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="291.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ประเภทธุรกิจ</text>
+<text x="34" y="303" font-size="9" font-weight="bold" fill="#000" text-anchor="start">รับเหมาก่อสร้าง, ร้านค้าปลีก/ส่ง(กรณีรายได้ต่ำกว่า 10 ล้านบาทต่อปี), ผู้รับเหมาส่วนราชการ</text>
+<rect x="519.3333333333333" y="282" width="244.66666666666666" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="523.3333333333333" y="291.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ประมาณการรายได้</text>
+<text x="523.3333333333333" y="303" font-size="9" font-weight="bold" fill="#000" text-anchor="start">10 - 50 ล้านบาท</text>
+<rect x="30" y="308" width="244.66666666666666" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="317.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">วงเงินที่ขอสินเชื่อกับดูโฮม (บาท)</text>
+<text x="270.66666666666663" y="329" font-size="9" font-weight="bold" fill="#000" text-anchor="end">500,000.00</text>
+<rect x="274.66666666666663" y="308" width="122.33333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="278.66666666666663" y="317.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">เครดิตเทอม (วัน)</text>
+<text x="335.8333333333333" y="329" font-size="9" font-weight="bold" fill="#000" text-anchor="middle">30</text>
+<rect x="396.99999999999994" y="308" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="400.99999999999994" y="317.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ประเภทหลักประกัน</text>
+<line x1="401.99999999999994" y1="327" x2="575.5" y2="327" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="580.5" y="308" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="584.5" y="317.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">มูลค่า (บาท)</text>
+<line x1="585.5" y1="327" x2="759.0" y2="327" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="30" y="334" width="244.66666666666666" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="343.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">วงเงินซัพพลายเออร์อื่น (บาท)</text>
+<text x="270.66666666666663" y="355" font-size="9" font-weight="bold" fill="#000" text-anchor="end">1,000,000.00</text>
+<rect x="274.66666666666663" y="334" width="122.33333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="278.66666666666663" y="343.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">เครดิตเทอม (วัน)</text>
+<text x="335.8333333333333" y="355" font-size="9" font-weight="bold" fill="#000" text-anchor="middle">30</text>
+<rect x="396.99999999999994" y="334" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="400.99999999999994" y="343.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ประเภทหลักประกัน</text>
+<line x1="401.99999999999994" y1="353" x2="575.5" y2="353" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="580.5" y="334" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="584.5" y="343.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">มูลค่า (บาท)</text>
+<line x1="585.5" y1="353" x2="759.0" y2="353" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="30" y="360" width="183.5" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="121.75" y="372.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">ประเภทวงเงิน</text>
+<rect x="213.5" y="360" width="183.5" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="305.25" y="372.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">จำนวนเงิน (บาท)</text>
+<rect x="397.0" y="360" width="183.5" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="488.75" y="372.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">ประเภทวงเงิน</text>
+<rect x="580.5" y="360" width="183.5" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="672.25" y="372.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">จำนวนเงิน (บาท)</text>
+<rect x="30" y="377" width="183.5" height="20" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="391.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">วงเงิน OD</text>
+<rect x="213.5" y="377" width="183.5" height="20" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="218.5" y1="389.0" x2="392.0" y2="389.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="397.0" y="377" width="183.5" height="20" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="401.0" y="391.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">วงเงินประกัน BG</text>
+<rect x="580.5" y="377" width="183.5" height="20" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="585.5" y1="389.0" x2="759.0" y2="389.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="30" y="397" width="183.5" height="20" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="411.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ธนาคาร</text>
+<rect x="213.5" y="397" width="183.5" height="20" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="218.5" y1="409.0" x2="392.0" y2="409.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="397.0" y="397" width="183.5" height="20" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="401.0" y="411.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ธนาคาร</text>
+<rect x="580.5" y="397" width="183.5" height="20" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="585.5" y1="409.0" x2="759.0" y2="409.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="30" y="417" width="183.5" height="20" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="431.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">วงเงินเช่าซื้อ / ลิสซิ่ง</text>
+<rect x="213.5" y="417" width="183.5" height="20" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="218.5" y1="429.0" x2="392.0" y2="429.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="397.0" y="417" width="183.5" height="20" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="401.0" y="431.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">วงเงินอื่น ๆ</text>
+<rect x="580.5" y="417" width="183.5" height="20" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="585.5" y1="429.0" x2="759.0" y2="429.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="30" y="437" width="183.5" height="20" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="451.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ธนาคาร</text>
+<rect x="213.5" y="437" width="183.5" height="20" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="218.5" y1="449.0" x2="392.0" y2="449.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="397.0" y="437" width="183.5" height="20" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="401.0" y="451.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ธนาคาร</text>
+<rect x="580.5" y="437" width="183.5" height="20" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="585.5" y1="449.0" x2="759.0" y2="449.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="30" y="457" width="734" height="16" fill="#e1dfdd" stroke="#000"/>
+<text x="35" y="469" font-size="10" font-weight="bold" fill="#000" text-anchor="start">4. ทรัพย์สินของนิติบุคคลที่สามารถนำมาเป็นหลักทรัพย์ค้ำประกันได้</text>
+<rect x="30" y="473" width="183.5" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="121.75" y="485.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">รายการ</text>
+<rect x="213.5" y="473" width="305.8333333333333" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="366.41666666666663" y="485.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">รายละเอียด</text>
+<rect x="519.3333333333333" y="473" width="244.66666666666666" height="17" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="641.6666666666666" y="485.5" font-size="8" font-weight="bold" fill="#000" text-anchor="middle">สถานะ</text>
+<rect x="30" y="490" width="183.5" height="22" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="505.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ที่ดิน</text>
+<rect x="213.5" y="490" width="305.8333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="218.5" y1="503.0" x2="514.3333333333333" y2="503.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="519.3333333333333" y="490" width="244.66666666666666" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="523.3333333333333" y="505.0" font-size="9" font-weight="bold" fill="#000" text-anchor="start">ปลอดภาระ</text>
+<rect x="30" y="512" width="183.5" height="22" fill="#f3f2f1" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="527.0" font-size="8.5" font-weight="bold" fill="#000" text-anchor="start">ทรัพย์สินอื่น</text>
+<rect x="213.5" y="512" width="305.8333333333333" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<line x1="218.5" y1="525.0" x2="514.3333333333333" y2="525.0" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="519.3333333333333" y="512" width="244.66666666666666" height="22" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="523.3333333333333" y="527.0" font-size="9" font-weight="bold" fill="#000" text-anchor="start">ปลอดภาระ</text>
+<rect x="30" y="534" width="734" height="16" fill="#e1dfdd" stroke="#000"/>
+<text x="35" y="546" font-size="10" font-weight="bold" fill="#000" text-anchor="start">5. พื้นที่ประกอบการ</text>
+<rect x="30" y="550" width="305.8333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="34" y="559.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">พื้นที่ประกอบการ</text>
+<line x1="35" y1="569" x2="330.8333333333333" y2="569" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="335.8333333333333" y="550" width="183.5" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="339.8333333333333" y="559.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">ประเภทประกอบการ</text>
+<line x1="340.8333333333333" y1="569" x2="514.3333333333333" y2="569" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="519.3333333333333" y="550" width="122.33333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="523.3333333333333" y="559.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">จำนวนพนักงาน</text>
+<line x1="524.3333333333333" y1="569" x2="636.6666666666666" y2="569" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<rect x="641.6666666666666" y="550" width="122.33333333333333" height="26" fill="#fff" stroke="#000" stroke-width="0.7"/>
+<text x="645.6666666666666" y="559.5" font-size="7.2" font-weight="normal" fill="#3b3a39" text-anchor="start">กรรมสิทธิ์</text>
+<line x1="646.6666666666666" y1="569" x2="759.0" y2="569" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="2,2"/>
+<line x1="30" y1="582" x2="764" y2="582" stroke="#000" stroke-width="0.7"/>
+<text x="30" y="593" font-size="7.5" font-weight="normal" fill="#3b3a39" text-anchor="start">เลขที่คำขอ 558 · พิมพ์เมื่อ 09/09/2026 10:17</text>
+<text x="764" y="593" font-size="7.5" font-weight="normal" fill="#3b3a39" text-anchor="end">หน้า 1 จาก 2</text>
+<text x="30" y="1109" font-size="8.5" font-weight="normal" fill="#605e5c" text-anchor="start">ตัวอย่างผลลัพธ์จริงจาก print.html — ช่องเส้นประคือข้อมูลที่ SharePoint List ยังไม่มี (กรอกเพิ่มหรือเขียนมือได้)</text>
+</svg>
