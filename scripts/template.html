@@ -234,6 +234,8 @@ table.dict th{background:var(--brand-light)}
   <button data-page="explore">ค้นหา / ตาราง</button>
   <button data-page="insight">Insight &amp; ความเสี่ยง</button>
   <button data-page="dict">Data Dictionary</button>
+  <!-- ลิงก์ไปหน้าพิมพ์ฟอร์ม KYC (คนละไฟล์ เพื่อให้ CSS สำหรับพิมพ์ไม่ชนกับ Dashboard) -->
+  <button onclick="window.open('print.html','_blank')">🖨️ พิมพ์เอกสาร KYC</button>
 </nav>
 
 <main>
@@ -382,8 +384,10 @@ table.dict th{background:var(--brand-light)}
   <h2 id="pTitle"></h2>
   <div class="muted" id="pSub"></div>
   <div class="kv" id="pBody"></div>
-  <div style="margin-top:18px">
+  <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap">
     <a class="btn" id="pLink" target="_blank">เปิดรายการนี้ใน SharePoint</a>
+    <!-- เปิดหน้าพิมพ์เอกสาร KYC ของรายการนี้โดยตรง (ส่ง id ไปทาง query string) -->
+    <a class="btn" id="pPrint" target="_blank">🖨️ พิมพ์เอกสาร KYC</a>
   </div>
 </aside>
 
@@ -664,6 +668,7 @@ function openPanel(r){
     .filter(k => raw[k] !== null && raw[k] !== '' && k !== '_ID')
     .map(k => `<div>${k}</div><div>${String(raw[k])}</div>`).join('');
   document.getElementById('pLink').href = itemUrl(r.id);
+  document.getElementById('pPrint').href = 'print.html?id=' + encodeURIComponent(r.id);
   document.getElementById('panel').classList.add('show');
   document.getElementById('mask').classList.add('show');
 }
@@ -848,7 +853,8 @@ function init(){
   ['fStatus','fType','fTeam','fProv','fFrom','fTo','fSort','fDir'].forEach(id=>
     document.getElementById(id).addEventListener('change', applyFilters));
   document.getElementById('granularity').addEventListener('change', renderTrend);
-  document.querySelectorAll('nav.pivot button').forEach(b=> b.onclick = ()=> go(b.dataset.page));
+  // ผูกเฉพาะปุ่มที่มี data-page เท่านั้น (ปุ่ม "พิมพ์เอกสาร KYC" ใช้ onclick ของตัวเองเปิดไฟล์อื่น)
+  document.querySelectorAll('nav.pivot button[data-page]').forEach(b=> b.onclick = ()=> go(b.dataset.page));
   document.getElementById('themeBtn').onclick = ()=>{
     document.body.classList.toggle('dark');
     document.getElementById('themeBtn').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
