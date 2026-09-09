@@ -478,35 +478,11 @@ body.editmode [contenteditable="true"]{background:var(--edit);border-radius:2px;
       <div class="cell dense c2"><div class="vl" data-f="makerPhone" data-edit="1"></div></div>
       <div class="cell dense c2 ctr"><div class="vl" data-f="makerTime"></div></div>
 
-      <!-- 2) ผู้แทนขาย / ผจก.D2 -->
-      <div class="cell dense lbl c4">ผู้แทนขาย / ผจก. D2</div>
-      <div class="cell dense c4"><div class="vl" data-f="d2Name" data-edit="1"></div></div>
-      <div class="cell dense c2"><div class="vl" data-f="d2Phone" data-edit="1"></div></div>
-      <div class="cell dense c2 ctr"><div class="vl" data-f="d2Time" data-edit="1"></div></div>
-
-      <!-- 3) ฝ่ายขาย Backoffice -->
-      <div class="cell dense lbl c4">ฝ่ายขาย Backoffice</div>
-      <div class="cell dense c4"><div class="vl" data-f="boName" data-edit="1"></div></div>
-      <div class="cell dense c2"><div class="vl" data-f="boPhone" data-edit="1"></div></div>
-      <div class="cell dense c2 ctr"><div class="vl" data-f="boTime" data-edit="1"></div></div>
-
-      <!-- 4) D3 / ผู้จัดการสาขา -->
-      <div class="cell dense lbl c4">D3 / ผู้จัดการสาขา</div>
-      <div class="cell dense c4"><div class="vl" data-f="d3Name" data-edit="1"></div></div>
-      <div class="cell dense c2"><div class="vl" data-f="d3Phone" data-edit="1"></div></div>
-      <div class="cell dense c2 ctr"><div class="vl" data-f="d3Time" data-edit="1"></div></div>
-
-      <!-- 5) ผู้จัดการสาขา / ผจก.ผน. -->
-      <div class="cell dense lbl c4">ผู้จัดการสาขา / ผจก. ผน.</div>
-      <div class="cell dense c4"><div class="vl" data-f="mgrName" data-edit="1"></div></div>
-      <div class="cell dense c2"><div class="vl" data-f="mgrPhone" data-edit="1"></div></div>
-      <div class="cell dense c2 ctr"><div class="vl" data-f="mgrTime" data-edit="1"></div></div>
-
-      <!-- 6) (อาวุโส) สนับสนุนงานขาย POS -->
-      <div class="cell dense lbl c4">(อาวุโส) สนับสนุนงานขาย POS</div>
-      <div class="cell dense c4"><div class="vl" data-f="posName" data-edit="1"></div></div>
-      <div class="cell dense c2"><div class="vl" data-f="posPhone" data-edit="1"></div></div>
-      <div class="cell dense c2 ctr"><div class="vl" data-f="posTime" data-edit="1"></div></div>
+      <!-- 2) เจ้าหน้าที่สินเชื่อพิจารณา ← คอลัมน์ AppCredit -->
+      <div class="cell dense lbl c4">เจ้าหน้าที่สินเชื่อพิจารณา</div>
+      <div class="cell dense c4"><div class="vl" data-f="appCredit" data-edit="1"></div></div>
+      <div class="cell dense c2"><div class="vl" data-f="appCreditPhone" data-edit="1"></div></div>
+      <div class="cell dense c2 ctr"><div class="vl" data-f="appCreditTime" data-edit="1"></div></div>
     </div>
 
     <!-- ---------- ส่วนที่ 12: วงเงินที่สินเชื่ออนุมัติ ----------
@@ -729,12 +705,14 @@ function mapRow(r){
     /* --- ส่วนที่ 4 ทรัพย์สินค้ำประกัน ---
        ที่ดิน          ← คอลัมน์ `land`
        สถานะ (ที่ดิน)  ← คอลัมน์ `Status_1`
-       ทรัพย์สินอื่น    ← คอลัมน์ `other_property`  (ชื่อจริงในลิสต์มีช่องว่างนำหน้า
-                         คือ ' other_property' — normKey() ตัดช่องว่างให้แล้ว)
+       ทรัพย์สินอื่น    ← คอลัมน์ `Other_limits`
+                         (สำรอง: `other_property` ซึ่งชื่อจริงในลิสต์มีช่องว่างนำหน้า
+                          คือ ' other_property' — normKey() ตัดช่องว่างให้แล้ว)
        สถานะ (อื่น)    ← คอลัมน์ `Status_2` */
     land:                 raw(r,'land','Land') || r.land || '',
     landStatus:           raw(r,'Status_1','status1','land_status'),
-    otherProperty:        raw(r,'other_property','other property','OtherProperty'),
+    otherProperty:        raw(r,'Other_limits','other_limits','OtherLimits',
+                                'other_property','other property','OtherProperty'),
     otherPropertyStatus:  raw(r,'Status_2','status2','other_property_status'),
 
     /* --- ส่วนที่ 5 พื้นที่ประกอบการ ---
@@ -794,31 +772,19 @@ function mapRow(r){
     fullAddress:   fullAddr(r),
 
     /* --- ส่วนที่ 11 ผู้อนุมัติเอกสารเปิดวงเงินลูกค้าใหม่ ---
-       Owner ในลิสต์ = ผู้ยื่นคำขอ (ผู้ทำรายการ / ผู้แทนขาย D2)
-       ตำแหน่งอื่น ๆ ถ้าลิสต์ยังไม่มีคอลัมน์ จะเว้นเส้นประให้เซ็น/เขียนมือ */
+       ตารางนี้เหลือเพียง 2 แถวตามที่ผู้ใช้กำหนด:
+         1) ผู้ทำรายการ              ← คอลัมน์ Owner (ผู้ยื่นคำขอในลิสต์)
+         2) เจ้าหน้าที่สินเชื่อพิจารณา ← คอลัมน์ AppCredit
+       (ตำแหน่ง ผู้แทนขาย D2 / Backoffice / D3 / ผจก.สาขา / POS ถูกตัดออกแล้ว) */
     maker:      r.owner || raw(r,'Maker','Author','Created_x0020_By'),
     makerPhone: raw(r,'maker_phone','MakerPhone','owner_phone'),
     makerTime:  thDate(r.ts),
 
-    d2Name:  raw(r,'D2','Sales_D2','sale_representative') || r.owner || '',
-    d2Phone: raw(r,'D2_phone','d2_phone'),
-    d2Time:  thDate(raw(r,'D2_time','d2_approve_time')),
-
-    boName:  raw(r,'Backoffice','back_office','BackOffice'),
-    boPhone: raw(r,'Backoffice_phone','back_office_phone'),
-    boTime:  thDate(raw(r,'Backoffice_time','back_office_time')),
-
-    d3Name:  raw(r,'D3','Manager_D3','manager_d3'),
-    d3Phone: raw(r,'D3_phone','d3_phone'),
-    d3Time:  thDate(raw(r,'D3_time','d3_approve_time','Approve_time')),
-
-    mgrName:  raw(r,'Branch_Manager','branch_manager','Manager'),
-    mgrPhone: raw(r,'Manager_phone','branch_manager_phone'),
-    mgrTime:  thDate(raw(r,'Manager_time','branch_manager_time')),
-
-    posName:  raw(r,'POS_support','pos_support','Sale_support','GM'),
-    posPhone: raw(r,'POS_phone','pos_phone'),
-    posTime:  thDate(raw(r,'POS_time','pos_time')),
+    /* เจ้าหน้าที่สินเชื่อพิจารณา ← คอลัมน์ `AppCredit` ของลิสต์ DemoApp */
+    appCredit:      raw(r,'AppCredit','App_Credit','appcredit',
+                          'Credit_Officer','credit_officer'),
+    appCreditPhone: raw(r,'AppCredit_phone','app_credit_phone','credit_officer_phone'),
+    appCreditTime:  thDate(raw(r,'AppCredit_time','app_credit_time','Approve_time')),
 
     /* --- ส่วนที่ 12 วงเงินที่สินเชื่ออนุมัติ ---
        ⚠️ ต้องดึงจากคอลัมน์ "CraditApprove" เท่านั้น (สะกดตามชื่อจริงในลิสต์ DemoApp)
