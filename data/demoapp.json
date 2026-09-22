@@ -1,7 +1,7 @@
 {
- "generatedAt": "2026-09-22 12:20 น. (เวลาไทย)",
+ "generatedAt": "2026-09-22 15:28 น. (เวลาไทย)",
  "listUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp",
- "rowCount": 237,
+ "rowCount": 241,
  "columns": [
   "@odata.etag",
   "Title",
@@ -204,12 +204,12 @@
   "field_5",
   "1credittime",
   "field_137",
+  "AppAssCredit",
+  "field_117",
   "Product type_checkbox",
   "field_75",
   "AdditionalNotes",
   "field_171",
-  "AppAssCredit",
-  "field_117",
   "Other_limits",
   "field_45",
   "status2_2",
@@ -7912,7 +7912,7 @@
    "distribution": null,
    "branch": "RSOO",
    "ts": "2026-09-07T07:36:56Z",
-   "status": "รอการพิจารณาเบื้องต้น",
+   "status": "ผ่านการพิจารณาเบื้องต้น",
    "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
    "limitNum": 1000000.0,
    "limitOther": 1000000.0,
@@ -7926,7 +7926,7 @@
    "land": "ปลอดภาระ",
    "contact": "หมิว",
    "_raw": {
-    "@odata.etag": "\"ba353315-4ff4-4574-a9a5-b4143a733b46,12\"",
+    "@odata.etag": "\"ba353315-4ff4-4574-a9a5-b4143a733b46,32\"",
     "Title": "บริษัท จํากัด",
     "LinkTitle": "บริษัท จํากัด",
     "Customer_id": "101706080",
@@ -7941,12 +7941,14 @@
     "field_7": "RSOO",
     "Request TimeStamp": "2026-09-07T07:36:56Z",
     "field_8": "2026-09-07T07:36:56Z",
-    "Status": "รอการพิจารณาเบื้องต้น",
-    "field_9": "รอการพิจารณาเบื้องต้น",
+    "Status": "ผ่านการพิจารณาเบื้องต้น",
+    "field_9": "ผ่านการพิจารณาเบื้องต้น",
     "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
     "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
     "limit": "1,000,000",
     "field_12": "1,000,000",
+    "1CreditApprove": "ผ่านการพิจารณาเบื้องต้น",
+    "field_15": "ผ่านการพิจารณาเบื้องต้น",
     "Owner": "เกตุ เกตุศณี SG RS",
     "field_16": "เกตุ เกตุศณี SG RS",
     "Data": "08/28/2011 17:00:00",
@@ -8021,6 +8023,8 @@
     "field_87": "D3-RS@dohome.co.th",
     "timeStartcreate": "07/09/2026 14:36",
     "field_92": "07/09/2026 14:36",
+    "Credit Action Timestamp": "09/22/2026 06:13:01",
+    "field_95": "09/22/2026 06:13:01",
     "สร้างเมื่อ": "2026-09-07T07:36:57Z",
     "field_98": "07/09/2026 14:36",
     "ปรับเปลี่ยนโดย": "PowerPlatForm",
@@ -8033,6 +8037,10 @@
     "field_106": "12120",
     "CreateDocument": "เกตุ เกตุศณี SG RS",
     "field_112": "เกตุ เกตุศณี SG RS",
+    "AppCredit": "เฟิร์น พัชรภา AC HQ",
+    "field_115": "เฟิร์น พัชรภา AC HQ",
+    "AppAssCredit": "Patcharapa.Sri@dohome.co.th",
+    "field_117": "Patcharapa.Sri@dohome.co.th",
     "NumberRespresentative": "1076994",
     "field_119": "1076994",
     "Else": "มาดามวัลเลย์ เขาใหญ่",
@@ -8047,19 +8055,21 @@
     "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/593/04_ภาพเข้าพบลูกค้า-87357.jpg",
     "Approve Edit": "gadsanee.aum@dohome.co.th",
     "field_166": "gadsanee.aum@dohome.co.th",
-    "Group": "รับเหมาก่อสร้าง",
-    "field_170": "รับเหมาก่อสร้าง",
+    "Approve History": "<div class=\"ExternalClass7A42FF7668C44D45B67137F0846E8F6E\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22T06&#58;13&#58;01.822Z · เฟิร์น พัชรภา AC HQ (Patcharapa.Sri@dohome.co.th)</div>",
+    "field_167": "<div class=\"ExternalClass7A42FF7668C44D45B67137F0846E8F6E\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22T06&#58;13&#58;01.822Z · เฟิร์น พัชรภา AC HQ (Patcharapa.Sri@dohome.co.th)</div>",
+    "Group": "Waiting Approve",
+    "field_170": "Waiting Approve",
     "URL": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/593/05_ผลตรวจคดี-191980_map_20231016143753.webp",
     "id": "593",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-09-07T07:50:49Z",
-    "Modified": "2026-09-07T07:50:49Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T06:23:30Z",
+    "Modified": "2026-09-22T06:23:30Z",
     "Created": "2026-09-07T07:36:57Z",
     "AuthorLookupId": "3894",
     "EditorLookupId": "18",
-    "เวอร์ชัน": "12.0",
-    "_UIVersionString": "12.0",
+    "เวอร์ชัน": "32.0",
+    "_UIVersionString": "32.0",
     "สิ่งที่แนบมา": true,
     "Attachments": true,
     "ชื่อเรื่อง": "บริษัท จํากัด",
@@ -8072,7 +8082,7 @@
     "AppEditorLookupId": "40",
     "_ID": 593
    },
-   "_search": "\"ba353315-4ff4-4574-a9a5-b4143a733b46,12\" บริษัท จํากัด บริษัท จํากัด 101706080 101706080 lead lead store operation store operation chantmitr contractor company limited chantmitr contractor company limited rsoo rsoo 2026-09-07t07:36:56z 2026-09-07t07:36:56z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 1,000,000 1,000,000 เกตุ เกตุศณี sg rs เกตุ เกตุศณี sg rs 08/28/2011 17:00:00 08/28/2011 17:00:00 0135554011925 0135554011925 คลองสี่ คลองสี่ คลองหลวง คลองหลวง ปทุมธานี ปทุมธานี 021650509 021650509 บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด รับเหมาก่อสร้าง รับเหมาก่อสร้าง หมิว หมิว จัดซื้อ จัดซื้อ 021650509 021650509 30 30 1,000,000 1,000,000 30 30 ปลอดภาระ ปลอดภาระ รอดำเนินการ รอดำเนินการ ปลอดภาระ ปลอดภาระ ลงนาม ลงนาม 3,200 ตารางเมตร 3,200 ตารางเมตร 30 30 เป็นเจ้าของ เป็นเจ้าของ มาดามวัลเลย์ มาดามวัลเลย์ 5,000,000 5,000,000 มี มี 5,000,000 5,000,000 เขาใหญ่ เขาใหญ่ ร้านวันดี ร้านวันดี 17,000,000 17,000,000 ลงนาม ลงนาม อยุธยา อยุธยา ผู้นำด้านก่อสร้างโรงงานและโกดัง\nด้วยมาตรฐานวิศวกรรมที่คุ้มค่ากว่า 20 ปี\n\n“บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด (cmc) ก่อตั้งขึ้นด้วยปณิธานที่จะยกระดับงานก่อสร้างอุตสาหกรรมไทย ให้มีมาตรฐานสากล ในราคาที่ผู้ประกอบการเข้าถึงได้\n\nจากประสบการณ์กว่า 20 ปี ของทีมวิศวกรผู้ก่อตั้ง เราเชี่ยวชาญพิเศษในงานก่อสร้างโรงงาน โกดัง และอาคารโครงสร้างเหล็ก (peb) ครอบคลุมพื้นที่กรุงเทพฯ ปริมณฑล และเขตระเบียงเศรษฐกิจภาคตะวันออก (ชลบุรี, ระยอง) มุ่งเน้นการส่งมอบงานคุณภาพ ตรงเวลา และบริหารงบประมาณอย่างคุ้มค่าที่สุด” ผู้นำด้านก่อสร้างโรงงานและโกดัง\nด้วยมาตรฐานวิศวกรรมที่คุ้มค่ากว่า 20 ปี\n\n“บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด (cmc) ก่อตั้งขึ้นด้วยปณิธานที่จะยกระดับงานก่อสร้างอุตสาหกรรมไทย ให้มีมาตรฐานสากล ในราคาที่ผู้ประกอบการเข้าถึงได้\n\nจากประสบการณ์กว่า 20 ปี ของทีมวิศวกรผู้ก่อตั้ง เราเชี่ยวชาญพิเศษในงานก่อสร้างโรงงาน โกดัง และอาคารโครงสร้างเหล็ก (peb) ครอบคลุมพื้นที่กรุงเทพฯ ปริมณฑล และเขตระเบียงเศรษฐกิจภาคตะวันออก (ชลบุรี, ระยอง) มุ่งเน้นการส่งมอบงานคุณภาพ ตรงเวลา และบริหารงบประมาณอย่างคุ้มค่าที่สุด” ผู้นำด้านก่อสร้างโรงงานและโกดัง\nด้วยมาตรฐานวิศวกรรมที่คุ้มค่ากว่า 20 ปี\n\n“บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด (cmc) ก่อตั้งขึ้นด้วยปณิธานที่จะยกระดับงานก่อสร้างอุตสาหกรรมไทย ให้มีมาตรฐานสากล ในราคาที่ผู้ประกอบการเข้าถึงได้\n\nจากประสบการณ์กว่า 20 ปี ของทีมวิศวกรผู้ก่อตั้ง เราเชี่ยวชาญพิเศษในงานก่อสร้างโรงงาน โกดัง และอาคารโครงสร้างเหล็ก (peb) ครอบคลุมพื้นที่กรุงเทพฯ ปริมณฑล และเขตระเบียงเศรษฐกิจภาคตะวันออก (ชลบุรี, ระยอง) มุ่งเน้นการส่งมอบงานคุณภาพ ตรงเวลา และบริหารงบประมาณอย่างคุ้มค่าที่สุด” ผู้นำด้านก่อสร้างโรงงานและโกดัง\nด้วยมาตรฐานวิศวกรรมที่คุ้มค่ากว่า 20 ปี\n\n“บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด (cmc) ก่อตั้งขึ้นด้วยปณิธานที่จะยกระดับงานก่อสร้างอุตสาหกรรมไทย ให้มีมาตรฐานสากล ในราคาที่ผู้ประกอบการเข้าถึงได้\n\nจากประสบการณ์กว่า 20 ปี ของทีมวิศวกรผู้ก่อตั้ง เราเชี่ยวชาญพิเศษในงานก่อสร้างโรงงาน โกดัง และอาคารโครงสร้างเหล็ก (peb) ครอบคลุมพื้นที่กรุงเทพฯ ปริมณฑล และเขตระเบียงเศรษฐกิจภาคตะวันออก (ชลบุรี, ระยอง) มุ่งเน้นการส่งมอบงานคุณภาพ ตรงเวลา และบริหารงบประมาณอย่างคุ้มค่าที่สุด” gadsanee.aum@dohome.co.th gadsanee.aum@dohome.co.th gm-rs@dohome.co.th gm-rs@dohome.co.th d3-rs@dohome.co.th d3-rs@dohome.co.th 07/09/2026 14:36 07/09/2026 14:36 2026-09-07t07:36:57z 07/09/2026 14:36 powerplatform powerplatform เกตุ เกตุศณี sg rs เกตุ เกตุศณี sg rs 55/15 ม.5 ปทุมธานี คลองหลวง คลองสี่ 12120 55/15 ม.5 ปทุมธานี คลองหลวง คลองสี่ 12120 12120 12120 เกตุ เกตุศณี sg rs เกตุ เกตุศณี sg rs 1076994 1076994 มาดามวัลเลย์ เขาใหญ่ มาดามวัลเลย์ เขาใหญ่ https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/01_สัญญางานระหว่างทำ-สัญญางาน บริษัทฉันท์มิตร_compressed.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/01_สัญญางานระหว่างทำ-สัญญางาน บริษัทฉันท์มิตร_compressed.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/02_ภาพถ่ายหน้างานปัจจุบัน-รูปถ่ายหน้างาน บริษัทฉันทฺมิตร.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/02_ภาพถ่ายหน้างานปัจจุบัน-รูปถ่ายหน้างาน บริษัทฉันทฺมิตร.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/03_ภพ0ปีก่อนหน้า-191980_map_20231016143753.webp https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/03_ภพ0ปีก่อนหน้า-191980_map_20231016143753.webp https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/04_ภาพเข้าพบลูกค้า-87357.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/04_ภาพเข้าพบลูกค้า-87357.jpg gadsanee.aum@dohome.co.th gadsanee.aum@dohome.co.th รับเหมาก่อสร้าง รับเหมาก่อสร้าง https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/05_ผลตรวจคดี-191980_map_20231016143753.webp 593 item item 2026-09-07t07:50:49z 2026-09-07t07:50:49z 2026-09-07t07:36:57z 3894 18 12.0 12.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 593"
+   "_search": "\"ba353315-4ff4-4574-a9a5-b4143a733b46,32\" บริษัท จํากัด บริษัท จํากัด 101706080 101706080 lead lead store operation store operation chantmitr contractor company limited chantmitr contractor company limited rsoo rsoo 2026-09-07t07:36:56z 2026-09-07t07:36:56z ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 1,000,000 1,000,000 ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น เกตุ เกตุศณี sg rs เกตุ เกตุศณี sg rs 08/28/2011 17:00:00 08/28/2011 17:00:00 0135554011925 0135554011925 คลองสี่ คลองสี่ คลองหลวง คลองหลวง ปทุมธานี ปทุมธานี 021650509 021650509 บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด รับเหมาก่อสร้าง รับเหมาก่อสร้าง หมิว หมิว จัดซื้อ จัดซื้อ 021650509 021650509 30 30 1,000,000 1,000,000 30 30 ปลอดภาระ ปลอดภาระ รอดำเนินการ รอดำเนินการ ปลอดภาระ ปลอดภาระ ลงนาม ลงนาม 3,200 ตารางเมตร 3,200 ตารางเมตร 30 30 เป็นเจ้าของ เป็นเจ้าของ มาดามวัลเลย์ มาดามวัลเลย์ 5,000,000 5,000,000 มี มี 5,000,000 5,000,000 เขาใหญ่ เขาใหญ่ ร้านวันดี ร้านวันดี 17,000,000 17,000,000 ลงนาม ลงนาม อยุธยา อยุธยา ผู้นำด้านก่อสร้างโรงงานและโกดัง\nด้วยมาตรฐานวิศวกรรมที่คุ้มค่ากว่า 20 ปี\n\n“บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด (cmc) ก่อตั้งขึ้นด้วยปณิธานที่จะยกระดับงานก่อสร้างอุตสาหกรรมไทย ให้มีมาตรฐานสากล ในราคาที่ผู้ประกอบการเข้าถึงได้\n\nจากประสบการณ์กว่า 20 ปี ของทีมวิศวกรผู้ก่อตั้ง เราเชี่ยวชาญพิเศษในงานก่อสร้างโรงงาน โกดัง และอาคารโครงสร้างเหล็ก (peb) ครอบคลุมพื้นที่กรุงเทพฯ ปริมณฑล และเขตระเบียงเศรษฐกิจภาคตะวันออก (ชลบุรี, ระยอง) มุ่งเน้นการส่งมอบงานคุณภาพ ตรงเวลา และบริหารงบประมาณอย่างคุ้มค่าที่สุด” ผู้นำด้านก่อสร้างโรงงานและโกดัง\nด้วยมาตรฐานวิศวกรรมที่คุ้มค่ากว่า 20 ปี\n\n“บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด (cmc) ก่อตั้งขึ้นด้วยปณิธานที่จะยกระดับงานก่อสร้างอุตสาหกรรมไทย ให้มีมาตรฐานสากล ในราคาที่ผู้ประกอบการเข้าถึงได้\n\nจากประสบการณ์กว่า 20 ปี ของทีมวิศวกรผู้ก่อตั้ง เราเชี่ยวชาญพิเศษในงานก่อสร้างโรงงาน โกดัง และอาคารโครงสร้างเหล็ก (peb) ครอบคลุมพื้นที่กรุงเทพฯ ปริมณฑล และเขตระเบียงเศรษฐกิจภาคตะวันออก (ชลบุรี, ระยอง) มุ่งเน้นการส่งมอบงานคุณภาพ ตรงเวลา และบริหารงบประมาณอย่างคุ้มค่าที่สุด” ผู้นำด้านก่อสร้างโรงงานและโกดัง\nด้วยมาตรฐานวิศวกรรมที่คุ้มค่ากว่า 20 ปี\n\n“บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด (cmc) ก่อตั้งขึ้นด้วยปณิธานที่จะยกระดับงานก่อสร้างอุตสาหกรรมไทย ให้มีมาตรฐานสากล ในราคาที่ผู้ประกอบการเข้าถึงได้\n\nจากประสบการณ์กว่า 20 ปี ของทีมวิศวกรผู้ก่อตั้ง เราเชี่ยวชาญพิเศษในงานก่อสร้างโรงงาน โกดัง และอาคารโครงสร้างเหล็ก (peb) ครอบคลุมพื้นที่กรุงเทพฯ ปริมณฑล และเขตระเบียงเศรษฐกิจภาคตะวันออก (ชลบุรี, ระยอง) มุ่งเน้นการส่งมอบงานคุณภาพ ตรงเวลา และบริหารงบประมาณอย่างคุ้มค่าที่สุด” ผู้นำด้านก่อสร้างโรงงานและโกดัง\nด้วยมาตรฐานวิศวกรรมที่คุ้มค่ากว่า 20 ปี\n\n“บริษัท ฉันท์มิตร คอนแทรคเตอร์ จำกัด (cmc) ก่อตั้งขึ้นด้วยปณิธานที่จะยกระดับงานก่อสร้างอุตสาหกรรมไทย ให้มีมาตรฐานสากล ในราคาที่ผู้ประกอบการเข้าถึงได้\n\nจากประสบการณ์กว่า 20 ปี ของทีมวิศวกรผู้ก่อตั้ง เราเชี่ยวชาญพิเศษในงานก่อสร้างโรงงาน โกดัง และอาคารโครงสร้างเหล็ก (peb) ครอบคลุมพื้นที่กรุงเทพฯ ปริมณฑล และเขตระเบียงเศรษฐกิจภาคตะวันออก (ชลบุรี, ระยอง) มุ่งเน้นการส่งมอบงานคุณภาพ ตรงเวลา และบริหารงบประมาณอย่างคุ้มค่าที่สุด” gadsanee.aum@dohome.co.th gadsanee.aum@dohome.co.th gm-rs@dohome.co.th gm-rs@dohome.co.th d3-rs@dohome.co.th d3-rs@dohome.co.th 07/09/2026 14:36 07/09/2026 14:36 09/22/2026 06:13:01 09/22/2026 06:13:01 2026-09-07t07:36:57z 07/09/2026 14:36 powerplatform powerplatform เกตุ เกตุศณี sg rs เกตุ เกตุศณี sg rs 55/15 ม.5 ปทุมธานี คลองหลวง คลองสี่ 12120 55/15 ม.5 ปทุมธานี คลองหลวง คลองสี่ 12120 12120 12120 เกตุ เกตุศณี sg rs เกตุ เกตุศณี sg rs เฟิร์น พัชรภา ac hq เฟิร์น พัชรภา ac hq patcharapa.sri@dohome.co.th patcharapa.sri@dohome.co.th 1076994 1076994 มาดามวัลเลย์ เขาใหญ่ มาดามวัลเลย์ เขาใหญ่ https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/01_สัญญางานระหว่างทำ-สัญญางาน บริษัทฉันท์มิตร_compressed.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/01_สัญญางานระหว่างทำ-สัญญางาน บริษัทฉันท์มิตร_compressed.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/02_ภาพถ่ายหน้างานปัจจุบัน-รูปถ่ายหน้างาน บริษัทฉันทฺมิตร.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/02_ภาพถ่ายหน้างานปัจจุบัน-รูปถ่ายหน้างาน บริษัทฉันทฺมิตร.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/03_ภพ0ปีก่อนหน้า-191980_map_20231016143753.webp https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/03_ภพ0ปีก่อนหน้า-191980_map_20231016143753.webp https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/04_ภาพเข้าพบลูกค้า-87357.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/04_ภาพเข้าพบลูกค้า-87357.jpg gadsanee.aum@dohome.co.th gadsanee.aum@dohome.co.th <div class=\"externalclass7a42ff7668c44d45b67137f0846e8f6e\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t06&#58;13&#58;01.822z · เฟิร์น พัชรภา ac hq (patcharapa.sri@dohome.co.th)</div> <div class=\"externalclass7a42ff7668c44d45b67137f0846e8f6e\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t06&#58;13&#58;01.822z · เฟิร์น พัชรภา ac hq (patcharapa.sri@dohome.co.th)</div> waiting approve waiting approve https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/593/05_ผลตรวจคดี-191980_map_20231016143753.webp 593 item item 2026-09-22t06:23:30z 2026-09-22t06:23:30z 2026-09-07t07:36:57z 3894 18 32.0 32.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 593"
   },
   {
    "id": 594,
@@ -9532,7 +9542,7 @@
    "distribution": null,
    "branch": "RSOO",
    "ts": "2026-09-08T04:23:32Z",
-   "status": "รอการพิจารณาเบื้องต้น",
+   "status": "ผ่านการพิจารณาเบื้องต้น",
    "typeRequest": "คำขอเพิ่มวงเงิน",
    "limitNum": 1500000.0,
    "limitOther": 0,
@@ -9546,7 +9556,7 @@
    "land": "1",
    "contact": "นายพิรุณ บูรณะกุล",
    "_raw": {
-    "@odata.etag": "\"eb30230d-b4fc-4968-971d-1fd3cfa550e8,12\"",
+    "@odata.etag": "\"eb30230d-b4fc-4968-971d-1fd3cfa550e8,13\"",
     "Title": "ห้างหุ้นส่วนจำกัด",
     "LinkTitle": "ห้างหุ้นส่วนจำกัด",
     "Customer_id": "102576228",
@@ -9559,12 +9569,14 @@
     "field_7": "RSOO",
     "Request TimeStamp": "2026-09-08T04:23:32Z",
     "field_8": "2026-09-08T04:23:32Z",
-    "Status": "รอการพิจารณาเบื้องต้น",
-    "field_9": "รอการพิจารณาเบื้องต้น",
+    "Status": "ผ่านการพิจารณาเบื้องต้น",
+    "field_9": "ผ่านการพิจารณาเบื้องต้น",
     "Type_Request": "คำขอเพิ่มวงเงิน",
     "field_11": "คำขอเพิ่มวงเงิน",
     "limit": "1,500,000",
     "field_12": "1,500,000",
+    "1CreditApprove": "ผ่านการพิจารณาเบื้องต้น",
+    "field_15": "ผ่านการพิจารณาเบื้องต้น",
     "Owner": "ภุมรินทธ์  ภุมรินทธ์ D3 RS",
     "field_16": "ภุมรินทธ์  ภุมรินทธ์ D3 RS",
     "Data": "09/08/2026 04:23:32",
@@ -9633,6 +9645,8 @@
     "field_89": "สุจิตต์ ธีระวาส",
     "timeStartcreate": "08/09/2026 11:23",
     "field_92": "08/09/2026 11:23",
+    "Credit Action Timestamp": "09/22/2026 06:32:39",
+    "field_95": "09/22/2026 06:32:39",
     "สร้างโดย": "ภุมรินทธ์  ภุมรินทธ์ D3 RS",
     "field_100": "ภุมรินทธ์  ภุมรินทธ์ D3 RS",
     "Address": "62/132 หมู่ที่ 6 ลำลูกกา ลำลูกกา ปทุมธานี 12,150",
@@ -9641,6 +9655,10 @@
     "field_106": "12,150",
     "CreateDocument": "ภุมรินทธ์  ภุมรินทธ์ D3 RS",
     "field_112": "ภุมรินทธ์  ภุมรินทธ์ D3 RS",
+    "AppCredit": "เฟิร์น พัชรภา AC HQ",
+    "field_115": "เฟิร์น พัชรภา AC HQ",
+    "AppAssCredit": "Patcharapa.Sri@dohome.co.th",
+    "field_117": "Patcharapa.Sri@dohome.co.th",
     "NumberRespresentative": "1052628",
     "field_119": "1052628",
     "linkPicture": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/603/01_สัญญางานระหว่างทำ-สัญญางาน.pdf",
@@ -9651,18 +9669,20 @@
     "field_156": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/603/03_ภพ 30 ปีก่อนหน้า-ภพ30.pdf",
     "int_id": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/603/04_ภาพเข้าพบลูกค้า-ภาพถ่ายเข้าพบลูกค้า.pdf",
     "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/603/04_ภาพเข้าพบลูกค้า-ภาพถ่ายเข้าพบลูกค้า.pdf",
+    "Approve History": "<div class=\"ExternalClassDA12D387612D49A29C337874A3DE0749\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22T06&#58;32&#58;39.713Z · เฟิร์น พัชรภา AC HQ (Patcharapa.Sri@dohome.co.th)</div>",
+    "field_167": "<div class=\"ExternalClassDA12D387612D49A29C337874A3DE0749\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22T06&#58;32&#58;39.713Z · เฟิร์น พัชรภา AC HQ (Patcharapa.Sri@dohome.co.th)</div>",
     "URL": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/603/05_ผลตรวจคดี-ผลตรวจคดีและภาพตรวจคดี.pdf",
     "id": "603",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-09-08T04:37:57Z",
-    "Modified": "2026-09-08T04:37:57Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T06:32:42Z",
+    "Modified": "2026-09-22T06:32:42Z",
     "สร้างเมื่อ": "2026-09-08T04:23:34Z",
     "Created": "2026-09-08T04:23:34Z",
     "AuthorLookupId": "1057",
-    "EditorLookupId": "18",
-    "เวอร์ชัน": "12.0",
-    "_UIVersionString": "12.0",
+    "EditorLookupId": "2663",
+    "เวอร์ชัน": "13.0",
+    "_UIVersionString": "13.0",
     "สิ่งที่แนบมา": true,
     "Attachments": true,
     "ชื่อเรื่อง": "ห้างหุ้นส่วนจำกัด",
@@ -9675,7 +9695,7 @@
     "AppEditorLookupId": "40",
     "_ID": 603
    },
-   "_search": "\"eb30230d-b4fc-4968-971d-1fd3cfa550e8,12\" ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 102576228 102576228 store operation store operation ห้างหุ้นส่วนจำกัด พี.บี.คอนสตรัคชั่น(กรุ๊ป) ห้างหุ้นส่วนจำกัด พี.บี.คอนสตรัคชั่น(กรุ๊ป) rsoo rsoo 2026-09-08t04:23:32z 2026-09-08t04:23:32z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเพิ่มวงเงิน คำขอเพิ่มวงเงิน 1,500,000 1,500,000 ภุมรินทธ์  ภุมรินทธ์ d3 rs ภุมรินทธ์  ภุมรินทธ์ d3 rs 09/08/2026 04:23:32 09/08/2026 04:23:32 0133562001222 0133562001222 ลำลูกกา ลำลูกกา ลำลูกกา ลำลูกกา ปทุมธานี ปทุมธานี 0865336217 0865336217 ห้างหุ้นส่วนจำกัด พี.บี.คอนสตรัคชั่น(กรุ๊ป) ห้างหุ้นส่วนจำกัด พี.บี.คอนสตรัคชั่น(กรุ๊ป) รับเหมาก่อสร้าง(เพิ่ม) รับเหมาก่อสร้าง(เพิ่ม) นายพิรุณ บูรณะกุล นายพิรุณ บูรณะกุล เจ้าของกิจการ เจ้าของกิจการ 0865336217 0865336217 30 30 30 30 1 1 รอดำเนินการ รอดำเนินการ ไม่มี ไม่มี ระหว่างดำเนินการ ระหว่างดำเนินการ 400 400 10 10 เป็นเจ้าของ เป็นเจ้าของ อาคารโรงงาน โกดังโชว์รูม สระว่ายน้ำ ถนน  รีโนเวท อาคารขนาดใหญ่ อาคารโรงงาน โกดังโชว์รูม สระว่ายน้ำ ถนน  รีโนเวท อาคารขนาดใหญ่ บริษัท เคมิเคิ้ล เจเนอรัล จำกัด บริษัท เคมิเคิ้ล เจเนอรัล จำกัด 100000000 100000000 ไม่มี ไม่มี 41001 41001 13345767 13345767 ปราจีนบุรี ปราจีนบุรี 2026-07-19t17:00:00z 2026-07-19t17:00:00z ภุมรินธ์ ไชบเรืองโรจน์ ภุมรินธ์ ไชบเรืองโรจน์ 0629361663 0629361663 ภุมรินธ์ ไชยเรืองโรจน์ ภุมรินธ์ ไชยเรืองโรจน์ สุจิตต์ ธีระวาส สุจิตต์ ธีระวาส 08/09/2026 11:23 08/09/2026 11:23 ภุมรินทธ์  ภุมรินทธ์ d3 rs ภุมรินทธ์  ภุมรินทธ์ d3 rs 62/132 หมู่ที่ 6 ลำลูกกา ลำลูกกา ปทุมธานี 12,150 62/132 หมู่ที่ 6 ลำลูกกา ลำลูกกา ปทุมธานี 12,150 12,150 12,150 ภุมรินทธ์  ภุมรินทธ์ d3 rs ภุมรินทธ์  ภุมรินทธ์ d3 rs 1052628 1052628 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/01_สัญญางานระหว่างทำ-สัญญางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/01_สัญญางานระหว่างทำ-สัญญางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/02_ภาพถ่ายหน้างานปัจจุบัน-ภาพถ่ายหน้างานปราจีน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/02_ภาพถ่ายหน้างานปัจจุบัน-ภาพถ่ายหน้างานปราจีน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/03_ภพ 30 ปีก่อนหน้า-ภพ30.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/03_ภพ 30 ปีก่อนหน้า-ภพ30.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/04_ภาพเข้าพบลูกค้า-ภาพถ่ายเข้าพบลูกค้า.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/04_ภาพเข้าพบลูกค้า-ภาพถ่ายเข้าพบลูกค้า.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/05_ผลตรวจคดี-ผลตรวจคดีและภาพตรวจคดี.pdf 603 item item 2026-09-08t04:37:57z 2026-09-08t04:37:57z 2026-09-08t04:23:34z 2026-09-08t04:23:34z 1057 18 12.0 12.0 true true ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 0 0 0 0 40 40 603"
+   "_search": "\"eb30230d-b4fc-4968-971d-1fd3cfa550e8,13\" ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 102576228 102576228 store operation store operation ห้างหุ้นส่วนจำกัด พี.บี.คอนสตรัคชั่น(กรุ๊ป) ห้างหุ้นส่วนจำกัด พี.บี.คอนสตรัคชั่น(กรุ๊ป) rsoo rsoo 2026-09-08t04:23:32z 2026-09-08t04:23:32z ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น คำขอเพิ่มวงเงิน คำขอเพิ่มวงเงิน 1,500,000 1,500,000 ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น ภุมรินทธ์  ภุมรินทธ์ d3 rs ภุมรินทธ์  ภุมรินทธ์ d3 rs 09/08/2026 04:23:32 09/08/2026 04:23:32 0133562001222 0133562001222 ลำลูกกา ลำลูกกา ลำลูกกา ลำลูกกา ปทุมธานี ปทุมธานี 0865336217 0865336217 ห้างหุ้นส่วนจำกัด พี.บี.คอนสตรัคชั่น(กรุ๊ป) ห้างหุ้นส่วนจำกัด พี.บี.คอนสตรัคชั่น(กรุ๊ป) รับเหมาก่อสร้าง(เพิ่ม) รับเหมาก่อสร้าง(เพิ่ม) นายพิรุณ บูรณะกุล นายพิรุณ บูรณะกุล เจ้าของกิจการ เจ้าของกิจการ 0865336217 0865336217 30 30 30 30 1 1 รอดำเนินการ รอดำเนินการ ไม่มี ไม่มี ระหว่างดำเนินการ ระหว่างดำเนินการ 400 400 10 10 เป็นเจ้าของ เป็นเจ้าของ อาคารโรงงาน โกดังโชว์รูม สระว่ายน้ำ ถนน  รีโนเวท อาคารขนาดใหญ่ อาคารโรงงาน โกดังโชว์รูม สระว่ายน้ำ ถนน  รีโนเวท อาคารขนาดใหญ่ บริษัท เคมิเคิ้ล เจเนอรัล จำกัด บริษัท เคมิเคิ้ล เจเนอรัล จำกัด 100000000 100000000 ไม่มี ไม่มี 41001 41001 13345767 13345767 ปราจีนบุรี ปราจีนบุรี 2026-07-19t17:00:00z 2026-07-19t17:00:00z ภุมรินธ์ ไชบเรืองโรจน์ ภุมรินธ์ ไชบเรืองโรจน์ 0629361663 0629361663 ภุมรินธ์ ไชยเรืองโรจน์ ภุมรินธ์ ไชยเรืองโรจน์ สุจิตต์ ธีระวาส สุจิตต์ ธีระวาส 08/09/2026 11:23 08/09/2026 11:23 09/22/2026 06:32:39 09/22/2026 06:32:39 ภุมรินทธ์  ภุมรินทธ์ d3 rs ภุมรินทธ์  ภุมรินทธ์ d3 rs 62/132 หมู่ที่ 6 ลำลูกกา ลำลูกกา ปทุมธานี 12,150 62/132 หมู่ที่ 6 ลำลูกกา ลำลูกกา ปทุมธานี 12,150 12,150 12,150 ภุมรินทธ์  ภุมรินทธ์ d3 rs ภุมรินทธ์  ภุมรินทธ์ d3 rs เฟิร์น พัชรภา ac hq เฟิร์น พัชรภา ac hq patcharapa.sri@dohome.co.th patcharapa.sri@dohome.co.th 1052628 1052628 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/01_สัญญางานระหว่างทำ-สัญญางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/01_สัญญางานระหว่างทำ-สัญญางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/02_ภาพถ่ายหน้างานปัจจุบัน-ภาพถ่ายหน้างานปราจีน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/02_ภาพถ่ายหน้างานปัจจุบัน-ภาพถ่ายหน้างานปราจีน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/03_ภพ 30 ปีก่อนหน้า-ภพ30.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/03_ภพ 30 ปีก่อนหน้า-ภพ30.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/04_ภาพเข้าพบลูกค้า-ภาพถ่ายเข้าพบลูกค้า.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/04_ภาพเข้าพบลูกค้า-ภาพถ่ายเข้าพบลูกค้า.pdf <div class=\"externalclassda12d387612d49a29c337874a3de0749\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t06&#58;32&#58;39.713z · เฟิร์น พัชรภา ac hq (patcharapa.sri@dohome.co.th)</div> <div class=\"externalclassda12d387612d49a29c337874a3de0749\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t06&#58;32&#58;39.713z · เฟิร์น พัชรภา ac hq (patcharapa.sri@dohome.co.th)</div> https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/603/05_ผลตรวจคดี-ผลตรวจคดีและภาพตรวจคดี.pdf 603 item item 2026-09-22t06:32:42z 2026-09-22t06:32:42z 2026-09-08t04:23:34z 2026-09-08t04:23:34z 1057 2663 13.0 13.0 true true ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 0 0 0 0 40 40 603"
   },
   {
    "id": 604,
@@ -10145,7 +10165,7 @@
    "distribution": null,
    "branch": "RSOO",
    "ts": "2026-09-08T11:33:25Z",
-   "status": "รอการพิจารณาเบื้องต้น",
+   "status": "ไม่ผ่านการพิจารณาเบื้องต้น",
    "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
    "limitNum": 500000.0,
    "limitOther": 0,
@@ -10159,7 +10179,7 @@
    "land": "ปลอดภาระ",
    "contact": "นางสาวภรณ์พิมุกต์ พรมสวัสดิ์",
    "_raw": {
-    "@odata.etag": "\"ee67a193-258b-4457-93d9-54d64299467e,12\"",
+    "@odata.etag": "\"ee67a193-258b-4457-93d9-54d64299467e,13\"",
     "Title": "บริษัท จํากัด",
     "LinkTitle": "บริษัท จํากัด",
     "Customer_id": "100179843",
@@ -10174,12 +10194,14 @@
     "field_7": "RSOO",
     "Request TimeStamp": "2026-09-08T11:33:25Z",
     "field_8": "2026-09-08T11:33:25Z",
-    "Status": "รอการพิจารณาเบื้องต้น",
-    "field_9": "รอการพิจารณาเบื้องต้น",
+    "Status": "ไม่ผ่านการพิจารณาเบื้องต้น",
+    "field_9": "ไม่ผ่านการพิจารณาเบื้องต้น",
     "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
     "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
     "limit": "500,000",
     "field_12": "500,000",
+    "1CreditApprove": "ไม่ผ่านการพิจารณาเบื้องต้น",
+    "field_15": "ไม่ผ่านการพิจารณาเบื้องต้น",
     "Owner": "แป้ง วรนุช SG RS",
     "field_16": "แป้ง วรนุช SG RS",
     "Data": "11/15/2015 17:00:00",
@@ -10240,6 +10262,8 @@
     "field_87": "D3-RS@dohome.co.th",
     "timeStartcreate": "08/09/2026 18:33",
     "field_92": "08/09/2026 18:33",
+    "Credit Action Timestamp": "09/22/2026 08:12:50",
+    "field_95": "09/22/2026 08:12:50",
     "สร้างเมื่อ": "2026-09-08T11:33:22Z",
     "field_98": "08/09/2026 18:33",
     "ปรับเปลี่ยนโดย": "PowerPlatForm",
@@ -10252,6 +10276,10 @@
     "field_106": "12150",
     "CreateDocument": "แป้ง วรนุช SG RS",
     "field_112": "แป้ง วรนุช SG RS",
+    "AppCredit": "เฟิร์น พัชรภา AC HQ",
+    "field_115": "เฟิร์น พัชรภา AC HQ",
+    "AppAssCredit": "Patcharapa.Sri@dohome.co.th",
+    "field_117": "Patcharapa.Sri@dohome.co.th",
     "NumberRespresentative": "1077265",
     "field_119": "1077265",
     "Else": "012/2565",
@@ -10266,19 +10294,23 @@
     "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/608/04_ภาพเข้าพบลูกค้า-S__445907014_0.pdf",
     "Approve Edit": "woranuch.han@dohome.co.th",
     "field_166": "woranuch.han@dohome.co.th",
+    "Approve History": "<div class=\"ExternalClass601B9F497E27401D8A914232AE46D4DF\">ไม่ผ่านการพิจารณาเบื้องต้น · 2026-09-22T08&#58;12&#58;50.884Z · เฟิร์น พัชรภา AC HQ (Patcharapa.Sri@dohome.co.th) · ความคิดเห็น&#58; ไม่ผ่านเกณฑ์การพิจารณา เนื่องจาก กิจการทำธุรกิจรับเหมาก่อสร้าง จากงบการเงินย้อนหลังมีรายได้ไม่ถึง 10 ลบ./ปี</div>",
+    "field_167": "<div class=\"ExternalClass601B9F497E27401D8A914232AE46D4DF\">ไม่ผ่านการพิจารณาเบื้องต้น · 2026-09-22T08&#58;12&#58;50.884Z · เฟิร์น พัชรภา AC HQ (Patcharapa.Sri@dohome.co.th) · ความคิดเห็น&#58; ไม่ผ่านเกณฑ์การพิจารณา เนื่องจาก กิจการทำธุรกิจรับเหมาก่อสร้าง จากงบการเงินย้อนหลังมีรายได้ไม่ถึง 10 ลบ./ปี</div>",
+    "Comment_Approve": "ไม่ผ่านเกณฑ์การพิจารณา เนื่องจาก กิจการทำธุรกิจรับเหมาก่อสร้าง จากงบการเงินย้อนหลังมีรายได้ไม่ถึง 10 ลบ./ปี",
+    "field_169": "ไม่ผ่านเกณฑ์การพิจารณา เนื่องจาก กิจการทำธุรกิจรับเหมาก่อสร้าง จากงบการเงินย้อนหลังมีรายได้ไม่ถึง 10 ลบ./ปี",
     "Group": "รับเหมาก่อสร้าง",
     "field_170": "รับเหมาก่อสร้าง",
     "URL": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/608/05_ผลตรวจคดี-S__445907014_0.pdf",
     "id": "608",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-09-08T11:43:25Z",
-    "Modified": "2026-09-08T11:43:25Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T08:12:53Z",
+    "Modified": "2026-09-22T08:12:53Z",
     "Created": "2026-09-08T11:33:22Z",
     "AuthorLookupId": "3955",
-    "EditorLookupId": "18",
-    "เวอร์ชัน": "12.0",
-    "_UIVersionString": "12.0",
+    "EditorLookupId": "2663",
+    "เวอร์ชัน": "13.0",
+    "_UIVersionString": "13.0",
     "สิ่งที่แนบมา": true,
     "Attachments": true,
     "ชื่อเรื่อง": "บริษัท จํากัด",
@@ -10291,7 +10323,7 @@
     "AppEditorLookupId": "40",
     "_ID": 608
    },
-   "_search": "\"ee67a193-258b-4457-93d9-54d64299467e,12\" บริษัท จํากัด บริษัท จํากัด 100179843 100179843 existing existing store operation store operation บริษัท เรืองทวีก่อสร้าง จำกัด บริษัท เรืองทวีก่อสร้าง จำกัด rsoo rsoo 2026-09-08t11:33:25z 2026-09-08t11:33:25z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 500,000 500,000 แป้ง วรนุช sg rs แป้ง วรนุช sg rs 11/15/2015 17:00:00 11/15/2015 17:00:00 0105558181965 0105558181965 บึงคำพร้อย บึงคำพร้อย ลำลูกกา ลำลูกกา ปทุมธานี ปทุมธานี 0992329653 0992329653 บริษัท เรืองทวีก่อสร้าง จำกัด บริษัท เรืองทวีก่อสร้าง จำกัด รับเหมาก่อสร้าง รับเหมาก่อสร้าง นางสาวภรณ์พิมุกต์ พรมสวัสดิ์ นางสาวภรณ์พิมุกต์ พรมสวัสดิ์ กรรมการผู้จัดการ กรรมการผู้จัดการ 0992329653 0992329653 30 30 30 30 ปลอดภาระ ปลอดภาระ รอดำเนินการ รอดำเนินการ ปลอดภาระ ปลอดภาระ ลงนาม ลงนาม 62 62 5 5 เป็นเจ้าของ เป็นเจ้าของ บริษัท บริทาเนีย บางนา กม.35 จำกัด บริษัท บริทาเนีย บางนา กม.35 จำกัด 25,317,599 25,317,599 ไม่มี ไม่มี 497,917 497,917 บจก.ไดกิ อลูมิเนียม (อมตะนคร ชลบุรี) บจก.ไดกิ อลูมิเนียม (อมตะนคร ชลบุรี) woranuch.han@dohome.co.th woranuch.han@dohome.co.th gm-rs@dohome.co.th gm-rs@dohome.co.th d3-rs@dohome.co.th d3-rs@dohome.co.th 08/09/2026 18:33 08/09/2026 18:33 2026-09-08t11:33:22z 08/09/2026 18:33 powerplatform powerplatform แป้ง วรนุช sg rs แป้ง วรนุช sg rs 55/420 หมู่ที่ 17 หมู่บ้าน ศุภาลัยการ์เด้นวิลล์ 55/420 หมู่ที่ 17 หมู่บ้าน ศุภาลัยการ์เด้นวิลล์ 12150 12150 แป้ง วรนุช sg rs แป้ง วรนุช sg rs 1077265 1077265 012/2565 012/2565 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/01_สัญญางานระหว่างทำ-po69-116 บจก.เรืองทวีก่อสร้าง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/01_สัญญางานระหว่างทำ-po69-116 บจก.เรืองทวีก่อสร้าง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/02_ภาพถ่ายหน้างานปัจจุบัน-po69-116 บจก.เรืองทวีก่อสร้าง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/02_ภาพถ่ายหน้างานปัจจุบัน-po69-116 บจก.เรืองทวีก่อสร้าง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/03_ภพ0ปีก่อนหน้า-s__445907024.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/03_ภพ0ปีก่อนหน้า-s__445907024.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/04_ภาพเข้าพบลูกค้า-s__445907014_0.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/04_ภาพเข้าพบลูกค้า-s__445907014_0.pdf woranuch.han@dohome.co.th woranuch.han@dohome.co.th รับเหมาก่อสร้าง รับเหมาก่อสร้าง https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/05_ผลตรวจคดี-s__445907014_0.pdf 608 item item 2026-09-08t11:43:25z 2026-09-08t11:43:25z 2026-09-08t11:33:22z 3955 18 12.0 12.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 608"
+   "_search": "\"ee67a193-258b-4457-93d9-54d64299467e,13\" บริษัท จํากัด บริษัท จํากัด 100179843 100179843 existing existing store operation store operation บริษัท เรืองทวีก่อสร้าง จำกัด บริษัท เรืองทวีก่อสร้าง จำกัด rsoo rsoo 2026-09-08t11:33:25z 2026-09-08t11:33:25z ไม่ผ่านการพิจารณาเบื้องต้น ไม่ผ่านการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 500,000 500,000 ไม่ผ่านการพิจารณาเบื้องต้น ไม่ผ่านการพิจารณาเบื้องต้น แป้ง วรนุช sg rs แป้ง วรนุช sg rs 11/15/2015 17:00:00 11/15/2015 17:00:00 0105558181965 0105558181965 บึงคำพร้อย บึงคำพร้อย ลำลูกกา ลำลูกกา ปทุมธานี ปทุมธานี 0992329653 0992329653 บริษัท เรืองทวีก่อสร้าง จำกัด บริษัท เรืองทวีก่อสร้าง จำกัด รับเหมาก่อสร้าง รับเหมาก่อสร้าง นางสาวภรณ์พิมุกต์ พรมสวัสดิ์ นางสาวภรณ์พิมุกต์ พรมสวัสดิ์ กรรมการผู้จัดการ กรรมการผู้จัดการ 0992329653 0992329653 30 30 30 30 ปลอดภาระ ปลอดภาระ รอดำเนินการ รอดำเนินการ ปลอดภาระ ปลอดภาระ ลงนาม ลงนาม 62 62 5 5 เป็นเจ้าของ เป็นเจ้าของ บริษัท บริทาเนีย บางนา กม.35 จำกัด บริษัท บริทาเนีย บางนา กม.35 จำกัด 25,317,599 25,317,599 ไม่มี ไม่มี 497,917 497,917 บจก.ไดกิ อลูมิเนียม (อมตะนคร ชลบุรี) บจก.ไดกิ อลูมิเนียม (อมตะนคร ชลบุรี) woranuch.han@dohome.co.th woranuch.han@dohome.co.th gm-rs@dohome.co.th gm-rs@dohome.co.th d3-rs@dohome.co.th d3-rs@dohome.co.th 08/09/2026 18:33 08/09/2026 18:33 09/22/2026 08:12:50 09/22/2026 08:12:50 2026-09-08t11:33:22z 08/09/2026 18:33 powerplatform powerplatform แป้ง วรนุช sg rs แป้ง วรนุช sg rs 55/420 หมู่ที่ 17 หมู่บ้าน ศุภาลัยการ์เด้นวิลล์ 55/420 หมู่ที่ 17 หมู่บ้าน ศุภาลัยการ์เด้นวิลล์ 12150 12150 แป้ง วรนุช sg rs แป้ง วรนุช sg rs เฟิร์น พัชรภา ac hq เฟิร์น พัชรภา ac hq patcharapa.sri@dohome.co.th patcharapa.sri@dohome.co.th 1077265 1077265 012/2565 012/2565 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/01_สัญญางานระหว่างทำ-po69-116 บจก.เรืองทวีก่อสร้าง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/01_สัญญางานระหว่างทำ-po69-116 บจก.เรืองทวีก่อสร้าง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/02_ภาพถ่ายหน้างานปัจจุบัน-po69-116 บจก.เรืองทวีก่อสร้าง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/02_ภาพถ่ายหน้างานปัจจุบัน-po69-116 บจก.เรืองทวีก่อสร้าง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/03_ภพ0ปีก่อนหน้า-s__445907024.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/03_ภพ0ปีก่อนหน้า-s__445907024.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/04_ภาพเข้าพบลูกค้า-s__445907014_0.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/04_ภาพเข้าพบลูกค้า-s__445907014_0.pdf woranuch.han@dohome.co.th woranuch.han@dohome.co.th <div class=\"externalclass601b9f497e27401d8a914232ae46d4df\">ไม่ผ่านการพิจารณาเบื้องต้น · 2026-09-22t08&#58;12&#58;50.884z · เฟิร์น พัชรภา ac hq (patcharapa.sri@dohome.co.th) · ความคิดเห็น&#58; ไม่ผ่านเกณฑ์การพิจารณา เนื่องจาก กิจการทำธุรกิจรับเหมาก่อสร้าง จากงบการเงินย้อนหลังมีรายได้ไม่ถึง 10 ลบ./ปี</div> <div class=\"externalclass601b9f497e27401d8a914232ae46d4df\">ไม่ผ่านการพิจารณาเบื้องต้น · 2026-09-22t08&#58;12&#58;50.884z · เฟิร์น พัชรภา ac hq (patcharapa.sri@dohome.co.th) · ความคิดเห็น&#58; ไม่ผ่านเกณฑ์การพิจารณา เนื่องจาก กิจการทำธุรกิจรับเหมาก่อสร้าง จากงบการเงินย้อนหลังมีรายได้ไม่ถึง 10 ลบ./ปี</div> ไม่ผ่านเกณฑ์การพิจารณา เนื่องจาก กิจการทำธุรกิจรับเหมาก่อสร้าง จากงบการเงินย้อนหลังมีรายได้ไม่ถึง 10 ลบ./ปี ไม่ผ่านเกณฑ์การพิจารณา เนื่องจาก กิจการทำธุรกิจรับเหมาก่อสร้าง จากงบการเงินย้อนหลังมีรายได้ไม่ถึง 10 ลบ./ปี รับเหมาก่อสร้าง รับเหมาก่อสร้าง https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/608/05_ผลตรวจคดี-s__445907014_0.pdf 608 item item 2026-09-22t08:12:53z 2026-09-22t08:12:53z 2026-09-08t11:33:22z 3955 2663 13.0 13.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 608"
   },
   {
    "id": 609,
@@ -15785,7 +15817,7 @@
    "distribution": null,
    "branch": "KNOO",
    "ts": "2026-09-11T05:38:20Z",
-   "status": "Draft",
+   "status": "รอการพิจารณาเบื้องต้น",
    "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
    "limitNum": 500000.0,
    "limitOther": 0,
@@ -15799,7 +15831,7 @@
    "land": "-",
    "contact": "นางสาวนันทันภัส โชติจตุพร",
    "_raw": {
-    "@odata.etag": "\"337c37a7-3372-40b1-9a71-85e173fab9ea,1\"",
+    "@odata.etag": "\"337c37a7-3372-40b1-9a71-85e173fab9ea,10\"",
     "Title": "บริษัท จํากัด",
     "LinkTitle": "บริษัท จํากัด",
     "Customer_id": "103676236",
@@ -15814,8 +15846,8 @@
     "field_7": "KNOO",
     "Request TimeStamp": "2026-09-11T05:38:20Z",
     "field_8": "2026-09-11T05:38:20Z",
-    "Status": "Draft",
-    "field_9": "Draft",
+    "Status": "รอการพิจารณาเบื้องต้น",
+    "field_9": "รอการพิจารณาเบื้องต้น",
     "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
     "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
     "limit": "500,000",
@@ -15900,8 +15932,14 @@
     "field_119": "20eca0d0-987a-4cb7-a05b-b8217aa219ae",
     "Else": "41002",
     "field_145": "41002",
-    "site1": "บ้าน",
-    "field_160": "บ้าน",
+    "linkPicture": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/647/01_สัญญางานระหว่างทำ-สัญญา10-2569 (1).pdf",
+    "field_154": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/647/01_สัญญางานระหว่างทำ-สัญญา10-2569 (1).pdf",
+    "LinkPictureCustomer": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/647/02_ภาพถ่ายหน้างานปัจจุบัน-ที่ตั้งบริษัทmry.pdf",
+    "field_155": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/647/02_ภาพถ่ายหน้างานปัจจุบัน-ที่ตั้งบริษัทmry.pdf",
+    "Picture2": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/647/03_ภพ0ปีก่อนหน้า-6901 ภพ30 1_merged.pdf",
+    "field_156": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/647/03_ภพ0ปีก่อนหน้า-6901 ภพ30 1_merged.pdf",
+    "int_id": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/647/04_ภาพเข้าพบลูกค้า-ที่ตั้งบริษัทmry.pdf",
+    "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/647/04_ภาพเข้าพบลูกค้า-ที่ตั้งบริษัทmry.pdf",
     "Approve Edit": "chanida.onc@dohome.co.th",
     "field_166": "chanida.onc@dohome.co.th",
     "Group": "รับเหมาก่อสร้าง",
@@ -15909,15 +15947,15 @@
     "id": "647",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-09-11T05:38:21Z",
-    "Modified": "2026-09-11T05:38:21Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T07:59:23Z",
+    "Modified": "2026-09-22T07:59:23Z",
     "Created": "2026-09-11T05:38:21Z",
     "AuthorLookupId": "1547",
-    "EditorLookupId": "1547",
-    "เวอร์ชัน": "1.0",
-    "_UIVersionString": "1.0",
-    "สิ่งที่แนบมา": false,
-    "Attachments": false,
+    "EditorLookupId": "18",
+    "เวอร์ชัน": "10.0",
+    "_UIVersionString": "10.0",
+    "สิ่งที่แนบมา": true,
+    "Attachments": true,
     "ชื่อเรื่อง": "บริษัท จํากัด",
     "LinkTitleNoMenu": "บริษัท จํากัด",
     "จำนวนรายการย่อย": "0",
@@ -15928,7 +15966,7 @@
     "AppEditorLookupId": "40",
     "_ID": 647
    },
-   "_search": "\"337c37a7-3372-40b1-9a71-85e173fab9ea,1\" บริษัท จํากัด บริษัท จํากัด 103676236 103676236 lead lead store operation store operation บริษัท เอ็มอาร์วาย จำกัด บริษัท เอ็มอาร์วาย จำกัด knoo knoo 2026-09-11t05:38:20z 2026-09-11t05:38:20z draft draft คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 500,000 500,000 แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 05/23/2017 17:00:00 05/23/2017 17:00:00 0155567000455 0155567000455 บางพลับ บางพลับ โพธิ์ทอง โพธิ์ทอง อ่างทอง อ่างทอง 0661310422 0661310422 บริษัท เอ็มอาร์วาย จำกัด บริษัท เอ็มอาร์วาย จำกัด รับเหมาก่อสร้าง รับเหมาก่อสร้าง นางสาวนันทันภัส โชติจตุพร นางสาวนันทันภัส โชติจตุพร กรรมการ กรรมการ 0661310422 0661310422 30 30 30 30 - - - - ปลอดภาระ ปลอดภาระ ปลอดภาระ ปลอดภาระ 200 200 5 5 เป็นเจ้าของ เป็นเจ้าของ เทศบาลเมืองแม่กลอง เทศบาลเมืองแม่กลอง 1,500,000 1,500,000 26/07/2569 26/07/2569 ไม่มี ไม่มี 1,840,000 1,840,000 ประมูลได้แล้ว ประมูลได้แล้ว ดอนกำยาน สุพรรณบุรี ดอนกำยาน สุพรรณบุรี chanida.onc@dohome.co.th chanida.onc@dohome.co.th gm-kn@dohome.co.th gm-kn@dohome.co.th d3-kn@dohome.co.th d3-kn@dohome.co.th 11/09/2026 12:38 11/09/2026 12:38 2026-09-11t05:38:21z 11/09/2026 12:38 powerplatform powerplatform แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 21 หมู่ที่ 4 อ่างทอง โพธิ์ทอง บางพลับ 14120 21 หมู่ที่ 4 อ่างทอง โพธิ์ทอง บางพลับ 14120 14120 14120 แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 20eca0d0-987a-4cb7-a05b-b8217aa219ae 20eca0d0-987a-4cb7-a05b-b8217aa219ae 41002 41002 บ้าน บ้าน chanida.onc@dohome.co.th chanida.onc@dohome.co.th รับเหมาก่อสร้าง รับเหมาก่อสร้าง 647 item item 2026-09-11t05:38:21z 2026-09-11t05:38:21z 2026-09-11t05:38:21z 1547 1547 1.0 1.0 false false บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 647"
+   "_search": "\"337c37a7-3372-40b1-9a71-85e173fab9ea,10\" บริษัท จํากัด บริษัท จํากัด 103676236 103676236 lead lead store operation store operation บริษัท เอ็มอาร์วาย จำกัด บริษัท เอ็มอาร์วาย จำกัด knoo knoo 2026-09-11t05:38:20z 2026-09-11t05:38:20z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 500,000 500,000 แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 05/23/2017 17:00:00 05/23/2017 17:00:00 0155567000455 0155567000455 บางพลับ บางพลับ โพธิ์ทอง โพธิ์ทอง อ่างทอง อ่างทอง 0661310422 0661310422 บริษัท เอ็มอาร์วาย จำกัด บริษัท เอ็มอาร์วาย จำกัด รับเหมาก่อสร้าง รับเหมาก่อสร้าง นางสาวนันทันภัส โชติจตุพร นางสาวนันทันภัส โชติจตุพร กรรมการ กรรมการ 0661310422 0661310422 30 30 30 30 - - - - ปลอดภาระ ปลอดภาระ ปลอดภาระ ปลอดภาระ 200 200 5 5 เป็นเจ้าของ เป็นเจ้าของ เทศบาลเมืองแม่กลอง เทศบาลเมืองแม่กลอง 1,500,000 1,500,000 26/07/2569 26/07/2569 ไม่มี ไม่มี 1,840,000 1,840,000 ประมูลได้แล้ว ประมูลได้แล้ว ดอนกำยาน สุพรรณบุรี ดอนกำยาน สุพรรณบุรี chanida.onc@dohome.co.th chanida.onc@dohome.co.th gm-kn@dohome.co.th gm-kn@dohome.co.th d3-kn@dohome.co.th d3-kn@dohome.co.th 11/09/2026 12:38 11/09/2026 12:38 2026-09-11t05:38:21z 11/09/2026 12:38 powerplatform powerplatform แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 21 หมู่ที่ 4 อ่างทอง โพธิ์ทอง บางพลับ 14120 21 หมู่ที่ 4 อ่างทอง โพธิ์ทอง บางพลับ 14120 14120 14120 แมงปอ ชนิดา sg kn แมงปอ ชนิดา sg kn 20eca0d0-987a-4cb7-a05b-b8217aa219ae 20eca0d0-987a-4cb7-a05b-b8217aa219ae 41002 41002 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/647/01_สัญญางานระหว่างทำ-สัญญา10-2569 (1).pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/647/01_สัญญางานระหว่างทำ-สัญญา10-2569 (1).pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/647/02_ภาพถ่ายหน้างานปัจจุบัน-ที่ตั้งบริษัทmry.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/647/02_ภาพถ่ายหน้างานปัจจุบัน-ที่ตั้งบริษัทmry.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/647/03_ภพ0ปีก่อนหน้า-6901 ภพ30 1_merged.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/647/03_ภพ0ปีก่อนหน้า-6901 ภพ30 1_merged.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/647/04_ภาพเข้าพบลูกค้า-ที่ตั้งบริษัทmry.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/647/04_ภาพเข้าพบลูกค้า-ที่ตั้งบริษัทmry.pdf chanida.onc@dohome.co.th chanida.onc@dohome.co.th รับเหมาก่อสร้าง รับเหมาก่อสร้าง 647 item item 2026-09-22t07:59:23z 2026-09-22t07:59:23z 2026-09-11t05:38:21z 1547 18 10.0 10.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 647"
   },
   {
    "id": 648,
@@ -19337,7 +19375,7 @@
    "distribution": null,
    "branch": "SROO",
    "ts": "2026-09-12T10:23:35Z",
-   "status": "รอการพิจารณาเบื้องต้น",
+   "status": "ผ่านการพิจารณาเบื้องต้น",
    "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
    "limitNum": 1000000.0,
    "limitOther": 0,
@@ -19351,7 +19389,7 @@
    "land": "คอนโด",
    "contact": "แหม่ม",
    "_raw": {
-    "@odata.etag": "\"26785e84-d694-4cad-b6b8-628b2741173e,10\"",
+    "@odata.etag": "\"26785e84-d694-4cad-b6b8-628b2741173e,11\"",
     "Title": "ห้างหุ้นส่วนจำกัด",
     "LinkTitle": "ห้างหุ้นส่วนจำกัด",
     "Customer_id": "101829672",
@@ -19366,12 +19404,14 @@
     "field_7": "SROO",
     "Request TimeStamp": "2026-09-12T10:23:35Z",
     "field_8": "2026-09-12T10:23:35Z",
-    "Status": "รอการพิจารณาเบื้องต้น",
-    "field_9": "รอการพิจารณาเบื้องต้น",
+    "Status": "ผ่านการพิจารณาเบื้องต้น",
+    "field_9": "ผ่านการพิจารณาเบื้องต้น",
     "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
     "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
     "limit": "1,000,000",
     "field_12": "1,000,000",
+    "1CreditApprove": "ผ่านการพิจารณาเบื้องต้น",
+    "field_15": "ผ่านการพิจารณาเบื้องต้น",
     "Owner": "เบนซ์ ผุสชา D3 SR",
     "field_16": "เบนซ์ ผุสชา D3 SR",
     "Data": "06/27/2016 17:00:00",
@@ -19450,6 +19490,8 @@
     "field_87": "D3-SR@dohome.co.th",
     "timeStartcreate": "12/09/2026 17:23",
     "field_92": "12/09/2026 17:23",
+    "Credit Action Timestamp": "09/22/2026 07:13:22",
+    "field_95": "09/22/2026 07:13:22",
     "สร้างเมื่อ": "2026-09-12T10:23:36Z",
     "field_98": "12/09/2026 17:23",
     "ปรับเปลี่ยนโดย": "PowerPlatForm",
@@ -19462,6 +19504,10 @@
     "field_106": "84010",
     "CreateDocument": "เบนซ์ ผุสชา D3 SR",
     "field_112": "เบนซ์ ผุสชา D3 SR",
+    "AppCredit": "ข้าวโอ๊ต ยุธิมา CF HQ",
+    "field_115": "ข้าวโอ๊ต ยุธิมา CF HQ",
+    "AppAssCredit": "Yutima.Hem@dohome.co.th",
+    "field_117": "Yutima.Hem@dohome.co.th",
     "NumberRespresentative": "1055955",
     "field_119": "1055955",
     "Else": "ทส 1624.1/1.12/2569",
@@ -19476,18 +19522,20 @@
     "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/669/04_ภาพเข้าพบลูกค้า-1072056_0.jpg",
     "Approve Edit": "d3-sr@dohome.co.th",
     "field_166": "d3-sr@dohome.co.th",
+    "Approve History": "<div class=\"ExternalClass6EF12F00658D4D5190AACABBD087D4BB\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22T07&#58;13&#58;22.493Z · ข้าวโอ๊ต ยุธิมา CF HQ (Yutima.Hem@dohome.co.th)</div>",
+    "field_167": "<div class=\"ExternalClass6EF12F00658D4D5190AACABBD087D4BB\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22T07&#58;13&#58;22.493Z · ข้าวโอ๊ต ยุธิมา CF HQ (Yutima.Hem@dohome.co.th)</div>",
     "Group": "รับเหมาก่อสร้าง",
     "field_170": "รับเหมาก่อสร้าง",
     "id": "669",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-09-12T10:25:00Z",
-    "Modified": "2026-09-12T10:25:00Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T07:13:24Z",
+    "Modified": "2026-09-22T07:13:24Z",
     "Created": "2026-09-12T10:23:36Z",
     "AuthorLookupId": "340",
-    "EditorLookupId": "18",
-    "เวอร์ชัน": "10.0",
-    "_UIVersionString": "10.0",
+    "EditorLookupId": "3041",
+    "เวอร์ชัน": "11.0",
+    "_UIVersionString": "11.0",
     "สิ่งที่แนบมา": true,
     "Attachments": true,
     "ชื่อเรื่อง": "ห้างหุ้นส่วนจำกัด",
@@ -19500,7 +19548,7 @@
     "AppEditorLookupId": "40",
     "_ID": 669
    },
-   "_search": "\"26785e84-d694-4cad-b6b8-628b2741173e,10\" ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 101829672 101829672 existing existing store operation store operation ma-dame (thailand) limited partnership ma-dame (thailand) limited partnership sroo sroo 2026-09-12t10:23:35z 2026-09-12t10:23:35z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 1,000,000 1,000,000 เบนซ์ ผุสชา d3 sr เบนซ์ ผุสชา d3 sr 06/27/2016 17:00:00 06/27/2016 17:00:00 0843559001580 0843559001580 ในเมือง ในเมือง เมืองสุราษฎร์ธานี เมืองสุราษฎร์ธานี สุราษฎร์ธานี สุราษฎร์ธานี 0655395693 0655395693 ห้างหุ้นส่วนจำกัด มา-ดาม (ไทยแลนด์) ห้างหุ้นส่วนจำกัด มา-ดาม (ไทยแลนด์) รับเหมาก่อสร้าง รับเหมาก่อสร้าง แหม่ม แหม่ม กรรมการ กรรมการ 0655395693 0655395693 30 30 30 30 ไม่มี ไม่มี คอนโด คอนโด ปลอดภาระ ปลอดภาระ ปลอดภาระ ปลอดภาระ 50ตรม 50ตรม 50 50 เป็นเจ้าของ เป็นเจ้าของ โครงการก่อสร้างโรงอาหารขนาดเล็ก 260 ที่นั่ง โครงการก่อสร้างโรงอาหารขนาดเล็ก 260 ที่นั่ง 3,960,000 3,960,000 31/12/2569 31/12/2569 ไม่มี ไม่มี 820,000 820,000 ลงนาม ลงนาม โรงเรียนเทศบาล 1 โรงเรียนเทศบาล 1 2569-12-08t17:00:00z 2569-12-08t17:00:00z ปรับปรุงป้ายสำนักงานเทศบาล ตำบลวิชิต ปรับปรุงป้ายสำนักงานเทศบาล ตำบลวิชิต 274,000 274,000 ลงนาม ลงนาม ภูเก็ต ภูเก็ต 2569-12-08t17:00:00z 2569-12-08t17:00:00z nattawut.jam@dohome.co.th nattawut.jam@dohome.co.th 0847302900 0847302900 gm-sr@dohome.co.th gm-sr@dohome.co.th d3-sr@dohome.co.th d3-sr@dohome.co.th 12/09/2026 17:23 12/09/2026 17:23 2026-09-12t10:23:36z 12/09/2026 17:23 powerplatform powerplatform เบนซ์ ผุสชา d3 sr เบนซ์ ผุสชา d3 sr 48/198 หมู่ที่ 2 ถนนศรีวิชัย ต.มะขามเตี้ย อ.เมืองสุราษฎร์ธานี จ.สุราษฎร์ธานี  84010 48/198 หมู่ที่ 2 ถนนศรีวิชัย ต.มะขามเตี้ย อ.เมืองสุราษฎร์ธานี จ.สุราษฎร์ธานี  84010 84010 84010 เบนซ์ ผุสชา d3 sr เบนซ์ ผุสชา d3 sr 1055955 1055955 ทส 1624.1/1.12/2569 ทส 1624.1/1.12/2569 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/01_สัญญางานระหว่างทำ-สัญญาก่อสร้างโรงอาหาร รร.ทาฉางวิทยาคาร.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/01_สัญญางานระหว่างทำ-สัญญาก่อสร้างโรงอาหาร รร.ทาฉางวิทยาคาร.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/02_ภาพถ่ายหน้างานปัจจุบัน-1072056_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/02_ภาพถ่ายหน้างานปัจจุบัน-1072056_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/03_ภพ0ปีก่อนหน้า-ภพ30มาดาม.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/03_ภพ0ปีก่อนหน้า-ภพ30มาดาม.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/04_ภาพเข้าพบลูกค้า-1072056_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/04_ภาพเข้าพบลูกค้า-1072056_0.jpg d3-sr@dohome.co.th d3-sr@dohome.co.th รับเหมาก่อสร้าง รับเหมาก่อสร้าง 669 item item 2026-09-12t10:25:00z 2026-09-12t10:25:00z 2026-09-12t10:23:36z 340 18 10.0 10.0 true true ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 0 0 0 0 40 40 669"
+   "_search": "\"26785e84-d694-4cad-b6b8-628b2741173e,11\" ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 101829672 101829672 existing existing store operation store operation ma-dame (thailand) limited partnership ma-dame (thailand) limited partnership sroo sroo 2026-09-12t10:23:35z 2026-09-12t10:23:35z ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 1,000,000 1,000,000 ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น เบนซ์ ผุสชา d3 sr เบนซ์ ผุสชา d3 sr 06/27/2016 17:00:00 06/27/2016 17:00:00 0843559001580 0843559001580 ในเมือง ในเมือง เมืองสุราษฎร์ธานี เมืองสุราษฎร์ธานี สุราษฎร์ธานี สุราษฎร์ธานี 0655395693 0655395693 ห้างหุ้นส่วนจำกัด มา-ดาม (ไทยแลนด์) ห้างหุ้นส่วนจำกัด มา-ดาม (ไทยแลนด์) รับเหมาก่อสร้าง รับเหมาก่อสร้าง แหม่ม แหม่ม กรรมการ กรรมการ 0655395693 0655395693 30 30 30 30 ไม่มี ไม่มี คอนโด คอนโด ปลอดภาระ ปลอดภาระ ปลอดภาระ ปลอดภาระ 50ตรม 50ตรม 50 50 เป็นเจ้าของ เป็นเจ้าของ โครงการก่อสร้างโรงอาหารขนาดเล็ก 260 ที่นั่ง โครงการก่อสร้างโรงอาหารขนาดเล็ก 260 ที่นั่ง 3,960,000 3,960,000 31/12/2569 31/12/2569 ไม่มี ไม่มี 820,000 820,000 ลงนาม ลงนาม โรงเรียนเทศบาล 1 โรงเรียนเทศบาล 1 2569-12-08t17:00:00z 2569-12-08t17:00:00z ปรับปรุงป้ายสำนักงานเทศบาล ตำบลวิชิต ปรับปรุงป้ายสำนักงานเทศบาล ตำบลวิชิต 274,000 274,000 ลงนาม ลงนาม ภูเก็ต ภูเก็ต 2569-12-08t17:00:00z 2569-12-08t17:00:00z nattawut.jam@dohome.co.th nattawut.jam@dohome.co.th 0847302900 0847302900 gm-sr@dohome.co.th gm-sr@dohome.co.th d3-sr@dohome.co.th d3-sr@dohome.co.th 12/09/2026 17:23 12/09/2026 17:23 09/22/2026 07:13:22 09/22/2026 07:13:22 2026-09-12t10:23:36z 12/09/2026 17:23 powerplatform powerplatform เบนซ์ ผุสชา d3 sr เบนซ์ ผุสชา d3 sr 48/198 หมู่ที่ 2 ถนนศรีวิชัย ต.มะขามเตี้ย อ.เมืองสุราษฎร์ธานี จ.สุราษฎร์ธานี  84010 48/198 หมู่ที่ 2 ถนนศรีวิชัย ต.มะขามเตี้ย อ.เมืองสุราษฎร์ธานี จ.สุราษฎร์ธานี  84010 84010 84010 เบนซ์ ผุสชา d3 sr เบนซ์ ผุสชา d3 sr ข้าวโอ๊ต ยุธิมา cf hq ข้าวโอ๊ต ยุธิมา cf hq yutima.hem@dohome.co.th yutima.hem@dohome.co.th 1055955 1055955 ทส 1624.1/1.12/2569 ทส 1624.1/1.12/2569 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/01_สัญญางานระหว่างทำ-สัญญาก่อสร้างโรงอาหาร รร.ทาฉางวิทยาคาร.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/01_สัญญางานระหว่างทำ-สัญญาก่อสร้างโรงอาหาร รร.ทาฉางวิทยาคาร.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/02_ภาพถ่ายหน้างานปัจจุบัน-1072056_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/02_ภาพถ่ายหน้างานปัจจุบัน-1072056_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/03_ภพ0ปีก่อนหน้า-ภพ30มาดาม.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/03_ภพ0ปีก่อนหน้า-ภพ30มาดาม.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/04_ภาพเข้าพบลูกค้า-1072056_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/669/04_ภาพเข้าพบลูกค้า-1072056_0.jpg d3-sr@dohome.co.th d3-sr@dohome.co.th <div class=\"externalclass6ef12f00658d4d5190aacabbd087d4bb\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t07&#58;13&#58;22.493z · ข้าวโอ๊ต ยุธิมา cf hq (yutima.hem@dohome.co.th)</div> <div class=\"externalclass6ef12f00658d4d5190aacabbd087d4bb\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t07&#58;13&#58;22.493z · ข้าวโอ๊ต ยุธิมา cf hq (yutima.hem@dohome.co.th)</div> รับเหมาก่อสร้าง รับเหมาก่อสร้าง 669 item item 2026-09-22t07:13:24z 2026-09-22t07:13:24z 2026-09-12t10:23:36z 340 3041 11.0 11.0 true true ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 0 0 0 0 40 40 669"
   },
   {
    "id": 670,
@@ -21481,7 +21529,7 @@
    "land": "-",
    "contact": "คุณเจี้ยบ",
    "_raw": {
-    "@odata.etag": "\"ea150b3d-49fd-469d-b13f-903ecbf16c56,81\"",
+    "@odata.etag": "\"ea150b3d-49fd-469d-b13f-903ecbf16c56,145\"",
     "Title": "บริษัท จํากัด",
     "LinkTitle": "บริษัท จํากัด",
     "Customer_id": "104885853",
@@ -21585,13 +21633,13 @@
     "id": "682",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-09-22T05:20:25Z",
-    "Modified": "2026-09-22T05:20:25Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T06:23:30Z",
+    "Modified": "2026-09-22T06:23:30Z",
     "Created": "2026-09-14T10:00:14Z",
     "AuthorLookupId": "2036",
     "EditorLookupId": "18",
-    "เวอร์ชัน": "81.0",
-    "_UIVersionString": "81.0",
+    "เวอร์ชัน": "145.0",
+    "_UIVersionString": "145.0",
     "สิ่งที่แนบมา": true,
     "Attachments": true,
     "ชื่อเรื่อง": "บริษัท จํากัด",
@@ -21604,7 +21652,7 @@
     "AppEditorLookupId": "40",
     "_ID": 682
    },
-   "_search": "\"ea150b3d-49fd-469d-b13f-903ecbf16c56,81\" บริษัท จํากัด บริษัท จํากัด 104885853 104885853 existing existing steel key account steel key account บริษัท นครทวดทอง โมเดิร์น เทรด จำกัด บริษัท นครทวดทอง โมเดิร์น เทรด จำกัด hqoo hqoo 2026-09-14t10:00:12z 2026-09-14t10:00:12z ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 5,000,000 5,000,000 ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น บุ๋ม นิรมล sg sr บุ๋ม นิรมล sg sr 0805553000061 0805553000061 บางแก้ว 4 บางแก้ว 4 เมืองนครศรีธรรมราช เมืองนครศรีธรรมราช นครศรีธรรมราช นครศรีธรรมราช 0998974299 0998974299 บริษัท นครทวดทอง โมเดิร์น เทรด จำกัด บริษัท นครทวดทอง โมเดิร์น เทรด จำกัด ร้านค้าช่วง ร้านค้าช่วง คุณเจี้ยบ คุณเจี้ยบ เจ้าของ เจ้าของ 0998974299 0998974299 30 30 20,000,000 20,000,000 30 30 - - - - ปลอดภาระ ปลอดภาระ ปลอดภาระ ปลอดภาระ - - 30 30 เป็นเจ้าของ เป็นเจ้าของ narasate.tha@dohome.co.th narasate.tha@dohome.co.th 14/09/2026 17:00 14/09/2026 17:00 09/22/2026 04:40:27 09/22/2026 04:40:27 2026-09-14t10:00:14z 14/09/2026 17:00 powerplatform powerplatform บุ๋ม นิรมล sg sr บุ๋ม นิรมล sg sr 1/5 หมู่ที่ 1 นครศรีธรรมราช เมืองนครศรีธรรมราช บางแก้ว 4 80010 1/5 หมู่ที่ 1 นครศรีธรรมราช เมืองนครศรีธรรมราช บางแก้ว 4 80010 80010 80010 บุ๋ม นิรมล sg sr บุ๋ม นิรมล sg sr patsachon.put@dohome.co.th patsachon.put@dohome.co.th 1074663 1074663 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/01_ภาพถ่ายกิจการ-584310_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/01_ภาพถ่ายกิจการ-584310_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/02_แผนที่ตั้งภาพเข้าพบลูกค้า-584324_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/02_แผนที่ตั้งภาพเข้าพบลูกค้า-584324_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/03_ผลตรวจคดี-ตรวจคดี_260914_172234.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/03_ผลตรวจคดี-ตรวจคดี_260914_172234.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/04_กรณีร้านค้าไม่มีงบการเงิน-ภพ 30 นครทวดทอง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/04_กรณีร้านค้าไม่มีงบการเงิน-ภพ 30 นครทวดทอง.pdf niramon.jan@dohome.co.th niramon.jan@dohome.co.th <div class=\"externalclass5dc966cf994f4ee8a8b32333907da459\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t04&#58;40&#58;27.889z · ป่าน พรรษชล cf hq (patsachon.put@dohome.co.th)</div> <div class=\"externalclass5dc966cf994f4ee8a8b32333907da459\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t04&#58;40&#58;27.889z · ป่าน พรรษชล cf hq (patsachon.put@dohome.co.th)</div> waiting approve waiting approve 682 item item 2026-09-22t05:20:25z 2026-09-22t05:20:25z 2026-09-14t10:00:14z 2036 18 81.0 81.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 682"
+   "_search": "\"ea150b3d-49fd-469d-b13f-903ecbf16c56,145\" บริษัท จํากัด บริษัท จํากัด 104885853 104885853 existing existing steel key account steel key account บริษัท นครทวดทอง โมเดิร์น เทรด จำกัด บริษัท นครทวดทอง โมเดิร์น เทรด จำกัด hqoo hqoo 2026-09-14t10:00:12z 2026-09-14t10:00:12z ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 5,000,000 5,000,000 ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น บุ๋ม นิรมล sg sr บุ๋ม นิรมล sg sr 0805553000061 0805553000061 บางแก้ว 4 บางแก้ว 4 เมืองนครศรีธรรมราช เมืองนครศรีธรรมราช นครศรีธรรมราช นครศรีธรรมราช 0998974299 0998974299 บริษัท นครทวดทอง โมเดิร์น เทรด จำกัด บริษัท นครทวดทอง โมเดิร์น เทรด จำกัด ร้านค้าช่วง ร้านค้าช่วง คุณเจี้ยบ คุณเจี้ยบ เจ้าของ เจ้าของ 0998974299 0998974299 30 30 20,000,000 20,000,000 30 30 - - - - ปลอดภาระ ปลอดภาระ ปลอดภาระ ปลอดภาระ - - 30 30 เป็นเจ้าของ เป็นเจ้าของ narasate.tha@dohome.co.th narasate.tha@dohome.co.th 14/09/2026 17:00 14/09/2026 17:00 09/22/2026 04:40:27 09/22/2026 04:40:27 2026-09-14t10:00:14z 14/09/2026 17:00 powerplatform powerplatform บุ๋ม นิรมล sg sr บุ๋ม นิรมล sg sr 1/5 หมู่ที่ 1 นครศรีธรรมราช เมืองนครศรีธรรมราช บางแก้ว 4 80010 1/5 หมู่ที่ 1 นครศรีธรรมราช เมืองนครศรีธรรมราช บางแก้ว 4 80010 80010 80010 บุ๋ม นิรมล sg sr บุ๋ม นิรมล sg sr patsachon.put@dohome.co.th patsachon.put@dohome.co.th 1074663 1074663 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/01_ภาพถ่ายกิจการ-584310_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/01_ภาพถ่ายกิจการ-584310_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/02_แผนที่ตั้งภาพเข้าพบลูกค้า-584324_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/02_แผนที่ตั้งภาพเข้าพบลูกค้า-584324_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/03_ผลตรวจคดี-ตรวจคดี_260914_172234.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/03_ผลตรวจคดี-ตรวจคดี_260914_172234.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/04_กรณีร้านค้าไม่มีงบการเงิน-ภพ 30 นครทวดทอง.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/682/04_กรณีร้านค้าไม่มีงบการเงิน-ภพ 30 นครทวดทอง.pdf niramon.jan@dohome.co.th niramon.jan@dohome.co.th <div class=\"externalclass5dc966cf994f4ee8a8b32333907da459\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t04&#58;40&#58;27.889z · ป่าน พรรษชล cf hq (patsachon.put@dohome.co.th)</div> <div class=\"externalclass5dc966cf994f4ee8a8b32333907da459\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t04&#58;40&#58;27.889z · ป่าน พรรษชล cf hq (patsachon.put@dohome.co.th)</div> waiting approve waiting approve 682 item item 2026-09-22t06:23:30z 2026-09-22t06:23:30z 2026-09-14t10:00:14z 2036 18 145.0 145.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 682"
   },
   {
    "id": 683,
@@ -34519,7 +34567,7 @@
    "distribution": null,
    "branch": "AYOO",
    "ts": "2026-09-21T03:03:01Z",
-   "status": "ผ่านการพิจารณาเบื้องต้น",
+   "status": "อนุมัติ-KYC",
    "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
    "limitNum": 100000.0,
    "limitOther": 0,
@@ -34533,7 +34581,7 @@
    "land": null,
    "contact": "ศิวกร แตงอ่อน",
    "_raw": {
-    "@odata.etag": "\"40e27d97-f6f9-49c5-96ed-51b47052d5b3,10\"",
+    "@odata.etag": "\"40e27d97-f6f9-49c5-96ed-51b47052d5b3,11\"",
     "Title": "หน่วยงานราชการ",
     "LinkTitle": "หน่วยงานราชการ",
     "Customer_id": "หน่วยงานราชการ",
@@ -34548,14 +34596,16 @@
     "field_7": "AYOO",
     "Request TimeStamp": "2026-09-21T03:03:01Z",
     "field_8": "2026-09-21T03:03:01Z",
-    "Status": "ผ่านการพิจารณาเบื้องต้น",
-    "field_9": "ผ่านการพิจารณาเบื้องต้น",
+    "Status": "อนุมัติ-KYC",
+    "field_9": "อนุมัติ-KYC",
     "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
     "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
     "limit": "100000",
     "field_12": "100000",
-    "1CreditApprove": "ผ่านการพิจารณาเบื้องต้น",
-    "field_15": "ผ่านการพิจารณาเบื้องต้น",
+    "CraditApprove": "100000",
+    "field_13": "100000",
+    "1CreditApprove": "อนุมัติ-KYC",
+    "field_15": "อนุมัติ-KYC",
     "Owner": "เบนซ์ ธนิตฐ์เทพ SG AY",
     "field_16": "เบนซ์ ธนิตฐ์เทพ SG AY",
     "registration_number": "0994000213182",
@@ -34592,8 +34642,8 @@
     "field_82": "Thanittep.Boo@dohome.co.th",
     "branch_manager": "GM-AY@dohome.co.th",
     "field_89": "GM-AY@dohome.co.th",
-    "Credit Action Timestamp": "09/21/2026 04:24:13",
-    "field_95": "09/21/2026 04:24:13",
+    "Credit Action Timestamp": "09/22/2026 06:48:39",
+    "field_95": "09/22/2026 06:48:39",
     "สร้างเมื่อ": "2026-09-21T03:03:02Z",
     "field_98": "09/21/2026 03:03:01",
     "ปรับเปลี่ยนโดย": "เบนซ์ ธนิตฐ์เทพ SG AY",
@@ -34606,10 +34656,14 @@
     "field_106": "13000",
     "CreateDocument": "เบนซ์ ธนิตฐ์เทพ SG AY",
     "field_112": "เบนซ์ ธนิตฐ์เทพ SG AY",
-    "AppCredit": "Nattaya.Pho@dohome.co.th",
-    "field_115": "Nattaya.Pho@dohome.co.th",
+    "AppCredit": "ฟิล์ม ปิยธิดา CF HQ",
+    "field_115": "ฟิล์ม ปิยธิดา CF HQ",
+    "AppAssCredit": "Piyatida.Mali@dohome.co.th",
+    "field_117": "Piyatida.Mali@dohome.co.th",
     "NumberCreateDocument": "1078429",
     "field_118": "1078429",
+    "1credittime": "09/22/2026 06:48:39",
+    "field_137": "09/22/2026 06:48:39",
     "linkPicture": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/774/01_สำเนาชุดเปิดเครดิต-แค่ชุดเปิด จัดหางานจังหวัดอยุธยา.pdf",
     "field_154": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/774/01_สำเนาชุดเปิดเครดิต-แค่ชุดเปิด จัดหางานจังหวัดอยุธยา.pdf",
     "LinkPictureCustomer": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/774/02_หนังสือแจ้งขอเปิดวงเงิน-สำเนาบัตร จัดหางาน.pdf",
@@ -34620,8 +34674,8 @@
     "field_158": "d3-ay@dohome.co.th",
     "Approve Edit": "Thanittep.Boo@dohome.co.th",
     "field_166": "Thanittep.Boo@dohome.co.th",
-    "Approve History": "<div class=\"ExternalClass58BFB2222AD1436EAB26F21F3AF80F03\">ผ่านการพิจารณาเบื้องต้น · 2026-09-21T04&#58;24&#58;13.273Z · ฝ้าย ณัฐญา CF HQ (Nattaya.Pho@dohome.co.th)</div>",
-    "field_167": "<div class=\"ExternalClass58BFB2222AD1436EAB26F21F3AF80F03\">ผ่านการพิจารณาเบื้องต้น · 2026-09-21T04&#58;24&#58;13.273Z · ฝ้าย ณัฐญา CF HQ (Nattaya.Pho@dohome.co.th)</div>",
+    "Approve History": "<div class=\"ExternalClass58BFB2222AD1436EAB26F21F3AF80F03\">ผ่านการพิจารณาเบื้องต้น · 2026-09-21T04&#58;24&#58;13.273Z · ฝ้าย ณัฐญา CF HQ (Nattaya.Pho@dohome.co.th)</div>\nอนุมัติ-KYC · 2026-09-22T06&#58;48&#58;39.181Z · ฟิล์ม ปิยธิดา CF HQ (Piyatida.Mali@dohome.co.th) · ความคิดเห็น&#58; วงเงินที่อนุมัติ&#58; 100,000 บาท",
+    "field_167": "<div class=\"ExternalClass58BFB2222AD1436EAB26F21F3AF80F03\">ผ่านการพิจารณาเบื้องต้น · 2026-09-21T04&#58;24&#58;13.273Z · ฝ้าย ณัฐญา CF HQ (Nattaya.Pho@dohome.co.th)</div>\nอนุมัติ-KYC · 2026-09-22T06&#58;48&#58;39.181Z · ฟิล์ม ปิยธิดา CF HQ (Piyatida.Mali@dohome.co.th) · ความคิดเห็น&#58; วงเงินที่อนุมัติ&#58; 100,000 บาท",
     "Group": "ทีมขาย-D2-D3-สินเชื่อ",
     "field_170": "ทีมขาย-D2-D3-สินเชื่อ",
     "AdditionalNotes": "Operator: เบนซ์ ธนิตฐ์เทพ SG AY / Thanittep.Boo@dohome.co.th / employee 1078429\nApproval route: ทีมขาย-D2-D3-สินเชื่อ / Store Operation / AYOO",
@@ -34629,13 +34683,13 @@
     "id": "774",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-09-21T04:24:15Z",
-    "Modified": "2026-09-21T04:24:15Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T06:48:41Z",
+    "Modified": "2026-09-22T06:48:41Z",
     "Created": "2026-09-21T03:03:02Z",
     "AuthorLookupId": "4311",
-    "EditorLookupId": "2285",
-    "เวอร์ชัน": "10.0",
-    "_UIVersionString": "10.0",
+    "EditorLookupId": "2132",
+    "เวอร์ชัน": "11.0",
+    "_UIVersionString": "11.0",
     "สิ่งที่แนบมา": true,
     "Attachments": true,
     "ชื่อเรื่อง": "หน่วยงานราชการ",
@@ -34648,7 +34702,7 @@
     "AppEditorLookupId": "40",
     "_ID": 774
    },
-   "_search": "\"40e27d97-f6f9-49c5-96ed-51b47052d5b3,10\" หน่วยงานราชการ หน่วยงานราชการ หน่วยงานราชการ หน่วยงานราชการ existing existing store operation store operation สำนักงานจัดหางานพระนครศรีอยุธยา สำนักงานจัดหางานพระนครศรีอยุธยา ayoo ayoo 2026-09-21t03:03:01z 2026-09-21t03:03:01z ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 100000 100000 ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay 0994000213182 0994000213182 คลองสวนพลู คลองสวนพลู พระนครศรีอยุธยา พระนครศรีอยุธยา พระนครศรีอยุธยา พระนครศรีอยุธยา kyc-000774 kyc-000774 035336857 035336857 สำนักงานจัดหางานพระนครศรีอยุธยา สำนักงานจัดหางานพระนครศรีอยุธยา หน่วยงานราชการ หน่วยงานราชการ ศิวกร แตงอ่อน ศิวกร แตงอ่อน เจ้าพนักงานธุรการปฏิบัติการ (พัสดุ) เจ้าพนักงานธุรการปฏิบัติการ (พัสดุ) 0904284909 0904284909 30 30 30 30 หน่วยงานราชการ หน่วยงานราชการ สำนักงานกรมจัดหางานพระนครศรีอยุธยา ตั้งอยู่ในศาลากลางจังหวัด\nที่ตั้ง สำนักงานจัดหางานจังหวัดพระนครศรีอยุธยา อาคาร 7 ชั้น ชั้นที่ 1 ต.คลองสวนพูล อ.พระนครศรีอยุธยา จ.พระนครศรีอยุธยา 13000\nลักษณะการดำเนินธุรกรรม:\nวัตถุประสงค์เพื่อจัดซื้ออุปกรณ์สำนักงาน และครุภัณฑ์\nผู้เกี่ยวข้องในการอนุมัติ\nผู้อำนวยการจัดหางานจังหวัด\nเจ้าหน้าที่การเงิน\nเจ้าหน้าที่พัสดุ\n สำนักงานกรมจัดหางานพระนครศรีอยุธยา ตั้งอยู่ในศาลากลางจังหวัด\nที่ตั้ง สำนักงานจัดหางานจังหวัดพระนครศรีอยุธยา อาคาร 7 ชั้น ชั้นที่ 1 ต.คลองสวนพูล อ.พระนครศรีอยุธยา จ.พระนครศรีอยุธยา 13000\nลักษณะการดำเนินธุรกรรม:\nวัตถุประสงค์เพื่อจัดซื้ออุปกรณ์สำนักงาน และครุภัณฑ์\nผู้เกี่ยวข้องในการอนุมัติ\nผู้อำนวยการจัดหางานจังหวัด\nเจ้าหน้าที่การเงิน\nเจ้าหน้าที่พัสดุ\n thanittep.boo@dohome.co.th thanittep.boo@dohome.co.th gm-ay@dohome.co.th gm-ay@dohome.co.th 09/21/2026 04:24:13 09/21/2026 04:24:13 2026-09-21t03:03:02z 09/21/2026 03:03:01 เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay สำนักงานจัดหางานพระนครศรีอยุธยาอาคาร7ชั้น ชั้นที่1ถนนสายเชีย พระนครศรีอยุธยา พระนครศรีอยุธยา คลองสวนพลู 13000 พระนครศรีอยุธยา พระนครศรีอยุธยา คลองสวนพลู 13000 สำนักงานจัดหางานพระนครศรีอยุธยาอาคาร7ชั้น ชั้นที่1ถนนสายเชีย พระนครศรีอยุธยา พระนครศรีอยุธยา คลองสวนพลู 13000 พระนครศรีอยุธยา พระนครศรีอยุธยา คลองสวนพลู 13000 13000 13000 เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay nattaya.pho@dohome.co.th nattaya.pho@dohome.co.th 1078429 1078429 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/01_สำเนาชุดเปิดเครดิต-แค่ชุดเปิด จัดหางานจังหวัดอยุธยา.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/01_สำเนาชุดเปิดเครดิต-แค่ชุดเปิด จัดหางานจังหวัดอยุธยา.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/02_หนังสือแจ้งขอเปิดวงเงิน-สำเนาบัตร จัดหางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/02_หนังสือแจ้งขอเปิดวงเงิน-สำเนาบัตร จัดหางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/03_แผนที่ตั้ง-แผนที่ + ภาพลูกค้า.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/03_แผนที่ตั้ง-แผนที่ + ภาพลูกค้า.pdf d3-ay@dohome.co.th d3-ay@dohome.co.th thanittep.boo@dohome.co.th thanittep.boo@dohome.co.th <div class=\"externalclass58bfb2222ad1436eab26f21f3af80f03\">ผ่านการพิจารณาเบื้องต้น · 2026-09-21t04&#58;24&#58;13.273z · ฝ้าย ณัฐญา cf hq (nattaya.pho@dohome.co.th)</div> <div class=\"externalclass58bfb2222ad1436eab26f21f3af80f03\">ผ่านการพิจารณาเบื้องต้น · 2026-09-21t04&#58;24&#58;13.273z · ฝ้าย ณัฐญา cf hq (nattaya.pho@dohome.co.th)</div> ทีมขาย-d2-d3-สินเชื่อ ทีมขาย-d2-d3-สินเชื่อ operator: เบนซ์ ธนิตฐ์เทพ sg ay / thanittep.boo@dohome.co.th / employee 1078429\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / ayoo operator: เบนซ์ ธนิตฐ์เทพ sg ay / thanittep.boo@dohome.co.th / employee 1078429\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / ayoo 774 item item 2026-09-21t04:24:15z 2026-09-21t04:24:15z 2026-09-21t03:03:02z 4311 2285 10.0 10.0 true true หน่วยงานราชการ หน่วยงานราชการ 0 0 0 0 40 40 774"
+   "_search": "\"40e27d97-f6f9-49c5-96ed-51b47052d5b3,11\" หน่วยงานราชการ หน่วยงานราชการ หน่วยงานราชการ หน่วยงานราชการ existing existing store operation store operation สำนักงานจัดหางานพระนครศรีอยุธยา สำนักงานจัดหางานพระนครศรีอยุธยา ayoo ayoo 2026-09-21t03:03:01z 2026-09-21t03:03:01z อนุมัติ-kyc อนุมัติ-kyc คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 100000 100000 100000 100000 อนุมัติ-kyc อนุมัติ-kyc เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay 0994000213182 0994000213182 คลองสวนพลู คลองสวนพลู พระนครศรีอยุธยา พระนครศรีอยุธยา พระนครศรีอยุธยา พระนครศรีอยุธยา kyc-000774 kyc-000774 035336857 035336857 สำนักงานจัดหางานพระนครศรีอยุธยา สำนักงานจัดหางานพระนครศรีอยุธยา หน่วยงานราชการ หน่วยงานราชการ ศิวกร แตงอ่อน ศิวกร แตงอ่อน เจ้าพนักงานธุรการปฏิบัติการ (พัสดุ) เจ้าพนักงานธุรการปฏิบัติการ (พัสดุ) 0904284909 0904284909 30 30 30 30 หน่วยงานราชการ หน่วยงานราชการ สำนักงานกรมจัดหางานพระนครศรีอยุธยา ตั้งอยู่ในศาลากลางจังหวัด\nที่ตั้ง สำนักงานจัดหางานจังหวัดพระนครศรีอยุธยา อาคาร 7 ชั้น ชั้นที่ 1 ต.คลองสวนพูล อ.พระนครศรีอยุธยา จ.พระนครศรีอยุธยา 13000\nลักษณะการดำเนินธุรกรรม:\nวัตถุประสงค์เพื่อจัดซื้ออุปกรณ์สำนักงาน และครุภัณฑ์\nผู้เกี่ยวข้องในการอนุมัติ\nผู้อำนวยการจัดหางานจังหวัด\nเจ้าหน้าที่การเงิน\nเจ้าหน้าที่พัสดุ\n สำนักงานกรมจัดหางานพระนครศรีอยุธยา ตั้งอยู่ในศาลากลางจังหวัด\nที่ตั้ง สำนักงานจัดหางานจังหวัดพระนครศรีอยุธยา อาคาร 7 ชั้น ชั้นที่ 1 ต.คลองสวนพูล อ.พระนครศรีอยุธยา จ.พระนครศรีอยุธยา 13000\nลักษณะการดำเนินธุรกรรม:\nวัตถุประสงค์เพื่อจัดซื้ออุปกรณ์สำนักงาน และครุภัณฑ์\nผู้เกี่ยวข้องในการอนุมัติ\nผู้อำนวยการจัดหางานจังหวัด\nเจ้าหน้าที่การเงิน\nเจ้าหน้าที่พัสดุ\n thanittep.boo@dohome.co.th thanittep.boo@dohome.co.th gm-ay@dohome.co.th gm-ay@dohome.co.th 09/22/2026 06:48:39 09/22/2026 06:48:39 2026-09-21t03:03:02z 09/21/2026 03:03:01 เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay สำนักงานจัดหางานพระนครศรีอยุธยาอาคาร7ชั้น ชั้นที่1ถนนสายเชีย พระนครศรีอยุธยา พระนครศรีอยุธยา คลองสวนพลู 13000 พระนครศรีอยุธยา พระนครศรีอยุธยา คลองสวนพลู 13000 สำนักงานจัดหางานพระนครศรีอยุธยาอาคาร7ชั้น ชั้นที่1ถนนสายเชีย พระนครศรีอยุธยา พระนครศรีอยุธยา คลองสวนพลู 13000 พระนครศรีอยุธยา พระนครศรีอยุธยา คลองสวนพลู 13000 13000 13000 เบนซ์ ธนิตฐ์เทพ sg ay เบนซ์ ธนิตฐ์เทพ sg ay ฟิล์ม ปิยธิดา cf hq ฟิล์ม ปิยธิดา cf hq piyatida.mali@dohome.co.th piyatida.mali@dohome.co.th 1078429 1078429 09/22/2026 06:48:39 09/22/2026 06:48:39 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/01_สำเนาชุดเปิดเครดิต-แค่ชุดเปิด จัดหางานจังหวัดอยุธยา.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/01_สำเนาชุดเปิดเครดิต-แค่ชุดเปิด จัดหางานจังหวัดอยุธยา.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/02_หนังสือแจ้งขอเปิดวงเงิน-สำเนาบัตร จัดหางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/02_หนังสือแจ้งขอเปิดวงเงิน-สำเนาบัตร จัดหางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/03_แผนที่ตั้ง-แผนที่ + ภาพลูกค้า.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/774/03_แผนที่ตั้ง-แผนที่ + ภาพลูกค้า.pdf d3-ay@dohome.co.th d3-ay@dohome.co.th thanittep.boo@dohome.co.th thanittep.boo@dohome.co.th <div class=\"externalclass58bfb2222ad1436eab26f21f3af80f03\">ผ่านการพิจารณาเบื้องต้น · 2026-09-21t04&#58;24&#58;13.273z · ฝ้าย ณัฐญา cf hq (nattaya.pho@dohome.co.th)</div>\nอนุมัติ-kyc · 2026-09-22t06&#58;48&#58;39.181z · ฟิล์ม ปิยธิดา cf hq (piyatida.mali@dohome.co.th) · ความคิดเห็น&#58; วงเงินที่อนุมัติ&#58; 100,000 บาท <div class=\"externalclass58bfb2222ad1436eab26f21f3af80f03\">ผ่านการพิจารณาเบื้องต้น · 2026-09-21t04&#58;24&#58;13.273z · ฝ้าย ณัฐญา cf hq (nattaya.pho@dohome.co.th)</div>\nอนุมัติ-kyc · 2026-09-22t06&#58;48&#58;39.181z · ฟิล์ม ปิยธิดา cf hq (piyatida.mali@dohome.co.th) · ความคิดเห็น&#58; วงเงินที่อนุมัติ&#58; 100,000 บาท ทีมขาย-d2-d3-สินเชื่อ ทีมขาย-d2-d3-สินเชื่อ operator: เบนซ์ ธนิตฐ์เทพ sg ay / thanittep.boo@dohome.co.th / employee 1078429\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / ayoo operator: เบนซ์ ธนิตฐ์เทพ sg ay / thanittep.boo@dohome.co.th / employee 1078429\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / ayoo 774 item item 2026-09-22t06:48:41z 2026-09-22t06:48:41z 2026-09-21t03:03:02z 4311 2132 11.0 11.0 true true หน่วยงานราชการ หน่วยงานราชการ 0 0 0 0 40 40 774"
   },
   {
    "id": 775,
@@ -37041,7 +37095,7 @@
    "distribution": null,
    "branch": "SNOO",
    "ts": "2026-09-22T01:41:26Z",
-   "status": "รอการพิจารณาเบื้องต้น",
+   "status": "ผ่านการพิจารณาเบื้องต้น",
    "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
    "limitNum": 2000000.0,
    "limitOther": 0,
@@ -37055,7 +37109,7 @@
    "land": null,
    "contact": "เฮียกอล์ฟ",
    "_raw": {
-    "@odata.etag": "\"b4740c56-fe54-4886-ad50-222e7581af2c,13\"",
+    "@odata.etag": "\"b4740c56-fe54-4886-ad50-222e7581af2c,14\"",
     "Title": "ห้างหุ้นส่วนจำกัด",
     "LinkTitle": "ห้างหุ้นส่วนจำกัด",
     "Customer_id": "100124925",
@@ -37070,12 +37124,14 @@
     "field_7": "SNOO",
     "Request TimeStamp": "2026-09-22T01:41:26Z",
     "field_8": "2026-09-22T01:41:26Z",
-    "Status": "รอการพิจารณาเบื้องต้น",
-    "field_9": "รอการพิจารณาเบื้องต้น",
+    "Status": "ผ่านการพิจารณาเบื้องต้น",
+    "field_9": "ผ่านการพิจารณาเบื้องต้น",
     "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
     "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
     "limit": "2000000",
     "field_12": "2000000",
+    "1CreditApprove": "ผ่านการพิจารณาเบื้องต้น",
+    "field_15": "ผ่านการพิจารณาเบื้องต้น",
     "Owner": "เปิ้ล ศักดิ์สรร D3 SN",
     "field_16": "เปิ้ล ศักดิ์สรร D3 SN",
     "Data": "03/28/2017 17:00:00",
@@ -37142,6 +37198,8 @@
     "field_89": "GM-SN@dohome.co.th",
     "phone_number4": "0987985800",
     "field_90": "0987985800",
+    "Credit Action Timestamp": "09/22/2026 06:43:07",
+    "field_95": "09/22/2026 06:43:07",
     "สร้างเมื่อ": "2026-09-22T01:41:29Z",
     "field_98": "09/22/2026 01:41:26",
     "ปรับเปลี่ยนโดย": "เปิ้ล ศักดิ์สรร D3 SN",
@@ -37154,6 +37212,8 @@
     "field_106": "35000",
     "CreateDocument": "เปิ้ล ศักดิ์สรร D3 SN",
     "field_112": "เปิ้ล ศักดิ์สรร D3 SN",
+    "AppCredit": "Nattaya.Pho@dohome.co.th",
+    "field_115": "Nattaya.Pho@dohome.co.th",
     "NumberCreateDocument": "1041159",
     "field_118": "1041159",
     "Else": "6904685",
@@ -37170,6 +37230,8 @@
     "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/790/04_ภาพเข้าพบลูกค้า-ภาพเข้าพบลูกค้าและแผนที่กิจการ.pdf",
     "Approve Edit": "D3-SN@dohome.co.th",
     "field_166": "D3-SN@dohome.co.th",
+    "Approve History": "<div class=\"ExternalClassD18ECB4CEC5542A1A1E31BC9FBE96380\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22T06&#58;43&#58;07.477Z · ฝ้าย ณัฐญา CF HQ (Nattaya.Pho@dohome.co.th)</div>",
+    "field_167": "<div class=\"ExternalClassD18ECB4CEC5542A1A1E31BC9FBE96380\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22T06&#58;43&#58;07.477Z · ฝ้าย ณัฐญา CF HQ (Nattaya.Pho@dohome.co.th)</div>",
     "Group": "ทีมขาย-D2-D3-สินเชื่อ",
     "field_170": "ทีมขาย-D2-D3-สินเชื่อ",
     "AdditionalNotes": "Operator: เปิ้ล ศักดิ์สรร D3 SN / D3-SN@dohome.co.th / employee 1041159\nApproval route: ทีมขาย-D2-D3-สินเชื่อ / Store Operation / SNOO",
@@ -37180,13 +37242,13 @@
     "id": "790",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-09-22T01:42:59Z",
-    "Modified": "2026-09-22T01:42:59Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T06:43:09Z",
+    "Modified": "2026-09-22T06:43:09Z",
     "Created": "2026-09-22T01:41:29Z",
     "AuthorLookupId": "557",
-    "EditorLookupId": "18",
-    "เวอร์ชัน": "13.0",
-    "_UIVersionString": "13.0",
+    "EditorLookupId": "2285",
+    "เวอร์ชัน": "14.0",
+    "_UIVersionString": "14.0",
     "สิ่งที่แนบมา": true,
     "Attachments": true,
     "ชื่อเรื่อง": "ห้างหุ้นส่วนจำกัด",
@@ -37199,7 +37261,7 @@
     "AppEditorLookupId": "40",
     "_ID": 790
    },
-   "_search": "\"b4740c56-fe54-4886-ad50-222e7581af2c,13\" ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 100124925 100124925 existing existing store operation store operation ห้างหุ้นส่วนจำกัด วิน-ไทย 2016 ดิวิล็อปเมนท์ ห้างหุ้นส่วนจำกัด วิน-ไทย 2016 ดิวิล็อปเมนท์ snoo snoo 2026-09-22t01:41:26z 2026-09-22t01:41:26z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 2000000 2000000 เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn 03/28/2017 17:00:00 03/28/2017 17:00:00 0353560000316 0353560000316 ในเมือง ในเมือง เมืองยโสธร เมืองยโสธร ยโสธร ยโสธร kyc-000790 kyc-000790 0909864346 0909864346 ห้างหุ้นส่วนจำกัด วิน-ไทย 2016 ดิวิล็อปเมนท์ ห้างหุ้นส่วนจำกัด วิน-ไทย 2016 ดิวิล็อปเมนท์ รับเหมาก่อสร้าง รับเหมาก่อสร้าง เฮียกอล์ฟ เฮียกอล์ฟ ผู้จัดการ ผู้จัดการ 0909864346 0909864346 30 30 30 30 ปรับปรุงสนามกีฬากลางแจ้ง มหาวิทยาลัยราชภัฏร้อยเอ็ด ปรับปรุงสนามกีฬากลางแจ้ง มหาวิทยาลัยราชภัฏร้อยเอ็ด มหาวิทยาลัยราชภัฏร้อยเอ็ด มหาวิทยาลัยราชภัฏร้อยเอ็ด 11000000 11000000 07/30/2026 17:00:00 07/30/2026 17:00:00 ไม่มี ไม่มี ปรับปรุงสนามกีฬากลางแจ้ง มหาวิทยาลัยราชภัฏร้อยเอ็ด ปรับปรุงสนามกีฬากลางแจ้ง มหาวิทยาลัยราชภัฏร้อยเอ็ด 11000000 11000000 กำลังดำเนินการ กำลังดำเนินการ 113 หมู ่ 12 ถนนร้อยเอ็ด-โพนทอง ตําบลเกาะแก้ว อําเภอเสลภูมิ ร้อยเอ็ด 45120 113 หมู ่ 12 ถนนร้อยเอ็ด-โพนทอง ตําบลเกาะแก้ว อําเภอเสลภูมิ ร้อยเอ็ด 45120 2027-02-27t17:00:00z 2027-02-27t17:00:00z ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด ประเภทธุรกิจ 41002 การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nลักษณะการจัดซื้อ ซื้อสินค้าต่อเนื่องสำหรับโครงการของตนเอง ไม่ใช่ซื้อหมุนเวียนต่อเนื่อง\nระยะเวลาดำเนินธุรกิจ ประมาณ 9 ปี\nผู้บริหารหลัก นางสาวพิชามญชุ์ ทรัพย์สวนแตง\nลักษณะธุรกิจ การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nมุมมองด้าน kyc สำหรับ sales มีความน่าเชื่อถือและเฮียมีโอกาสการขายด้เยอะมากครับ\nลักษณะพฤติกรรมลูกค้า การซื้อต่อเนื่องเป็นลูกค้าประจำถ้าด้เครดิตก็จะซื้อเยอะกว่าเดิม ประเภทธุรกิจ 41002 การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nลักษณะการจัดซื้อ ซื้อสินค้าต่อเนื่องสำหรับโครงการของตนเอง ไม่ใช่ซื้อหมุนเวียนต่อเนื่อง\nระยะเวลาดำเนินธุรกิจ ประมาณ 9 ปี\nผู้บริหารหลัก นางสาวพิชามญชุ์ ทรัพย์สวนแตง\nลักษณะธุรกิจ การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nมุมมองด้าน kyc สำหรับ sales มีความน่าเชื่อถือและเฮียมีโอกาสการขายด้เยอะมากครับ\nลักษณะพฤติกรรมลูกค้า การซื้อต่อเนื่องเป็นลูกค้าประจำถ้าด้เครดิตก็จะซื้อเยอะกว่าเดิม d3-sn@dohome.co.th d3-sn@dohome.co.th 0831667768 0831667768 0831667768 0831667768 0831667768 0831667768 gm-sn@dohome.co.th gm-sn@dohome.co.th 0987985800 0987985800 2026-09-22t01:41:29z 09/22/2026 01:41:26 เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn 9/2 ซอยเทศบาล 11 ยโสธร เมืองยโสธร ในเมือง 35000 9/2 ซอยเทศบาล 11 ยโสธร เมืองยโสธร ในเมือง 35000 35000 35000 เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn 1041159 1041159 6904685 6904685 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/01_สัญญางานระหว่างทำ-สัญญางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/01_สัญญางานระหว่างทำ-สัญญางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/02_ภาพถ่ายหน้างานปัจจุบัน-รูปถ่ายหน้างาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/02_ภาพถ่ายหน้างานปัจจุบัน-รูปถ่ายหน้างาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/03_ภพ0ปีก่อนหน้า-งบการเงิน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/03_ภพ0ปีก่อนหน้า-งบการเงิน.pdf d3-sn@dohome.co.th d3-sn@dohome.co.th https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/04_ภาพเข้าพบลูกค้า-ภาพเข้าพบลูกค้าและแผนที่กิจการ.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/04_ภาพเข้าพบลูกค้า-ภาพเข้าพบลูกค้าและแผนที่กิจการ.pdf d3-sn@dohome.co.th d3-sn@dohome.co.th ทีมขาย-d2-d3-สินเชื่อ ทีมขาย-d2-d3-สินเชื่อ operator: เปิ้ล ศักดิ์สรร d3 sn / d3-sn@dohome.co.th / employee 1041159\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / snoo operator: เปิ้ล ศักดิ์สรร d3 sn / d3-sn@dohome.co.th / employee 1041159\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / snoo https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/05_ผลตรวจคดี-เอกสาร ตรวจเช็คคดี วิน-ไทย.pdf 41002 การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย 790 item item 2026-09-22t01:42:59z 2026-09-22t01:42:59z 2026-09-22t01:41:29z 557 18 13.0 13.0 true true ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 0 0 0 0 40 40 790"
+   "_search": "\"b4740c56-fe54-4886-ad50-222e7581af2c,14\" ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 100124925 100124925 existing existing store operation store operation ห้างหุ้นส่วนจำกัด วิน-ไทย 2016 ดิวิล็อปเมนท์ ห้างหุ้นส่วนจำกัด วิน-ไทย 2016 ดิวิล็อปเมนท์ snoo snoo 2026-09-22t01:41:26z 2026-09-22t01:41:26z ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 2000000 2000000 ผ่านการพิจารณาเบื้องต้น ผ่านการพิจารณาเบื้องต้น เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn 03/28/2017 17:00:00 03/28/2017 17:00:00 0353560000316 0353560000316 ในเมือง ในเมือง เมืองยโสธร เมืองยโสธร ยโสธร ยโสธร kyc-000790 kyc-000790 0909864346 0909864346 ห้างหุ้นส่วนจำกัด วิน-ไทย 2016 ดิวิล็อปเมนท์ ห้างหุ้นส่วนจำกัด วิน-ไทย 2016 ดิวิล็อปเมนท์ รับเหมาก่อสร้าง รับเหมาก่อสร้าง เฮียกอล์ฟ เฮียกอล์ฟ ผู้จัดการ ผู้จัดการ 0909864346 0909864346 30 30 30 30 ปรับปรุงสนามกีฬากลางแจ้ง มหาวิทยาลัยราชภัฏร้อยเอ็ด ปรับปรุงสนามกีฬากลางแจ้ง มหาวิทยาลัยราชภัฏร้อยเอ็ด มหาวิทยาลัยราชภัฏร้อยเอ็ด มหาวิทยาลัยราชภัฏร้อยเอ็ด 11000000 11000000 07/30/2026 17:00:00 07/30/2026 17:00:00 ไม่มี ไม่มี ปรับปรุงสนามกีฬากลางแจ้ง มหาวิทยาลัยราชภัฏร้อยเอ็ด ปรับปรุงสนามกีฬากลางแจ้ง มหาวิทยาลัยราชภัฏร้อยเอ็ด 11000000 11000000 กำลังดำเนินการ กำลังดำเนินการ 113 หมู ่ 12 ถนนร้อยเอ็ด-โพนทอง ตําบลเกาะแก้ว อําเภอเสลภูมิ ร้อยเอ็ด 45120 113 หมู ่ 12 ถนนร้อยเอ็ด-โพนทอง ตําบลเกาะแก้ว อําเภอเสลภูมิ ร้อยเอ็ด 45120 2027-02-27t17:00:00z 2027-02-27t17:00:00z ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด ประเภทธุรกิจ 41002 การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nลักษณะการจัดซื้อ ซื้อสินค้าต่อเนื่องสำหรับโครงการของตนเอง ไม่ใช่ซื้อหมุนเวียนต่อเนื่อง\nระยะเวลาดำเนินธุรกิจ ประมาณ 9 ปี\nผู้บริหารหลัก นางสาวพิชามญชุ์ ทรัพย์สวนแตง\nลักษณะธุรกิจ การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nมุมมองด้าน kyc สำหรับ sales มีความน่าเชื่อถือและเฮียมีโอกาสการขายด้เยอะมากครับ\nลักษณะพฤติกรรมลูกค้า การซื้อต่อเนื่องเป็นลูกค้าประจำถ้าด้เครดิตก็จะซื้อเยอะกว่าเดิม ประเภทธุรกิจ 41002 การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nลักษณะการจัดซื้อ ซื้อสินค้าต่อเนื่องสำหรับโครงการของตนเอง ไม่ใช่ซื้อหมุนเวียนต่อเนื่อง\nระยะเวลาดำเนินธุรกิจ ประมาณ 9 ปี\nผู้บริหารหลัก นางสาวพิชามญชุ์ ทรัพย์สวนแตง\nลักษณะธุรกิจ การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nมุมมองด้าน kyc สำหรับ sales มีความน่าเชื่อถือและเฮียมีโอกาสการขายด้เยอะมากครับ\nลักษณะพฤติกรรมลูกค้า การซื้อต่อเนื่องเป็นลูกค้าประจำถ้าด้เครดิตก็จะซื้อเยอะกว่าเดิม d3-sn@dohome.co.th d3-sn@dohome.co.th 0831667768 0831667768 0831667768 0831667768 0831667768 0831667768 gm-sn@dohome.co.th gm-sn@dohome.co.th 0987985800 0987985800 09/22/2026 06:43:07 09/22/2026 06:43:07 2026-09-22t01:41:29z 09/22/2026 01:41:26 เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn 9/2 ซอยเทศบาล 11 ยโสธร เมืองยโสธร ในเมือง 35000 9/2 ซอยเทศบาล 11 ยโสธร เมืองยโสธร ในเมือง 35000 35000 35000 เปิ้ล ศักดิ์สรร d3 sn เปิ้ล ศักดิ์สรร d3 sn nattaya.pho@dohome.co.th nattaya.pho@dohome.co.th 1041159 1041159 6904685 6904685 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/01_สัญญางานระหว่างทำ-สัญญางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/01_สัญญางานระหว่างทำ-สัญญางาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/02_ภาพถ่ายหน้างานปัจจุบัน-รูปถ่ายหน้างาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/02_ภาพถ่ายหน้างานปัจจุบัน-รูปถ่ายหน้างาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/03_ภพ0ปีก่อนหน้า-งบการเงิน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/03_ภพ0ปีก่อนหน้า-งบการเงิน.pdf d3-sn@dohome.co.th d3-sn@dohome.co.th https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/04_ภาพเข้าพบลูกค้า-ภาพเข้าพบลูกค้าและแผนที่กิจการ.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/04_ภาพเข้าพบลูกค้า-ภาพเข้าพบลูกค้าและแผนที่กิจการ.pdf d3-sn@dohome.co.th d3-sn@dohome.co.th <div class=\"externalclassd18ecb4cec5542a1a1e31bc9fbe96380\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t06&#58;43&#58;07.477z · ฝ้าย ณัฐญา cf hq (nattaya.pho@dohome.co.th)</div> <div class=\"externalclassd18ecb4cec5542a1a1e31bc9fbe96380\">ผ่านการพิจารณาเบื้องต้น · 2026-09-22t06&#58;43&#58;07.477z · ฝ้าย ณัฐญา cf hq (nattaya.pho@dohome.co.th)</div> ทีมขาย-d2-d3-สินเชื่อ ทีมขาย-d2-d3-สินเชื่อ operator: เปิ้ล ศักดิ์สรร d3 sn / d3-sn@dohome.co.th / employee 1041159\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / snoo operator: เปิ้ล ศักดิ์สรร d3 sn / d3-sn@dohome.co.th / employee 1041159\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / snoo https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/790/05_ผลตรวจคดี-เอกสาร ตรวจเช็คคดี วิน-ไทย.pdf 41002 การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย 790 item item 2026-09-22t06:43:09z 2026-09-22t06:43:09z 2026-09-22t01:41:29z 557 2285 14.0 14.0 true true ห้างหุ้นส่วนจำกัด ห้างหุ้นส่วนจำกัด 0 0 0 0 40 40 790"
   },
   {
    "id": 791,
@@ -38140,6 +38202,669 @@
     "_ID": 796
    },
    "_search": "\"e78bfffd-df8a-4f0a-9052-2fa1c0b5ffb0,11\" บริษัท จํากัด บริษัท จํากัด 104504763 104504763 existing existing key account key account project sales (ps) project sales (ps) ps-east ps-east บริษัท เซิ่งต้าวัสดุก่อสร้าง จำกัด บริษัท เซิ่งต้าวัสดุก่อสร้าง จำกัด hqoo hqoo 2026-09-22t05:07:55z 2026-09-22t05:07:55z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 3000000 3000000 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 09/23/2025 17:00:00 09/23/2025 17:00:00 0135568027799 0135568027799 บึงคำพร้อย บึงคำพร้อย ลำลูกกา ลำลูกกา ปทุมธานี ปทุมธานี kyc-000796 kyc-000796 0910749039 0910749039 บริษัท เซิ่งต้าวัสดุก่อสร้าง จำกัด บริษัท เซิ่งต้าวัสดุก่อสร้าง จำกัด ร้านค้าช่วง ร้านค้าช่วง นายตุลย์เดช ทะนะศักดิ์ นายตุลย์เดช ทะนะศักดิ์ กรรมการบริษัท กรรมการบริษัท 0910749039 0910749039 30 30 5000000 5000000 30 30 1000000.0 1000000.0 อาคารพาณิชย์ อาคารพาณิชย์ หนังสือค้ำประกัน หนังสือค้ำประกัน ปลอดภาระ ปลอดภาระ บริษัท จํากัด บริษัท จํากัด หนังสือค้ำประกัน bg หนังสือค้ำประกัน bg ประเภทธุรกิจ: ประกอบกิจการค้า วัสดุก่อสร้าง อุปกรณ์และเครื่องมือใช้ในการก่อสร้าง เครื่องมือช่างทุกประเภท สี เครื่องมือทาสี เครื่องตกแต่ง อาคาร เครื่องเหล็ก เครื่องทองแดง เครื่องทองเหลือง เครื่องเคลือบ เครื่องสุขภัณฑ์ อุปกรณ์ประปา รวมทั้งอะไหล่และอุปกรณ์ ของสินค้าดังกล่าว ส่วนงานลูกค้าเป็นคนจีนเนื่องคุรตูนเจ้าของมีหุ้นส่วนที่ทำงานเกี่ยวกับค้าขายเป็นโรงงานรับผลิตเฟอร์นิเจอร์ในจีนด้วย\nผู้บริหารหลัก: นายตุลย์เดช ทะนะศักดิ์\nลักษณะธุรกิจ:\nร้านขายปลีกวัสดุก่อสร้างหลายชนิดรวมถึงวัสดุอุปกรณ์และเครื่องมือชนิดนำไปใช้ทำงานได้ด้วยตัวเอง\nมุมมองด้าน kyc (สำหรับ sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นประจำสต็อกลงร้านและขายตามโครงการ /การเอเย่นจีนด้วยกันในภาคตะวันออกกลางและปริมณฑล ประเภทธุรกิจ: ประกอบกิจการค้า วัสดุก่อสร้าง อุปกรณ์และเครื่องมือใช้ในการก่อสร้าง เครื่องมือช่างทุกประเภท สี เครื่องมือทาสี เครื่องตกแต่ง อาคาร เครื่องเหล็ก เครื่องทองแดง เครื่องทองเหลือง เครื่องเคลือบ เครื่องสุขภัณฑ์ อุปกรณ์ประปา รวมทั้งอะไหล่และอุปกรณ์ ของสินค้าดังกล่าว ส่วนงานลูกค้าเป็นคนจีนเนื่องคุรตูนเจ้าของมีหุ้นส่วนที่ทำงานเกี่ยวกับค้าขายเป็นโรงงานรับผลิตเฟอร์นิเจอร์ในจีนด้วย\nผู้บริหารหลัก: นายตุลย์เดช ทะนะศักดิ์\nลักษณะธุรกิจ:\nร้านขายปลีกวัสดุก่อสร้างหลายชนิดรวมถึงวัสดุอุปกรณ์และเครื่องมือชนิดนำไปใช้ทำงานได้ด้วยตัวเอง\nมุมมองด้าน kyc (สำหรับ sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นประจำสต็อกลงร้านและขายตามโครงการ /การเอเย่นจีนด้วยกันในภาคตะวันออกกลางและปริมณฑล 0637721555 0637721555 pongpat.pa@dohome.co.th pongpat.pa@dohome.co.th 2026-09-22t05:07:56z 09/22/2026 05:07:55 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 14/13 หมู่ที่ 5 ต.บึงคำพร้อย อ.ลำลูกกา จ.ปทุมธานี ปทุมธานี ลำลูกกา บึงคำพร้อย 12150 14/13 หมู่ที่ 5 ต.บึงคำพร้อย อ.ลำลูกกา จ.ปทุมธานี ปทุมธานี ลำลูกกา บึงคำพร้อย 12150 12150 12150 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 1069709 1069709 - - https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/796/01_ภาพถ่ายกิจการ-line_note_260922_6.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/796/01_ภาพถ่ายกิจการ-line_note_260922_6.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/796/02_แผนที่ตั้งภาพเข้าพบลูกค้า-line_note_260922_10.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/796/02_แผนที่ตั้งภาพเข้าพบลูกค้า-line_note_260922_10.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/796/03_ผลตรวจคดี-เซิ่งต้า-ตรวงจคดีpdf_260717_141307_copy_260717_142019.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/796/03_ผลตรวจคดี-เซิ่งต้า-ตรวงจคดีpdf_260717_141307_copy_260717_142019.pdf pongpat.pa@dohome.co.th pongpat.pa@dohome.co.th https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/796/04_กรณีร้านค้าไม่มีงบการเงิน-750bdc89-1e63-46a5-8402-afbe07d63188.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/796/04_กรณีร้านค้าไม่มีงบการเงิน-750bdc89-1e63-46a5-8402-afbe07d63188.pdf nattavipa.niy@dohome.co.th nattavipa.niy@dohome.co.th project sales (ps) project sales (ps) english name: shengda building materials co., ltd.\ncollateral type: หนังสือค้ำประกัน bg\noperator: แต ณัฐวิภา sg cb / nattavipa.niy@dohome.co.th / employee 1069709\napproval route: ทีมขาย-d2-d3-สินเชื่อ / key account / hqoo english name: shengda building materials co., ltd.\ncollateral type: หนังสือค้ำประกัน bg\noperator: แต ณัฐวิภา sg cb / nattavipa.niy@dohome.co.th / employee 1069709\napproval route: ทีมขาย-d2-d3-สินเชื่อ / key account / hqoo ร้านขายปลีกวัสดุก่อสร้างหลายชนิดรวมถึงวัสดุอุปกรณ์และเครื่องมือชนิดนำไปใช้ทำงานได้ด้วยตัวเอง 47525 ร้านขายปลีกวัสดุก่อสร้างหลายชนิดรวมถึงวัสดุอุปกรณ์และเครื่องมือชนิดนำไปใช้ทำงานได้ด้วยตัวเอง 796 item item 2026-09-22t05:19:27z 2026-09-22t05:19:27z 2026-09-22t05:07:56z 1989 18 11.0 11.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 796"
+  },
+  {
+   "id": 797,
+   "title": "บริษัท จํากัด",
+   "customerId": "101245550",
+   "customerName": "บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด",
+   "type1": "Existing",
+   "team": "Key Account",
+   "distribution": "Project Sales (PS)",
+   "branch": "HQOO",
+   "ts": "2026-09-22T05:47:23Z",
+   "status": "รอการพิจารณาเบื้องต้น",
+   "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
+   "limitNum": 3000000.0,
+   "limitOther": 0,
+   "owner": "หนูแดง สร้อยสุดาร์ SG AY",
+   "province": "นครราชสีมา",
+   "district": "เมืองนครราชสีมา",
+   "businessType": "รับเหมาก่อสร้าง",
+   "income": null,
+   "credit1": "30",
+   "credit2": "30",
+   "land": "0",
+   "contact": "คุณอรุณี เทือกท้าว",
+   "_raw": {
+    "@odata.etag": "\"4c45c455-c022-4701-af83-7823a7a7aca5,28\"",
+    "Title": "บริษัท จํากัด",
+    "LinkTitle": "บริษัท จํากัด",
+    "Customer_id": "101245550",
+    "field_0": "101245550",
+    "Type1": "Existing",
+    "field_2": "Existing",
+    "type_teams": "Key Account",
+    "field_3": "Key Account",
+    "Typr_Distribution": "Project Sales (PS)",
+    "field_4": "Project Sales (PS)",
+    "Typr_Retail": "PS-WEST",
+    "field_5": "PS-WEST",
+    "Customer Name": "บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด",
+    "field_6": "บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด",
+    "branch": "HQOO",
+    "field_7": "HQOO",
+    "Request TimeStamp": "2026-09-22T05:47:23Z",
+    "field_8": "2026-09-22T05:47:23Z",
+    "Status": "รอการพิจารณาเบื้องต้น",
+    "field_9": "รอการพิจารณาเบื้องต้น",
+    "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
+    "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
+    "limit": "3,000,000",
+    "field_12": "3,000,000",
+    "Owner": "หนูแดง สร้อยสุดาร์ SG AY",
+    "field_16": "หนูแดง สร้อยสุดาร์ SG AY",
+    "Data": "01/20/2018 10:00:00",
+    "field_17": "01/20/2018 10:00:00",
+    "registration_number": "0125561002472",
+    "field_18": "0125561002472",
+    "county": "บ้านเกาะ",
+    "field_20": "บ้านเกาะ",
+    "district": "เมืองนครราชสีมา",
+    "field_21": "เมืองนครราชสีมา",
+    "province": "นครราชสีมา",
+    "field_22": "นครราชสีมา",
+    "post_office": "KYC-000797",
+    "field_23": "KYC-000797",
+    "telephone": "0982833720",
+    "field_24": "0982833720",
+    "Registered_Name": "บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด",
+    "field_25": "บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด",
+    "business_type": "รับเหมาก่อสร้าง",
+    "field_26": "รับเหมาก่อสร้าง",
+    "contact_name": "คุณอรุณี เทือกท้าว",
+    "field_28": "คุณอรุณี เทือกท้าว",
+    "position": "กรรมการ",
+    "field_29": "กรรมการ",
+    "contact_number": "0982833720",
+    "field_30": "0982833720",
+    "credit_semester1": "30",
+    "field_32": "30",
+    "credit_semester2": "30",
+    "field_36": "30",
+    "Other_limits": "ที่ดินพร้อมอาคารพาณิชย์ 2 คูหา",
+    "field_45": "ที่ดินพร้อมอาคารพาณิชย์ 2 คูหา",
+    "land": "0",
+    "field_47": "0",
+    "Status_1": "ปลอดภาระ",
+    "field_48": "ปลอดภาระ",
+    "Status_2": "ปลอดภาระ",
+    "field_50": "ปลอดภาระ",
+    "establishment_area": "140 ตร.ม.",
+    "field_51": "140 ตร.ม.",
+    "number_employees": "50",
+    "field_52": "50",
+    "Ownership1": "เป็นเจ้าของ",
+    "field_54": "เป็นเจ้าของ",
+    "past_project": "ผลิตและติดตั้งงานป้องกันการพังทลายของดินพร้อมงานปลูกหญ้า",
+    "field_55": "ผลิตและติดตั้งงานป้องกันการพังทลายของดินพร้อมงานปลูกหญ้า",
+    "employer": "บริษัท บลู โอเชี่ยน คอนเทนเนอร์ เซอร์วิส จำกัด",
+    "field_56": "บริษัท บลู โอเชี่ยน คอนเทนเนอร์ เซอร์วิส จำกัด",
+    "work_value1": "1,600,000",
+    "field_57": "1,600,000",
+    "delivery_deadline": "10/07/2025 17:00:00",
+    "field_59": "10/07/2025 17:00:00",
+    "transfer_of_ownership": "ไม่มี",
+    "field_60": "ไม่มี",
+    "project": "งานก่อสร้างอาคารที่ทำการและอาคารเอนกประสงค์ อุทยานแห่งชาติ",
+    "field_61": "งานก่อสร้างอาคารที่ทำการและอาคารเอนกประสงค์ อุทยานแห่งชาติ",
+    "work_value2": "4,465,656",
+    "field_62": "4,465,656",
+    "status2_2": "กำลังดำเนินการ",
+    "field_63": "กำลังดำเนินการ",
+    "project_location1": "อาคารที่ทำการและอาคารเอนกประสงค์ อุทยานแห่งชาติ น้ำตกห้วยยาง ตำบลห้วยยาง อำเภอทับสะแก ประจวบคีรีขันธ์ 77130",
+    "field_64": "อาคารที่ทำการและอาคารเอนกประสงค์ อุทยานแห่งชาติ น้ำตกห้วยยาง ตำบลห้วยยาง อำเภอทับสะแก ประจวบคีรีขันธ์ 77130",
+    "start_of_construction1": "2026-06-14T17:00:00Z",
+    "field_65": "2026-06-14T17:00:00Z",
+    "company_ordered": "บริษัท จํากัด",
+    "field_72": "บริษัท จํากัด",
+    "Executive_history": "บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด\nวันที่จดทะเบียนจัดตั้ง  26 ม.ค. 2561\nรายชื่อกรรมการ  นางสาวอรุณี เทือกท้าว และนายขจรศักดิ์ แก้วมงคล\nประเภทธุรกิจ  ร้านขายปลีกวัสดุก่อสร้างหลายชนิดรวมถึงวัสดุอุปกรณ์และเครื่องมือชนิดนำไปใช้ทำงานได้ด้วยตัวเอง\nวัตถุประสงค์ จำหน่ายและให้บริการติดตั้งอุปกรณ์ป้องกันแนวคันดินและรับเหมาก่อสร้าง\n\nมุมมองด้าน KYC \nลูกค้ารับงานจากหน่วยงานราชการและเอกชน ต้องการสั่งซื้อสินค้ากับทางดูโฮมและเปิดบิลซื้อขายด้วยเงินสดหลายบิลแล้ว จึงต้องการขอทำเครดิตเพื่อเพิ่มยอดการสั่งซื้อกับทางดูโฮมให้มากขึ้น",
+    "field_81": "บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด\nวันที่จดทะเบียนจัดตั้ง  26 ม.ค. 2561\nรายชื่อกรรมการ  นางสาวอรุณี เทือกท้าว และนายขจรศักดิ์ แก้วมงคล\nประเภทธุรกิจ  ร้านขายปลีกวัสดุก่อสร้างหลายชนิดรวมถึงวัสดุอุปกรณ์และเครื่องมือชนิดนำไปใช้ทำงานได้ด้วยตัวเอง\nวัตถุประสงค์ จำหน่ายและให้บริการติดตั้งอุปกรณ์ป้องกันแนวคันดินและรับเหมาก่อสร้าง\n\nมุมมองด้าน KYC \nลูกค้ารับงานจากหน่วยงานราชการและเอกชน ต้องการสั่งซื้อสินค้ากับทางดูโฮมและเปิดบิลซื้อขายด้วยเงินสดหลายบิลแล้ว จึงต้องการขอทำเครดิตเพื่อเพิ่มยอดการสั่งซื้อกับทางดูโฮมให้มากขึ้น",
+    "phone_number1": "0993286115",
+    "field_84": "0993286115",
+    "sale_branch1": "kittipong.jan@dohome.co.th",
+    "field_85": "kittipong.jan@dohome.co.th",
+    "branch_manager": "kanchit.pre@dohome.co.th",
+    "field_89": "kanchit.pre@dohome.co.th",
+    "สร้างเมื่อ": "2026-09-22T05:47:24Z",
+    "field_98": "09/22/2026 05:47:23",
+    "ปรับเปลี่ยนโดย": "หนูแดง สร้อยสุดาร์ SG AY",
+    "field_99": "หนูแดง สร้อยสุดาร์ SG AY",
+    "สร้างโดย": "หนูแดง สร้อยสุดาร์ SG AY",
+    "field_100": "หนูแดง สร้อยสุดาร์ SG AY",
+    "Address": "นครราชสีมา เมืองนครราชสีมา บ้านเกาะ 30000",
+    "field_103": "นครราชสีมา เมืองนครราชสีมา บ้านเกาะ 30000",
+    "Postcode": "30000",
+    "field_106": "30000",
+    "CreateDocument": "หนูแดง สร้อยสุดาร์ SG AY",
+    "field_112": "หนูแดง สร้อยสุดาร์ SG AY",
+    "NumberCreateDocument": "1070189",
+    "field_118": "1070189",
+    "Else": "102/2569",
+    "field_145": "102/2569",
+    "linkPicture": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/797/01_สัญญางานระหว่างทำ-ที่พัก.jpg",
+    "field_154": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/797/01_สัญญางานระหว่างทำ-ที่พัก.jpg",
+    "LinkPictureCustomer": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/797/02_ภาพถ่ายหน้างานปัจจุบัน-641246.jpg",
+    "field_155": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/797/02_ภาพถ่ายหน้างานปัจจุบัน-641246.jpg",
+    "Picture2": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/797/03_ภพ0ปีก่อนหน้า-RECEIPT_P300036205908_69139584642.pdf",
+    "field_156": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/797/03_ภพ0ปีก่อนหน้า-RECEIPT_P300036205908_69139584642.pdf",
+    "gm": "kittipong.jan@dohome.co.th",
+    "field_159": "kittipong.jan@dohome.co.th",
+    "int_id": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/797/04_ภาพเข้าพบลูกค้า-585469_0.jpg",
+    "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/797/04_ภาพเข้าพบลูกค้า-585469_0.jpg",
+    "Approve Edit": "Sroysudar.Tha@dohome.co.th",
+    "field_166": "Sroysudar.Tha@dohome.co.th",
+    "Group": "Project Sales (PS)",
+    "field_170": "Project Sales (PS)",
+    "AdditionalNotes": "Operator: หนูแดง สร้อยสุดาร์ SG AY / Sroysudar.Tha@dohome.co.th / employee 1070189\nApproval route: รับเหมาก่อสร้าง / Key Account / HQOO",
+    "field_171": "Operator: หนูแดง สร้อยสุดาร์ SG AY / Sroysudar.Tha@dohome.co.th / employee 1070189\nApproval route: รับเหมาก่อสร้าง / Key Account / HQOO",
+    "URL": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/797/05_ผลตรวจคดี-42289.jpg",
+    "TISC_TYPE": "จำหน่ายและให้บริการติดตั้งอุปกรณ์ป้องกันแนวคันดินและรับเหมาก่อสร้าง",
+    "TSIC_DBD": "จำหน่ายและให้บริการติดตั้งอุปกรณ์ป้องกันแนวคันดินและรับเหมาก่อสร้าง",
+    "id": "797",
+    "ชนิดเนื้อหา": "Item",
+    "ContentType": "Item",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T05:54:06Z",
+    "Modified": "2026-09-22T05:54:06Z",
+    "Created": "2026-09-22T05:47:24Z",
+    "AuthorLookupId": "2155",
+    "EditorLookupId": "18",
+    "เวอร์ชัน": "28.0",
+    "_UIVersionString": "28.0",
+    "สิ่งที่แนบมา": true,
+    "Attachments": true,
+    "ชื่อเรื่อง": "บริษัท จํากัด",
+    "LinkTitleNoMenu": "บริษัท จํากัด",
+    "จำนวนรายการย่อย": "0",
+    "ItemChildCount": "0",
+    "จำนวนโฟลเดอร์ย่อย": "0",
+    "FolderChildCount": "0",
+    "AppAuthorLookupId": "40",
+    "AppEditorLookupId": "40",
+    "_ID": 797
+   },
+   "_search": "\"4c45c455-c022-4701-af83-7823a7a7aca5,28\" บริษัท จํากัด บริษัท จํากัด 101245550 101245550 existing existing key account key account project sales (ps) project sales (ps) ps-west ps-west บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด hqoo hqoo 2026-09-22t05:47:23z 2026-09-22t05:47:23z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 3,000,000 3,000,000 หนูแดง สร้อยสุดาร์ sg ay หนูแดง สร้อยสุดาร์ sg ay 01/20/2018 10:00:00 01/20/2018 10:00:00 0125561002472 0125561002472 บ้านเกาะ บ้านเกาะ เมืองนครราชสีมา เมืองนครราชสีมา นครราชสีมา นครราชสีมา kyc-000797 kyc-000797 0982833720 0982833720 บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด รับเหมาก่อสร้าง รับเหมาก่อสร้าง คุณอรุณี เทือกท้าว คุณอรุณี เทือกท้าว กรรมการ กรรมการ 0982833720 0982833720 30 30 30 30 ที่ดินพร้อมอาคารพาณิชย์ 2 คูหา ที่ดินพร้อมอาคารพาณิชย์ 2 คูหา 0 0 ปลอดภาระ ปลอดภาระ ปลอดภาระ ปลอดภาระ 140 ตร.ม. 140 ตร.ม. 50 50 เป็นเจ้าของ เป็นเจ้าของ ผลิตและติดตั้งงานป้องกันการพังทลายของดินพร้อมงานปลูกหญ้า ผลิตและติดตั้งงานป้องกันการพังทลายของดินพร้อมงานปลูกหญ้า บริษัท บลู โอเชี่ยน คอนเทนเนอร์ เซอร์วิส จำกัด บริษัท บลู โอเชี่ยน คอนเทนเนอร์ เซอร์วิส จำกัด 1,600,000 1,600,000 10/07/2025 17:00:00 10/07/2025 17:00:00 ไม่มี ไม่มี งานก่อสร้างอาคารที่ทำการและอาคารเอนกประสงค์ อุทยานแห่งชาติ งานก่อสร้างอาคารที่ทำการและอาคารเอนกประสงค์ อุทยานแห่งชาติ 4,465,656 4,465,656 กำลังดำเนินการ กำลังดำเนินการ อาคารที่ทำการและอาคารเอนกประสงค์ อุทยานแห่งชาติ น้ำตกห้วยยาง ตำบลห้วยยาง อำเภอทับสะแก ประจวบคีรีขันธ์ 77130 อาคารที่ทำการและอาคารเอนกประสงค์ อุทยานแห่งชาติ น้ำตกห้วยยาง ตำบลห้วยยาง อำเภอทับสะแก ประจวบคีรีขันธ์ 77130 2026-06-14t17:00:00z 2026-06-14t17:00:00z บริษัท จํากัด บริษัท จํากัด บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด\nวันที่จดทะเบียนจัดตั้ง  26 ม.ค. 2561\nรายชื่อกรรมการ  นางสาวอรุณี เทือกท้าว และนายขจรศักดิ์ แก้วมงคล\nประเภทธุรกิจ  ร้านขายปลีกวัสดุก่อสร้างหลายชนิดรวมถึงวัสดุอุปกรณ์และเครื่องมือชนิดนำไปใช้ทำงานได้ด้วยตัวเอง\nวัตถุประสงค์ จำหน่ายและให้บริการติดตั้งอุปกรณ์ป้องกันแนวคันดินและรับเหมาก่อสร้าง\n\nมุมมองด้าน kyc \nลูกค้ารับงานจากหน่วยงานราชการและเอกชน ต้องการสั่งซื้อสินค้ากับทางดูโฮมและเปิดบิลซื้อขายด้วยเงินสดหลายบิลแล้ว จึงต้องการขอทำเครดิตเพื่อเพิ่มยอดการสั่งซื้อกับทางดูโฮมให้มากขึ้น บริษัท พีเจ เอ็นจิเนียร์ แอนด์ ซัพพลาย จำกัด\nวันที่จดทะเบียนจัดตั้ง  26 ม.ค. 2561\nรายชื่อกรรมการ  นางสาวอรุณี เทือกท้าว และนายขจรศักดิ์ แก้วมงคล\nประเภทธุรกิจ  ร้านขายปลีกวัสดุก่อสร้างหลายชนิดรวมถึงวัสดุอุปกรณ์และเครื่องมือชนิดนำไปใช้ทำงานได้ด้วยตัวเอง\nวัตถุประสงค์ จำหน่ายและให้บริการติดตั้งอุปกรณ์ป้องกันแนวคันดินและรับเหมาก่อสร้าง\n\nมุมมองด้าน kyc \nลูกค้ารับงานจากหน่วยงานราชการและเอกชน ต้องการสั่งซื้อสินค้ากับทางดูโฮมและเปิดบิลซื้อขายด้วยเงินสดหลายบิลแล้ว จึงต้องการขอทำเครดิตเพื่อเพิ่มยอดการสั่งซื้อกับทางดูโฮมให้มากขึ้น 0993286115 0993286115 kittipong.jan@dohome.co.th kittipong.jan@dohome.co.th kanchit.pre@dohome.co.th kanchit.pre@dohome.co.th 2026-09-22t05:47:24z 09/22/2026 05:47:23 หนูแดง สร้อยสุดาร์ sg ay หนูแดง สร้อยสุดาร์ sg ay หนูแดง สร้อยสุดาร์ sg ay หนูแดง สร้อยสุดาร์ sg ay นครราชสีมา เมืองนครราชสีมา บ้านเกาะ 30000 นครราชสีมา เมืองนครราชสีมา บ้านเกาะ 30000 30000 30000 หนูแดง สร้อยสุดาร์ sg ay หนูแดง สร้อยสุดาร์ sg ay 1070189 1070189 102/2569 102/2569 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/797/01_สัญญางานระหว่างทำ-ที่พัก.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/797/01_สัญญางานระหว่างทำ-ที่พัก.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/797/02_ภาพถ่ายหน้างานปัจจุบัน-641246.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/797/02_ภาพถ่ายหน้างานปัจจุบัน-641246.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/797/03_ภพ0ปีก่อนหน้า-receipt_p300036205908_69139584642.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/797/03_ภพ0ปีก่อนหน้า-receipt_p300036205908_69139584642.pdf kittipong.jan@dohome.co.th kittipong.jan@dohome.co.th https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/797/04_ภาพเข้าพบลูกค้า-585469_0.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/797/04_ภาพเข้าพบลูกค้า-585469_0.jpg sroysudar.tha@dohome.co.th sroysudar.tha@dohome.co.th project sales (ps) project sales (ps) operator: หนูแดง สร้อยสุดาร์ sg ay / sroysudar.tha@dohome.co.th / employee 1070189\napproval route: รับเหมาก่อสร้าง / key account / hqoo operator: หนูแดง สร้อยสุดาร์ sg ay / sroysudar.tha@dohome.co.th / employee 1070189\napproval route: รับเหมาก่อสร้าง / key account / hqoo https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/797/05_ผลตรวจคดี-42289.jpg จำหน่ายและให้บริการติดตั้งอุปกรณ์ป้องกันแนวคันดินและรับเหมาก่อสร้าง จำหน่ายและให้บริการติดตั้งอุปกรณ์ป้องกันแนวคันดินและรับเหมาก่อสร้าง 797 item item 2026-09-22t05:54:06z 2026-09-22t05:54:06z 2026-09-22t05:47:24z 2155 18 28.0 28.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 797"
+  },
+  {
+   "id": 798,
+   "title": "บริษัท จํากัด",
+   "customerId": "102914824",
+   "customerName": "บริษัท พีระมิด เอ็นจิเนียร์ จำกัด",
+   "type1": "Existing",
+   "team": "Key Account",
+   "distribution": "Project Sales (PS)",
+   "branch": "HQOO",
+   "ts": "2026-09-22T06:06:47Z",
+   "status": "รอการพิจารณาเบื้องต้น",
+   "typeRequest": "คำขอเพิ่มวงเงิน",
+   "limitNum": 100000000.0,
+   "limitOther": 20000000.0,
+   "owner": "แต ณัฐวิภา SG CB",
+   "province": "นครราชสีมา",
+   "district": "เมืองนครราชสีมา",
+   "businessType": "รับเหมาก่อสร้าง(เพิ่ม)",
+   "income": null,
+   "credit1": "30",
+   "credit2": "30",
+   "land": null,
+   "contact": "นายสมรัฐ ตันติวงษ์",
+   "_raw": {
+    "@odata.etag": "\"69733d51-2f34-450d-aa4e-f80182aeeb4d,8\"",
+    "Title": "บริษัท จํากัด",
+    "LinkTitle": "บริษัท จํากัด",
+    "Customer_id": "102914824",
+    "field_0": "102914824",
+    "Type1": "Existing",
+    "field_2": "Existing",
+    "type_teams": "Key Account",
+    "field_3": "Key Account",
+    "Typr_Distribution": "Project Sales (PS)",
+    "field_4": "Project Sales (PS)",
+    "Typr_Retail": "PS-EAST",
+    "field_5": "PS-EAST",
+    "Customer Name": "บริษัท พีระมิด เอ็นจิเนียร์ จำกัด",
+    "field_6": "บริษัท พีระมิด เอ็นจิเนียร์ จำกัด",
+    "branch": "HQOO",
+    "field_7": "HQOO",
+    "Request TimeStamp": "2026-09-22T06:06:47Z",
+    "field_8": "2026-09-22T06:06:47Z",
+    "Status": "รอการพิจารณาเบื้องต้น",
+    "field_9": "รอการพิจารณาเบื้องต้น",
+    "Type_Request": "คำขอเพิ่มวงเงิน",
+    "field_11": "คำขอเพิ่มวงเงิน",
+    "limit": "100000000",
+    "field_12": "100000000",
+    "Owner": "แต ณัฐวิภา SG CB",
+    "field_16": "แต ณัฐวิภา SG CB",
+    "Data": "10/19/2021 17:00:00",
+    "field_17": "10/19/2021 17:00:00",
+    "registration_number": "0305564008046",
+    "field_18": "0305564008046",
+    "county": "ในเมือง",
+    "field_20": "ในเมือง",
+    "district": "เมืองนครราชสีมา",
+    "field_21": "เมืองนครราชสีมา",
+    "province": "นครราชสีมา",
+    "field_22": "นครราชสีมา",
+    "post_office": "KYC-000798",
+    "field_23": "KYC-000798",
+    "telephone": "0897623113",
+    "field_24": "0897623113",
+    "Registered_Name": "บริษัท พีระมิด เอ็นจิเนียร์ จำกัด",
+    "field_25": "บริษัท พีระมิด เอ็นจิเนียร์ จำกัด",
+    "business_type": "รับเหมาก่อสร้าง(เพิ่ม)",
+    "field_26": "รับเหมาก่อสร้าง(เพิ่ม)",
+    "contact_name": "นายสมรัฐ ตันติวงษ์",
+    "field_28": "นายสมรัฐ ตันติวงษ์",
+    "position": "กรรมการบริษัท",
+    "field_29": "กรรมการบริษัท",
+    "contact_number": "0897623113",
+    "field_30": "0897623113",
+    "credit_semester1": "30",
+    "field_32": "30",
+    "limit_other": "20000000",
+    "field_35": "20000000",
+    "credit_semester2": "30",
+    "field_36": "30",
+    "past_project": "งานเสริมความแข็งแรงทางวิ่งทางขับ ท่าอากาศยานนครศรีธรรมราช",
+    "field_55": "งานเสริมความแข็งแรงทางวิ่งทางขับ ท่าอากาศยานนครศรีธรรมราช",
+    "employer": "ท่าอากาศยานนครศรีธรรมราช",
+    "field_56": "ท่าอากาศยานนครศรีธรรมราช",
+    "work_value1": "190000000",
+    "field_57": "190000000",
+    "delivery_deadline": "05/31/2026 17:00:00",
+    "field_59": "05/31/2026 17:00:00",
+    "project": "ก่อสร้างทางหลวง 4013 สายนครศรีธรรมราช-หัวไทร",
+    "field_61": "ก่อสร้างทางหลวง 4013 สายนครศรีธรรมราช-หัวไทร",
+    "work_value2": "6500000000",
+    "field_62": "6500000000",
+    "status2_2": "กำลังดำเนินการ",
+    "field_63": "กำลังดำเนินการ",
+    "project_location1": "นครศรีธรรมราช",
+    "field_64": "นครศรีธรรมราช",
+    "start_of_construction1": "2025-09-29T17:00:00Z",
+    "field_65": "2025-09-29T17:00:00Z",
+    "company_ordered": "บริษัท จํากัด",
+    "field_72": "บริษัท จํากัด",
+    "Executive_history": "ประกอบกิจการผลิตและจำหน่ายผลิตภัณฑ์ที่ผลิตจากคอนกรีตและคอนกรีตอัดแรง\nหมวดธุรกิจ : การผลิตผลิตภัณฑ์คอนกรีตเพื่อใช้ในงานก่อสร้าง\nธุรกิจที่ส่งงบการเงินล่าสุด\nการก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ\nหมวดธุรกิจ : การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nผู้บริหารหลัก:นายสมรัฐ ตันติวงษ์\nมุมมองด้าน KYC (สำหรับ Sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นซื้อตามโครงการใหญ่ ที่ประมูลงานได้แก้ เหล็กเส้น ไวร์เมท คอนกรีต รวมถึงของย่อย",
+    "field_81": "ประกอบกิจการผลิตและจำหน่ายผลิตภัณฑ์ที่ผลิตจากคอนกรีตและคอนกรีตอัดแรง\nหมวดธุรกิจ : การผลิตผลิตภัณฑ์คอนกรีตเพื่อใช้ในงานก่อสร้าง\nธุรกิจที่ส่งงบการเงินล่าสุด\nการก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ\nหมวดธุรกิจ : การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nผู้บริหารหลัก:นายสมรัฐ ตันติวงษ์\nมุมมองด้าน KYC (สำหรับ Sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นซื้อตามโครงการใหญ่ ที่ประมูลงานได้แก้ เหล็กเส้น ไวร์เมท คอนกรีต รวมถึงของย่อย",
+    "phone_number1": "0637721555",
+    "field_84": "0637721555",
+    "sale_branch1": "Pongpat.Pa@dohome.co.th",
+    "field_85": "Pongpat.Pa@dohome.co.th",
+    "สร้างเมื่อ": "2026-09-22T06:06:48Z",
+    "field_98": "09/22/2026 06:06:47",
+    "ปรับเปลี่ยนโดย": "แต ณัฐวิภา SG CB",
+    "field_99": "แต ณัฐวิภา SG CB",
+    "สร้างโดย": "แต ณัฐวิภา SG CB",
+    "field_100": "แต ณัฐวิภา SG CB",
+    "Address": "1089 ถนนสุรนารายณ์ ต.ในเมือง อ.เมืองนครราชสีมา จ.นครราชสีมา นครราชสีมา เมืองนครราชสีมา ในเมือง 30000",
+    "field_103": "1089 ถนนสุรนารายณ์ ต.ในเมือง อ.เมืองนครราชสีมา จ.นครราชสีมา นครราชสีมา เมืองนครราชสีมา ในเมือง 30000",
+    "Postcode": "30000",
+    "field_106": "30000",
+    "CreateDocument": "แต ณัฐวิภา SG CB",
+    "field_112": "แต ณัฐวิภา SG CB",
+    "NumberCreateDocument": "1069709",
+    "field_118": "1069709",
+    "Else": "6807743",
+    "field_145": "6807743",
+    "gm": "Pongpat.Pa@dohome.co.th",
+    "field_159": "Pongpat.Pa@dohome.co.th",
+    "Approve Edit": "Nattavipa.Niy@dohome.co.th",
+    "field_166": "Nattavipa.Niy@dohome.co.th",
+    "Group": "Project Sales (PS)",
+    "field_170": "Project Sales (PS)",
+    "AdditionalNotes": "English name: PYRAMID ENGINEERS CO., LTD.\nOperator: แต ณัฐวิภา SG CB / Nattavipa.Niy@dohome.co.th / employee 1069709\nApproval route: ทีมขาย-D2-D3-สินเชื่อ / Key Account / HQOO",
+    "field_171": "English name: PYRAMID ENGINEERS CO., LTD.\nOperator: แต ณัฐวิภา SG CB / Nattavipa.Niy@dohome.co.th / employee 1069709\nApproval route: ทีมขาย-D2-D3-สินเชื่อ / Key Account / HQOO",
+    "TISC_TYPE": "การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย",
+    "TSIC": "41002",
+    "TSIC_DBD": "การก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ",
+    "id": "798",
+    "ชนิดเนื้อหา": "Item",
+    "ContentType": "Item",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T06:13:02Z",
+    "Modified": "2026-09-22T06:13:02Z",
+    "Created": "2026-09-22T06:06:48Z",
+    "AuthorLookupId": "1989",
+    "EditorLookupId": "1989",
+    "เวอร์ชัน": "8.0",
+    "_UIVersionString": "8.0",
+    "สิ่งที่แนบมา": true,
+    "Attachments": true,
+    "ชื่อเรื่อง": "บริษัท จํากัด",
+    "LinkTitleNoMenu": "บริษัท จํากัด",
+    "จำนวนรายการย่อย": "0",
+    "ItemChildCount": "0",
+    "จำนวนโฟลเดอร์ย่อย": "0",
+    "FolderChildCount": "0",
+    "AppAuthorLookupId": "40",
+    "AppEditorLookupId": "40",
+    "_ID": 798
+   },
+   "_search": "\"69733d51-2f34-450d-aa4e-f80182aeeb4d,8\" บริษัท จํากัด บริษัท จํากัด 102914824 102914824 existing existing key account key account project sales (ps) project sales (ps) ps-east ps-east บริษัท พีระมิด เอ็นจิเนียร์ จำกัด บริษัท พีระมิด เอ็นจิเนียร์ จำกัด hqoo hqoo 2026-09-22t06:06:47z 2026-09-22t06:06:47z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเพิ่มวงเงิน คำขอเพิ่มวงเงิน 100000000 100000000 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 10/19/2021 17:00:00 10/19/2021 17:00:00 0305564008046 0305564008046 ในเมือง ในเมือง เมืองนครราชสีมา เมืองนครราชสีมา นครราชสีมา นครราชสีมา kyc-000798 kyc-000798 0897623113 0897623113 บริษัท พีระมิด เอ็นจิเนียร์ จำกัด บริษัท พีระมิด เอ็นจิเนียร์ จำกัด รับเหมาก่อสร้าง(เพิ่ม) รับเหมาก่อสร้าง(เพิ่ม) นายสมรัฐ ตันติวงษ์ นายสมรัฐ ตันติวงษ์ กรรมการบริษัท กรรมการบริษัท 0897623113 0897623113 30 30 20000000 20000000 30 30 งานเสริมความแข็งแรงทางวิ่งทางขับ ท่าอากาศยานนครศรีธรรมราช งานเสริมความแข็งแรงทางวิ่งทางขับ ท่าอากาศยานนครศรีธรรมราช ท่าอากาศยานนครศรีธรรมราช ท่าอากาศยานนครศรีธรรมราช 190000000 190000000 05/31/2026 17:00:00 05/31/2026 17:00:00 ก่อสร้างทางหลวง 4013 สายนครศรีธรรมราช-หัวไทร ก่อสร้างทางหลวง 4013 สายนครศรีธรรมราช-หัวไทร 6500000000 6500000000 กำลังดำเนินการ กำลังดำเนินการ นครศรีธรรมราช นครศรีธรรมราช 2025-09-29t17:00:00z 2025-09-29t17:00:00z บริษัท จํากัด บริษัท จํากัด ประกอบกิจการผลิตและจำหน่ายผลิตภัณฑ์ที่ผลิตจากคอนกรีตและคอนกรีตอัดแรง\nหมวดธุรกิจ : การผลิตผลิตภัณฑ์คอนกรีตเพื่อใช้ในงานก่อสร้าง\nธุรกิจที่ส่งงบการเงินล่าสุด\nการก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ\nหมวดธุรกิจ : การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nผู้บริหารหลัก:นายสมรัฐ ตันติวงษ์\nมุมมองด้าน kyc (สำหรับ sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นซื้อตามโครงการใหญ่ ที่ประมูลงานได้แก้ เหล็กเส้น ไวร์เมท คอนกรีต รวมถึงของย่อย ประกอบกิจการผลิตและจำหน่ายผลิตภัณฑ์ที่ผลิตจากคอนกรีตและคอนกรีตอัดแรง\nหมวดธุรกิจ : การผลิตผลิตภัณฑ์คอนกรีตเพื่อใช้ในงานก่อสร้าง\nธุรกิจที่ส่งงบการเงินล่าสุด\nการก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ\nหมวดธุรกิจ : การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nผู้บริหารหลัก:นายสมรัฐ ตันติวงษ์\nมุมมองด้าน kyc (สำหรับ sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นซื้อตามโครงการใหญ่ ที่ประมูลงานได้แก้ เหล็กเส้น ไวร์เมท คอนกรีต รวมถึงของย่อย 0637721555 0637721555 pongpat.pa@dohome.co.th pongpat.pa@dohome.co.th 2026-09-22t06:06:48z 09/22/2026 06:06:47 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 1089 ถนนสุรนารายณ์ ต.ในเมือง อ.เมืองนครราชสีมา จ.นครราชสีมา นครราชสีมา เมืองนครราชสีมา ในเมือง 30000 1089 ถนนสุรนารายณ์ ต.ในเมือง อ.เมืองนครราชสีมา จ.นครราชสีมา นครราชสีมา เมืองนครราชสีมา ในเมือง 30000 30000 30000 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 1069709 1069709 6807743 6807743 pongpat.pa@dohome.co.th pongpat.pa@dohome.co.th nattavipa.niy@dohome.co.th nattavipa.niy@dohome.co.th project sales (ps) project sales (ps) english name: pyramid engineers co., ltd.\noperator: แต ณัฐวิภา sg cb / nattavipa.niy@dohome.co.th / employee 1069709\napproval route: ทีมขาย-d2-d3-สินเชื่อ / key account / hqoo english name: pyramid engineers co., ltd.\noperator: แต ณัฐวิภา sg cb / nattavipa.niy@dohome.co.th / employee 1069709\napproval route: ทีมขาย-d2-d3-สินเชื่อ / key account / hqoo การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย 41002 การก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ 798 item item 2026-09-22t06:13:02z 2026-09-22t06:13:02z 2026-09-22t06:06:48z 1989 1989 8.0 8.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 798"
+  },
+  {
+   "id": 799,
+   "title": "บริษัท จํากัด",
+   "customerId": "104852263",
+   "customerName": "บริษัท หวาไทย วิศวกรรม จำกัด",
+   "type1": "Existing",
+   "team": "Key Account",
+   "distribution": "Project Sales (PS)",
+   "branch": "HQOO",
+   "ts": "2026-09-22T07:24:22Z",
+   "status": "รอการพิจารณาเบื้องต้น",
+   "typeRequest": "คำขอเปิดวงเงินลูกค้าใหม่",
+   "limitNum": 1000000.0,
+   "limitOther": 0,
+   "owner": "แต ณัฐวิภา SG CB",
+   "province": "สมุทรปราการ",
+   "district": "บางเสาธง",
+   "businessType": "รับเหมาก่อสร้าง",
+   "income": null,
+   "credit1": "30",
+   "credit2": "30",
+   "land": null,
+   "contact": "นางสาวการะเกด เหมือนปิ๋ว",
+   "_raw": {
+    "@odata.etag": "\"f286008a-1af1-47cf-b8f8-1c5b61020fdc,13\"",
+    "Title": "บริษัท จํากัด",
+    "LinkTitle": "บริษัท จํากัด",
+    "Customer_id": "104852263",
+    "field_0": "104852263",
+    "Type1": "Existing",
+    "field_2": "Existing",
+    "type_teams": "Key Account",
+    "field_3": "Key Account",
+    "Typr_Distribution": "Project Sales (PS)",
+    "field_4": "Project Sales (PS)",
+    "Typr_Retail": "PS-EAST",
+    "field_5": "PS-EAST",
+    "Customer Name": "บริษัท หวาไทย วิศวกรรม จำกัด",
+    "field_6": "บริษัท หวาไทย วิศวกรรม จำกัด",
+    "branch": "HQOO",
+    "field_7": "HQOO",
+    "Request TimeStamp": "2026-09-22T07:24:22Z",
+    "field_8": "2026-09-22T07:24:22Z",
+    "Status": "รอการพิจารณาเบื้องต้น",
+    "field_9": "รอการพิจารณาเบื้องต้น",
+    "Type_Request": "คำขอเปิดวงเงินลูกค้าใหม่",
+    "field_11": "คำขอเปิดวงเงินลูกค้าใหม่",
+    "limit": "1000000",
+    "field_12": "1000000",
+    "Owner": "แต ณัฐวิภา SG CB",
+    "field_16": "แต ณัฐวิภา SG CB",
+    "Data": "05/18/2017 17:00:00",
+    "field_17": "05/18/2017 17:00:00",
+    "registration_number": "0105560082383",
+    "field_18": "0105560082383",
+    "county": "บางเสาธง",
+    "field_20": "บางเสาธง",
+    "district": "บางเสาธง",
+    "field_21": "บางเสาธง",
+    "province": "สมุทรปราการ",
+    "field_22": "สมุทรปราการ",
+    "post_office": "KYC-000799",
+    "field_23": "KYC-000799",
+    "telephone": "0623615688",
+    "field_24": "0623615688",
+    "Registered_Name": "บริษัท หวาไทย วิศวกรรม จำกัด",
+    "field_25": "บริษัท หวาไทย วิศวกรรม จำกัด",
+    "business_type": "รับเหมาก่อสร้าง",
+    "field_26": "รับเหมาก่อสร้าง",
+    "contact_name": "นางสาวการะเกด เหมือนปิ๋ว",
+    "field_28": "นางสาวการะเกด เหมือนปิ๋ว",
+    "position": "กรรมการบริษัท",
+    "field_29": "กรรมการบริษัท",
+    "contact_number": "0623615688",
+    "field_30": "0623615688",
+    "credit_semester1": "30",
+    "field_32": "30",
+    "credit_semester2": "30",
+    "field_36": "30",
+    "past_project": "ก่อสร้างโรงงาน UFM (Tahiland) co.,Ltd.",
+    "field_55": "ก่อสร้างโรงงาน UFM (Tahiland) co.,Ltd.",
+    "employer": "UFM (Tahiland) co.,Ltd.",
+    "field_56": "UFM (Tahiland) co.,Ltd.",
+    "work_value1": "136108000",
+    "field_57": "136108000",
+    "delivery_deadline": "03/24/2025 17:00:00",
+    "field_59": "03/24/2025 17:00:00",
+    "project": "ก่อสร้างโรงงาน เอ อาร์ ดา สมาร์ท แอพพลายแอนซ์ (ไทยแลนด์ ) แห่งใหม่",
+    "field_61": "ก่อสร้างโรงงาน เอ อาร์ ดา สมาร์ท แอพพลายแอนซ์ (ไทยแลนด์ ) แห่งใหม่",
+    "work_value2": "100000000",
+    "field_62": "100000000",
+    "status2_2": "กำลังดำเนินการ",
+    "field_63": "กำลังดำเนินการ",
+    "project_location1": "ระยอง",
+    "field_64": "ระยอง",
+    "start_of_construction1": "2026-01-29T17:00:00Z",
+    "field_65": "2026-01-29T17:00:00Z",
+    "company_ordered": "บริษัท จํากัด",
+    "field_72": "บริษัท จํากัด",
+    "Executive_history": "ประเภทธุรกิจ: การผลิตเหล็กและเหล็กกล้าขั้นมูลฐานอื่น ๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น\nลักษณะการขึ้น: ประกอบกิจการทำโครงสร้างเหล็ก รับเหมา โครงสร้างเหล็กและบ้านก่อสร้างอุปกรณ์ต่างๆที่เกี่ยวกับเหล็ก งานรับจ้างสั่งทำโครงเหล็กสินค้า ที่เกี่ยวกับเหล็กทุกชนิด ภายในประเทศไทยและต่างประเทศ ผลิตเหล็กกล้าและชิ้นมูลฐาน\nผู้บริหารหลัก:นางสาวการะเกด เหมือนปิ๋ว\nลักษณะธุรกิจ:\nโรงงานทำโครงสร้างเหล็ก รับเหมา โครงสร้างเหล็กและบ้านก่อสร้างอุปกรณ์ต่างๆที่เกี่ยวกับเหล็กมีความประสงค์ขยายโรงงานเพิ่มเติม\nมุมมองด้าน KYC (สำหรับ Sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นล็อตใหญ่ตามโครงการ",
+    "field_81": "ประเภทธุรกิจ: การผลิตเหล็กและเหล็กกล้าขั้นมูลฐานอื่น ๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น\nลักษณะการขึ้น: ประกอบกิจการทำโครงสร้างเหล็ก รับเหมา โครงสร้างเหล็กและบ้านก่อสร้างอุปกรณ์ต่างๆที่เกี่ยวกับเหล็ก งานรับจ้างสั่งทำโครงเหล็กสินค้า ที่เกี่ยวกับเหล็กทุกชนิด ภายในประเทศไทยและต่างประเทศ ผลิตเหล็กกล้าและชิ้นมูลฐาน\nผู้บริหารหลัก:นางสาวการะเกด เหมือนปิ๋ว\nลักษณะธุรกิจ:\nโรงงานทำโครงสร้างเหล็ก รับเหมา โครงสร้างเหล็กและบ้านก่อสร้างอุปกรณ์ต่างๆที่เกี่ยวกับเหล็กมีความประสงค์ขยายโรงงานเพิ่มเติม\nมุมมองด้าน KYC (สำหรับ Sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นล็อตใหญ่ตามโครงการ",
+    "phone_number1": "0637721555",
+    "field_84": "0637721555",
+    "sale_branch1": "Pongpat.Pa@dohome.co.th",
+    "field_85": "Pongpat.Pa@dohome.co.th",
+    "สร้างเมื่อ": "2026-09-22T07:24:23Z",
+    "field_98": "09/22/2026 07:24:22",
+    "ปรับเปลี่ยนโดย": "แต ณัฐวิภา SG CB",
+    "field_99": "แต ณัฐวิภา SG CB",
+    "สร้างโดย": "แต ณัฐวิภา SG CB",
+    "field_100": "แต ณัฐวิภา SG CB",
+    "Address": "224 หมู่ที่ 2 ต.บางเสาธง อ.บางเสาธง จ.สมุทรปราการ สมุทรปราการ บางเสาธง บางเสาธง 10570",
+    "field_103": "224 หมู่ที่ 2 ต.บางเสาธง อ.บางเสาธง จ.สมุทรปราการ สมุทรปราการ บางเสาธง บางเสาธง 10570",
+    "Postcode": "10570",
+    "field_106": "10570",
+    "CreateDocument": "แต ณัฐวิภา SG CB",
+    "field_112": "แต ณัฐวิภา SG CB",
+    "NumberCreateDocument": "1069709",
+    "field_118": "1069709",
+    "Else": "6802938",
+    "field_145": "6802938",
+    "linkPicture": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/799/01_สัญญางานระหว่างทำ-326453.jpg",
+    "field_154": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/799/01_สัญญางานระหว่างทำ-326453.jpg",
+    "LinkPictureCustomer": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/799/02_ภาพถ่ายหน้างานปัจจุบัน-LINE_NOTE_260922_22.jpg",
+    "field_155": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/799/02_ภาพถ่ายหน้างานปัจจุบัน-LINE_NOTE_260922_22.jpg",
+    "Picture2": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/799/03_ภพ0ปีก่อนหน้า-ตรวจคดีบริษัท หวาไทย วิศวกรรม จำกัด.pdf_20260922_135441.pdf",
+    "field_156": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/799/03_ภพ0ปีก่อนหน้า-ตรวจคดีบริษัท หวาไทย วิศวกรรม จำกัด.pdf_20260922_135441.pdf",
+    "gm": "Pongpat.Pa@dohome.co.th",
+    "field_159": "Pongpat.Pa@dohome.co.th",
+    "int_id": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/799/04_ภาพเข้าพบลูกค้า-LINE_NOTE_260922_22.jpg",
+    "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/799/04_ภาพเข้าพบลูกค้า-LINE_NOTE_260922_22.jpg",
+    "Approve Edit": "Nattavipa.Niy@dohome.co.th",
+    "field_166": "Nattavipa.Niy@dohome.co.th",
+    "Group": "Project Sales (PS)",
+    "field_170": "Project Sales (PS)",
+    "AdditionalNotes": "English name: WATHAI ENGINEERING COMPANY LIMITED\nOperator: แต ณัฐวิภา SG CB / Nattavipa.Niy@dohome.co.th / employee 1069709\nApproval route: ทีมขาย-D2-D3-สินเชื่อ / Key Account / HQOO",
+    "field_171": "English name: WATHAI ENGINEERING COMPANY LIMITED\nOperator: แต ณัฐวิภา SG CB / Nattavipa.Niy@dohome.co.th / employee 1069709\nApproval route: ทีมขาย-D2-D3-สินเชื่อ / Key Account / HQOO",
+    "URL": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/799/05_ผลตรวจคดี-ตรวจคดีบริษัท หวาไทย วิศวกรรม จำกัด.pdf_20260922_135441.pdf",
+    "TISC_TYPE": "การผลิตเหล็กและเหล็กกล้าขั้นมูลฐานอื่น ๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น",
+    "TSIC": "24109",
+    "TSIC_DBD": "ผลิตเหล็กกล้าและชิ้นมูลฐาน",
+    "id": "799",
+    "ชนิดเนื้อหา": "Item",
+    "ContentType": "Item",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T07:26:22Z",
+    "Modified": "2026-09-22T07:26:22Z",
+    "Created": "2026-09-22T07:24:23Z",
+    "AuthorLookupId": "1989",
+    "EditorLookupId": "18",
+    "เวอร์ชัน": "13.0",
+    "_UIVersionString": "13.0",
+    "สิ่งที่แนบมา": true,
+    "Attachments": true,
+    "ชื่อเรื่อง": "บริษัท จํากัด",
+    "LinkTitleNoMenu": "บริษัท จํากัด",
+    "จำนวนรายการย่อย": "0",
+    "ItemChildCount": "0",
+    "จำนวนโฟลเดอร์ย่อย": "0",
+    "FolderChildCount": "0",
+    "AppAuthorLookupId": "40",
+    "AppEditorLookupId": "40",
+    "_ID": 799
+   },
+   "_search": "\"f286008a-1af1-47cf-b8f8-1c5b61020fdc,13\" บริษัท จํากัด บริษัท จํากัด 104852263 104852263 existing existing key account key account project sales (ps) project sales (ps) ps-east ps-east บริษัท หวาไทย วิศวกรรม จำกัด บริษัท หวาไทย วิศวกรรม จำกัด hqoo hqoo 2026-09-22t07:24:22z 2026-09-22t07:24:22z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเปิดวงเงินลูกค้าใหม่ คำขอเปิดวงเงินลูกค้าใหม่ 1000000 1000000 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 05/18/2017 17:00:00 05/18/2017 17:00:00 0105560082383 0105560082383 บางเสาธง บางเสาธง บางเสาธง บางเสาธง สมุทรปราการ สมุทรปราการ kyc-000799 kyc-000799 0623615688 0623615688 บริษัท หวาไทย วิศวกรรม จำกัด บริษัท หวาไทย วิศวกรรม จำกัด รับเหมาก่อสร้าง รับเหมาก่อสร้าง นางสาวการะเกด เหมือนปิ๋ว นางสาวการะเกด เหมือนปิ๋ว กรรมการบริษัท กรรมการบริษัท 0623615688 0623615688 30 30 30 30 ก่อสร้างโรงงาน ufm (tahiland) co.,ltd. ก่อสร้างโรงงาน ufm (tahiland) co.,ltd. ufm (tahiland) co.,ltd. ufm (tahiland) co.,ltd. 136108000 136108000 03/24/2025 17:00:00 03/24/2025 17:00:00 ก่อสร้างโรงงาน เอ อาร์ ดา สมาร์ท แอพพลายแอนซ์ (ไทยแลนด์ ) แห่งใหม่ ก่อสร้างโรงงาน เอ อาร์ ดา สมาร์ท แอพพลายแอนซ์ (ไทยแลนด์ ) แห่งใหม่ 100000000 100000000 กำลังดำเนินการ กำลังดำเนินการ ระยอง ระยอง 2026-01-29t17:00:00z 2026-01-29t17:00:00z บริษัท จํากัด บริษัท จํากัด ประเภทธุรกิจ: การผลิตเหล็กและเหล็กกล้าขั้นมูลฐานอื่น ๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น\nลักษณะการขึ้น: ประกอบกิจการทำโครงสร้างเหล็ก รับเหมา โครงสร้างเหล็กและบ้านก่อสร้างอุปกรณ์ต่างๆที่เกี่ยวกับเหล็ก งานรับจ้างสั่งทำโครงเหล็กสินค้า ที่เกี่ยวกับเหล็กทุกชนิด ภายในประเทศไทยและต่างประเทศ ผลิตเหล็กกล้าและชิ้นมูลฐาน\nผู้บริหารหลัก:นางสาวการะเกด เหมือนปิ๋ว\nลักษณะธุรกิจ:\nโรงงานทำโครงสร้างเหล็ก รับเหมา โครงสร้างเหล็กและบ้านก่อสร้างอุปกรณ์ต่างๆที่เกี่ยวกับเหล็กมีความประสงค์ขยายโรงงานเพิ่มเติม\nมุมมองด้าน kyc (สำหรับ sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นล็อตใหญ่ตามโครงการ ประเภทธุรกิจ: การผลิตเหล็กและเหล็กกล้าขั้นมูลฐานอื่น ๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น\nลักษณะการขึ้น: ประกอบกิจการทำโครงสร้างเหล็ก รับเหมา โครงสร้างเหล็กและบ้านก่อสร้างอุปกรณ์ต่างๆที่เกี่ยวกับเหล็ก งานรับจ้างสั่งทำโครงเหล็กสินค้า ที่เกี่ยวกับเหล็กทุกชนิด ภายในประเทศไทยและต่างประเทศ ผลิตเหล็กกล้าและชิ้นมูลฐาน\nผู้บริหารหลัก:นางสาวการะเกด เหมือนปิ๋ว\nลักษณะธุรกิจ:\nโรงงานทำโครงสร้างเหล็ก รับเหมา โครงสร้างเหล็กและบ้านก่อสร้างอุปกรณ์ต่างๆที่เกี่ยวกับเหล็กมีความประสงค์ขยายโรงงานเพิ่มเติม\nมุมมองด้าน kyc (สำหรับ sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นล็อตใหญ่ตามโครงการ 0637721555 0637721555 pongpat.pa@dohome.co.th pongpat.pa@dohome.co.th 2026-09-22t07:24:23z 09/22/2026 07:24:22 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 224 หมู่ที่ 2 ต.บางเสาธง อ.บางเสาธง จ.สมุทรปราการ สมุทรปราการ บางเสาธง บางเสาธง 10570 224 หมู่ที่ 2 ต.บางเสาธง อ.บางเสาธง จ.สมุทรปราการ สมุทรปราการ บางเสาธง บางเสาธง 10570 10570 10570 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 1069709 1069709 6802938 6802938 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/799/01_สัญญางานระหว่างทำ-326453.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/799/01_สัญญางานระหว่างทำ-326453.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/799/02_ภาพถ่ายหน้างานปัจจุบัน-line_note_260922_22.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/799/02_ภาพถ่ายหน้างานปัจจุบัน-line_note_260922_22.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/799/03_ภพ0ปีก่อนหน้า-ตรวจคดีบริษัท หวาไทย วิศวกรรม จำกัด.pdf_20260922_135441.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/799/03_ภพ0ปีก่อนหน้า-ตรวจคดีบริษัท หวาไทย วิศวกรรม จำกัด.pdf_20260922_135441.pdf pongpat.pa@dohome.co.th pongpat.pa@dohome.co.th https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/799/04_ภาพเข้าพบลูกค้า-line_note_260922_22.jpg https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/799/04_ภาพเข้าพบลูกค้า-line_note_260922_22.jpg nattavipa.niy@dohome.co.th nattavipa.niy@dohome.co.th project sales (ps) project sales (ps) english name: wathai engineering company limited\noperator: แต ณัฐวิภา sg cb / nattavipa.niy@dohome.co.th / employee 1069709\napproval route: ทีมขาย-d2-d3-สินเชื่อ / key account / hqoo english name: wathai engineering company limited\noperator: แต ณัฐวิภา sg cb / nattavipa.niy@dohome.co.th / employee 1069709\napproval route: ทีมขาย-d2-d3-สินเชื่อ / key account / hqoo https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/799/05_ผลตรวจคดี-ตรวจคดีบริษัท หวาไทย วิศวกรรม จำกัด.pdf_20260922_135441.pdf การผลิตเหล็กและเหล็กกล้าขั้นมูลฐานอื่น ๆ ซึ่งมิได้จัดประเภทไว้ในที่อื่น 24109 ผลิตเหล็กกล้าและชิ้นมูลฐาน 799 item item 2026-09-22t07:26:22z 2026-09-22t07:26:22z 2026-09-22t07:24:23z 1989 18 13.0 13.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 799"
+  },
+  {
+   "id": 800,
+   "title": "บริษัท จํากัด",
+   "customerId": "101376511",
+   "customerName": "บริษัท พีระมิด คอนกรีต จำกัด",
+   "type1": "Existing",
+   "team": "Key Account",
+   "distribution": "Project Sales (PS)",
+   "branch": "HQOO",
+   "ts": "2026-09-22T07:55:10Z",
+   "status": "รอการพิจารณาเบื้องต้น",
+   "typeRequest": "คำขอเพิ่มวงเงิน",
+   "limitNum": 100000000.0,
+   "limitOther": 20000000.0,
+   "owner": "แต ณัฐวิภา SG CB",
+   "province": "กรุงเทพมหานคร",
+   "district": "มีนบุรี",
+   "businessType": "รับเหมาก่อสร้าง(เพิ่ม)",
+   "income": null,
+   "credit1": "30",
+   "credit2": "30",
+   "land": null,
+   "contact": "นายสมรัฐ ตันติวงษ์",
+   "_raw": {
+    "@odata.etag": "\"1c5cd550-182d-47db-93a3-3a01fafb9d52,8\"",
+    "Title": "บริษัท จํากัด",
+    "LinkTitle": "บริษัท จํากัด",
+    "Customer_id": "101376511",
+    "field_0": "101376511",
+    "Type1": "Existing",
+    "field_2": "Existing",
+    "type_teams": "Key Account",
+    "field_3": "Key Account",
+    "Typr_Distribution": "Project Sales (PS)",
+    "field_4": "Project Sales (PS)",
+    "Typr_Retail": "PS-EAST",
+    "field_5": "PS-EAST",
+    "Customer Name": "บริษัท พีระมิด คอนกรีต จำกัด",
+    "field_6": "บริษัท พีระมิด คอนกรีต จำกัด",
+    "branch": "HQOO",
+    "field_7": "HQOO",
+    "Request TimeStamp": "2026-09-22T07:55:10Z",
+    "field_8": "2026-09-22T07:55:10Z",
+    "Status": "รอการพิจารณาเบื้องต้น",
+    "field_9": "รอการพิจารณาเบื้องต้น",
+    "Type_Request": "คำขอเพิ่มวงเงิน",
+    "field_11": "คำขอเพิ่มวงเงิน",
+    "limit": "100000000",
+    "field_12": "100000000",
+    "Owner": "แต ณัฐวิภา SG CB",
+    "field_16": "แต ณัฐวิภา SG CB",
+    "Data": "10/19/2021 10:00:00",
+    "field_17": "10/19/2021 10:00:00",
+    "registration_number": "0305564008046",
+    "field_18": "0305564008046",
+    "county": "มีนบุรี",
+    "field_20": "มีนบุรี",
+    "district": "มีนบุรี",
+    "field_21": "มีนบุรี",
+    "province": "กรุงเทพมหานคร",
+    "field_22": "กรุงเทพมหานคร",
+    "post_office": "KYC-000800",
+    "field_23": "KYC-000800",
+    "telephone": "0897623113",
+    "field_24": "0897623113",
+    "Registered_Name": "บริษัท พีระมิด คอนกรีต จำกัด",
+    "field_25": "บริษัท พีระมิด คอนกรีต จำกัด",
+    "business_type": "รับเหมาก่อสร้าง(เพิ่ม)",
+    "field_26": "รับเหมาก่อสร้าง(เพิ่ม)",
+    "contact_name": "นายสมรัฐ ตันติวงษ์",
+    "field_28": "นายสมรัฐ ตันติวงษ์",
+    "position": "กรรมการบริษัท",
+    "field_29": "กรรมการบริษัท",
+    "contact_number": "0897623113",
+    "field_30": "0897623113",
+    "credit_semester1": "30",
+    "field_32": "30",
+    "limit_other": "20000000",
+    "field_35": "20000000",
+    "credit_semester2": "30",
+    "field_36": "30",
+    "past_project": "งานเสริมความแข็งแรงทางวิ่งทางขับ ท่าอากาศยานนครศรีธรรมราช",
+    "field_55": "งานเสริมความแข็งแรงทางวิ่งทางขับ ท่าอากาศยานนครศรีธรรมราช",
+    "employer": "ท่าอากาศยานนครศรีธรรมราช",
+    "field_56": "ท่าอากาศยานนครศรีธรรมราช",
+    "work_value1": "190000000",
+    "field_57": "190000000",
+    "delivery_deadline": "05/31/2026 10:00:00",
+    "field_59": "05/31/2026 10:00:00",
+    "project": "ก่อสร้างทางหลวง 4013 สายนครศรีธรรมราช-หัวไทร",
+    "field_61": "ก่อสร้างทางหลวง 4013 สายนครศรีธรรมราช-หัวไทร",
+    "work_value2": "6500000000",
+    "field_62": "6500000000",
+    "status2_2": "กำลังดำเนินการ",
+    "field_63": "กำลังดำเนินการ",
+    "project_location1": "นครศรีธรรมราช",
+    "field_64": "นครศรีธรรมราช",
+    "start_of_construction1": "2025-09-29T17:00:00Z",
+    "field_65": "2025-09-29T17:00:00Z",
+    "company_ordered": "บริษัท จํากัด",
+    "field_72": "บริษัท จํากัด",
+    "Executive_history": "ประกอบกิจการผลิตและจำหน่ายผลิตภัณฑ์ที่ผลิตจากคอนกรีตและคอนกรีตอัดแรง\nหมวดธุรกิจ : การผลิตผลิตภัณฑ์คอนกรีตเพื่อใช้ในงานก่อสร้าง\nธุรกิจที่ส่งงบการเงินล่าสุด\nการก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ\nหมวดธุรกิจ : การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nผู้บริหารหลัก:นายสมรัฐ ตันติวงษ์\nมุมมองด้าน KYC (สำหรับ Sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นซื้อตามโครงการใหญ่ ที่ประมูลงานได้แก้ เหล็กเส้น ไวร์เมท คอนกรีต รวมถึงของย่อย",
+    "field_81": "ประกอบกิจการผลิตและจำหน่ายผลิตภัณฑ์ที่ผลิตจากคอนกรีตและคอนกรีตอัดแรง\nหมวดธุรกิจ : การผลิตผลิตภัณฑ์คอนกรีตเพื่อใช้ในงานก่อสร้าง\nธุรกิจที่ส่งงบการเงินล่าสุด\nการก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ\nหมวดธุรกิจ : การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nผู้บริหารหลัก:นายสมรัฐ ตันติวงษ์\nมุมมองด้าน KYC (สำหรับ Sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นซื้อตามโครงการใหญ่ ที่ประมูลงานได้แก้ เหล็กเส้น ไวร์เมท คอนกรีต รวมถึงของย่อย",
+    "phone_number1": "0637721555",
+    "field_84": "0637721555",
+    "sale_branch1": "Pongpat.Pa@dohome.co.th",
+    "field_85": "Pongpat.Pa@dohome.co.th",
+    "สร้างเมื่อ": "2026-09-22T07:55:11Z",
+    "field_98": "09/22/2026 07:55:10",
+    "ปรับเปลี่ยนโดย": "แต ณัฐวิภา SG CB",
+    "field_99": "แต ณัฐวิภา SG CB",
+    "สร้างโดย": "แต ณัฐวิภา SG CB",
+    "field_100": "แต ณัฐวิภา SG CB",
+    "Address": "184 ถนนสุวินทวงศ์ แขวงมีนบุรี เขตมีนบุรี กรุงเทพมหานคร 10510 กรุงเทพมหานคร มีนบุรี มีนบุรี 10510",
+    "field_103": "184 ถนนสุวินทวงศ์ แขวงมีนบุรี เขตมีนบุรี กรุงเทพมหานคร 10510 กรุงเทพมหานคร มีนบุรี มีนบุรี 10510",
+    "Postcode": "10510",
+    "field_106": "10510",
+    "CreateDocument": "แต ณัฐวิภา SG CB",
+    "field_112": "แต ณัฐวิภา SG CB",
+    "NumberCreateDocument": "1069709",
+    "field_118": "1069709",
+    "Else": "6807743",
+    "field_145": "6807743",
+    "gm": "Pongpat.Pa@dohome.co.th",
+    "field_159": "Pongpat.Pa@dohome.co.th",
+    "Approve Edit": "Nattavipa.Niy@dohome.co.th",
+    "field_166": "Nattavipa.Niy@dohome.co.th",
+    "Group": "Project Sales (PS)",
+    "field_170": "Project Sales (PS)",
+    "AdditionalNotes": "Operator: แต ณัฐวิภา SG CB / Nattavipa.Niy@dohome.co.th / employee 1069709\nApproval route: Project Sales (PS) / Key Account / HQOO",
+    "field_171": "Operator: แต ณัฐวิภา SG CB / Nattavipa.Niy@dohome.co.th / employee 1069709\nApproval route: Project Sales (PS) / Key Account / HQOO",
+    "TISC_TYPE": "การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย",
+    "TSIC": "41002",
+    "TSIC_DBD": "การก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ",
+    "id": "800",
+    "ชนิดเนื้อหา": "Item",
+    "ContentType": "Item",
+    "ปรับเปลี่ยนเมื่อ": "2026-09-22T07:57:14Z",
+    "Modified": "2026-09-22T07:57:14Z",
+    "Created": "2026-09-22T07:55:11Z",
+    "AuthorLookupId": "1989",
+    "EditorLookupId": "1989",
+    "เวอร์ชัน": "8.0",
+    "_UIVersionString": "8.0",
+    "สิ่งที่แนบมา": true,
+    "Attachments": true,
+    "ชื่อเรื่อง": "บริษัท จํากัด",
+    "LinkTitleNoMenu": "บริษัท จํากัด",
+    "จำนวนรายการย่อย": "0",
+    "ItemChildCount": "0",
+    "จำนวนโฟลเดอร์ย่อย": "0",
+    "FolderChildCount": "0",
+    "AppAuthorLookupId": "40",
+    "AppEditorLookupId": "40",
+    "_ID": 800
+   },
+   "_search": "\"1c5cd550-182d-47db-93a3-3a01fafb9d52,8\" บริษัท จํากัด บริษัท จํากัด 101376511 101376511 existing existing key account key account project sales (ps) project sales (ps) ps-east ps-east บริษัท พีระมิด คอนกรีต จำกัด บริษัท พีระมิด คอนกรีต จำกัด hqoo hqoo 2026-09-22t07:55:10z 2026-09-22t07:55:10z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเพิ่มวงเงิน คำขอเพิ่มวงเงิน 100000000 100000000 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 10/19/2021 10:00:00 10/19/2021 10:00:00 0305564008046 0305564008046 มีนบุรี มีนบุรี มีนบุรี มีนบุรี กรุงเทพมหานคร กรุงเทพมหานคร kyc-000800 kyc-000800 0897623113 0897623113 บริษัท พีระมิด คอนกรีต จำกัด บริษัท พีระมิด คอนกรีต จำกัด รับเหมาก่อสร้าง(เพิ่ม) รับเหมาก่อสร้าง(เพิ่ม) นายสมรัฐ ตันติวงษ์ นายสมรัฐ ตันติวงษ์ กรรมการบริษัท กรรมการบริษัท 0897623113 0897623113 30 30 20000000 20000000 30 30 งานเสริมความแข็งแรงทางวิ่งทางขับ ท่าอากาศยานนครศรีธรรมราช งานเสริมความแข็งแรงทางวิ่งทางขับ ท่าอากาศยานนครศรีธรรมราช ท่าอากาศยานนครศรีธรรมราช ท่าอากาศยานนครศรีธรรมราช 190000000 190000000 05/31/2026 10:00:00 05/31/2026 10:00:00 ก่อสร้างทางหลวง 4013 สายนครศรีธรรมราช-หัวไทร ก่อสร้างทางหลวง 4013 สายนครศรีธรรมราช-หัวไทร 6500000000 6500000000 กำลังดำเนินการ กำลังดำเนินการ นครศรีธรรมราช นครศรีธรรมราช 2025-09-29t17:00:00z 2025-09-29t17:00:00z บริษัท จํากัด บริษัท จํากัด ประกอบกิจการผลิตและจำหน่ายผลิตภัณฑ์ที่ผลิตจากคอนกรีตและคอนกรีตอัดแรง\nหมวดธุรกิจ : การผลิตผลิตภัณฑ์คอนกรีตเพื่อใช้ในงานก่อสร้าง\nธุรกิจที่ส่งงบการเงินล่าสุด\nการก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ\nหมวดธุรกิจ : การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nผู้บริหารหลัก:นายสมรัฐ ตันติวงษ์\nมุมมองด้าน kyc (สำหรับ sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นซื้อตามโครงการใหญ่ ที่ประมูลงานได้แก้ เหล็กเส้น ไวร์เมท คอนกรีต รวมถึงของย่อย ประกอบกิจการผลิตและจำหน่ายผลิตภัณฑ์ที่ผลิตจากคอนกรีตและคอนกรีตอัดแรง\nหมวดธุรกิจ : การผลิตผลิตภัณฑ์คอนกรีตเพื่อใช้ในงานก่อสร้าง\nธุรกิจที่ส่งงบการเงินล่าสุด\nการก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ\nหมวดธุรกิจ : การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย\nผู้บริหารหลัก:นายสมรัฐ ตันติวงษ์\nมุมมองด้าน kyc (สำหรับ sales):\nลักษณะพฤติกรรมลูกค้า: การซื้อเป็นลักษณะเป็นซื้อตามโครงการใหญ่ ที่ประมูลงานได้แก้ เหล็กเส้น ไวร์เมท คอนกรีต รวมถึงของย่อย 0637721555 0637721555 pongpat.pa@dohome.co.th pongpat.pa@dohome.co.th 2026-09-22t07:55:11z 09/22/2026 07:55:10 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 184 ถนนสุวินทวงศ์ แขวงมีนบุรี เขตมีนบุรี กรุงเทพมหานคร 10510 กรุงเทพมหานคร มีนบุรี มีนบุรี 10510 184 ถนนสุวินทวงศ์ แขวงมีนบุรี เขตมีนบุรี กรุงเทพมหานคร 10510 กรุงเทพมหานคร มีนบุรี มีนบุรี 10510 10510 10510 แต ณัฐวิภา sg cb แต ณัฐวิภา sg cb 1069709 1069709 6807743 6807743 pongpat.pa@dohome.co.th pongpat.pa@dohome.co.th nattavipa.niy@dohome.co.th nattavipa.niy@dohome.co.th project sales (ps) project sales (ps) operator: แต ณัฐวิภา sg cb / nattavipa.niy@dohome.co.th / employee 1069709\napproval route: project sales (ps) / key account / hqoo operator: แต ณัฐวิภา sg cb / nattavipa.niy@dohome.co.th / employee 1069709\napproval route: project sales (ps) / key account / hqoo การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย 41002 การก่อสร้างโครงการวิศวกรรมโยธาอื่นๆ 800 item item 2026-09-22t07:57:14z 2026-09-22t07:57:14z 2026-09-22t07:55:11z 1989 1989 8.0 8.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 800"
   }
  ],
  "dictionary": [
@@ -38148,7 +38873,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "\"11209d1c-4f9e-41b9-8f36-3205e1818bd2,13",
-   "unique": 237,
+   "unique": 241,
    "nullPct": 0.0
   },
   {
@@ -38172,7 +38897,7 @@
    "type": "Number",
    "desc": "รหัสลูกค้าในระบบหลัก (9 หลัก) — ใช้ตรวจคำขอซ้ำ",
    "sample": "100059672",
-   "unique": 172,
+   "unique": 175,
    "nullPct": 0.4
   },
   {
@@ -38180,7 +38905,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "100059672",
-   "unique": 172,
+   "unique": 175,
    "nullPct": 0.4
   },
   {
@@ -38189,7 +38914,7 @@
    "desc": "ประเภทลูกค้า: Existing (ลูกค้าเดิม) / Lead (ลูกค้าใหม่)",
    "sample": "Existing",
    "unique": 3,
-   "nullPct": 14.8
+   "nullPct": 14.5
   },
   {
    "name": "field_2",
@@ -38197,7 +38922,7 @@
    "desc": "—",
    "sample": "Existing",
    "unique": 3,
-   "nullPct": 14.8
+   "nullPct": 14.5
   },
   {
    "name": "type_teams",
@@ -38205,7 +38930,7 @@
    "desc": "ทีมที่ยื่นคำขอ: Store Operation, Wholesales (WS), Project Sales (PS), Retail, Steel Key Account",
    "sample": "Store Operation",
    "unique": 7,
-   "nullPct": 3.4
+   "nullPct": 3.3
   },
   {
    "name": "field_3",
@@ -38213,14 +38938,14 @@
    "desc": "—",
    "sample": "Store Operation",
    "unique": 7,
-   "nullPct": 3.4
+   "nullPct": 3.3
   },
   {
    "name": "Customer Name",
    "type": "Text",
    "desc": "ชื่อลูกค้าที่ใช้เรียกทั่วไป",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง",
-   "unique": 174,
+   "unique": 178,
    "nullPct": 1.7
   },
   {
@@ -38228,7 +38953,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง",
-   "unique": 174,
+   "unique": 178,
    "nullPct": 1.7
   },
   {
@@ -38237,7 +38962,7 @@
    "desc": "รหัสสาขาที่ยื่นคำขอ เช่น UDOO, SNOO, PKOO",
    "sample": "CMOO",
    "unique": 29,
-   "nullPct": 7.2
+   "nullPct": 7.1
   },
   {
    "name": "field_7",
@@ -38245,23 +38970,23 @@
    "desc": "—",
    "sample": "CMOO",
    "unique": 29,
-   "nullPct": 7.2
+   "nullPct": 7.1
   },
   {
    "name": "Request TimeStamp",
    "type": "DateTime",
    "desc": "วันเวลาที่ยื่นคำขอ (UTC) — แกนเวลาหลักของทุกกราฟ",
    "sample": "2026-08-26T04:55:22Z",
-   "unique": 234,
-   "nullPct": 1.3
+   "unique": 238,
+   "nullPct": 1.2
   },
   {
    "name": "field_8",
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-08-26T04:55:22Z",
-   "unique": 234,
-   "nullPct": 1.3
+   "unique": 238,
+   "nullPct": 1.2
   },
   {
    "name": "Status",
@@ -38269,7 +38994,7 @@
    "desc": "สถานะปัจจุบันของคำขอในกระบวนการอนุมัติ",
    "sample": "ไม่ผ่านการพิจารณาเบื้องต้น",
    "unique": 9,
-   "nullPct": 1.3
+   "nullPct": 1.2
   },
   {
    "name": "field_9",
@@ -38277,7 +39002,7 @@
    "desc": "—",
    "sample": "ไม่ผ่านการพิจารณาเบื้องต้น",
    "unique": 9,
-   "nullPct": 1.3
+   "nullPct": 1.2
   },
   {
    "name": "Type_Request",
@@ -38300,7 +39025,7 @@
    "type": "Number",
    "desc": "วงเงินที่ขอ (บาท, เก็บเป็นข้อความมีคอมมา)",
    "sample": "2,000,000",
-   "unique": 40,
+   "unique": 41,
    "nullPct": 0.0
   },
   {
@@ -38308,7 +39033,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "2,000,000",
-   "unique": 40,
+   "unique": 41,
    "nullPct": 0.0
   },
   {
@@ -38317,7 +39042,7 @@
    "desc": "ผู้ยื่น/เจ้าของคำขอ (ชื่อเล่น + ชื่อจริง + รหัสหน่วยงาน)",
    "sample": "โจ้ สหสัณห์ SG CM",
    "unique": 79,
-   "nullPct": 1.3
+   "nullPct": 1.2
   },
   {
    "name": "field_16",
@@ -38325,30 +39050,30 @@
    "desc": "—",
    "sample": "โจ้ สหสัณห์ SG CM",
    "unique": 79,
-   "nullPct": 1.3
+   "nullPct": 1.2
   },
   {
    "name": "Data",
    "type": "Text",
    "desc": "วันที่จดทะเบียนจัดตั้งกิจการ",
    "sample": "02/25/2015 17:00:00",
-   "unique": 180,
-   "nullPct": 12.7
+   "unique": 184,
+   "nullPct": 12.4
   },
   {
    "name": "field_17",
    "type": "Text",
    "desc": "—",
    "sample": "02/25/2015 17:00:00",
-   "unique": 180,
-   "nullPct": 12.7
+   "unique": 184,
+   "nullPct": 12.4
   },
   {
    "name": "registration_number",
    "type": "Number",
    "desc": "เลขทะเบียนนิติบุคคล 13 หลัก",
    "sample": "0503556002081",
-   "unique": 171,
+   "unique": 173,
    "nullPct": 0.0
   },
   {
@@ -38356,7 +39081,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "0503556002081",
-   "unique": 171,
+   "unique": 173,
    "nullPct": 0.0
   },
   {
@@ -38364,32 +39089,32 @@
    "type": "Text",
    "desc": "ตำบล/แขวง",
    "sample": "ท่าวังตาล",
-   "unique": 138,
-   "nullPct": 3.0
+   "unique": 140,
+   "nullPct": 2.9
   },
   {
    "name": "field_20",
    "type": "Text",
    "desc": "—",
    "sample": "ท่าวังตาล",
-   "unique": 138,
-   "nullPct": 3.0
+   "unique": 140,
+   "nullPct": 2.9
   },
   {
    "name": "district",
    "type": "Text",
    "desc": "อำเภอ/เขต",
    "sample": "สารภี",
-   "unique": 108,
-   "nullPct": 1.3
+   "unique": 110,
+   "nullPct": 1.2
   },
   {
    "name": "field_21",
    "type": "Text",
    "desc": "—",
    "sample": "สารภี",
-   "unique": 108,
-   "nullPct": 1.3
+   "unique": 110,
+   "nullPct": 1.2
   },
   {
    "name": "province",
@@ -38397,7 +39122,7 @@
    "desc": "จังหวัด",
    "sample": "เชียงใหม่",
    "unique": 44,
-   "nullPct": 1.3
+   "nullPct": 1.2
   },
   {
    "name": "field_22",
@@ -38405,14 +39130,14 @@
    "desc": "—",
    "sample": "เชียงใหม่",
    "unique": 44,
-   "nullPct": 1.3
+   "nullPct": 1.2
   },
   {
    "name": "telephone",
    "type": "Number",
    "desc": "โทรศัพท์ของกิจการ",
    "sample": "0858634774",
-   "unique": 180,
+   "unique": 182,
    "nullPct": 0.0
   },
   {
@@ -38420,7 +39145,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "0858634774",
-   "unique": 180,
+   "unique": 182,
    "nullPct": 0.0
   },
   {
@@ -38428,16 +39153,16 @@
    "type": "Text",
    "desc": "ชื่อนิติบุคคลตามหนังสือรับรอง",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง",
-   "unique": 176,
-   "nullPct": 1.3
+   "unique": 179,
+   "nullPct": 1.2
   },
   {
    "name": "field_25",
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง",
-   "unique": 176,
-   "nullPct": 1.3
+   "unique": 179,
+   "nullPct": 1.2
   },
   {
    "name": "business_type",
@@ -38460,7 +39185,7 @@
    "type": "Text",
    "desc": "ชื่อผู้ติดต่อ",
    "sample": "นายวัชรพงษ์ อินต๊ะโตด",
-   "unique": 176,
+   "unique": 178,
    "nullPct": 0.0
   },
   {
@@ -38468,7 +39193,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "นายวัชรพงษ์ อินต๊ะโตด",
-   "unique": 176,
+   "unique": 178,
    "nullPct": 0.0
   },
   {
@@ -38492,7 +39217,7 @@
    "type": "Number",
    "desc": "เบอร์โทรผู้ติดต่อ",
    "sample": "0858634774",
-   "unique": 178,
+   "unique": 180,
    "nullPct": 0.0
   },
   {
@@ -38500,7 +39225,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "0858634774",
-   "unique": 178,
+   "unique": 180,
    "nullPct": 0.0
   },
   {
@@ -38509,7 +39234,7 @@
    "desc": "เครดิตเทอมที่ขอ ชุดที่ 1 (วัน)",
    "sample": "30",
    "unique": 2,
-   "nullPct": 9.3
+   "nullPct": 9.1
   },
   {
    "name": "field_32",
@@ -38517,7 +39242,7 @@
    "desc": "—",
    "sample": "30",
    "unique": 2,
-   "nullPct": 9.3
+   "nullPct": 9.1
   },
   {
    "name": "credit_semester2",
@@ -38541,7 +39266,7 @@
    "desc": "หลักประกันประเภทที่ดิน (สถานะภาระผูกพัน/ขนาด)",
    "sample": "ปลอดภาระ",
    "unique": 42,
-   "nullPct": 39.7
+   "nullPct": 40.2
   },
   {
    "name": "field_47",
@@ -38549,7 +39274,7 @@
    "desc": "—",
    "sample": "ปลอดภาระ",
    "unique": 42,
-   "nullPct": 39.7
+   "nullPct": 40.2
   },
   {
    "name": "Status_1",
@@ -38557,7 +39282,7 @@
    "desc": "สถานะสำรอง (ปกติมีค่าเท่ากับ Status)",
    "sample": "ไม่ผ่านการพิจารณาเบื้องต้น",
    "unique": 8,
-   "nullPct": 33.8
+   "nullPct": 34.4
   },
   {
    "name": "field_48",
@@ -38565,7 +39290,7 @@
    "desc": "—",
    "sample": "ไม่ผ่านการพิจารณาเบื้องต้น",
    "unique": 8,
-   "nullPct": 33.8
+   "nullPct": 34.4
   },
   {
    "name": " other_property",
@@ -38573,7 +39298,7 @@
    "desc": "ทรัพย์สินอื่นที่ใช้เป็นหลักประกัน",
    "sample": "ปลอดภาระ",
    "unique": 20,
-   "nullPct": 63.3
+   "nullPct": 63.9
   },
   {
    "name": "field_49",
@@ -38581,7 +39306,7 @@
    "desc": "—",
    "sample": "ปลอดภาระ",
    "unique": 20,
-   "nullPct": 63.3
+   "nullPct": 63.9
   },
   {
    "name": "Status_2",
@@ -38589,7 +39314,7 @@
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
    "unique": 9,
-   "nullPct": 44.3
+   "nullPct": 44.8
   },
   {
    "name": "field_50",
@@ -38597,7 +39322,7 @@
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
    "unique": 9,
-   "nullPct": 44.3
+   "nullPct": 44.8
   },
   {
    "name": "establishment_area",
@@ -38605,7 +39330,7 @@
    "desc": "—",
    "sample": "1000",
    "unique": 74,
-   "nullPct": 38.8
+   "nullPct": 39.4
   },
   {
    "name": "field_51",
@@ -38613,7 +39338,7 @@
    "desc": "—",
    "sample": "1000",
    "unique": 74,
-   "nullPct": 38.8
+   "nullPct": 39.4
   },
   {
    "name": "number_employees",
@@ -38621,7 +39346,7 @@
    "desc": "—",
    "sample": "50",
    "unique": 29,
-   "nullPct": 39.7
+   "nullPct": 40.2
   },
   {
    "name": "field_52",
@@ -38629,7 +39354,7 @@
    "desc": "—",
    "sample": "50",
    "unique": 29,
-   "nullPct": 39.7
+   "nullPct": 40.2
   },
   {
    "name": "Ownership1",
@@ -38637,7 +39362,7 @@
    "desc": "—",
    "sample": "เป็นเจ้าของ",
    "unique": 5,
-   "nullPct": 39.2
+   "nullPct": 39.8
   },
   {
    "name": "field_54",
@@ -38645,39 +39370,39 @@
    "desc": "—",
    "sample": "เป็นเจ้าของ",
    "unique": 5,
-   "nullPct": 39.2
+   "nullPct": 39.8
   },
   {
    "name": "employer",
    "type": "Text",
    "desc": "—",
    "sample": "บจก.ชอยส์มินิสโตร์",
-   "unique": 122,
-   "nullPct": 31.6
+   "unique": 124,
+   "nullPct": 31.1
   },
   {
    "name": "field_56",
    "type": "Text",
    "desc": "—",
    "sample": "บจก.ชอยส์มินิสโตร์",
-   "unique": 122,
-   "nullPct": 31.6
+   "unique": 124,
+   "nullPct": 31.1
   },
   {
    "name": "work_value1",
    "type": "Number",
    "desc": "—",
    "sample": "5,100,000",
-   "unique": 105,
-   "nullPct": 32.1
+   "unique": 107,
+   "nullPct": 31.5
   },
   {
    "name": "field_57",
    "type": "Number",
    "desc": "—",
    "sample": "5,100,000",
-   "unique": 105,
-   "nullPct": 32.1
+   "unique": 107,
+   "nullPct": 31.5
   },
   {
    "name": "transfer_of_ownership",
@@ -38685,7 +39410,7 @@
    "desc": "—",
    "sample": "ไม่มี",
    "unique": 4,
-   "nullPct": 40.5
+   "nullPct": 41.1
   },
   {
    "name": "field_60",
@@ -38693,39 +39418,39 @@
    "desc": "—",
    "sample": "ไม่มี",
    "unique": 4,
-   "nullPct": 40.5
+   "nullPct": 41.1
   },
   {
    "name": "work_value2",
    "type": "Number",
    "desc": "—",
    "sample": "42,000,000",
-   "unique": 128,
-   "nullPct": 32.1
+   "unique": 130,
+   "nullPct": 31.5
   },
   {
    "name": "field_62",
    "type": "Number",
    "desc": "—",
    "sample": "42,000,000",
-   "unique": 128,
-   "nullPct": 32.1
+   "unique": 130,
+   "nullPct": 31.5
   },
   {
    "name": "project_location1",
    "type": "Text",
    "desc": "—",
    "sample": "มหาวิทยาลัยราชภัฏเชียงใหม่ ศูนย์แม่ริม ต",
-   "unique": 131,
-   "nullPct": 31.6
+   "unique": 133,
+   "nullPct": 31.1
   },
   {
    "name": "field_64",
    "type": "Text",
    "desc": "—",
    "sample": "มหาวิทยาลัยราชภัฏเชียงใหม่ ศูนย์แม่ริม ต",
-   "unique": 131,
-   "nullPct": 31.6
+   "unique": 133,
+   "nullPct": 31.1
   },
   {
    "name": "future_project",
@@ -38733,7 +39458,7 @@
    "desc": "—",
    "sample": "7-Eleven สาขา5287 บ้านโป่งแยง",
    "unique": 36,
-   "nullPct": 82.3
+   "nullPct": 82.6
   },
   {
    "name": "field_66",
@@ -38741,7 +39466,7 @@
    "desc": "—",
    "sample": "7-Eleven สาขา5287 บ้านโป่งแยง",
    "unique": 36,
-   "nullPct": 82.3
+   "nullPct": 82.6
   },
   {
    "name": "work_value3",
@@ -38749,7 +39474,7 @@
    "desc": "—",
    "sample": "6,000,000",
    "unique": 30,
-   "nullPct": 83.5
+   "nullPct": 83.8
   },
   {
    "name": "field_67",
@@ -38757,7 +39482,7 @@
    "desc": "—",
    "sample": "6,000,000",
    "unique": 30,
-   "nullPct": 83.5
+   "nullPct": 83.8
   },
   {
    "name": "status3_3",
@@ -38765,7 +39490,7 @@
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
    "unique": 7,
-   "nullPct": 81.4
+   "nullPct": 81.7
   },
   {
    "name": "field_68",
@@ -38773,7 +39498,7 @@
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
    "unique": 7,
-   "nullPct": 81.4
+   "nullPct": 81.7
   },
   {
    "name": "project_location2",
@@ -38781,7 +39506,7 @@
    "desc": "—",
    "sample": "ตำบลโป่งแยง อำเภอแม่ริม จังหวัดเชียงใหม่",
    "unique": 35,
-   "nullPct": 82.7
+   "nullPct": 83.0
   },
   {
    "name": "field_69",
@@ -38789,7 +39514,7 @@
    "desc": "—",
    "sample": "ตำบลโป่งแยง อำเภอแม่ริม จังหวัดเชียงใหม่",
    "unique": 35,
-   "nullPct": 82.7
+   "nullPct": 83.0
   },
   {
    "name": "loan_history",
@@ -38797,7 +39522,7 @@
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง\nประกอบธุรกิจ : ร",
    "unique": 85,
-   "nullPct": 57.8
+   "nullPct": 58.5
   },
   {
    "name": "field_79",
@@ -38805,7 +39530,7 @@
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง\nประกอบธุรกิจ : ร",
    "unique": 85,
-   "nullPct": 57.8
+   "nullPct": 58.5
   },
   {
    "name": "referral",
@@ -38813,7 +39538,7 @@
    "desc": "—",
    "sample": "คุณแพท ผู้บริหาร บจก.บ้านม่วนใจ๋ เป็นเพื",
    "unique": 24,
-   "nullPct": 84.8
+   "nullPct": 85.1
   },
   {
    "name": "field_80",
@@ -38821,23 +39546,23 @@
    "desc": "—",
    "sample": "คุณแพท ผู้บริหาร บจก.บ้านม่วนใจ๋ เป็นเพื",
    "unique": 24,
-   "nullPct": 84.8
+   "nullPct": 85.1
   },
   {
    "name": "Executive_history",
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง\nประกอบธุรกิจ : ร",
-   "unique": 130,
-   "nullPct": 33.3
+   "unique": 133,
+   "nullPct": 32.8
   },
   {
    "name": "field_81",
    "type": "Text",
    "desc": "—",
    "sample": "หจก.ชวกร เอ็นจิเนียริ่ง\nประกอบธุรกิจ : ร",
-   "unique": 130,
-   "nullPct": 33.3
+   "unique": 133,
+   "nullPct": 32.8
   },
   {
    "name": "sale_representative",
@@ -38845,7 +39570,7 @@
    "desc": "—",
    "sample": "Sahasan.Tee@dohome.co.th",
    "unique": 78,
-   "nullPct": 17.3
+   "nullPct": 18.7
   },
   {
    "name": "field_82",
@@ -38853,7 +39578,7 @@
    "desc": "—",
    "sample": "Sahasan.Tee@dohome.co.th",
    "unique": 78,
-   "nullPct": 17.3
+   "nullPct": 18.7
   },
   {
    "name": "phone_number1",
@@ -38861,7 +39586,7 @@
    "desc": "—",
    "sample": "0814693553",
    "unique": 77,
-   "nullPct": 23.2
+   "nullPct": 22.8
   },
   {
    "name": "field_84",
@@ -38869,23 +39594,23 @@
    "desc": "—",
    "sample": "0814693553",
    "unique": 77,
-   "nullPct": 23.2
+   "nullPct": 22.8
   },
   {
    "name": "sale_branch1",
    "type": "Text",
    "desc": "—",
    "sample": "GM-CM@dohome.co.th",
-   "unique": 32,
-   "nullPct": 55.7
+   "unique": 33,
+   "nullPct": 54.8
   },
   {
    "name": "field_85",
    "type": "Text",
    "desc": "—",
    "sample": "GM-CM@dohome.co.th",
-   "unique": 32,
-   "nullPct": 55.7
+   "unique": 33,
+   "nullPct": 54.8
   },
   {
    "name": "phone_number2",
@@ -38893,7 +39618,7 @@
    "desc": "—",
    "sample": "0814693553",
    "unique": 43,
-   "nullPct": 59.9
+   "nullPct": 60.6
   },
   {
    "name": "field_86",
@@ -38901,7 +39626,7 @@
    "desc": "—",
    "sample": "0814693553",
    "unique": 43,
-   "nullPct": 59.9
+   "nullPct": 60.6
   },
   {
    "name": "D31",
@@ -38909,7 +39634,7 @@
    "desc": "—",
    "sample": "D3-CM@dohome.co.th",
    "unique": 46,
-   "nullPct": 47.7
+   "nullPct": 48.5
   },
   {
    "name": "field_87",
@@ -38917,7 +39642,7 @@
    "desc": "—",
    "sample": "D3-CM@dohome.co.th",
    "unique": 46,
-   "nullPct": 47.7
+   "nullPct": 48.5
   },
   {
    "name": "phone_number3",
@@ -38925,7 +39650,7 @@
    "desc": "—",
    "sample": "0644782291",
    "unique": 38,
-   "nullPct": 62.9
+   "nullPct": 63.5
   },
   {
    "name": "field_88",
@@ -38933,7 +39658,7 @@
    "desc": "—",
    "sample": "0644782291",
    "unique": 38,
-   "nullPct": 62.9
+   "nullPct": 63.5
   },
   {
    "name": "timeStartcreate",
@@ -38941,7 +39666,7 @@
    "desc": "—",
    "sample": "26/08/2026 11:55",
    "unique": 148,
-   "nullPct": 35.0
+   "nullPct": 36.1
   },
   {
    "name": "field_92",
@@ -38949,30 +39674,30 @@
    "desc": "—",
    "sample": "26/08/2026 11:55",
    "unique": 148,
-   "nullPct": 35.0
+   "nullPct": 36.1
   },
   {
    "name": "Credit Action Timestamp",
    "type": "Text",
    "desc": "—",
    "sample": "09/01/2026 08:26:40",
-   "unique": 106,
-   "nullPct": 55.3
+   "unique": 111,
+   "nullPct": 53.9
   },
   {
    "name": "field_95",
    "type": "Text",
    "desc": "—",
    "sample": "09/01/2026 08:26:40",
-   "unique": 106,
-   "nullPct": 55.3
+   "unique": 111,
+   "nullPct": 53.9
   },
   {
    "name": "สร้างเมื่อ",
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-08-26T04:55:27Z",
-   "unique": 237,
+   "unique": 241,
    "nullPct": 0.0
   },
   {
@@ -38980,24 +39705,24 @@
    "type": "Text",
    "desc": "—",
    "sample": "26/08/2026 11:55",
-   "unique": 175,
-   "nullPct": 23.6
+   "unique": 179,
+   "nullPct": 23.2
   },
   {
    "name": "ปรับเปลี่ยนโดย",
    "type": "Text",
    "desc": "—",
    "sample": "PowerPlatForm",
-   "unique": 29,
-   "nullPct": 23.6
+   "unique": 30,
+   "nullPct": 23.2
   },
   {
    "name": "field_99",
    "type": "Text",
    "desc": "—",
    "sample": "PowerPlatForm",
-   "unique": 29,
-   "nullPct": 23.6
+   "unique": 30,
+   "nullPct": 23.2
   },
   {
    "name": "สร้างโดย",
@@ -39005,7 +39730,7 @@
    "desc": "—",
    "sample": "โจ้ สหสัณห์ SG CM",
    "unique": 76,
-   "nullPct": 9.3
+   "nullPct": 9.1
   },
   {
    "name": "field_100",
@@ -39013,14 +39738,14 @@
    "desc": "—",
    "sample": "โจ้ สหสัณห์ SG CM",
    "unique": 76,
-   "nullPct": 9.3
+   "nullPct": 9.1
   },
   {
    "name": "Address",
    "type": "Text",
    "desc": "—",
    "sample": "58/1 หมู่ที่ 2 เชียงใหม่ สารภี ท่าวังตาล",
-   "unique": 200,
+   "unique": 204,
    "nullPct": 0.0
   },
   {
@@ -39028,7 +39753,7 @@
    "type": "Text",
    "desc": "—",
    "sample": "58/1 หมู่ที่ 2 เชียงใหม่ สารภี ท่าวังตาล",
-   "unique": 200,
+   "unique": 204,
    "nullPct": 0.0
   },
   {
@@ -39036,7 +39761,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "50140",
-   "unique": 121,
+   "unique": 122,
    "nullPct": 0.4
   },
   {
@@ -39044,7 +39769,7 @@
    "type": "Number",
    "desc": "—",
    "sample": "50140",
-   "unique": 121,
+   "unique": 122,
    "nullPct": 0.4
   },
   {
@@ -39053,7 +39778,7 @@
    "desc": "—",
    "sample": "โจ้ สหสัณห์ SG CM",
    "unique": 75,
-   "nullPct": 10.1
+   "nullPct": 10.0
   },
   {
    "name": "field_112",
@@ -39061,7 +39786,7 @@
    "desc": "—",
    "sample": "โจ้ สหสัณห์ SG CM",
    "unique": 75,
-   "nullPct": 10.1
+   "nullPct": 10.0
   },
   {
    "name": "AppCredit",
@@ -39069,7 +39794,7 @@
    "desc": "—",
    "sample": "ฝ้าย ณัฐญา CF HQ",
    "unique": 13,
-   "nullPct": 58.6
+   "nullPct": 57.3
   },
   {
    "name": "field_115",
@@ -39077,7 +39802,7 @@
    "desc": "—",
    "sample": "ฝ้าย ณัฐญา CF HQ",
    "unique": 13,
-   "nullPct": 58.6
+   "nullPct": 57.3
   },
   {
    "name": "NumberRespresentative",
@@ -39085,7 +39810,7 @@
    "desc": "—",
    "sample": "1075283",
    "unique": 70,
-   "nullPct": 35.0
+   "nullPct": 36.1
   },
   {
    "name": "field_119",
@@ -39093,103 +39818,103 @@
    "desc": "—",
    "sample": "1075283",
    "unique": 70,
-   "nullPct": 35.0
+   "nullPct": 36.1
   },
   {
    "name": "linkPicture",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 169,
-   "nullPct": 28.7
+   "unique": 172,
+   "nullPct": 28.6
   },
   {
    "name": "field_154",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 169,
-   "nullPct": 28.7
+   "unique": 172,
+   "nullPct": 28.6
   },
   {
    "name": "LinkPictureCustomer",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 169,
-   "nullPct": 28.7
+   "unique": 172,
+   "nullPct": 28.6
   },
   {
    "name": "field_155",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 169,
-   "nullPct": 28.7
+   "unique": 172,
+   "nullPct": 28.6
   },
   {
    "name": "Picture2",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 162,
-   "nullPct": 31.6
+   "unique": 165,
+   "nullPct": 31.5
   },
   {
    "name": "field_156",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 162,
-   "nullPct": 31.6
+   "unique": 165,
+   "nullPct": 31.5
   },
   {
    "name": "int_id",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 142,
-   "nullPct": 40.1
+   "unique": 145,
+   "nullPct": 39.8
   },
   {
    "name": "field_165",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 142,
-   "nullPct": 40.1
+   "unique": 145,
+   "nullPct": 39.8
   },
   {
    "name": "Approve Edit",
    "type": "Text",
    "desc": "—",
    "sample": "sahasan.tee@dohome.co.th",
-   "unique": 96,
-   "nullPct": 13.9
+   "unique": 97,
+   "nullPct": 13.7
   },
   {
    "name": "field_166",
    "type": "Text",
    "desc": "—",
    "sample": "sahasan.tee@dohome.co.th",
-   "unique": 96,
-   "nullPct": 13.9
+   "unique": 97,
+   "nullPct": 13.7
   },
   {
    "name": "Approve History",
    "type": "Text",
    "desc": "—",
    "sample": "<div class=\"ExternalClass9683424E19E1438",
-   "unique": 105,
-   "nullPct": 55.7
+   "unique": 110,
+   "nullPct": 54.4
   },
   {
    "name": "field_167",
    "type": "Text",
    "desc": "—",
    "sample": "<div class=\"ExternalClass9683424E19E1438",
-   "unique": 105,
-   "nullPct": 55.7
+   "unique": 110,
+   "nullPct": 54.4
   },
   {
    "name": "Approve Up",
@@ -39197,7 +39922,7 @@
    "desc": "—",
    "sample": "ฝ้าย ณัฐญา CF HQ",
    "unique": 6,
-   "nullPct": 83.1
+   "nullPct": 83.4
   },
   {
    "name": "field_168",
@@ -39205,23 +39930,23 @@
    "desc": "—",
    "sample": "ฝ้าย ณัฐญา CF HQ",
    "unique": 6,
-   "nullPct": 83.1
+   "nullPct": 83.4
   },
   {
    "name": "Comment_Approve",
    "type": "Text",
    "desc": "—",
    "sample": "เอกสารประกอบการพิจารณาแนบมาไม่ครบค่ะ",
-   "unique": 42,
-   "nullPct": 78.5
+   "unique": 43,
+   "nullPct": 78.4
   },
   {
    "name": "field_169",
    "type": "Text",
    "desc": "—",
    "sample": "เอกสารประกอบการพิจารณาแนบมาไม่ครบค่ะ",
-   "unique": 42,
-   "nullPct": 78.5
+   "unique": 43,
+   "nullPct": 78.4
   },
   {
    "name": "Group",
@@ -39229,7 +39954,7 @@
    "desc": "—",
    "sample": "รับเหมาก่อสร้าง",
    "unique": 10,
-   "nullPct": 13.1
+   "nullPct": 12.9
   },
   {
    "name": "field_170",
@@ -39237,22 +39962,22 @@
    "desc": "—",
    "sample": "รับเหมาก่อสร้าง",
    "unique": 10,
-   "nullPct": 13.1
+   "nullPct": 12.9
   },
   {
    "name": "URL",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 95,
-   "nullPct": 59.9
+   "unique": 97,
+   "nullPct": 59.8
   },
   {
    "name": "id",
    "type": "Number",
    "desc": "—",
    "sample": "541",
-   "unique": 237,
+   "unique": 241,
    "nullPct": 0.0
   },
   {
@@ -39276,7 +40001,7 @@
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-09-01T08:26:42Z",
-   "unique": 225,
+   "unique": 228,
    "nullPct": 0.0
   },
   {
@@ -39284,7 +40009,7 @@
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-09-01T08:26:42Z",
-   "unique": 225,
+   "unique": 228,
    "nullPct": 0.0
   },
   {
@@ -39292,7 +40017,7 @@
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-08-26T04:55:27Z",
-   "unique": 237,
+   "unique": 241,
    "nullPct": 0.0
   },
   {
@@ -39485,14 +40210,14 @@
    "desc": "—",
    "sample": "40",
    "unique": 1,
-   "nullPct": 10.5
+   "nullPct": 10.4
   },
   {
    "name": "_ID",
    "type": "Number",
    "desc": "รหัสรายการภายในของ SharePoint (ใช้เปิด DispForm.aspx?ID=)",
    "sample": "541",
-   "unique": 237,
+   "unique": 241,
    "nullPct": 0.0
   },
   {
@@ -39501,7 +40226,7 @@
    "desc": "เขตขายของทีมค้าส่ง/โครงการ เช่น WS-NE 2, PS-BMA 1",
    "sample": "WS-NE 2",
    "unique": 14,
-   "nullPct": 89.5
+   "nullPct": 88.0
   },
   {
    "name": "field_4",
@@ -39509,23 +40234,23 @@
    "desc": "—",
    "sample": "WS-NE 2",
    "unique": 14,
-   "nullPct": 89.5
+   "nullPct": 88.0
   },
   {
    "name": "limit_other",
    "type": "Number",
    "desc": "วงเงินอื่นที่ขอเพิ่มเติม (บาท)",
    "sample": "0",
-   "unique": 19,
-   "nullPct": 80.2
+   "unique": 20,
+   "nullPct": 79.7
   },
   {
    "name": "field_35",
    "type": "Number",
    "desc": "—",
    "sample": "0",
-   "unique": 19,
-   "nullPct": 80.2
+   "unique": 20,
+   "nullPct": 79.7
   },
   {
    "name": "branch_manager",
@@ -39533,7 +40258,7 @@
    "desc": "—",
    "sample": "thossarat.cha@dohome.co.th",
    "unique": 45,
-   "nullPct": 51.1
+   "nullPct": 51.5
   },
   {
    "name": "field_89",
@@ -39541,23 +40266,23 @@
    "desc": "—",
    "sample": "thossarat.cha@dohome.co.th",
    "unique": 45,
-   "nullPct": 51.1
+   "nullPct": 51.5
   },
   {
    "name": "site1",
    "type": "Text",
    "desc": "—",
    "sample": "ตึก/อาคาร",
-   "unique": 22,
-   "nullPct": 81.4
+   "unique": 21,
+   "nullPct": 82.2
   },
   {
    "name": "field_160",
    "type": "Text",
    "desc": "—",
    "sample": "ตึก/อาคาร",
-   "unique": 22,
-   "nullPct": 81.4
+   "unique": 21,
+   "nullPct": 82.2
   },
   {
    "name": "1CreditApprove",
@@ -39565,7 +40290,7 @@
    "desc": "วงเงินที่อนุมัติในรอบที่ 1",
    "sample": "ไม่อนุมัติ",
    "unique": 4,
-   "nullPct": 69.2
+   "nullPct": 67.6
   },
   {
    "name": "field_15",
@@ -39573,23 +40298,23 @@
    "desc": "—",
    "sample": "ไม่อนุมัติ",
    "unique": 4,
-   "nullPct": 69.2
+   "nullPct": 67.6
   },
   {
    "name": "project",
    "type": "Text",
    "desc": "—",
    "sample": "4597",
-   "unique": 73,
-   "nullPct": 57.4
+   "unique": 76,
+   "nullPct": 56.4
   },
   {
    "name": "field_61",
    "type": "Text",
    "desc": "—",
    "sample": "4597",
-   "unique": 73,
-   "nullPct": 57.4
+   "unique": 76,
+   "nullPct": 56.4
   },
   {
    "name": "phone_number4",
@@ -39597,7 +40322,7 @@
    "desc": "—",
    "sample": "0890000000",
    "unique": 20,
-   "nullPct": 70.0
+   "nullPct": 70.5
   },
   {
    "name": "field_90",
@@ -39605,23 +40330,23 @@
    "desc": "—",
    "sample": "0890000000",
    "unique": 20,
-   "nullPct": 70.0
+   "nullPct": 70.5
   },
   {
    "name": "CraditApprove",
    "type": "Text",
    "desc": "วงเงินที่ได้รับอนุมัติจริง",
    "sample": "ไม่ผ่านการพิจารณาเบื้องต้น",
-   "unique": 13,
-   "nullPct": 89.5
+   "unique": 14,
+   "nullPct": 89.2
   },
   {
    "name": "field_13",
    "type": "Text",
    "desc": "—",
    "sample": "ไม่ผ่านการพิจารณาเบื้องต้น",
-   "unique": 13,
-   "nullPct": 89.5
+   "unique": 14,
+   "nullPct": 89.2
   },
   {
    "name": "value",
@@ -39629,7 +40354,7 @@
    "desc": "คำอธิบายมูลค่าของชุดที่ 1",
    "sample": "ค่าขอเปิดวงเงินลูกค้าใหม่",
    "unique": 3,
-   "nullPct": 98.7
+   "nullPct": 98.8
   },
   {
    "name": "field_34",
@@ -39637,7 +40362,7 @@
    "desc": "—",
    "sample": "ค่าขอเปิดวงเงินลูกค้าใหม่",
    "unique": 3,
-   "nullPct": 98.7
+   "nullPct": 98.8
   },
   {
    "name": "value2",
@@ -39660,32 +40385,32 @@
    "type": "Text",
    "desc": "—",
    "sample": "ปั๊ม PT คลอง7",
-   "unique": 69,
-   "nullPct": 65.4
+   "unique": 72,
+   "nullPct": 64.3
   },
   {
    "name": "field_55",
    "type": "Text",
    "desc": "—",
    "sample": "ปั๊ม PT คลอง7",
-   "unique": 69,
-   "nullPct": 65.4
+   "unique": 72,
+   "nullPct": 64.3
   },
   {
    "name": "start_of_construction1",
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-06-30T17:00:00Z",
-   "unique": 63,
-   "nullPct": 59.5
+   "unique": 66,
+   "nullPct": 58.5
   },
   {
    "name": "field_65",
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-06-30T17:00:00Z",
-   "unique": 63,
-   "nullPct": 59.5
+   "unique": 66,
+   "nullPct": 58.5
   },
   {
    "name": "Estimated_annual_income",
@@ -39708,48 +40433,64 @@
    "type": "Text",
    "desc": "—",
    "sample": "-",
-   "unique": 73,
-   "nullPct": 39.7
+   "unique": 75,
+   "nullPct": 39.0
   },
   {
    "name": "field_145",
    "type": "Text",
    "desc": "—",
    "sample": "-",
-   "unique": 73,
-   "nullPct": 39.7
+   "unique": 75,
+   "nullPct": 39.0
   },
   {
    "name": "Typr_Retail",
    "type": "Text",
    "desc": "เขตขายของทีมค้าปลีก",
    "sample": "อีสานเหนือ",
-   "unique": 3,
-   "nullPct": 98.3
+   "unique": 4,
+   "nullPct": 96.7
   },
   {
    "name": "field_5",
    "type": "Text",
    "desc": "—",
    "sample": "อีสานเหนือ",
-   "unique": 3,
-   "nullPct": 98.3
+   "unique": 4,
+   "nullPct": 96.7
   },
   {
    "name": "1credittime",
    "type": "Text",
    "desc": "—",
    "sample": "09/18/2026 10:20:04",
-   "unique": 5,
-   "nullPct": 97.9
+   "unique": 6,
+   "nullPct": 97.5
   },
   {
    "name": "field_137",
    "type": "Text",
    "desc": "—",
    "sample": "09/18/2026 10:20:04",
-   "unique": 5,
-   "nullPct": 97.9
+   "unique": 6,
+   "nullPct": 97.5
+  },
+  {
+   "name": "AppAssCredit",
+   "type": "Text",
+   "desc": "—",
+   "sample": "Patcharapa.Sri@dohome.co.th",
+   "unique": 3,
+   "nullPct": 97.1
+  },
+  {
+   "name": "field_117",
+   "type": "Text",
+   "desc": "—",
+   "sample": "Patcharapa.Sri@dohome.co.th",
+   "unique": 3,
+   "nullPct": 97.1
   },
   {
    "name": "Product type_checkbox",
@@ -39757,7 +40498,7 @@
    "desc": "—",
    "sample": "-",
    "unique": 5,
-   "nullPct": 96.6
+   "nullPct": 96.7
   },
   {
    "name": "field_75",
@@ -39765,39 +40506,23 @@
    "desc": "—",
    "sample": "-",
    "unique": 5,
-   "nullPct": 96.6
+   "nullPct": 96.7
   },
   {
    "name": "AdditionalNotes",
    "type": "Text",
    "desc": "—",
    "sample": "-",
-   "unique": 47,
-   "nullPct": 65.8
+   "unique": 51,
+   "nullPct": 64.7
   },
   {
    "name": "field_171",
    "type": "Text",
    "desc": "—",
    "sample": "-",
-   "unique": 47,
-   "nullPct": 65.8
-  },
-  {
-   "name": "AppAssCredit",
-   "type": "Text",
-   "desc": "—",
-   "sample": "Patcharapa.Sri@dohome.co.th",
-   "unique": 1,
-   "nullPct": 99.2
-  },
-  {
-   "name": "field_117",
-   "type": "Text",
-   "desc": "—",
-   "sample": "Patcharapa.Sri@dohome.co.th",
-   "unique": 1,
-   "nullPct": 99.2
+   "unique": 51,
+   "nullPct": 64.7
   },
   {
    "name": "Other_limits",
@@ -39821,7 +40546,7 @@
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
    "unique": 9,
-   "nullPct": 67.5
+   "nullPct": 66.4
   },
   {
    "name": "field_63",
@@ -39829,23 +40554,23 @@
    "desc": "—",
    "sample": "ประมูลได้แล้ว",
    "unique": 9,
-   "nullPct": 67.5
+   "nullPct": 66.4
   },
   {
    "name": "delivery_deadline",
    "type": "Text",
    "desc": "—",
    "sample": "01/07/2026",
-   "unique": 67,
-   "nullPct": 66.7
+   "unique": 71,
+   "nullPct": 65.6
   },
   {
    "name": "field_59",
    "type": "Text",
    "desc": "—",
    "sample": "01/07/2026",
-   "unique": 67,
-   "nullPct": 66.7
+   "unique": 71,
+   "nullPct": 65.6
   },
   {
    "name": "start_of_construction2",
@@ -39853,7 +40578,7 @@
    "desc": "—",
    "sample": "2569-01-09T17:00:00Z",
    "unique": 13,
-   "nullPct": 91.6
+   "nullPct": 91.7
   },
   {
    "name": "field_70",
@@ -39861,7 +40586,7 @@
    "desc": "—",
    "sample": "2569-01-09T17:00:00Z",
    "unique": 13,
-   "nullPct": 91.6
+   "nullPct": 91.7
   },
   {
    "name": "Margin_type1",
@@ -39900,24 +40625,24 @@
    "type": "Text",
    "desc": "—",
    "sample": "การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย",
-   "unique": 22,
-   "nullPct": 76.8
+   "unique": 24,
+   "nullPct": 75.5
   },
   {
    "name": "TSIC",
    "type": "Text",
    "desc": "—",
    "sample": "41002",
-   "unique": 14,
-   "nullPct": 80.6
+   "unique": 15,
+   "nullPct": 79.7
   },
   {
    "name": "TSIC_DBD",
    "type": "Text",
    "desc": "—",
    "sample": "รับเหมาก่อสร้าง",
-   "unique": 36,
-   "nullPct": 74.7
+   "unique": 39,
+   "nullPct": 73.4
   },
   {
    "name": "company_ordered",
@@ -39925,7 +40650,7 @@
    "desc": "—",
    "sample": "บริษัท จำกัด",
    "unique": 5,
-   "nullPct": 66.7
+   "nullPct": 65.6
   },
   {
    "name": "field_72",
@@ -39933,7 +40658,7 @@
    "desc": "—",
    "sample": "บริษัท จำกัด",
    "unique": 5,
-   "nullPct": 66.7
+   "nullPct": 65.6
   },
   {
    "name": "period",
@@ -39941,7 +40666,7 @@
    "desc": "—",
    "sample": "30",
    "unique": 2,
-   "nullPct": 90.7
+   "nullPct": 90.9
   },
   {
    "name": "field_78",
@@ -39949,23 +40674,23 @@
    "desc": "—",
    "sample": "30",
    "unique": 2,
-   "nullPct": 90.7
+   "nullPct": 90.9
   },
   {
    "name": "NumberCreateDocument",
    "type": "Number",
    "desc": "—",
    "sample": "1052506",
-   "unique": 35,
-   "nullPct": 66.2
+   "unique": 36,
+   "nullPct": 65.1
   },
   {
    "name": "field_118",
    "type": "Number",
    "desc": "—",
    "sample": "1052506",
-   "unique": 35,
-   "nullPct": 66.2
+   "unique": 36,
+   "nullPct": 65.1
   },
   {
    "name": "d3",
@@ -39973,7 +40698,7 @@
    "desc": "—",
    "sample": "D3-KR@dohome.co.th",
    "unique": 22,
-   "nullPct": 73.8
+   "nullPct": 74.3
   },
   {
    "name": "field_158",
@@ -39981,7 +40706,7 @@
    "desc": "—",
    "sample": "D3-KR@dohome.co.th",
    "unique": 22,
-   "nullPct": 73.8
+   "nullPct": 74.3
   },
   {
    "name": "insurance_limit",
@@ -40004,32 +40729,32 @@
    "type": "Text",
    "desc": "—",
    "sample": "Narasate.Tha@dohome.co.th",
-   "unique": 4,
-   "nullPct": 97.0
+   "unique": 5,
+   "nullPct": 95.4
   },
   {
    "name": "field_159",
    "type": "Text",
    "desc": "—",
    "sample": "Narasate.Tha@dohome.co.th",
-   "unique": 4,
-   "nullPct": 97.0
+   "unique": 5,
+   "nullPct": 95.4
   },
   {
    "name": "post_office",
    "type": "Text",
    "desc": "รหัสไปรษณีย์",
    "sample": "KYC-000768",
-   "unique": 27,
-   "nullPct": 88.6
+   "unique": 31,
+   "nullPct": 87.1
   },
   {
    "name": "field_23",
    "type": "Text",
    "desc": "—",
    "sample": "KYC-000768",
-   "unique": 27,
-   "nullPct": 88.6
+   "unique": 31,
+   "nullPct": 87.1
   }
  ],
  "nullPercent": [
@@ -40090,14 +40815,6 @@
    99.6
   ],
   [
-   "AppAssCredit",
-   99.2
-  ],
-  [
-   "field_117",
-   99.2
-  ],
-  [
    "building",
    99.2
   ],
@@ -40107,19 +40824,11 @@
   ],
   [
    "value",
-   98.7
+   98.8
   ],
   [
    "field_34",
-   98.7
-  ],
-  [
-   "Typr_Retail",
-   98.3
-  ],
-  [
-   "field_5",
-   98.3
+   98.8
   ],
   [
    "insurance_limit",
@@ -40139,143 +40848,159 @@
   ],
   [
    "1credittime",
-   97.9
+   97.5
   ],
   [
    "field_137",
-   97.9
+   97.5
   ],
   [
-   "gm",
-   97.0
+   "AppAssCredit",
+   97.1
   ],
   [
-   "field_159",
-   97.0
+   "field_117",
+   97.1
+  ],
+  [
+   "Typr_Retail",
+   96.7
+  ],
+  [
+   "field_5",
+   96.7
   ],
   [
    "Product type_checkbox",
-   96.6
+   96.7
   ],
   [
    "field_75",
-   96.6
+   96.7
+  ],
+  [
+   "gm",
+   95.4
+  ],
+  [
+   "field_159",
+   95.4
   ],
   [
    "start_of_construction2",
-   91.6
+   91.7
   ],
   [
    "field_70",
-   91.6
+   91.7
   ],
   [
    "period",
-   90.7
+   90.9
   ],
   [
    "field_78",
-   90.7
-  ],
-  [
-   "Typr_Distribution",
-   89.5
-  ],
-  [
-   "field_4",
-   89.5
+   90.9
   ],
   [
    "CraditApprove",
-   89.5
+   89.2
   ],
   [
    "field_13",
-   89.5
+   89.2
+  ],
+  [
+   "Typr_Distribution",
+   88.0
+  ],
+  [
+   "field_4",
+   88.0
   ],
   [
    "post_office",
-   88.6
+   87.1
   ],
   [
    "field_23",
-   88.6
+   87.1
   ],
   [
    "referral",
-   84.8
+   85.1
   ],
   [
    "field_80",
-   84.8
+   85.1
   ],
   [
    "work_value3",
-   83.5
+   83.8
   ],
   [
    "field_67",
-   83.5
+   83.8
   ],
   [
    "Approve Up",
-   83.1
+   83.4
   ],
   [
    "field_168",
-   83.1
+   83.4
   ],
   [
    "project_location2",
-   82.7
+   83.0
   ],
   [
    "field_69",
-   82.7
+   83.0
   ],
   [
    "future_project",
-   82.3
+   82.6
   ],
   [
    "field_66",
-   82.3
-  ],
-  [
-   "status3_3",
-   81.4
-  ],
-  [
-   "field_68",
-   81.4
+   82.6
   ],
   [
    "site1",
-   81.4
+   82.2
   ],
   [
    "field_160",
-   81.4
+   82.2
   ],
   [
-   "TSIC",
-   80.6
+   "status3_3",
+   81.7
+  ],
+  [
+   "field_68",
+   81.7
   ],
   [
    "limit_other",
-   80.2
+   79.7
   ],
   [
    "field_35",
-   80.2
+   79.7
+  ],
+  [
+   "TSIC",
+   79.7
   ],
   [
    "Comment_Approve",
-   78.5
+   78.4
   ],
   [
    "field_169",
-   78.5
+   78.4
   ],
   [
    "Other_limits",
@@ -40287,447 +41012,447 @@
   ],
   [
    "TISC_TYPE",
-   76.8
-  ],
-  [
-   "TSIC_DBD",
-   74.7
+   75.5
   ],
   [
    "d3",
-   73.8
+   74.3
   ],
   [
    "field_158",
-   73.8
+   74.3
+  ],
+  [
+   "TSIC_DBD",
+   73.4
   ],
   [
    "phone_number4",
-   70.0
+   70.5
   ],
   [
    "field_90",
-   70.0
+   70.5
   ],
   [
    "1CreditApprove",
-   69.2
+   67.6
   ],
   [
    "field_15",
-   69.2
+   67.6
   ],
   [
    "status2_2",
-   67.5
+   66.4
   ],
   [
    "field_63",
-   67.5
+   66.4
   ],
   [
    "delivery_deadline",
-   66.7
+   65.6
   ],
   [
    "field_59",
-   66.7
+   65.6
   ],
   [
    "company_ordered",
-   66.7
+   65.6
   ],
   [
    "field_72",
-   66.7
+   65.6
   ],
   [
    "NumberCreateDocument",
-   66.2
+   65.1
   ],
   [
    "field_118",
-   66.2
+   65.1
   ],
   [
    "AdditionalNotes",
-   65.8
+   64.7
   ],
   [
    "field_171",
-   65.8
+   64.7
   ],
   [
    "past_project ",
-   65.4
+   64.3
   ],
   [
    "field_55",
-   65.4
+   64.3
   ],
   [
    " other_property",
-   63.3
+   63.9
   ],
   [
    "field_49",
-   63.3
+   63.9
   ],
   [
    "phone_number3",
-   62.9
+   63.5
   ],
   [
    "field_88",
-   62.9
+   63.5
   ],
   [
    "phone_number2",
-   59.9
+   60.6
   ],
   [
    "field_86",
-   59.9
+   60.6
   ],
   [
    "URL",
-   59.9
-  ],
-  [
-   "start_of_construction1",
-   59.5
-  ],
-  [
-   "field_65",
-   59.5
-  ],
-  [
-   "AppCredit",
-   58.6
-  ],
-  [
-   "field_115",
-   58.6
+   59.8
   ],
   [
    "loan_history",
-   57.8
+   58.5
   ],
   [
    "field_79",
-   57.8
+   58.5
+  ],
+  [
+   "start_of_construction1",
+   58.5
+  ],
+  [
+   "field_65",
+   58.5
+  ],
+  [
+   "AppCredit",
+   57.3
+  ],
+  [
+   "field_115",
+   57.3
   ],
   [
    "project",
-   57.4
+   56.4
   ],
   [
    "field_61",
-   57.4
+   56.4
   ],
   [
    "sale_branch1",
-   55.7
+   54.8
   ],
   [
    "field_85",
-   55.7
+   54.8
   ],
   [
    "Approve History",
-   55.7
+   54.4
   ],
   [
    "field_167",
-   55.7
+   54.4
   ],
   [
    "Credit Action Timestamp",
-   55.3
+   53.9
   ],
   [
    "field_95",
-   55.3
+   53.9
   ],
   [
    "branch_manager",
-   51.1
+   51.5
   ],
   [
    "field_89",
-   51.1
+   51.5
   ],
   [
    "D31",
-   47.7
+   48.5
   ],
   [
    "field_87",
-   47.7
+   48.5
   ],
   [
    "Status_2",
-   44.3
+   44.8
   ],
   [
    "field_50",
-   44.3
+   44.8
   ],
   [
    "transfer_of_ownership",
-   40.5
+   41.1
   ],
   [
    "field_60",
-   40.5
-  ],
-  [
-   "int_id",
-   40.1
-  ],
-  [
-   "field_165",
-   40.1
+   41.1
   ],
   [
    "land",
-   39.7
+   40.2
   ],
   [
    "field_47",
-   39.7
+   40.2
   ],
   [
    "number_employees",
-   39.7
+   40.2
   ],
   [
    "field_52",
-   39.7
-  ],
-  [
-   "Else",
-   39.7
-  ],
-  [
-   "field_145",
-   39.7
+   40.2
   ],
   [
    "Ownership1",
-   39.2
+   39.8
   ],
   [
    "field_54",
-   39.2
+   39.8
+  ],
+  [
+   "int_id",
+   39.8
+  ],
+  [
+   "field_165",
+   39.8
   ],
   [
    "establishment_area",
-   38.8
+   39.4
   ],
   [
    "field_51",
-   38.8
+   39.4
+  ],
+  [
+   "Else",
+   39.0
+  ],
+  [
+   "field_145",
+   39.0
   ],
   [
    "timeStartcreate",
-   35.0
+   36.1
   ],
   [
    "field_92",
-   35.0
+   36.1
   ],
   [
    "NumberRespresentative",
-   35.0
+   36.1
   ],
   [
    "field_119",
-   35.0
+   36.1
   ],
   [
    "Status_1",
-   33.8
+   34.4
   ],
   [
    "field_48",
-   33.8
+   34.4
   ],
   [
    "Executive_history",
-   33.3
+   32.8
   ],
   [
    "field_81",
-   33.3
+   32.8
   ],
   [
    "work_value1",
-   32.1
+   31.5
   ],
   [
    "field_57",
-   32.1
+   31.5
   ],
   [
    "work_value2",
-   32.1
+   31.5
   ],
   [
    "field_62",
-   32.1
-  ],
-  [
-   "employer",
-   31.6
-  ],
-  [
-   "field_56",
-   31.6
-  ],
-  [
-   "project_location1",
-   31.6
-  ],
-  [
-   "field_64",
-   31.6
+   31.5
   ],
   [
    "Picture2",
-   31.6
+   31.5
   ],
   [
    "field_156",
-   31.6
+   31.5
+  ],
+  [
+   "employer",
+   31.1
+  ],
+  [
+   "field_56",
+   31.1
+  ],
+  [
+   "project_location1",
+   31.1
+  ],
+  [
+   "field_64",
+   31.1
   ],
   [
    "linkPicture",
-   28.7
+   28.6
   ],
   [
    "field_154",
-   28.7
+   28.6
   ],
   [
    "LinkPictureCustomer",
-   28.7
+   28.6
   ],
   [
    "field_155",
-   28.7
+   28.6
   ],
   [
    "field_98",
-   23.6
+   23.2
   ],
   [
    "ปรับเปลี่ยนโดย",
-   23.6
+   23.2
   ],
   [
    "field_99",
-   23.6
+   23.2
   ],
   [
    "phone_number1",
-   23.2
+   22.8
   ],
   [
    "field_84",
-   23.2
+   22.8
   ],
   [
    "sale_representative",
-   17.3
+   18.7
   ],
   [
    "field_82",
-   17.3
+   18.7
   ],
   [
    "Type1",
-   14.8
+   14.5
   ],
   [
    "field_2",
-   14.8
+   14.5
   ],
   [
    "Approve Edit",
-   13.9
+   13.7
   ],
   [
    "field_166",
-   13.9
+   13.7
   ],
   [
    "Group",
-   13.1
+   12.9
   ],
   [
    "field_170",
-   13.1
+   12.9
   ],
   [
    "Data",
-   12.7
+   12.4
   ],
   [
    "field_17",
-   12.7
+   12.4
   ],
   [
    "AppEditorLookupId",
-   10.5
+   10.4
   ],
   [
    "CreateDocument",
-   10.1
+   10.0
   ],
   [
    "field_112",
-   10.1
+   10.0
   ],
   [
    "credit_semester1",
-   9.3
+   9.1
   ],
   [
    "field_32",
-   9.3
+   9.1
   ],
   [
    "สร้างโดย",
-   9.3
+   9.1
   ],
   [
    "field_100",
-   9.3
+   9.1
   ],
   [
    "branch",
-   7.2
+   7.1
   ],
   [
    "field_7",
-   7.2
+   7.1
   ],
   [
    "type_teams",
-   3.4
+   3.3
   ],
   [
    "field_3",
-   3.4
+   3.3
   ],
   [
    "county",
-   3.0
+   2.9
   ],
   [
    "field_20",
-   3.0
+   2.9
   ],
   [
    "Customer Name",
@@ -40739,51 +41464,51 @@
   ],
   [
    "Request TimeStamp",
-   1.3
+   1.2
   ],
   [
    "field_8",
-   1.3
+   1.2
   ],
   [
    "Status",
-   1.3
+   1.2
   ],
   [
    "field_9",
-   1.3
+   1.2
   ],
   [
    "Owner",
-   1.3
+   1.2
   ],
   [
    "field_16",
-   1.3
+   1.2
   ],
   [
    "district",
-   1.3
+   1.2
   ],
   [
    "field_21",
-   1.3
+   1.2
   ],
   [
    "province",
-   1.3
+   1.2
   ],
   [
    "field_22",
-   1.3
+   1.2
   ],
   [
    "Registered_Name",
-   1.3
+   1.2
   ],
   [
    "field_25",
-   1.3
+   1.2
   ],
   [
    "Customer_id",
