@@ -280,7 +280,7 @@ body.editmode [contenteditable="true"]{background:var(--edit);border-radius:2px;
       <div class="cell c3"><div class="lb">เลขทะเบียนนิติบุคคล</div><div class="vl" data-f="registrationNumber"></div></div>
       <div class="cell c3"><div class="lb">วันจดทะเบียน</div><div class="vl" data-f="registerDate" data-edit="1"></div></div>
 
-      <div class="cell c12"><div class="lb">เลขที่ / อาคาร / ถนน</div><div class="vl" data-f="field_103"></div></div>
+      <div class="cell c12"><div class="lb">เลขที่ / อาคาร / ถนน</div><div class="vl" data-f="Address"></div></div>
 
       <div class="cell c3"><div class="lb">ตำบล / เขต</div><div class="vl" data-f="county"></div></div>
       <div class="cell c3"><div class="lb">อำเภอ</div><div class="vl" data-f="district"></div></div>
@@ -782,8 +782,7 @@ function mapRow(r){
     registerDate:       thDay(raw(r,'Data','register_date','RegisterDate','registration_date')),
     /* เลขที่ / อาคาร / ถนน ← คอลัมน์ `project_location1`
        (คอลัมน์ `building_road` เดิมว่างทั้งลิสต์ จึงใช้เป็นตัวสำรองเท่านั้น) */
-    address:            raw(r,'project_location1','Project_Location1','projectlocation1',
-                                'building_road','Building_Road'),
+    Address:            r.Address || '',
     county:             raw(r,'county','County'),
     district:           r.district || raw(r,'district'),
     province:           r.province || raw(r,'province'),
