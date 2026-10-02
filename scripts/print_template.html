@@ -263,7 +263,7 @@ body.editmode [contenteditable="true"]{background:var(--edit);border-radius:2px;
       <div class="cell c3"><div class="lb">เลขทะเบียนนิติบุคคล</div><div class="vl" data-f="registrationNumber"></div></div>
       <div class="cell c3"><div class="lb">วันจดทะเบียน</div><div class="vl" data-f="registerDate" data-edit="1"></div></div>
 
-      <div class="cell c12"><div class="lb">เลขที่ / อาคาร / ถนน</div><div class="vl" data-f="Address"></div></div>
+      <div class="cell c12"><div class="lb">เลขที่ / อาคาร / ถนน</div><div class="vl" data-f="address"></div></div>
 
       <div class="cell c3"><div class="lb">ตำบล / เขต</div><div class="vl" data-f="county"></div></div>
       <div class="cell c3"><div class="lb">อำเภอ</div><div class="vl" data-f="district"></div></div>
@@ -496,8 +496,8 @@ body.editmode [contenteditable="true"]{background:var(--edit);border-radius:2px;
     </div>
 
     <div class="sign">
-      <div><div class="ln"></div>ลงชื่อผู้ให้ข้อมูล (ลูกค้า)<br><span style="font-size:10px">วันที่ ......../......../........</span></div>
-      <div><div class="ln"></div>ลงชื่อพนักงานผู้รับเรื่อง<br><span style="font-size:10px">วันที่ ......../......../........</span></div>
+      <div><div class="ln"></div>ลงชื่อผู้ให้ข้อมูล (ลูกค้า) <span data-f="owner"></span><br><span style="font-size:10px">วันที่ <span data-f="requestDate"></span></span></div>
+      <div><div class="ln"></div>ลงชื่อพนักงานผู้รับเรื่อง <span data-f="appCredit"></span><br><span style="font-size:10px">วันที่ <span data-f="appCreditTime"></span></span></div>
       <div><div class="ln"></div>ลงชื่อผู้อนุมัติ<br><span style="font-size:10px">วันที่ ......../......../........</span></div>
     </div>
 
@@ -628,8 +628,8 @@ function fullAddr(r){
     return /^(ต\.|อ\.|จ\.|ตำบล|อำเภอ|จังหวัด|แขวง|เขต)/.test(v) ? v : p + v;
   };
   var parts = [
-    /* เลขที่/อาคาร/ถนน ใช้แหล่งเดียวกับหน้า 1 คือ project_location1 */
-    String(raw(r,'project_location1','Project_Location1','projectlocation1',
+    /* เลขที่/อาคาร/ถนน ใช้คอลัมน์ Address แบบ Single line of text */
+    String(raw(r,'Address','address','project_location1','Project_Location1','projectlocation1',
                  'building_road','Building_Road') || '').trim(),
     pre('ต.', raw(r,'county','County')),
     pre('อ.', r.district || raw(r,'district')),
@@ -664,9 +664,10 @@ function mapRow(r){
     /* วันจดทะเบียน ← คอลัมน์ `Data` ของลิสต์ DemoApp (เก็บเป็นข้อความ MM/DD/YYYY hh:mm:ss)
        แปลงเป็นวันที่ไทย dd/mm/yyyy ด้วย thDay() */
     registerDate:       thDay(raw(r,'Data','register_date','RegisterDate','registration_date')),
-    /* เลขที่ / อาคาร / ถนน ← คอลัมน์ `project_location1`
-       (คอลัมน์ `building_road` เดิมว่างทั้งลิสต์ จึงใช้เป็นตัวสำรองเท่านั้น) */
-    Address:            r.Address || '',
+    /* เลขที่ / อาคาร / ถนน ← คอลัมน์ `Address` แบบ Single line of text
+       (คอลัมน์เดิมเป็นตัวสำรองเพื่อรองรับข้อมูลเก่า) */
+    address:            raw(r,'Address','address','project_location1','Project_Location1','projectlocation1',
+                                'building_road','Building_Road'),
     county:             raw(r,'county','County'),
     district:           r.district || raw(r,'district'),
     province:           r.province || raw(r,'province'),
@@ -692,9 +693,9 @@ function mapRow(r){
     credit2:            r.credit2 || raw(r,'credit_semester2'),
     marginType2:        raw(r,'Margin_type2','MarginType2'),
     value2:             money(raw(r,'value2')),
-    limitOD:            money(raw(r,'limit_OD','limitOD')),
+    limitOD:            money(raw(r,'limit_other','Limit_Other','limit_OD','limitOD')),
     bank1:              raw(r,'Bank1'),
-    insuranceLimit:     money(raw(r,'insurance_limit')),
+    insuranceLimit:     money(raw(r,'credit_semester2','Credit_Semester2','insurance_limit')),
     bank2:              raw(r,'Bank2'),
     leasingLimit:       money(raw(r,'leasing_limit')),
     bank3:              raw(r,'Bank3'),
@@ -727,15 +728,22 @@ function mapRow(r){
                         'employees','employee_count'),
     ownership:    raw(r,'ownership'),
 
-    /* --- ส่วนที่ 6.2 โครงการปัจจุบัน (แถวแรกดึงจากลิสต์ อีก 2 แถวเว้นให้กรอกมือ) ---
-       ชื่อโครงการ   ← `future_project`
-       มูลค่างาน     ← `work_value3`
-       สถานะ        ← `status3_3`
-       ที่ตั้งโครงการ ← `project_location2` */
-    nowProject:  raw(r,'future_project','FutureProject'),
-    nowValue:    raw(r,'work_value3','WorkValue3'),
-    nowStatus:   raw(r,'status3_3','Status3_3','status33'),
-    nowLocation: raw(r,'project_location2','Project_Location2','projectlocation2'),
+    /* --- ส่วนที่ 6 โครงการ (แถวแรกดึงจากลิสต์ แถวอื่นเว้นให้กรอกมือ) --- */
+    pastProject:    raw(r,'past_project','Past_Project','pastproject'),
+    pastValue:      money(raw(r,'work_value1','Work_Value1','workvalue1')),
+    employer:        raw(r,'employer','Employer'),
+    deliveryDeadline: raw(r,'delivery_deadline','Delivery_Deadline','deliverydeadline'),
+    transferOwnership: raw(r,'transfer_of_ownership','Transfer_Of_Ownership','transferofownership'),
+    nowProject:     raw(r,'project','Project'),
+    nowValue:       money(raw(r,'work_value2','Work_Value2','workvalue2')),
+    nowStatus:      raw(r,'status2_2','Status2_2','status22'),
+    nowStart:       raw(r,'start_of_construction1','Start_Of_Construction1','startofconstruction1'),
+    nowLocation:    raw(r,'project_location1','Project_Location1','projectlocation1'),
+    futureProject:  raw(r,'future_project','Future_Project','futureproject'),
+    futureValue:    money(raw(r,'work_value3','Work_Value3','workvalue3')),
+    futureStatus:   raw(r,'status3_3','Status3_3','status33'),
+    futureStart:    raw(r,'start_of_construction2','Start_Of_Construction2','startofconstruction2'),
+    futureLocation: raw(r,'project_location2','Project_Location2','projectlocation2'),
 
     /* --- ส่วนที่ 7 ข้อมูลการขายสินค้า --- */
     productGroup:    raw(r,'product_group'),
@@ -748,8 +756,8 @@ function mapRow(r){
     /* --- สถานะคำขอ --- */
     typeRequest: r.typeRequest || '',
     status:      r.status || '',
-    owner:       r.owner || '',
-    requestDate: thDate(r.ts),
+    owner:       r.owner || raw(r,'Owner') || '',
+    requestDate: thDate(raw(r,'Request TimeStamp','Request_x0020_TimeStamp','request_timestamp') || r.ts),
 
     /* =====================================================================
        หน้า 2 — ประวัติผู้ขอสินเชื่อและผู้ที่เกี่ยวข้อง
@@ -783,7 +791,8 @@ function mapRow(r){
     appCredit:      raw(r,'AppCredit','App_Credit','appcredit',
                           'Credit_Officer','credit_officer'),
     appCreditPhone: raw(r,'AppCredit_phone','app_credit_phone','credit_officer_phone'),
-    appCreditTime:  thDate(raw(r,'AppCredit_time','app_credit_time','Approve_time')),
+    appCreditTime:  thDate(raw(r,'Credit Action Timestamp','Credit_x0020_Action_x0020_Timestamp',
+                                'credit_action_timestamp','AppCredit_time','app_credit_time','Approve_time')),
 
     /* --- ส่วนที่ 12 วงเงินที่สินเชื่ออนุมัติ ---
        ⚠️ ต้องดึงจากคอลัมน์ "CraditApprove" เท่านั้น (สะกดตามชื่อจริงในลิสต์ DemoApp)
@@ -877,12 +886,12 @@ function doSearch(){
    ========================================================================= */
 (function init(){
   // ตารางโครงการ: อดีต 3 แถว / ปัจจุบัน 3 แถว / อนาคต 2 แถว
-  projectRows('tblPast',   [3,2,2,2,1,2], 3);
-  // โครงการปัจจุบัน: แถวแรกดึงค่าจากลิสต์
-  // (ชื่อโครงการ / มูลค่างาน / สถานะ / กำหนดเริ่มก่อสร้าง(เว้น) / ที่ตั้งโครงการ)
+  projectRows('tblPast',   [3,2,2,2,1,2], 3,
+              ['pastProject','pastValue','employer','deliveryDeadline','','transferOwnership']);
   projectRows('tblNow',    [3,2,2,2,3],   3,
-              ['nowProject','nowValue','nowStatus','','nowLocation']);
-  projectRows('tblFuture', [3,2,2,2,3],   2);
+              ['nowProject','nowValue','nowStatus','nowStart','nowLocation']);
+  projectRows('tblFuture', [3,2,2,2,3],   2,
+              ['futureProject','futureValue','futureStatus','futureStart','futureLocation']);
 
   fillPicker();
   render();
