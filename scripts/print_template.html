@@ -50,6 +50,7 @@ body{
 .toolbar .grow{flex:1 1 240px;min-width:180px;}
 .toolbar select,.toolbar input{
   width:100%; padding:7px 10px; border:none; border-radius:4px;
+  background:#fff; color:var(--ink);
   font-family:inherit; font-size:14px;
 }
 .btn{
@@ -224,6 +225,9 @@ body.editmode [contenteditable="true"]{background:var(--edit);border-radius:2px;
   <h1>🖨️ พิมพ์เอกสาร KYC</h1>
   <div class="grow">
     <input id="q" type="search" placeholder="🔍 ค้นหา: ชื่อนิติบุคคล / รหัสสมาชิก / เลขทะเบียน / สาขา">
+  </div>
+  <div class="grow">
+    <select id="statusFilter" aria-label="กรองตามสถานะ"></select>
   </div>
   <div class="grow">
     <select id="pick"></select>
@@ -429,7 +433,7 @@ body.editmode [contenteditable="true"]{background:var(--edit);border-radius:2px;
     <div class="pageno">2/2</div>
     <div class="slogan">ครบ ถูก ดี</div>
     <div class="co">บริษัท ดูโฮม จำกัด (มหาชน)</div>
-    <div class="addr">อาคารออรัตนชัย เลขที่ 60 ถนนวิภาวดีรังสิต แขวงสามเสนใน เขตพญาไท กรุงเทพมหานคร 10400</div>
+    <div class="addr">เลขที่ 88/111 หมู่ที่ 3 ตำบลบางพูน อำเภอเมืองปทุมธานี จังหวัดปทุมธานี 12000</div>
     <div class="doctitle">ประวัติผู้ขอสินเชื่อและผู้ที่เกี่ยวข้อง</div>
   </div>
 
@@ -527,13 +531,9 @@ function money(v){
   return n.toLocaleString('th-TH',{minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
-/** แปลง ISO timestamp -> วันที่ไทย เช่น "02/09/2026 10:53" */
-function thDate(iso){
-  if(!iso) return '';
-  var d = new Date(iso);
-  if(isNaN(d)) return String(iso);
-  var p = function(x){ return String(x).padStart(2,'0'); };
-  return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes());
+/** แปลงวันที่หรือตราประทับเวลาเป็น DD/MM/YYYY โดยตัดเวลาออก */
+function thDate(value){
+  return thDay(value);
 }
 
 /**
@@ -732,17 +732,17 @@ function mapRow(r){
     pastProject:    raw(r,'past_project','Past_Project','pastproject'),
     pastValue:      money(raw(r,'work_value1','Work_Value1','workvalue1')),
     employer:        raw(r,'employer','Employer'),
-    deliveryDeadline: raw(r,'delivery_deadline','Delivery_Deadline','deliverydeadline'),
+    deliveryDeadline: thDate(raw(r,'delivery_deadline','Delivery_Deadline','deliverydeadline')),
     transferOwnership: raw(r,'transfer_of_ownership','Transfer_Of_Ownership','transferofownership'),
     nowProject:     raw(r,'project','Project'),
     nowValue:       money(raw(r,'work_value2','Work_Value2','workvalue2')),
     nowStatus:      raw(r,'status2_2','Status2_2','status22'),
-    nowStart:       raw(r,'start_of_construction1','Start_Of_Construction1','startofconstruction1'),
+    nowStart:       thDate(raw(r,'start_of_construction1','Start_Of_Construction1','startofconstruction1')),
     nowLocation:    raw(r,'project_location1','Project_Location1','projectlocation1'),
     futureProject:  raw(r,'future_project','Future_Project','futureproject'),
     futureValue:    money(raw(r,'work_value3','Work_Value3','workvalue3')),
     futureStatus:   raw(r,'status3_3','Status3_3','status33'),
-    futureStart:    raw(r,'start_of_construction2','Start_Of_Construction2','startofconstruction2'),
+    futureStart:    thDate(raw(r,'start_of_construction2','Start_Of_Construction2','startofconstruction2')),
     futureLocation: raw(r,'project_location2','Project_Location2','projectlocation2'),
 
     /* --- ส่วนที่ 7 ข้อมูลการขายสินค้า --- */
@@ -872,11 +872,41 @@ function fillPicker(){
   if(!view.length) sel.innerHTML = '<option>— ไม่พบรายการที่ค้นหา —</option>';
 }
 
-/** กรองรายการตามคำค้น (ค้นทุกคอลัมน์ผ่านฟิลด์ _search) */
+function statusValue(r){
+  return r.status || raw(r,'Status','status') || '';
+}
+
+/** สร้างตัวเลือกสถานะจากข้อมูลทั้งหมด */
+function fillStatusFilter(){
+  var sel = document.getElementById('statusFilter');
+  var selected = sel.value;
+  var statuses = ROWS.map(statusValue).filter(function(value, index, values){
+    return value && values.indexOf(value) === index;
+  }).sort();
+  sel.innerHTML = '';
+  var all = document.createElement('option');
+  all.value = '';
+  all.textContent = 'ทุกสถานะ';
+  sel.appendChild(all);
+  statuses.forEach(function(status){
+    var option = document.createElement('option');
+    option.value = status;
+    option.textContent = status;
+    sel.appendChild(option);
+  });
+  sel.value = statuses.indexOf(selected) >= 0 ? selected : '';
+}
+
+/** กรองรายการตามคำค้นและสถานะ */
 function doSearch(){
   var q = document.getElementById('q').value.trim().toLowerCase();
-  view = q ? ROWS.filter(function(r){ return (r._search||'').indexOf(q) >= 0; }) : ROWS.slice();
+  var status = document.getElementById('statusFilter').value;
+  view = ROWS.filter(function(r){
+    return (!q || (r._search||'').indexOf(q) >= 0)
+      && (!status || statusValue(r) === status);
+  });
   cur = 0;
+  fillStatusFilter();
   fillPicker();
   render();
 }
@@ -902,6 +932,7 @@ function doSearch(){
   });
   // ---- ค้นหา ----
   document.getElementById('q').addEventListener('input', doSearch);
+  document.getElementById('statusFilter').addEventListener('change', doSearch);
   // ---- ปุ่มก่อนหน้า/ถัดไป ----
   document.getElementById('prev').addEventListener('click', function(){
     if(!view.length) return; cur = (cur-1+view.length)%view.length; render();
