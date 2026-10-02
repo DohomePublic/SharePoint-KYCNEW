@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02 15:21 น. (เวลาไทย)",
+ "generatedAt": "2026-10-02 15:48 น. (เวลาไทย)",
  "listUrl": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp",
  "rowCount": 387,
  "columns": [
@@ -59323,7 +59323,7 @@
    "distribution": "ทีมขาย-D2-D3-สินเชื่อ",
    "branch": "PKOO",
    "ts": "2026-10-01T04:15:21Z",
-   "status": "Draft",
+   "status": "รอการพิจารณาเบื้องต้น",
    "typeRequest": "คำขอเพิ่มวงเงิน",
    "limitNum": 2000000.0,
    "limitOther": 0,
@@ -59337,7 +59337,7 @@
    "land": null,
    "contact": "นางสาวปุณญาดา ชวัลดิษยา",
    "_raw": {
-    "@odata.etag": "\"5e6561bd-a523-4eda-b83f-7a413a88a872,11\"",
+    "@odata.etag": "\"5e6561bd-a523-4eda-b83f-7a413a88a872,27\"",
     "Title": "บริษัท จํากัด",
     "LinkTitle": "บริษัท จํากัด",
     "Customer_id": "100115056",
@@ -59354,8 +59354,8 @@
     "field_7": "PKOO",
     "Request TimeStamp": "2026-10-01T04:15:21Z",
     "field_8": "2026-10-01T04:15:21Z",
-    "Status": "Draft",
-    "field_9": "Draft",
+    "Status": "รอการพิจารณาเบื้องต้น",
+    "field_9": "รอการพิจารณาเบื้องต้น",
     "Type_Request": "คำขอเพิ่มวงเงิน",
     "field_11": "คำขอเพิ่มวงเงิน",
     "limit": "2000000",
@@ -59428,8 +59428,18 @@
     "field_112": "ปุ้มปุ้ย รัญธิศา SG PK",
     "NumberCreateDocument": "1076480",
     "field_118": "1076480",
+    "linkPicture": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/01_สัญญางานระหว่างทำ-1. สัญญา+PO.งานปัจจุบัน 12 งาน.pdf",
+    "field_154": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/01_สัญญางานระหว่างทำ-1. สัญญา+PO.งานปัจจุบัน 12 งาน.pdf",
+    "LinkPictureCustomer": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/02_ภาพถ่ายหน้างานปัจจุบัน-รูปหน้างาน.pdf",
+    "field_155": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/02_ภาพถ่ายหน้างานปัจจุบัน-รูปหน้างาน.pdf",
+    "Picture2": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/03_ภพ 30 ปีก่อนหน้า-6. ใบเสร็จ+แบบภาษี ภ.พ.30 เดือน ม.ค.69 - ส.ค.69 (ปัจจุบ.pdf",
+    "field_156": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/03_ภพ 30 ปีก่อนหน้า-6. ใบเสร็จ+แบบภาษี ภ.พ.30 เดือน ม.ค.69 - ส.ค.69 (ปัจจุบ.pdf",
     "d3": "D3-PK@dohome.co.th",
     "field_158": "D3-PK@dohome.co.th",
+    "site1": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/05_ผลตรวจคดี-ตรวจคดี บ.เจ อาร์ บี  (ครบ).pdf",
+    "field_160": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/05_ผลตรวจคดี-ตรวจคดี บ.เจ อาร์ บี  (ครบ).pdf",
+    "int_id": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/04_ภาพเข้าพบลูกค้า-เเผนที่เเละ รูปออฟฟิศ.pdf",
+    "field_165": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/04_ภาพเข้าพบลูกค้า-เเผนที่เเละ รูปออฟฟิศ.pdf",
     "Approve Edit": "Runthisa.Pho@dohome.co.th",
     "field_166": "Runthisa.Pho@dohome.co.th",
     "Comment_Approve": "เอกสารไม่แนบ",
@@ -59438,6 +59448,7 @@
     "field_170": "ทีมขาย-D2-D3-สินเชื่อ",
     "AdditionalNotes": "Operator: ปุ้มปุ้ย รัญธิศา SG PK / Runthisa.Pho@dohome.co.th / employee 1076480\nApproval route: ทีมขาย-D2-D3-สินเชื่อ / Store Operation / PKOO",
     "field_171": "Operator: ปุ้มปุ้ย รัญธิศา SG PK / Runthisa.Pho@dohome.co.th / employee 1076480\nApproval route: ทีมขาย-D2-D3-สินเชื่อ / Store Operation / PKOO",
+    "URL": "https://dohomegroup.sharepoint.com/sites/AC-Accounting/Lists/DemoApp/Attachments/925/04_ภาพเข้าพบลูกค้า-รูปหน้างาน.pdf",
     "NotificationSent": "jrb.co.th@gmail.com",
     "TISC_TYPE": "การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย",
     "TSIC": "41002",
@@ -59445,13 +59456,13 @@
     "id": "925",
     "ชนิดเนื้อหา": "Item",
     "ContentType": "Item",
-    "ปรับเปลี่ยนเมื่อ": "2026-10-01T10:20:06Z",
-    "Modified": "2026-10-01T10:20:06Z",
+    "ปรับเปลี่ยนเมื่อ": "2026-10-02T08:39:57Z",
+    "Modified": "2026-10-02T08:39:57Z",
     "Created": "2026-10-01T04:15:27Z",
     "AuthorLookupId": "3775",
     "EditorLookupId": "18",
-    "เวอร์ชัน": "11.0",
-    "_UIVersionString": "11.0",
+    "เวอร์ชัน": "27.0",
+    "_UIVersionString": "27.0",
     "สิ่งที่แนบมา": true,
     "Attachments": true,
     "ชื่อเรื่อง": "บริษัท จํากัด",
@@ -59461,9 +59472,10 @@
     "จำนวนโฟลเดอร์ย่อย": "0",
     "FolderChildCount": "0",
     "AppAuthorLookupId": "40",
+    "AppEditorLookupId": "40",
     "_ID": 925
    },
-   "_search": "\"5e6561bd-a523-4eda-b83f-7a413a88a872,11\" บริษัท จํากัด บริษัท จํากัด 100115056 100115056 existing existing store operation store operation ทีมขาย-d2-d3-สินเชื่อ ทีมขาย-d2-d3-สินเชื่อ บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด pkoo pkoo 2026-10-01t04:15:21z 2026-10-01t04:15:21z draft draft คำขอเพิ่มวงเงิน คำขอเพิ่มวงเงิน 2000000 2000000 ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk 07/08/2013 10:00:00 07/08/2013 10:00:00 0105556115744 0105556115744 บางแคเหนือ บางแคเหนือ บางแค บางแค กรุงเทพมหานคร กรุงเทพมหานคร kyc-000925 kyc-000925 0819180508 0819180508 บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด รับเหมาก่อสร้าง(เพิ่ม) รับเหมาก่อสร้าง(เพิ่ม) นางสาวปุณญาดา ชวัลดิษยา นางสาวปุณญาดา ชวัลดิษยา กรรมการ กรรมการ 0915179595 0915179595 30 30 30 30 - - - - 0 0 jrbvt25691001 jrbvt25691001 15700000 15700000 กำลังดำเนินการ กำลังดำเนินการ สมุทรสาคร สมุทรสาคร 2026-08-16t17:00:00z 2026-08-16t17:00:00z บริษัท จํากัด บริษัท จํากัด บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด บริการออกแบบ เขียนแบบสิ่งก่อสร้าง ประมาณราคา รับเป็นที่ปรึกษาสถาปัตยกรรมและวิศวกรรม การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย จดทะเบียน เมื่อวันที่ 19 กรกฎาคม 2556 เป็นระยะเวลา13 ปี  ดำเนินกิจการมาด้วยความมั่นคงต่อเนื่อง มีการซื้อขายสินค้ากับทางดูโฮม มาโดยตลอดหลายกลุ่มสินค้า เหล็ก ปูน เเละกลุ่มสินค้าทั่วไป เเละในการก่อสร้างครั้งนี้จำเป็นต้องใช้วงเงินในการซื้อปูนคอนกรีต ตามใบเสนอราคาเป็นจำนวนเงิน3,000,000 บาท เเละมีกลุ่มสินค้าเหล็กอีกจำนวนมากค่ะ  บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด บริการออกแบบ เขียนแบบสิ่งก่อสร้าง ประมาณราคา รับเป็นที่ปรึกษาสถาปัตยกรรมและวิศวกรรม การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย จดทะเบียน เมื่อวันที่ 19 กรกฎาคม 2556 เป็นระยะเวลา13 ปี  ดำเนินกิจการมาด้วยความมั่นคงต่อเนื่อง มีการซื้อขายสินค้ากับทางดูโฮม มาโดยตลอดหลายกลุ่มสินค้า เหล็ก ปูน เเละกลุ่มสินค้าทั่วไป เเละในการก่อสร้างครั้งนี้จำเป็นต้องใช้วงเงินในการซื้อปูนคอนกรีต ตามใบเสนอราคาเป็นจำนวนเงิน3,000,000 บาท เเละมีกลุ่มสินค้าเหล็กอีกจำนวนมากค่ะ  phattareeya.but@dohome.co.th phattareeya.but@dohome.co.th 10/01/2026 10:13:31 10/01/2026 10:13:31 2026-10-01t04:15:27z 10/01/2026 04:15:21 ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk 11/1 ซอยเพชรเกษม 68 แยก 25 แขวงบางแคเหนือ เขตบางแค กรุงเทพมหานคร กรุงเทพมหานคร บางแค บางแคเหนือ 10160 กรุงเทพมหานคร บางแค บางแคเหนือ 10160 11/1 ซอยเพชรเกษม 68 แยก 25 แขวงบางแคเหนือ เขตบางแค กรุงเทพมหานคร กรุงเทพมหานคร บางแค บางแคเหนือ 10160 กรุงเทพมหานคร บางแค บางแคเหนือ 10160 10160 10160 ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk 1076480 1076480 d3-pk@dohome.co.th d3-pk@dohome.co.th runthisa.pho@dohome.co.th runthisa.pho@dohome.co.th เอกสารไม่แนบ เอกสารไม่แนบ ทีมขาย-d2-d3-สินเชื่อ ทีมขาย-d2-d3-สินเชื่อ operator: ปุ้มปุ้ย รัญธิศา sg pk / runthisa.pho@dohome.co.th / employee 1076480\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / pkoo operator: ปุ้มปุ้ย รัญธิศา sg pk / runthisa.pho@dohome.co.th / employee 1076480\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / pkoo jrb.co.th@gmail.com การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย 41002 รับเหมาก่อสร้าง เขียนแบบ ออกแบบ 925 item item 2026-10-01t10:20:06z 2026-10-01t10:20:06z 2026-10-01t04:15:27z 3775 18 11.0 11.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 925"
+   "_search": "\"5e6561bd-a523-4eda-b83f-7a413a88a872,27\" บริษัท จํากัด บริษัท จํากัด 100115056 100115056 existing existing store operation store operation ทีมขาย-d2-d3-สินเชื่อ ทีมขาย-d2-d3-สินเชื่อ บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด pkoo pkoo 2026-10-01t04:15:21z 2026-10-01t04:15:21z รอการพิจารณาเบื้องต้น รอการพิจารณาเบื้องต้น คำขอเพิ่มวงเงิน คำขอเพิ่มวงเงิน 2000000 2000000 ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk 07/08/2013 10:00:00 07/08/2013 10:00:00 0105556115744 0105556115744 บางแคเหนือ บางแคเหนือ บางแค บางแค กรุงเทพมหานคร กรุงเทพมหานคร kyc-000925 kyc-000925 0819180508 0819180508 บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด รับเหมาก่อสร้าง(เพิ่ม) รับเหมาก่อสร้าง(เพิ่ม) นางสาวปุณญาดา ชวัลดิษยา นางสาวปุณญาดา ชวัลดิษยา กรรมการ กรรมการ 0915179595 0915179595 30 30 30 30 - - - - 0 0 jrbvt25691001 jrbvt25691001 15700000 15700000 กำลังดำเนินการ กำลังดำเนินการ สมุทรสาคร สมุทรสาคร 2026-08-16t17:00:00z 2026-08-16t17:00:00z บริษัท จํากัด บริษัท จํากัด บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด บริการออกแบบ เขียนแบบสิ่งก่อสร้าง ประมาณราคา รับเป็นที่ปรึกษาสถาปัตยกรรมและวิศวกรรม การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย จดทะเบียน เมื่อวันที่ 19 กรกฎาคม 2556 เป็นระยะเวลา13 ปี  ดำเนินกิจการมาด้วยความมั่นคงต่อเนื่อง มีการซื้อขายสินค้ากับทางดูโฮม มาโดยตลอดหลายกลุ่มสินค้า เหล็ก ปูน เเละกลุ่มสินค้าทั่วไป เเละในการก่อสร้างครั้งนี้จำเป็นต้องใช้วงเงินในการซื้อปูนคอนกรีต ตามใบเสนอราคาเป็นจำนวนเงิน3,000,000 บาท เเละมีกลุ่มสินค้าเหล็กอีกจำนวนมากค่ะ  บริษัท เจ.อาร์.บี ครีเอชั่น จำกัด บริการออกแบบ เขียนแบบสิ่งก่อสร้าง ประมาณราคา รับเป็นที่ปรึกษาสถาปัตยกรรมและวิศวกรรม การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย จดทะเบียน เมื่อวันที่ 19 กรกฎาคม 2556 เป็นระยะเวลา13 ปี  ดำเนินกิจการมาด้วยความมั่นคงต่อเนื่อง มีการซื้อขายสินค้ากับทางดูโฮม มาโดยตลอดหลายกลุ่มสินค้า เหล็ก ปูน เเละกลุ่มสินค้าทั่วไป เเละในการก่อสร้างครั้งนี้จำเป็นต้องใช้วงเงินในการซื้อปูนคอนกรีต ตามใบเสนอราคาเป็นจำนวนเงิน3,000,000 บาท เเละมีกลุ่มสินค้าเหล็กอีกจำนวนมากค่ะ  phattareeya.but@dohome.co.th phattareeya.but@dohome.co.th 10/01/2026 10:13:31 10/01/2026 10:13:31 2026-10-01t04:15:27z 10/01/2026 04:15:21 ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk 11/1 ซอยเพชรเกษม 68 แยก 25 แขวงบางแคเหนือ เขตบางแค กรุงเทพมหานคร กรุงเทพมหานคร บางแค บางแคเหนือ 10160 กรุงเทพมหานคร บางแค บางแคเหนือ 10160 11/1 ซอยเพชรเกษม 68 แยก 25 แขวงบางแคเหนือ เขตบางแค กรุงเทพมหานคร กรุงเทพมหานคร บางแค บางแคเหนือ 10160 กรุงเทพมหานคร บางแค บางแคเหนือ 10160 10160 10160 ปุ้มปุ้ย รัญธิศา sg pk ปุ้มปุ้ย รัญธิศา sg pk 1076480 1076480 https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/01_สัญญางานระหว่างทำ-1. สัญญา+po.งานปัจจุบัน 12 งาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/01_สัญญางานระหว่างทำ-1. สัญญา+po.งานปัจจุบัน 12 งาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/02_ภาพถ่ายหน้างานปัจจุบัน-รูปหน้างาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/02_ภาพถ่ายหน้างานปัจจุบัน-รูปหน้างาน.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/03_ภพ 30 ปีก่อนหน้า-6. ใบเสร็จ+แบบภาษี ภ.พ.30 เดือน ม.ค.69 - ส.ค.69 (ปัจจุบ.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/03_ภพ 30 ปีก่อนหน้า-6. ใบเสร็จ+แบบภาษี ภ.พ.30 เดือน ม.ค.69 - ส.ค.69 (ปัจจุบ.pdf d3-pk@dohome.co.th d3-pk@dohome.co.th https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/05_ผลตรวจคดี-ตรวจคดี บ.เจ อาร์ บี  (ครบ).pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/05_ผลตรวจคดี-ตรวจคดี บ.เจ อาร์ บี  (ครบ).pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/04_ภาพเข้าพบลูกค้า-เเผนที่เเละ รูปออฟฟิศ.pdf https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/04_ภาพเข้าพบลูกค้า-เเผนที่เเละ รูปออฟฟิศ.pdf runthisa.pho@dohome.co.th runthisa.pho@dohome.co.th เอกสารไม่แนบ เอกสารไม่แนบ ทีมขาย-d2-d3-สินเชื่อ ทีมขาย-d2-d3-สินเชื่อ operator: ปุ้มปุ้ย รัญธิศา sg pk / runthisa.pho@dohome.co.th / employee 1076480\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / pkoo operator: ปุ้มปุ้ย รัญธิศา sg pk / runthisa.pho@dohome.co.th / employee 1076480\napproval route: ทีมขาย-d2-d3-สินเชื่อ / store operation / pkoo https://dohomegroup.sharepoint.com/sites/ac-accounting/lists/demoapp/attachments/925/04_ภาพเข้าพบลูกค้า-รูปหน้างาน.pdf jrb.co.th@gmail.com การก่อสร้างอาคารที่ไม่ใช่ที่พักอาศัย 41002 รับเหมาก่อสร้าง เขียนแบบ ออกแบบ 925 item item 2026-10-02t08:39:57z 2026-10-02t08:39:57z 2026-10-01t04:15:27z 3775 18 27.0 27.0 true true บริษัท จํากัด บริษัท จํากัด 0 0 0 0 40 40 925"
   },
   {
    "id": 926,
@@ -65022,64 +65034,64 @@
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 278,
-   "nullPct": 28.2
+   "unique": 279,
+   "nullPct": 27.9
   },
   {
    "name": "field_154",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 278,
-   "nullPct": 28.2
+   "unique": 279,
+   "nullPct": 27.9
   },
   {
    "name": "LinkPictureCustomer",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 277,
-   "nullPct": 28.4
+   "unique": 278,
+   "nullPct": 28.2
   },
   {
    "name": "field_155",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 277,
-   "nullPct": 28.4
+   "unique": 278,
+   "nullPct": 28.2
   },
   {
    "name": "Picture2",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 264,
-   "nullPct": 31.8
+   "unique": 265,
+   "nullPct": 31.5
   },
   {
    "name": "field_156",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 264,
-   "nullPct": 31.8
+   "unique": 265,
+   "nullPct": 31.5
   },
   {
    "name": "int_id",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 241,
-   "nullPct": 37.7
+   "unique": 242,
+   "nullPct": 37.5
   },
   {
    "name": "field_165",
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 241,
-   "nullPct": 37.7
+   "unique": 242,
+   "nullPct": 37.5
   },
   {
    "name": "Approve Edit",
@@ -65166,8 +65178,8 @@
    "type": "Text",
    "desc": "—",
    "sample": "https://dohomegroup.sharepoint.com/sites",
-   "unique": 162,
-   "nullPct": 58.1
+   "unique": 163,
+   "nullPct": 57.9
   },
   {
    "name": "id",
@@ -65198,7 +65210,7 @@
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-09-01T08:26:42Z",
-   "unique": 371,
+   "unique": 372,
    "nullPct": 0.0
   },
   {
@@ -65206,7 +65218,7 @@
    "type": "DateTime",
    "desc": "—",
    "sample": "2026-09-01T08:26:42Z",
-   "unique": 371,
+   "unique": 372,
    "nullPct": 0.0
   },
   {
@@ -65407,7 +65419,7 @@
    "desc": "—",
    "sample": "40",
    "unique": 1,
-   "nullPct": 10.1
+   "nullPct": 9.8
   },
   {
    "name": "_ID",
@@ -65470,16 +65482,16 @@
    "type": "Text",
    "desc": "—",
    "sample": "ตึก/อาคาร",
-   "unique": 24,
-   "nullPct": 88.6
+   "unique": 25,
+   "nullPct": 88.4
   },
   {
    "name": "field_160",
    "type": "Text",
    "desc": "—",
    "sample": "ตึก/อาคาร",
-   "unique": 24,
-   "nullPct": 88.6
+   "unique": 25,
+   "nullPct": 88.4
   },
   {
    "name": "1CreditApprove",
@@ -66204,20 +66216,20 @@
    88.9
   ],
   [
-   "site1",
-   88.6
-  ],
-  [
-   "field_160",
-   88.6
-  ],
-  [
    "start_of_construction2",
    88.6
   ],
   [
    "field_70",
    88.6
+  ],
+  [
+   "site1",
+   88.4
+  ],
+  [
+   "field_160",
+   88.4
   ],
   [
    "gm",
@@ -66396,15 +66408,15 @@
    58.1
   ],
   [
-   "URL",
-   58.1
-  ],
-  [
    "establishment_area",
    57.9
   ],
   [
    "field_51",
+   57.9
+  ],
+  [
+   "URL",
    57.9
   ],
   [
@@ -66545,11 +66557,11 @@
   ],
   [
    "int_id",
-   37.7
+   37.5
   ],
   [
    "field_165",
-   37.7
+   37.5
   ],
   [
    "Approve History",
@@ -66577,11 +66589,11 @@
   ],
   [
    "Picture2",
-   31.8
+   31.5
   ],
   [
    "field_156",
-   31.8
+   31.5
   ],
   [
    "work_value1",
@@ -66633,19 +66645,19 @@
   ],
   [
    "LinkPictureCustomer",
-   28.4
+   28.2
   ],
   [
    "field_155",
-   28.4
+   28.2
   ],
   [
    "linkPicture",
-   28.2
+   27.9
   ],
   [
    "field_154",
-   28.2
+   27.9
   ],
   [
    "sale_representative",
@@ -66676,15 +66688,15 @@
    15.0
   ],
   [
-   "AppEditorLookupId",
-   10.1
-  ],
-  [
    "Data",
    9.8
   ],
   [
    "field_17",
+   9.8
+  ],
+  [
+   "AppEditorLookupId",
    9.8
   ],
   [
