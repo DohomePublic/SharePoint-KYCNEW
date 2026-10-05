@@ -47,6 +47,38 @@ SharePoint List **DemoApp** และอัปเดตอัตโนมัต�
 
 > Client ID / Tenant ID / Object ID ไม่ใช่ความลับ (เป็นตัวระบุแอป) แต่ **Client Secret เป็นความลับ** ต้องเก็บใน GitHub Secrets เท่านั้น
 
+## ➕ การสร้างคำขอเพิ่มวงเงินจากหน้าเว็บ
+
+หน้า [request-increase.html](./request-increase.html) ให้ผู้ใช้ลงชื่อเข้าใช้ Microsoft 365
+และบันทึกคำขอเพิ่มวงเงินเป็นรายการใหม่ใน SharePoint List **DemoApp** โดยตรง
+
+> ห้ามนำ `AZ_CLIENT_SECRET` ไปใส่ในหน้าเว็บหรือ JavaScript เด็ดขาด หน้าเว็บใช้
+> Client ID และ Microsoft 365 sign-in ของผู้ใช้เท่านั้น
+
+ก่อนใช้งาน IT Admin ต้องตั้งค่า App registration `a37bd62d-e74d-4ea0-9546-1eb5aa96f604`:
+
+1. ไปที่ **Authentication → Add a platform → Single-page application (SPA)**
+2. เพิ่ม Redirect URI ของหน้าใช้งานจริง เช่น
+   `https://<organization>.github.io/<repository>/request-increase.html`
+3. ไปที่ **API permissions → Microsoft Graph → Delegated permissions**
+4. เพิ่ม `Sites.ReadWrite.All` และกด **Grant admin consent**
+5. ให้ผู้ใช้มีสิทธิ์ **Edit** หรือสูงกว่าใน List `DemoApp`
+
+หลังตั้งค่า ให้เปิดหน้า `request-increase.html` จาก Dashboard เมนู
+**➕ สร้างคำขอเพิ่มวงเงิน** แล้วกดลงชื่อเข้าใช้ก่อนบันทึก
+
+หน้าแบบฟอร์มจะค้นหา Site และ List ตามค่า:
+
+| ค่า | ค่าเริ่มต้น |
+|---|---|
+| SharePoint host | `dohomegroup.sharepoint.com` |
+| Site path | `/sites/AC-Accounting` |
+| List name | `DemoApp` |
+
+หาก Azure App registration เดิมใช้สำหรับ GitHub Actions เท่านั้น แนะนำให้ IT สร้าง
+App registration แยกสำหรับ SPA เพื่อจำกัด Redirect URI และ Delegated permissions
+เฉพาะการใช้งานของผู้ใช้
+
 ตัวแปรเสริม (ตั้งเป็น Variables ได้ ไม่บังคับ — มีค่า default ในสคริปต์แล้ว)
 
 | Variable | Default |
@@ -97,6 +129,7 @@ DemoApp-Dashboard/
 │   └── kyc_form_mockup_p2.svg       ← ตัวอย่างฟอร์ม KYC หน้า 2 (ข้อมูลจริง)
 ├── index.html                       ← Dashboard (auto-generated) ← GitHub Pages เสิร์ฟไฟล์นี้
 ├── print.html                       ← ฟอร์มพิมพ์เอกสาร KYC A4 2 หน้า (auto-generated)
+├── request-increase.html            ← ฟอร์มสร้างคำขอเพิ่มวงเงิน (Microsoft 365 Login)
 └── README.md
 ```
 

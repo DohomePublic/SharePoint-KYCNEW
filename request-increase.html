@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คำขอเพิ่มวงเงิน | DOHOME</title>
+<script src="https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js"></script>
+<style>
+:root{--brand:#0f6cbd;--brand-dark:#0b4f8a;--bg:#f5f5f5;--card:#fff;--line:#d1d1d1;--text:#242424;--muted:#616161;--danger:#c50f1f;--ok:#107c10}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI","Sarabun",Tahoma,sans-serif}
+header{background:linear-gradient(90deg,var(--brand-dark),var(--brand));color:#fff;padding:16px 24px;display:flex;align-items:center;gap:16px}
+header h1{font-size:20px;margin:0} header p{margin:3px 0 0;font-size:13px;opacity:.9}.spacer{flex:1}
+main{max-width:1120px;margin:24px auto;padding:0 16px}.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px;margin-bottom:18px;box-shadow:0 1px 3px #0001}
+h2{font-size:18px;margin:0 0 16px} h3{font-size:15px;background:#e9f3ff;border-left:4px solid var(--brand);padding:8px 10px;margin:22px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.field{display:flex;flex-direction:column;gap:5px}.c2{grid-column:span 2}.c3{grid-column:span 3}.c4{grid-column:span 4}.c6{grid-column:span 6}.c12{grid-column:span 12}
+label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,textarea{font:inherit;padding:9px 10px;border:1px solid #8a8886;border-radius:4px;width:100%;background:#fff;color:var(--text)}textarea{min-height:100px;resize:vertical}input:focus,textarea:focus{outline:2px solid var(--brand);outline-offset:-1px;border-color:var(--brand)}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.btn{font:inherit;font-weight:600;border:1px solid var(--brand);border-radius:4px;padding:9px 14px;background:var(--brand);color:#fff;cursor:pointer}.btn:hover{background:var(--brand-dark)}.btn.secondary{background:#fff;color:var(--brand)}.btn:disabled{opacity:.55;cursor:not-allowed}
+#authState,#message{font-size:14px}.error{color:var(--danger)}.success{color:var(--ok)}.hint{color:var(--muted);font-size:13px;margin:0}.hidden{display:none}
+@media(max-width:720px){.c2,.c3,.c4,.c6{grid-column:span 12}header{padding:14px 16px}main{margin-top:16px}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>คำขอเพิ่มวงเงิน</h1><p>บันทึกข้อมูลเข้าสู่ SharePoint List: DemoApp</p></div>
+  <div class="spacer"></div>
+  <a class="btn secondary" href="index.html">← กลับ Dashboard</a>
+</header>
+<main>
+  <section class="card">
+    <h2>Microsoft 365 Login</h2>
+    <div class="actions">
+      <button class="btn" id="signIn" type="button">ลงชื่อเข้าใช้ Microsoft 365</button>
+      <button class="btn secondary hidden" id="signOut" type="button">ออกจากระบบ</button>
+      <span id="authState">ยังไม่ได้ลงชื่อเข้าใช้</span>
+    </div>
+    <p class="hint">การบันทึกต้องใช้บัญชีองค์กรที่มีสิทธิ์เพิ่มรายการใน SharePoint List DemoApp</p>
+  </section>
+
+  <form class="card" id="increaseForm" novalidate>
+    <h2>เอกสารการเพิ่มวงเงิน</h2>
+    <p class="hint">ช่องที่มี <span class="error">*</span> จำเป็นต้องระบุก่อนบันทึก</p>
+
+    <h3>ข้อมูลคำขอเพิ่มวงเงิน</h3>
+    <div class="grid">
+      <div class="field c3"><label for="branch">สาขา <span class="required">*</span></label><input id="branch" name="branch" required></div>
+      <div class="field c3"><label for="customerId">รหัสสมาชิก <span class="required">*</span></label><input id="customerId" name="customerId" required inputmode="numeric"></div>
+      <div class="field c3"><label for="oldLimit">วงเงินเดิม <span class="required">*</span></label><input id="oldLimit" name="oldLimit" required inputmode="decimal"></div>
+      <div class="field c3"><label for="increaseLimit">วงเงินที่ขอเพิ่ม <span class="required">*</span></label><input id="increaseLimit" name="increaseLimit" required inputmode="decimal"></div>
+      <div class="field c6"><label for="registeredName">ชื่อนิติบุคคล <span class="required">*</span></label><input id="registeredName" name="registeredName" required></div>
+      <div class="field c6"><label for="nameEng">ชื่อนิติบุคคล (Eng)</label><input id="nameEng" name="nameEng"></div>
+      <div class="field c3"><label for="totalLimit">วงเงินเดิม + วงเงินที่ขอเพิ่ม</label><input id="totalLimit" name="totalLimit" inputmode="decimal"></div>
+      <div class="field c3"><label for="currentSales">ยอดขายปัจจุบัน (ร้านค้าช่วง)</label><input id="currentSales" name="currentSales"></div>
+      <div class="field c2"><label for="creditTerm">เครดิตเทอม (วัน)</label><input id="creditTerm" name="creditTerm" inputmode="numeric"></div>
+      <div class="field c4"><label for="collateral">หลักประกัน</label><input id="collateral" name="collateral"></div>
+      <div class="field c12"><label for="averageSales">ยอดขายเฉลี่ยต่อเดือน</label><input id="averageSales" name="averageSales" inputmode="decimal"></div>
+    </div>
+
+    <h3>ข้อมูลโครงการในปัจจุบัน</h3>
+    <div class="grid">
+      <div class="field c3"><label for="project1">ชื่อโครงการ 01</label><input id="project1" name="project1"></div>
+      <div class="field c3"><label for="employer1">ผู้ว่าจ้าง</label><input id="employer1" name="employer1"></div>
+      <div class="field c3"><label for="period1">ระยะเวลาก่อสร้าง</label><input id="period1" name="period1"></div>
+      <div class="field c3"><label for="value1">มูลค่า</label><input id="value1" name="value1" inputmode="decimal"></div>
+      <div class="field c3"><label for="project2">ชื่อโครงการ 02</label><input id="project2" name="project2"></div>
+      <div class="field c3"><label for="employer2">ผู้ว่าจ้าง</label><input id="employer2" name="employer2"></div>
+      <div class="field c3"><label for="period2">ระยะเวลาก่อสร้าง</label><input id="period2" name="period2"></div>
+      <div class="field c3"><label for="value2">มูลค่า</label><input id="value2" name="value2" inputmode="decimal"></div>
+      <div class="field c12"><label for="loanHistory">ประวัติกิจการ</label><textarea id="loanHistory" name="loanHistory"></textarea></div>
+    </div>
+
+    <h3>ลำดับการอนุมัติ</h3>
+    <div class="grid">
+      <div class="field c6"><label for="salesRepresentative">ผู้แทนขาย</label><input id="salesRepresentative" name="salesRepresentative"></div>
+      <div class="field c2"><label for="salesPhone">เบอร์โทร</label><input id="salesPhone" name="salesPhone" inputmode="tel"></div>
+      <div class="field c4"><label for="backOffice">ฝ่ายขาย BackOffice</label><input id="backOffice" name="backOffice"></div>
+      <div class="field c6"><label for="d3">D3 อนุมัติ</label><input id="d3" name="d3"></div>
+      <div class="field c2"><label for="d3Phone">เบอร์โทร D3</label><input id="d3Phone" name="d3Phone" inputmode="tel"></div>
+      <div class="field c4"><label for="manager">ผู้จัดการสาขา</label><input id="manager" name="manager"></div>
+      <div class="field c6"><label for="managerPhone">เบอร์โทรผู้จัดการสาขา</label><input id="managerPhone" name="managerPhone" inputmode="tel"></div>
+      <div class="field c6"><label for="approvedLimit">วงเงินที่สินเชื่ออนุมัติ</label><input id="approvedLimit" name="approvedLimit" inputmode="decimal"></div>
+    </div>
+
+    <div class="actions" style="margin-top:22px">
+      <button class="btn" id="submitRequest" type="submit">บันทึกคำขอเพิ่มวงเงิน</button>
+      <button class="btn secondary" type="reset">ล้างข้อมูล</button>
+      <span id="message" role="status"></span>
+    </div>
+  </form>
+</main>
+<script>
+(function(){
+  'use strict';
+
+  var CONFIG = {
+    clientId: 'a37bd62d-e74d-4ea0-9546-1eb5aa96f604',
+    tenantId: '7f8918d9-718a-495b-ac9a-17cba381c4a0',
+    hostname: 'dohomegroup.sharepoint.com',
+    sitePath: '/sites/AC-Accounting',
+    listName: 'DemoApp'
+  };
+  var graphScopes = ['Sites.ReadWrite.All'];
+  var msalApp = new msal.PublicClientApplication({
+    auth: {
+      clientId: CONFIG.clientId,
+      authority: 'https://login.microsoftonline.com/' + CONFIG.tenantId,
+      redirectUri: window.location.origin + window.location.pathname
+    },
+    cache: { cacheLocation: 'sessionStorage' }
+  });
+  var account = null;
+  var graphContext = null;
+  var form = document.getElementById('increaseForm');
+  var submit = document.getElementById('submitRequest');
+  var authState = document.getElementById('authState');
+  var message = document.getElementById('message');
+
+  function setMessage(text, kind){
+    message.textContent = text;
+    message.className = kind || '';
+  }
+  function normalize(value){
+    return String(value || '').replace(/_x([0-9a-fA-F]{4})_/g, function(_, hex){
+      return String.fromCharCode(parseInt(hex, 16));
+    }).toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+  function setAuthState(){
+    var signedIn = Boolean(account);
+    document.getElementById('signIn').classList.toggle('hidden', signedIn);
+    document.getElementById('signOut').classList.toggle('hidden', !signedIn);
+    authState.textContent = signedIn ? 'ลงชื่อเข้าใช้แล้ว: ' + account.username : 'ยังไม่ได้ลงชื่อเข้าใช้';
+  }
+  async function getToken(){
+    if(!account) throw new Error('กรุณาลงชื่อเข้าใช้ Microsoft 365 ก่อนบันทึก');
+    try {
+      return (await msalApp.acquireTokenSilent({account:account,scopes:graphScopes})).accessToken;
+    } catch(error) {
+      return (await msalApp.acquireTokenPopup({account:account,scopes:graphScopes})).accessToken;
+    }
+  }
+  async function graph(path, options){
+    var token = await getToken();
+    var response = await fetch('https://graph.microsoft.com/v1.0' + path, Object.assign({
+      headers: {Authorization:'Bearer ' + token, Accept:'application/json'}
+    }, options || {}));
+    if(!response.ok){
+      var detail = await response.text();
+      throw new Error('Microsoft Graph ตอบกลับ ' + response.status + ': ' + detail);
+    }
+    return response.status === 204 ? null : response.json();
+  }
+  async function getGraphContext(){
+    if(graphContext) return graphContext;
+    var site = await graph('/sites/' + CONFIG.hostname + ':' + CONFIG.sitePath);
+    var lists = await graph('/sites/' + site.id + '/lists?$select=id,displayName,name&$top=200');
+    var wanted = normalize(CONFIG.listName);
+    var list = lists.value.find(function(item){
+      return normalize(item.displayName) === wanted || normalize(item.name) === wanted;
+    });
+    if(!list) throw new Error('ไม่พบ SharePoint List "' + CONFIG.listName + '"');
+    var columns = await graph('/sites/' + site.id + '/lists/' + list.id + '/columns?$select=name,displayName&$top=500');
+    var byDisplay = {};
+    columns.value.forEach(function(column){ byDisplay[normalize(column.displayName)] = column.name; });
+    graphContext = {siteId:site.id,listId:list.id,columns:byDisplay};
+    return graphContext;
+  }
+  function value(name){ return form.elements[name].value.trim(); }
+  function setField(fields, columns, displayName, formName, required){
+    var fieldValue = value(formName);
+    if(!fieldValue) {
+      if(required) throw new Error('กรุณาระบุ ' + displayName);
+      return;
+    }
+    var internalName = columns[normalize(displayName)];
+    if(!internalName) throw new Error('ไม่พบคอลัมน์ SharePoint: ' + displayName);
+    fields[internalName] = fieldValue;
+  }
+  function setConstant(fields, columns, displayName, fieldValue){
+    var internalName = columns[normalize(displayName)];
+    if(!internalName) throw new Error('ไม่พบคอลัมน์ SharePoint: ' + displayName);
+    fields[internalName] = fieldValue;
+  }
+  function updateTotal(){
+    var parse = function(input){ return Number(String(input.value).replace(/,/g,'')); };
+    var oldLimit = parse(form.elements.oldLimit);
+    var increase = parse(form.elements.increaseLimit);
+    if(isFinite(oldLimit) && isFinite(increase)) form.elements.totalLimit.value = String(oldLimit + increase);
+  }
+
+  document.getElementById('signIn').addEventListener('click', async function(){
+    try {
+      var login = await msalApp.loginPopup({scopes:graphScopes});
+      account = login.account;
+      setAuthState();
+    } catch(error) { setMessage(error.message, 'error'); }
+  });
+  document.getElementById('signOut').addEventListener('click', function(){
+    msalApp.logoutPopup({account:account});
+    account = null; graphContext = null; setAuthState();
+  });
+  form.elements.oldLimit.addEventListener('input', updateTotal);
+  form.elements.increaseLimit.addEventListener('input', updateTotal);
+  form.addEventListener('submit', async function(event){
+    event.preventDefault();
+    setMessage('', '');
+    if(!form.reportValidity()) return;
+    submit.disabled = true;
+    try {
+      var context = await getGraphContext();
+      var fields = {};
+      setConstant(fields, context.columns, 'Type_Request', 'คำขอเพิ่มวงเงิน');
+      setConstant(fields, context.columns, 'Request TimeStamp', new Date().toISOString());
+      setConstant(fields, context.columns, 'Title', value('registeredName'));
+      setField(fields, context.columns, 'branch', 'branch', true);
+      setField(fields, context.columns, 'Customer_id', 'customerId', true);
+      setField(fields, context.columns, 'limit', 'oldLimit', true);
+      setField(fields, context.columns, '1CreditApprove', 'increaseLimit', true);
+      setField(fields, context.columns, '1presentaddmonney', 'totalLimit');
+      setField(fields, context.columns, 'Registered_Name', 'registeredName', true);
+      setField(fields, context.columns, 'Registered_Name_Eng', 'nameEng');
+      setField(fields, context.columns, 'Wholesale_retail_stores', 'currentSales');
+      setField(fields, context.columns, 'credit_semester1', 'creditTerm');
+      setField(fields, context.columns, 'Margin_type1', 'collateral');
+      setField(fields, context.columns, 'avg_sales', 'averageSales');
+      setField(fields, context.columns, 'project', 'project1');
+      setField(fields, context.columns, 'employer', 'employer1');
+      setField(fields, context.columns, 'period', 'period1');
+      setField(fields, context.columns, 'work_value2', 'value1');
+      setField(fields, context.columns, 'future_project', 'project2');
+      setField(fields, context.columns, 'company_ordered', 'employer2');
+      setField(fields, context.columns, 'period2', 'period2');
+      setField(fields, context.columns, 'work_value3', 'value2');
+      setField(fields, context.columns, 'loan_history', 'loanHistory');
+      setField(fields, context.columns, 'sale_representative', 'salesRepresentative');
+      setField(fields, context.columns, 'phone_number1', 'salesPhone');
+      setField(fields, context.columns, 'sale_branch1', 'backOffice');
+      setField(fields, context.columns, 'D31', 'd3');
+      setField(fields, context.columns, 'phone_number3', 'd3Phone');
+      setField(fields, context.columns, 'branch_manager', 'manager');
+      setField(fields, context.columns, 'phone_number4', 'managerPhone');
+      setField(fields, context.columns, 'CraditApprove', 'approvedLimit');
+      var created = await graph('/sites/' + context.siteId + '/lists/' + context.listId + '/items', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({fields:fields})
+      });
+      setMessage('บันทึกคำขอสำเร็จ (SharePoint Item ID: ' + created.id + ')', 'success');
+      form.reset();
+    } catch(error) {
+      setMessage(error.message, 'error');
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  msalApp.handleRedirectPromise().then(function(result){
+    account = (result && result.account) || msalApp.getAllAccounts()[0] || null;
+    setAuthState();
+  }).catch(function(error){ setMessage(error.message, 'error'); });
+})();
+</script>
+</body>
+</html>
