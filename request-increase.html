@@ -34,6 +34,7 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
       <span id="authState" role="status">กำลังเตรียม Microsoft 365 Login...</span>
     </div>
     <p class="hint">การบันทึกต้องใช้บัญชีองค์กรที่มีสิทธิ์เพิ่มรายการใน SharePoint List DemoApp</p>
+    <p class="hint">รุ่นแบบฟอร์ม: 2026-10-05.1720 (ไม่ส่ง LinkTitleNoMenu / LinkTitle)</p>
   </section>
 
   <form class="card" id="increaseForm" method="post" action="#" novalidate>
@@ -274,7 +275,7 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
       var fields = {};
       setConstant(fields, context.columns, 'Type_Request', 'คำขอเพิ่มวงเงิน');
       setConstant(fields, context.columns, 'Request TimeStamp', new Date().toISOString());
-      setConstant(fields, context.columns, 'Title', value('registeredName'));
+      fields.Title = value('registeredName');
       setField(fields, context.columns, 'branch', 'branch', true);
       setField(fields, context.columns, 'Customer_id', 'customerId', true);
       setField(fields, context.columns, 'limit', 'oldLimit', true);
@@ -303,6 +304,13 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
       setField(fields, context.columns, 'branch_manager', 'manager');
       setField(fields, context.columns, 'phone_number4', 'managerPhone');
       setField(fields, context.columns, 'CraditApprove', 'approvedLimit');
+      // Never serialize SharePoint's display-only title aliases.
+      Object.keys(fields).forEach(function(name){
+        if(['linktitle','linktitlenomenu'].indexOf(normalize(name)) >= 0){
+          console.warn('Excluded read-only SharePoint field: ' + name);
+          delete fields[name];
+        }
+      });
       var created = await graph('/sites/' + context.siteId + '/lists/' + context.listId + '/items', {
         method:'POST',
         headers:{'Content-Type':'application/json'},
