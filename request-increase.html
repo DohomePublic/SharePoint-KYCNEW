@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>คำขอเพิ่มวงเงิน | DOHOME</title>
-<script src="https://alcdn.msauth.net/browser/2.38.3/js/msal-browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.28.1/lib/msal-browser.min.js"></script>
 <style>
 :root{--brand:#0f6cbd;--brand-dark:#0b4f8a;--bg:#f5f5f5;--card:#fff;--line:#d1d1d1;--text:#242424;--muted:#616161;--danger:#c50f1f;--ok:#107c10}
 *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI","Sarabun",Tahoma,sans-serif}
@@ -29,14 +29,14 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
   <section class="card">
     <h2>Microsoft 365 Login</h2>
     <div class="actions">
-      <button class="btn" id="signIn" type="button">ลงชื่อเข้าใช้ Microsoft 365</button>
+      <button class="btn" id="signIn" type="button" disabled>ลงชื่อเข้าใช้ Microsoft 365</button>
       <button class="btn secondary hidden" id="signOut" type="button">ออกจากระบบ</button>
-      <span id="authState">ยังไม่ได้ลงชื่อเข้าใช้</span>
+      <span id="authState" role="status">กำลังเตรียม Microsoft 365 Login...</span>
     </div>
     <p class="hint">การบันทึกต้องใช้บัญชีองค์กรที่มีสิทธิ์เพิ่มรายการใน SharePoint List DemoApp</p>
   </section>
 
-  <form class="card" id="increaseForm" novalidate>
+  <form class="card" id="increaseForm" method="post" action="#" novalidate>
     <h2>เอกสารการเพิ่มวงเงิน</h2>
     <p class="hint">ช่องที่มี <span class="error">*</span> จำเป็นต้องระบุก่อนบันทึก</p>
 
@@ -81,7 +81,7 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
     </div>
 
     <div class="actions" style="margin-top:22px">
-      <button class="btn" id="submitRequest" type="submit">บันทึกคำขอเพิ่มวงเงิน</button>
+      <button class="btn" id="submitRequest" type="submit" disabled>บันทึกคำขอเพิ่มวงเงิน</button>
       <button class="btn secondary" type="reset">ล้างข้อมูล</button>
       <span id="message" role="status"></span>
     </div>
@@ -99,14 +99,34 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
     listName: 'DemoApp'
   };
   var graphScopes = ['Sites.ReadWrite.All'];
-  var msalApp = new msal.PublicClientApplication({
-    auth: {
-      clientId: CONFIG.clientId,
-      authority: 'https://login.microsoftonline.com/' + CONFIG.tenantId,
-      redirectUri: window.location.origin + window.location.pathname
-    },
-    cache: { cacheLocation: 'sessionStorage' }
+  // Never fall back to a native form POST if authentication cannot start.
+  document.getElementById('increaseForm').addEventListener('submit', function(event){
+    event.preventDefault();
   });
+  var localHttp = window.location.protocol === 'http:' &&
+    ['localhost', '127.0.0.1', '[::1]'].indexOf(window.location.hostname) >= 0;
+  if(window.location.protocol !== 'https:' && !localHttp){
+    var notice = document.getElementById('authState');
+    notice.className = 'error';
+    notice.textContent = 'Microsoft 365 Login ไม่รองรับการเปิดไฟล์โดยตรง กรุณาเปิดผ่าน HTTPS: ';
+    var onlineLink = document.createElement('a');
+    onlineLink.href = 'https://dohomepublic.github.io/SharePoint-KYCNEW/request-increase.html';
+    onlineLink.textContent = 'เปิดหน้าเพิ่มวงเงินบน GitHub Pages';
+    notice.appendChild(onlineLink);
+    document.getElementById('signIn').disabled = true;
+    document.getElementById('submitRequest').disabled = true;
+    return;
+  }
+  if(typeof window.msal === 'undefined'){
+    document.getElementById('authState').textContent =
+      'ไม่สามารถโหลด Microsoft 365 Login ได้ โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองใหม่';
+    document.getElementById('authState').className = 'error';
+    document.getElementById('signIn').disabled = true;
+    return;
+  }
+  var msalApp;
+  var ready = false;
+  var busy = false;
   var account = null;
   var graphContext = null;
   var form = document.getElementById('increaseForm');
@@ -125,6 +145,9 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
   }
   function setAuthState(){
     var signedIn = Boolean(account);
+    document.getElementById('signIn').disabled = !ready || busy;
+    document.getElementById('signOut').disabled = !ready || busy;
+    submit.disabled = !ready || busy || !signedIn;
     document.getElementById('signIn').classList.toggle('hidden', signedIn);
     document.getElementById('signOut').classList.toggle('hidden', !signedIn);
     authState.textContent = signedIn ? 'ลงชื่อเข้าใช้แล้ว: ' + account.username : 'ยังไม่ได้ลงชื่อเข้าใช้';
@@ -134,14 +157,17 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
     try {
       return (await msalApp.acquireTokenSilent({account:account,scopes:graphScopes})).accessToken;
     } catch(error) {
+      if(!(error instanceof msal.InteractionRequiredAuthError)) throw error;
       return (await msalApp.acquireTokenPopup({account:account,scopes:graphScopes})).accessToken;
     }
   }
   async function graph(path, options){
     var token = await getToken();
-    var response = await fetch('https://graph.microsoft.com/v1.0' + path, Object.assign({
-      headers: {Authorization:'Bearer ' + token, Accept:'application/json'}
-    }, options || {}));
+    var headers = new Headers(options && options.headers);
+    headers.set('Authorization', 'Bearer ' + token);
+    headers.set('Accept', 'application/json');
+    var response = await fetch('https://graph.microsoft.com/v1.0' + path,
+      Object.assign({}, options || {}, {headers:headers}));
     if(!response.ok){
       var detail = await response.text();
       throw new Error('Microsoft Graph ตอบกลับ ' + response.status + ': ' + detail);
@@ -187,23 +213,44 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
   }
 
   document.getElementById('signIn').addEventListener('click', async function(){
+    if(!ready || busy) return;
+    busy = true;
+    setAuthState();
     try {
       var login = await msalApp.loginPopup({scopes:graphScopes});
       account = login.account;
-      setAuthState();
     } catch(error) { setMessage(error.message, 'error'); }
+    finally {
+      busy = false;
+      setAuthState();
+    }
   });
-  document.getElementById('signOut').addEventListener('click', function(){
-    msalApp.logoutPopup({account:account});
-    account = null; graphContext = null; setAuthState();
+  document.getElementById('signOut').addEventListener('click', async function(){
+    if(!ready || busy) return;
+    busy = true;
+    setAuthState();
+    try {
+      await msalApp.logoutPopup({account:account});
+      account = null;
+      graphContext = null;
+    } catch(error) { setMessage(error.message, 'error'); }
+    finally {
+      busy = false;
+      setAuthState();
+    }
   });
   form.elements.oldLimit.addEventListener('input', updateTotal);
   form.elements.increaseLimit.addEventListener('input', updateTotal);
   form.addEventListener('submit', async function(event){
     event.preventDefault();
+    if(!ready || !account || busy){
+      setMessage('กรุณารอระบบพร้อมและลงชื่อเข้าใช้ก่อนบันทึก หากกำลังบันทึกอยู่ให้รอจนเสร็จ', 'error');
+      return;
+    }
     setMessage('', '');
     if(!form.reportValidity()) return;
-    submit.disabled = true;
+    busy = true;
+    setAuthState();
     try {
       var context = await getGraphContext();
       var fields = {};
@@ -248,14 +295,33 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
     } catch(error) {
       setMessage(error.message, 'error');
     } finally {
-      submit.disabled = false;
+      busy = false;
+      setAuthState();
     }
   });
 
-  msalApp.handleRedirectPromise().then(function(result){
-    account = (result && result.account) || msalApp.getAllAccounts()[0] || null;
-    setAuthState();
-  }).catch(function(error){ setMessage(error.message, 'error'); });
+  async function initializeAuth(){
+    try {
+      msalApp = new msal.PublicClientApplication({
+        auth: {
+          clientId: CONFIG.clientId,
+          authority: 'https://login.microsoftonline.com/' + CONFIG.tenantId,
+          redirectUri: window.location.origin + window.location.pathname
+        },
+        cache: {cacheLocation:'sessionStorage'}
+      });
+      await msalApp.initialize();
+      var result = await msalApp.handleRedirectPromise();
+      account = (result && result.account) || msalApp.getAllAccounts()[0] || null;
+      ready = true;
+      setAuthState();
+    } catch(error) {
+      authState.textContent = 'เริ่มต้น Microsoft 365 Login ไม่สำเร็จ';
+      authState.className = 'error';
+      setMessage(error.message, 'error');
+    }
+  }
+  initializeAuth();
 })();
 </script>
 </body>
