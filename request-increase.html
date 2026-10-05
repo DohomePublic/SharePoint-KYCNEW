@@ -183,11 +183,31 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
       return normalize(item.displayName) === wanted || normalize(item.name) === wanted;
     });
     if(!list) throw new Error('ไม่พบ SharePoint List "' + CONFIG.listName + '"');
-    var columns = await graph('/sites/' + site.id + '/lists/' + list.id + '/columns?$select=name,displayName&$top=500');
-    var byDisplay = {};
-    columns.value.forEach(function(column){ byDisplay[normalize(column.displayName)] = column.name; });
-    graphContext = {siteId:site.id,listId:list.id,columns:byDisplay};
+    var columns = await graph('/sites/' + site.id + '/lists/' + list.id + '/columns?$select=name,displayName,readOnly&$top=500');
+    graphContext = {siteId:site.id,listId:list.id,columns:columns.value};
     return graphContext;
+  }
+  function writableColumn(columns, name){
+    var key = normalize(name);
+    var matches = columns.filter(function(column){ return column.name === name; });
+    if(!matches.length && key){
+      matches = columns.filter(function(column){ return normalize(column.name) === key; });
+    }
+    if(!matches.length){
+      matches = columns.filter(function(column){
+        return column.displayName === name ||
+          (key && normalize(column.displayName) === key);
+      });
+    }
+    if(!matches.length) throw new Error('ไม่พบคอลัมน์ SharePoint: ' + name);
+    // Linked title columns are display-only aliases, not item fields to write.
+    var writable = matches.filter(function(column){
+      return !column.readOnly &&
+        ['linktitle','linktitlenomenu'].indexOf(normalize(column.name)) < 0;
+    });
+    if(!writable.length) throw new Error('คอลัมน์ SharePoint เป็นแบบอ่านอย่างเดียว: ' + name);
+    if(writable.length !== 1) throw new Error('ชื่อคอลัมน์ SharePoint ซ้ำ กรุณาระบุชื่อ internal: ' + name);
+    return writable[0].name;
   }
   function value(name){ return form.elements[name].value.trim(); }
   function setField(fields, columns, displayName, formName, required){
@@ -196,13 +216,11 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
       if(required) throw new Error('กรุณาระบุ ' + displayName);
       return;
     }
-    var internalName = columns[normalize(displayName)];
-    if(!internalName) throw new Error('ไม่พบคอลัมน์ SharePoint: ' + displayName);
+    var internalName = writableColumn(columns, displayName);
     fields[internalName] = fieldValue;
   }
   function setConstant(fields, columns, displayName, fieldValue){
-    var internalName = columns[normalize(displayName)];
-    if(!internalName) throw new Error('ไม่พบคอลัมน์ SharePoint: ' + displayName);
+    var internalName = writableColumn(columns, displayName);
     fields[internalName] = fieldValue;
   }
   function updateTotal(){
