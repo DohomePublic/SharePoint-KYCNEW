@@ -67,6 +67,19 @@ SharePoint List **DemoApp** และอัปเดตอัตโนมัต�
 หลังตั้งค่า ให้เปิดหน้า `request-increase.html` จาก Dashboard เมนู
 **➕ สร้างคำขอเพิ่มวงเงิน** แล้วกดลงชื่อเข้าใช้ก่อนบันทึก
 
+หน้าเว็บใช้ MSAL Browser 3 และรอ `initialize()` กับ `handleRedirectPromise()`
+ให้เสร็จก่อนเปิดปุ่ม Login ปุ่มบันทึกจะเปิดหลังลงชื่อเข้าใช้สำเร็จเท่านั้น
+หากพบ `uninitialized_public_client_application` ให้อัปโหลดไฟล์
+`request-increase.html` ฉบับล่าสุดทั้งไฟล์ (ไม่ใช่แก้เฉพาะ URL ของ MSAL)
+รอ GitHub Pages deploy สำเร็จ แล้วกด Ctrl+F5
+
+หากพบ `AADSTS500111` และ Redirect URI ขึ้นต้นด้วย `file:///` แสดงว่าเปิดไฟล์
+ในเครื่องโดยตรง ให้เปิดผ่าน
+[หน้าเพิ่มวงเงินบน GitHub Pages](https://dohomepublic.github.io/SharePoint-KYCNEW/request-increase.html)
+แทน หน้าเว็บจะปิด Login และบันทึกเมื่อใช้ protocol ที่ไม่รองรับ ห้ามลงทะเบียน
+`file:///` เป็น SPA Redirect URI สำหรับทดสอบในเครื่องให้ใช้ HTTP บน localhost
+และลงทะเบียน Redirect URI ของ localhost ให้ตรงด้วย
+
 หน้าแบบฟอร์มจะค้นหา Site และ List ตามค่า:
 
 | ค่า | ค่าเริ่มต้น |
