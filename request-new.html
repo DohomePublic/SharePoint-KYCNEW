@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คำขอเปิดวงเงินลูกค้าใหม่ | DOHOME</title>
+<link rel="stylesheet" href="request-new.css">
+<script defer src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.28.1/lib/msal-browser.min.js"></script>
+<script defer src="sharepoint-client.js"></script>
+<script defer src="request-new.js"></script>
+</head>
+<body>
+<main>
+  <header class="panel auth">
+    <div><h1>คำขอเปิดวงเงินลูกค้าใหม่</h1><p>บริษัท ดูโฮม จำกัด (มหาชน)</p></div>
+    <div class="actions"><a href="index.html">กลับ Dashboard</a><button id="signIn" type="button" disabled>ลงชื่อเข้าใช้ Microsoft 365</button><button id="signOut" type="button" hidden>ออกจากระบบ</button></div>
+    <p id="authState" role="status">กำลังเตรียม Microsoft 365 Login...</p>
+  </header>
+  <noscript><p class="panel error">ต้องเปิด JavaScript เพื่อกรอกและบันทึกคำขอ ระบบจะไม่ส่งข้อมูลด้วยฟอร์มปกติ</p></noscript>
+  <form id="newCreditForm" novalidate onsubmit="return false">
+    <fieldset id="formFields">
+      <section class="panel categories" aria-labelledby="categoryHeading">
+        <h2 id="categoryHeading">เลือกประเภทลูกค้า <span class="required">*</span></h2>
+        <p>เลือกหมวดธุรกิจให้ตรงกับข้อมูลลูกค้า</p>
+        <div class="category-grid">
+          <label><input type="radio" name="category" value="รับเหมาก่อสร้าง" data-column="business_type" required><span>รับเหมาก่อสร้าง</span></label>
+          <label><input type="radio" name="category" value="อสังหาริมทรัพย์" data-column="business_type"><span>อสังหาริมทรัพย์</span></label>
+          <label><input type="radio" name="category" value="ร้านค้าช่วง" data-column="business_type"><span>ร้านค้าช่วง</span></label>
+          <label><input type="radio" name="category" value="หน่วยงานราชการ" data-column="business_type"><span>หน่วยงานราชการ</span></label>
+          <label><input type="radio" name="category" value="อื่นๆ" data-column="business_type"><span>อื่นๆ</span></label>
+        </div>
+      </section>
+      <nav class="steps" aria-label="ขั้นตอนกรอกคำขอ">
+        <ol>
+          <li><button type="button" data-step="0" aria-current="step"><span>1</span>ข้อมูลลูกค้าและธุรกิจ</button></li>
+          <li><button type="button" data-step="1"><span>2</span>ข้อมูลสาขา</button></li>
+          <li><button type="button" data-step="2"><span>3</span>ข้อมูลวงเงิน</button></li>
+          <li><button type="button" data-step="3"><span>4</span>ข้อมูลเพิ่มเติม</button></li>
+          <li><button type="button" data-step="4"><span>5</span>ตรวจสอบ</button></li>
+        </ol>
+        <p id="stepStatus" aria-live="polite">หน้า 1 จาก 5 — กรอกข้อมูลให้ครบก่อนดำเนินการต่อ</p>
+      </nav>
+
+      <section class="panel step-panel" data-page="0" aria-labelledby="heading1">
+        <h2 id="heading1" tabindex="-1">ข้อมูลนิติบุคคล</h2>
+        <p>กรอกข้อมูลทะเบียนและข้อมูลหลักของลูกค้า</p>
+        <div class="grid">
+          <div class="field"><label for="customerType">ประเภทลูกค้า <span class="required">*</span></label><select id="customerType" data-column="Type1" required><option value="">เลือกประเภทลูกค้า</option><option value="Existing">ลูกค้าเดิม (Existing)</option><option value="Lead">ลูกค้าใหม่ (Lead)</option></select></div>
+          <div class="field"><label for="registeredName">ชื่อนิติบุคคล <span class="required">*</span></label><input id="registeredName" data-column="Registered_Name" required maxlength="255"><small>กรอกชื่อจดทะเบียนจริง</small></div>
+          <div class="field"><label for="legalType">ประเภทชื่อนิติบุคคล <span class="required">*</span></label><select id="legalType" data-column="Title" required><option value="">เลือกประเภทนิติบุคคล</option><option>บริษัท จำกัด</option><option>บริษัท จำกัด (มหาชน)</option><option>ห้างหุ้นส่วนจำกัด</option><option>บุคคลธรรมดา</option><option>หน่วยงานราชการ</option><option>อื่นๆ</option></select></div>
+          <div class="field"><label for="registrationNumber">เลขทะเบียนนิติบุคคล <span class="required">*</span></label><input id="registrationNumber" data-column="registration_number" inputmode="numeric" pattern="[0-9]{13}" maxlength="13" required><small>ใช้เลข 13 หลักตามทะเบียนนิติบุคคล</small></div>
+          <div class="field"><label for="englishName">ชื่อนิติบุคคล ENG</label><input id="englishName" data-column="Registered_Name_Eng" maxlength="255"></div>
+          <div class="field"><label for="customerId">รหัสสมาชิก <span class="required">*</span></label><input id="customerId" data-column="Customer_id" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" required><small>ตัวเลข 9 หลัก เก็บเลขศูนย์นำหน้าไว้</small></div>
+          <div class="field"><label for="registeredDate">วันที่จดทะเบียนจัดตั้ง</label><input id="registeredDate" type="date" data-column="Data"></div>
+          <div class="field"><label for="telephone">เบอร์โทรศัพท์ / Fax <span class="required">*</span></label><input id="telephone" type="tel" data-column="telephone" pattern="[0-9]{9,10}" maxlength="10" required><small>ตัวเลข 9–10 หลัก ไม่ใส่ขีด</small></div>
+          <div class="field"><label for="email">Email <span class="required">*</span></label><input id="email" type="email" data-column="Email" required maxlength="255" placeholder="name@example.com"><small>อีเมลผู้ติดต่อ ไม่ใช่คอลัมน์สถานะ NotificationSent</small></div>
+        </div>
+        <section class="subsection">
+          <h2>ผู้ติดต่อ</h2><p>ข้อมูลประสานงานสำหรับคำขอ</p>
+          <div class="grid">
+            <div class="field"><label for="contactName">ชื่อผู้ติดต่อ (ชื่อเจ้าของกิจการ/ผู้ติดต่อ) <span class="required">*</span></label><input id="contactName" data-column="contact_name" required></div>
+            <div class="field"><label for="position">ตำแหน่ง <span class="required">*</span></label><input id="position" data-column="position" required></div>
+            <div class="field"><label for="contactPhone">เบอร์โทรศัพท์ผู้ติดต่อ <span class="required">*</span></label><input id="contactPhone" type="tel" data-column="contact_number" pattern="[0-9]{9,10}" maxlength="10" required><small>ตัวเลข 9–10 หลัก ไม่ใส่ขีด</small></div>
+          </div>
+        </section>
+        <section class="subsection">
+          <h2>หน้ากรอกข้อมูลประเภทธุรกิจ</h2><p>กรอกข้อมูลตามเอกสารจริง ยังไม่เชื่อมการค้นหาจาก DBD อัตโนมัติ</p>
+          <div class="grid">
+            <div class="field"><label for="businessCode">เลขที่โครงการ</label><input id="businessCode" data-column="project_name"><small>ไม่บังคับกรอก</small></div>
+            <div class="field"><label for="tsic">เลข TSIC</label><input id="tsic" data-column="TSIC" inputmode="numeric"></div>
+            <div class="field"><label for="businessDescription">ชื่อประเภทธุรกิจที่ต้องการเป็นข้อมูล</label><input id="businessDescription" data-column="TISC_TYPE"></div>
+            <div class="field"><label for="dbdPurpose">วัตถุประสงค์จาก DBD</label><textarea id="dbdPurpose" data-column="TSIC_DBD" rows="3"></textarea></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="panel step-panel" data-page="1" aria-labelledby="heading2" hidden>
+        <h2 id="heading2" tabindex="-1">ที่ตั้งสำนักงานที่ติดต่อได้</h2>
+        <p class="notice" id="addressStatus" role="status">กำลังโหลดรายชื่อจังหวัด/อำเภอ/ตำบล...</p>
+        <button id="retryAddress" type="button" hidden>ลองโหลดข้อมูลที่อยู่อีกครั้ง</button>
+        <div class="grid">
+          <div class="field full"><label for="address">ที่ตั้ง <span class="required">*</span></label><textarea id="address" data-column="Address" rows="3" required placeholder="บ้านเลขที่ หมู่ อาคาร ถนน หรือรายละเอียดที่ตั้ง"></textarea></div>
+          <div class="field"><label for="province">จังหวัด <span class="required">*</span></label><select id="province" data-column="province" data-address required disabled><option value="">เลือกจังหวัด</option></select></div>
+          <div class="field"><label for="district">เขต/อำเภอ <span class="required">*</span></label><select id="district" data-column="district" data-address required disabled><option value="">เลือกจังหวัดก่อน</option></select></div>
+          <div class="field"><label for="county">แขวง/ตำบล <span class="required">*</span></label><select id="county" data-column="county" data-address required disabled><option value="">เลือกเขต/อำเภอก่อน</option></select></div>
+          <div class="field"><label for="postcode">รหัสไปรษณีย์ <span class="required">*</span></label><input id="postcode" data-column="Postcode" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required><small>เติมอัตโนมัติเมื่อเลือกแขวง/ตำบล กรุณาตรวจสอบและแก้ไขได้หากพื้นที่ใช้รหัสอื่น</small></div>
+        </div>
+      </section>
+
+      <section class="panel step-panel" data-page="2" aria-labelledby="heading3" hidden>
+        <h2 id="heading3" tabindex="-1">ข้อมูลวงเงินและหลักประกัน</h2><p>ระบุวงเงิน เครดิตเทอม และทรัพย์สินที่ใช้ประกอบการพิจารณา</p>
+        <section class="subsection">
+          <h2>วงเงินที่ขอสินเชื่อครั้งนี้</h2>
+          <div class="grid">
+            <div class="field"><label for="requestedLimit">วงเงิน <span class="required">*</span></label><input id="requestedLimit" type="number" min="0.01" step="0.01" data-column="limit" required placeholder="0.00"><small>บาท</small></div>
+            <div class="field"><label for="creditTerm">เครดิตเทอม (วัน)</label><input id="creditTerm" type="number" min="0" step="1" value="30" data-column="credit_semester1"></div>
+            <div class="field"><label for="marginType">ประเภทหลักประกัน</label><select id="marginType" data-column="Margin_type1"><option value="">เลือกประเภทหลักประกัน</option></select><small>ตัวเลือกโหลดจากคอลัมน์ SharePoint หลัง Login</small></div>
+            <div class="field"><label for="collateralValue">มูลค่าหลักประกัน</label><input id="collateralValue" type="number" min="0" step="0.01" data-column="value" placeholder="0.00"><small>บาท</small></div>
+          </div>
+        </section>
+        <section class="subsection">
+          <h2>วงเงินที่มีกับซัพพลายเออร์อื่น</h2>
+          <div class="grid">
+            <div class="field"><label for="otherLimit">วงเงิน</label><input id="otherLimit" type="number" min="0" step="0.01" data-column="limit_other" placeholder="0.00"><small>บาท</small></div>
+            <div class="field"><label for="otherTerm">เครดิตเทอม</label><input id="otherTerm" type="number" min="0" step="1" data-column="credit_semester2" value="30"><small>วัน</small></div>
+          </div>
+        </section>
+        <section class="subsection">
+          <h2>ทรัพย์สินของนิติบุคคลที่สามารถนำมาเป็นหลักทรัพย์ค้ำประกันได้</h2>
+          <div class="grid">
+            <div class="field"><label for="land">หลักประกัน</label><input id="land" data-column="land" placeholder="ระบุที่ดินหรือหลักประกัน"></div>
+            <div class="field"><label for="landStatus">สถานะหลักประกัน</label><select id="landStatus" data-column="Status_1"><option value="">เลือกสถานะหลักประกัน</option></select></div>
+            <div class="field"><label for="property">ทรัพย์สิน</label><textarea id="property" data-column="other_property" rows="3" placeholder="ระบุทรัพย์สินของนิติบุคคล"></textarea></div>
+            <div class="field"><label for="propertyStatus">สถานะทรัพย์สิน</label><select id="propertyStatus" data-column="Status_2"><option value="">เลือกสถานะทรัพย์สิน</option></select></div>
+          </div>
+        </section>
+        <section class="subsection">
+          <h2>เอกสารแนบ</h2><p>เตรียมเอกสารประกอบตามข้อกำหนดของบริษัท</p>
+          <ol class="notice"><li>เอกสารนิติบุคคลและเอกสารภาษีที่เกี่ยวข้อง</li><li>เอกสารผู้มีอำนาจลงนามและเอกสารทางการเงิน</li><li>แผนที่ตั้ง ภาพถ่าย และรายละเอียดโครงการ</li></ol>
+          <p>หน้านี้ยังไม่อัปโหลดไฟล์แนบ หลังบันทึกให้แนบเอกสารในรายการ SharePoint โดยตรง</p>
+        </section>
+      </section>
+
+      <section class="panel step-panel" data-page="3" aria-labelledby="heading4" hidden>
+        <h2 id="heading4" tabindex="-1">ข้อมูลเพิ่มเติม</h2><p>กรอกข้อมูลโครงการและประวัติกิจการตามข้อมูลจริง</p>
+        <section class="subsection">
+          <h2>ข้อมูลโครงการในอดีต (ผู้รับเหมา)</h2>
+          <div class="grid">
+            <div class="field"><label for="pastProject">ชื่อโครงการ</label><input id="pastProject" data-column="past_project"></div>
+            <div class="field"><label for="pastValue">มูลค่างาน</label><input id="pastValue" type="number" min="0" step="0.01" data-column="work_value1"><small>บาท</small></div>
+            <div class="field"><label for="employer">ผู้ว่าจ้าง</label><input id="employer" data-column="employer"></div>
+            <div class="field"><label for="deliveryDate">วันที่แล้วเสร็จ</label><input id="deliveryDate" type="date" data-column="delivery_deadline"></div>
+            <div class="field"><label for="transfer">การโอนสิทธิ์รับเงิน</label><select id="transfer" data-column="transfer_of_ownership"><option value="">กรุณาเลือก</option><option>มี</option><option>ไม่มี</option></select></div>
+          </div>
+        </section>
+        <section class="subsection">
+          <h2>ข้อมูลโครงการปัจจุบัน (ผู้รับเหมา)</h2>
+          <div class="grid">
+            <div class="field"><label for="currentValue">มูลค่างาน</label><input id="currentValue" type="number" min="0" step="0.01" data-column="work_value2"><small>บาท</small></div>
+            <div class="field"><label for="currentLocation">ที่ตั้งโครงการ</label><input id="currentLocation" data-column="project_location1"></div>
+            <div class="field"><label for="currentStatus">สถานะ</label><select id="currentStatus" data-column="status2_2"><option value="">กรุณาเลือก</option></select></div>
+            <div class="field"><label for="currentStart">วันเริ่มก่อสร้าง</label><input id="currentStart" type="date" data-column="start_of_construction1"></div>
+          </div>
+        </section>
+        <section class="subsection">
+          <h2>ข้อมูลโครงการในอนาคต (ผู้รับเหมา)</h2><p>ไม่บังคับกรอก</p>
+          <div class="grid">
+            <div class="field"><label for="futureProject">ชื่อโครงการ</label><input id="futureProject" data-column="future_project"></div>
+            <div class="field"><label for="futureValue">มูลค่างาน</label><input id="futureValue" type="number" min="0" step="0.01" data-column="work_value3"><small>บาท</small></div>
+            <div class="field"><label for="futureStatus">สถานะ</label><select id="futureStatus" data-column="status3_3"><option value="">กรุณาเลือก</option></select></div>
+            <div class="field"><label for="futureLocation">ที่ตั้งโครงการ</label><input id="futureLocation" data-column="project_location2"></div>
+            <div class="field"><label for="futureStart">กำหนดก่อสร้าง</label><input id="futureStart" type="date" data-column="start_of_construction2"></div>
+          </div>
+        </section>
+        <section class="subsection">
+          <h2>ประวัติผู้ขอสินเชื่อ (กิจการ)</h2><p>กรอกประวัติกิจการ ลักษณะธุรกิจ คู่ค้า และข้อมูลประกอบการพิจารณา</p>
+          <div class="field"><label for="businessHistory">ประวัติกิจการ <span class="required">*</span></label><textarea id="businessHistory" data-column="Executive_history" rows="8" required></textarea></div>
+        </section>
+      </section>
+
+      <section class="panel step-panel" data-page="4" aria-labelledby="heading5" hidden>
+        <h2 id="heading5" tabindex="-1">ข้อมูลผู้ทำรายการและเส้นทางอนุมัติ</h2>
+        <p class="notice">กรอกรายชื่อและ Channel/สาขาเองตามที่ตกลงไว้ ยังไม่เชื่อม Master และไม่ส่งผลอนุมัติหรือกำหนดสถานะอนุมัติอัตโนมัติ</p>
+        <div class="grid">
+          <div class="field"><label for="owner">ผู้ทำรายการ <span class="required">*</span></label><input id="owner" data-column="Owner" readonly required><small>จากบัญชี Microsoft 365 ที่ลงชื่อเข้าใช้</small></div>
+          <div class="field"><label for="ownerPhone">เบอร์โทร</label><input id="ownerPhone" type="tel" data-column="owner_phone" pattern="[0-9]{9,10}" maxlength="10"></div>
+          <div class="field"><label for="employeeCode">รหัสพนักงาน</label><input id="employeeCode" data-column="employee_code"></div>
+          <div class="field"><label for="channel">Channel <span class="required">*</span></label><select id="channel" data-column="type_teams" required><option value="">เลือก Channel</option><option>Store Operation</option><option>Wholesales (WS)</option><option>Project Sales (PS)</option><option>Retail</option><option>Steel Key Account</option></select></div>
+          <div class="field"><label for="branch">สาขา <span class="required">*</span></label><input id="branch" data-column="branch" required placeholder="กรอกรหัสสาขาจริง"></div>
+        </div>
+        <div class="notice">กลุ่มผู้รับงาน: ใช้รายชื่อที่คุณกรอกด้านล่าง โดยต้องตรวจสอบสิทธิ์และขั้นตอนอนุมัติในระบบเดิม</div>
+        <div class="grid">
+          <div class="field"><label for="salesRep">ผู้แทนขาย / ผู้จัดการ D2</label><input id="salesRep" data-column="sale_representative" placeholder="ชื่อหรืออีเมลตามที่ลิสต์กำหนด"></div>
+          <div class="field"><label for="salesPhone">เบอร์โทร</label><input id="salesPhone" type="tel" data-column="phone_number1" pattern="[0-9]{9,10}" maxlength="10"></div>
+          <div class="field"><label for="backOffice">ฝ่ายขาย / BackOffice</label><input id="backOffice" data-column="sale_branch1"></div>
+          <div class="field"><label for="backOfficePhone">เบอร์โทร</label><input id="backOfficePhone" type="tel" data-column="phone_number2" pattern="[0-9]{9,10}" maxlength="10"></div>
+          <div class="field"><label for="manager">ผู้จัดการสาขา / D3 / ผู้สนับสนุนงานขาย POS</label><input id="manager" data-column="D31"></div>
+          <div class="field"><label for="managerPhone">เบอร์โทร</label><input id="managerPhone" type="tel" data-column="phone_number3" pattern="[0-9]{9,10}" maxlength="10"></div>
+        </div>
+        <details class="subsection"><summary>ตรวจทานข้อมูลก่อนบันทึก</summary><dl id="review"></dl></details>
+        <label class="confirmation"><input type="checkbox" id="confirmed" required> ตรวจสอบข้อมูลแล้ว และต้องการสร้างคำขอเปิดวงเงินลูกค้าใหม่</label>
+      </section>
+    </fieldset>
+    <div id="schemaNotice" class="panel notice" hidden></div>
+    <div id="message" class="panel" role="status" hidden></div>
+    <footer class="panel footer">
+      <button type="button" id="previous">← กลับ Dashboard</button>
+      <span id="saving" aria-live="polite"></span>
+      <button type="button" id="next" class="primary">ถัดไป →</button>
+      <button type="submit" id="save" class="primary" hidden disabled>บันทึก</button>
+    </footer>
+  </form>
+  <p class="version">แบบฟอร์มเปิดวงเงินใหม่ • 5 ขั้นตอน • กรอก Master/ผู้อนุมัติด้วยตนเอง</p>
+</main>
+</body>
+</html>

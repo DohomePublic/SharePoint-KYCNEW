@@ -1,0 +1,45 @@
+:root{--accent:#ff5b21;--ink:#3c2113;--line:#e8b694;--soft:#fbeddf;--paper:#fff;--error:#a22312}
+*{box-sizing:border-box}
+body{margin:0;background:#fff8f2;color:var(--ink);font:14px/1.55 "Segoe UI",Tahoma,sans-serif}
+main{max-width:1140px;margin:20px auto;padding:0 14px}
+h1{font-size:22px;margin:0}h2{font-size:16px;margin:0 0 3px}p{margin:0 0 12px;font-size:13px}
+a{color:#9e3611}fieldset{border:0;padding:0;margin:0;min-width:0}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:12px}
+.auth{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.auth p{margin:0}.auth #authState{width:100%}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;background:#fff8f2;border:1px solid var(--line);border-radius:7px;padding:9px 16px}
+button:hover{background:#fde1ce}button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--accent);color:#241106;border-color:var(--accent);font-weight:600}
+.primary:hover{background:#ec4b13}
+input:not([type=radio]):not([type=checkbox]),select,textarea{width:100%;border:1px solid var(--line);border-radius:7px;background:#fff;padding:9px 12px;min-height:40px}
+textarea{resize:vertical}input[readonly]{background:#fff8f2!important}
+:focus-visible{outline:3px solid #9d3b11;outline-offset:3px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}.full{grid-column:1/-1}
+label{font-weight:600;font-size:13px}small{font-size:12px;color:#80553b}.required{color:#b83411}
+.subsection{border-top:1px solid var(--line);margin-top:28px;padding-top:24px}
+.subsection h2{margin-bottom:12px}
+.category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.category-grid label{position:relative}
+.category-grid input{position:absolute;opacity:0;width:1px;height:1px}
+.category-grid span{display:block;padding:10px;text-align:center;background:#fff8f2;border:1px solid var(--line);border-radius:7px;cursor:pointer}
+.category-grid input:checked+span{background:var(--accent);border-color:var(--accent);color:#241106}
+.category-grid input:focus-visible+span{outline:3px solid #9d3b11;outline-offset:2px}
+.steps{background:var(--soft);border-radius:14px;padding:12px 16px;margin-bottom:12px}
+.steps ol{list-style:none;margin:0 0 8px;padding:0;display:flex;justify-content:space-between;gap:8px}
+.steps button{border:0;background:none;padding:4px;font-size:12px;text-align:left;display:flex;align-items:center;gap:8px}
+.steps button span{display:inline-flex;align-items:center;justify-content:center;flex:none;width:30px;height:30px;border-radius:50%;background:white;border:1px solid var(--line)}
+.steps button[aria-current=step] span,.steps button.complete span{background:var(--accent);color:#241106}
+.steps p{margin:0;font-size:12px}
+.notice{background:var(--soft);border-radius:9px;padding:15px;margin:16px 0}
+.notice li{margin:8px 0}.notice ol{padding-left:22px}
+.error{color:var(--error)}.success{color:#146a21}
+.footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px}
+.confirmation{display:flex;align-items:flex-start;gap:10px;margin-top:22px}.confirmation input{margin-top:5px}
+#review{display:grid;grid-template-columns:1fr 2fr;gap:10px;overflow-wrap:anywhere}
+#review dt,#review dd{margin:0;padding-bottom:6px;border-bottom:1px solid #f2dfd0;white-space:pre-wrap}
+summary{cursor:pointer;font-weight:600}.version{font-size:12px;color:#80553b}
+[hidden]{display:none!important}
+@media(max-width:650px){main{margin:8px auto;padding:0 8px}.panel{padding:18px 14px}.auth h1{font-size:19px}.grid{grid-template-columns:1fr;gap:18px}.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.steps ol{flex-wrap:wrap;justify-content:flex-start}.steps li{flex:1 0 30%}.steps button{font-size:11px}.steps button span{width:26px;height:26px}#review{grid-template-columns:1fr}#review dt{border:0;padding:0}#review dd{margin-bottom:8px}}

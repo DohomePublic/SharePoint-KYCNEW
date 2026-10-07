@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>คำขอเพิ่มวงเงิน | DOHOME</title>
 <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.28.1/lib/msal-browser.min.js"></script>
+<script src="sharepoint-client.js"></script>
 <style>
 :root{--brand:#0f6cbd;--brand-dark:#0b4f8a;--bg:#f5f5f5;--card:#fff;--line:#d1d1d1;--text:#242424;--muted:#616161;--danger:#c50f1f;--ok:#107c10}
 *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI","Sarabun",Tahoma,sans-serif}
@@ -92,14 +93,6 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
 (function(){
   'use strict';
 
-  var CONFIG = {
-    clientId: 'a37bd62d-e74d-4ea0-9546-1eb5aa96f604',
-    tenantId: '7f8918d9-718a-495b-ac9a-17cba381c4a0',
-    hostname: 'dohomegroup.sharepoint.com',
-    sitePath: '/sites/AC-Accounting',
-    listName: 'DemoApp'
-  };
-  var graphScopes = ['Sites.ReadWrite.All'];
   // Never fall back to a native form POST if authentication cannot start.
   document.getElementById('increaseForm').addEventListener('submit', function(event){
     event.preventDefault();
@@ -118,14 +111,14 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
     document.getElementById('submitRequest').disabled = true;
     return;
   }
-  if(typeof window.msal === 'undefined'){
+  if(typeof window.msal === 'undefined' || !window.SharePointRequests){
     document.getElementById('authState').textContent =
       'ไม่สามารถโหลด Microsoft 365 Login ได้ โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองใหม่';
     document.getElementById('authState').className = 'error';
     document.getElementById('signIn').disabled = true;
     return;
   }
-  var msalApp;
+  var client = SharePointRequests.create();
   var ready = false;
   var busy = false;
   var account = null;
@@ -139,11 +132,7 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
     message.textContent = text;
     message.className = kind || '';
   }
-  function normalize(value){
-    return String(value || '').replace(/_x([0-9a-fA-F]{4})_/g, function(_, hex){
-      return String.fromCharCode(parseInt(hex, 16));
-    }).toLowerCase().replace(/[^a-z0-9]/g, '');
-  }
+  var normalize = SharePointRequests.normalize;
   function setAuthState(){
     var signedIn = Boolean(account);
     document.getElementById('signIn').disabled = !ready || busy;
@@ -153,62 +142,12 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
     document.getElementById('signOut').classList.toggle('hidden', !signedIn);
     authState.textContent = signedIn ? 'ลงชื่อเข้าใช้แล้ว: ' + account.username : 'ยังไม่ได้ลงชื่อเข้าใช้';
   }
-  async function getToken(){
-    if(!account) throw new Error('กรุณาลงชื่อเข้าใช้ Microsoft 365 ก่อนบันทึก');
-    try {
-      return (await msalApp.acquireTokenSilent({account:account,scopes:graphScopes})).accessToken;
-    } catch(error) {
-      if(!(error instanceof msal.InteractionRequiredAuthError)) throw error;
-      return (await msalApp.acquireTokenPopup({account:account,scopes:graphScopes})).accessToken;
-    }
-  }
-  async function graph(path, options){
-    var token = await getToken();
-    var headers = new Headers(options && options.headers);
-    headers.set('Authorization', 'Bearer ' + token);
-    headers.set('Accept', 'application/json');
-    var response = await fetch('https://graph.microsoft.com/v1.0' + path,
-      Object.assign({}, options || {}, {headers:headers}));
-    if(!response.ok){
-      var detail = await response.text();
-      throw new Error('Microsoft Graph ตอบกลับ ' + response.status + ': ' + detail);
-    }
-    return response.status === 204 ? null : response.json();
-  }
   async function getGraphContext(){
-    if(graphContext) return graphContext;
-    var site = await graph('/sites/' + CONFIG.hostname + ':' + CONFIG.sitePath);
-    var lists = await graph('/sites/' + site.id + '/lists?$select=id,displayName,name&$top=200');
-    var wanted = normalize(CONFIG.listName);
-    var list = lists.value.find(function(item){
-      return normalize(item.displayName) === wanted || normalize(item.name) === wanted;
-    });
-    if(!list) throw new Error('ไม่พบ SharePoint List "' + CONFIG.listName + '"');
-    var columns = await graph('/sites/' + site.id + '/lists/' + list.id + '/columns?$select=name,displayName,readOnly&$top=500');
-    graphContext = {siteId:site.id,listId:list.id,columns:columns.value};
+    graphContext = await client.context();
     return graphContext;
   }
   function writableColumn(columns, name){
-    var key = normalize(name);
-    var matches = columns.filter(function(column){ return column.name === name; });
-    if(!matches.length && key){
-      matches = columns.filter(function(column){ return normalize(column.name) === key; });
-    }
-    if(!matches.length){
-      matches = columns.filter(function(column){
-        return column.displayName === name ||
-          (key && normalize(column.displayName) === key);
-      });
-    }
-    if(!matches.length) throw new Error('ไม่พบคอลัมน์ SharePoint: ' + name);
-    // Linked title columns are display-only aliases, not item fields to write.
-    var writable = matches.filter(function(column){
-      return !column.readOnly &&
-        ['linktitle','linktitlenomenu'].indexOf(normalize(column.name)) < 0;
-    });
-    if(!writable.length) throw new Error('คอลัมน์ SharePoint เป็นแบบอ่านอย่างเดียว: ' + name);
-    if(writable.length !== 1) throw new Error('ชื่อคอลัมน์ SharePoint ซ้ำ กรุณาระบุชื่อ internal: ' + name);
-    return writable[0].name;
+    return SharePointRequests.columnFor(columns, name).name;
   }
   function value(name){ return form.elements[name].value.trim(); }
   function setField(fields, columns, displayName, formName, required){
@@ -236,8 +175,7 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
     busy = true;
     setAuthState();
     try {
-      var login = await msalApp.loginPopup({scopes:graphScopes});
-      account = login.account;
+      account = await client.login();
     } catch(error) { setMessage(error.message, 'error'); }
     finally {
       busy = false;
@@ -249,7 +187,7 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
     busy = true;
     setAuthState();
     try {
-      await msalApp.logoutPopup({account:account});
+      await client.logout();
       account = null;
       graphContext = null;
     } catch(error) { setMessage(error.message, 'error'); }
@@ -311,11 +249,7 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
           delete fields[name];
         }
       });
-      var created = await graph('/sites/' + context.siteId + '/lists/' + context.listId + '/items', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({fields:fields})
-      });
+      var created = await client.createItem(fields);
       setMessage('บันทึกคำขอสำเร็จ (SharePoint Item ID: ' + created.id + ')', 'success');
       form.reset();
     } catch(error) {
@@ -328,17 +262,7 @@ label{font-size:13px;font-weight:600}label .required{color:var(--danger)}input,t
 
   async function initializeAuth(){
     try {
-      msalApp = new msal.PublicClientApplication({
-        auth: {
-          clientId: CONFIG.clientId,
-          authority: 'https://login.microsoftonline.com/' + CONFIG.tenantId,
-          redirectUri: window.location.origin + window.location.pathname
-        },
-        cache: {cacheLocation:'sessionStorage'}
-      });
-      await msalApp.initialize();
-      var result = await msalApp.handleRedirectPromise();
-      account = (result && result.account) || msalApp.getAllAccounts()[0] || null;
+      account = await client.initialize();
       ready = true;
       setAuthState();
     } catch(error) {
