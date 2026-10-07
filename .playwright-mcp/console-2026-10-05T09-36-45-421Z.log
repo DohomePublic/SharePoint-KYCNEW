@@ -1,0 +1,7 @@
+[   22424ms] ReferenceError: msal is not defined
+    at https://dohomepublic.github.io/SharePoint-KYCNEW/request-increase.html:102:17
+    at https://dohomepublic.github.io/SharePoint-KYCNEW/request-increase.html:259:3
+[   22661ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://dohomepublic.github.io/favicon.ico:0
+[ 2643337ms] [WARNING] Excluded read-only SharePoint field: LinkTitleNoMenu @ :9
+[ 2643338ms] [WARNING] Excluded read-only SharePoint field: LinkTitle @ :9
+[ 2643338ms] [WARNING] Excluded read-only SharePoint field: LINKTITLENOMENU @ :9
