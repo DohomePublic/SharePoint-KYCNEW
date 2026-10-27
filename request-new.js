@@ -13,7 +13,7 @@
   var step = 0, ready = false, busy = false, saved = false, dirty = false;
   var account = null, client = null, columns = null;
   var missingBindings = [];
-  var requestType = 'คำขอเปิดวงเงินลูกค้าใหม่';
+  var requestType = document.body.dataset.requestType || 'คำขอเปิดวงเงินลูกค้าใหม่';
   var province = document.getElementById('province');
   var district = document.getElementById('district');
   var county = document.getElementById('county');

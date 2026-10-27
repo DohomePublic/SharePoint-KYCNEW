@@ -166,19 +166,30 @@
       contextCache = {siteId:site.id, listId:list.id, columns:columns};
       return contextCache;
     }
-    async function createItem(fields){
-      var ctx = await context();
+    function validateFields(ctx, fields){
       Object.keys(fields).forEach(function(name){
         if(name.endsWith('@odata.type')) return;
         var c = ctx.columns.find(function(column){ return column.name === name; });
         if(!c || columnFor([c], name).name !== name) throw new Error('คอลัมน์ไม่พร้อมบันทึก: ' + name);
       });
+    }
+    async function createItem(fields){
+      var ctx = await context();
+      validateFields(ctx, fields);
       // Do not retry POST: a lost response may still have created the item.
       return graph('sites/' + ctx.siteId + '/lists/' + ctx.listId + '/items', {
         method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({fields:fields})
       });
     }
-    return {initialize:initialize, login:login, logout:logout, context:context, createItem:createItem};
+    async function updateItem(id, fields){
+      if(!/^[1-9]\d*$/.test(String(id))) throw new Error('ID รายการ SharePoint ไม่ถูกต้อง');
+      var ctx = await context();
+      validateFields(ctx, fields);
+      return graph('sites/' + ctx.siteId + '/lists/' + ctx.listId + '/items/' + encodeURIComponent(id) + '/fields', {
+        method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify(fields)
+      });
+    }
+    return {initialize:initialize, login:login, logout:logout, context:context, createItem:createItem, updateItem:updateItem};
   }
   window.SharePointRequests = {create:create, normalize:normalize, columnFor:columnFor, buildFields:buildFields};
 })();
