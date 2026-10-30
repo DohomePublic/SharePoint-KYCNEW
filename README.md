@@ -100,6 +100,11 @@ Microsoft Graph `Sites.ReadWrite.All` (ใช้การตั้งค่า�
 
 ## ➕ การสร้างคำขอเพิ่มวงเงินจากหน้าเว็บ
 
+เมนู **เพิ่มรายการใหม่** เปิด [request-create.html](./request-create.html)
+ให้เลือก **เปิดวงเงินลูกค้าใหม่** หรือ **เพิ่มวงเงิน** ก่อนเข้าสู่ฟอร์มเดิม
+หน้าเลือกประเภทไม่ต้องลงชื่อเข้าใช้ โดยลงชื่อเข้าใช้ Microsoft 365 และบันทึกในหน้าฟอร์ม
+ต้องเผยแพร่หน้านี้พร้อม [request-new.css](./request-new.css) และฟอร์มทั้งสองหน้า
+
 หน้า [request-increase.html](./request-increase.html) ให้ผู้ใช้ลงชื่อเข้าใช้ Microsoft 365
 และบันทึกคำขอเพิ่มวงเงินเป็นรายการใหม่ใน SharePoint List **DemoApp** โดยตรง
 หน้าตา ช่องกรอก และเมนูทั้ง 5 ขั้นตอนคัดลอกจาก [request-new.html](./request-new.html)
@@ -121,6 +126,14 @@ Microsoft Graph `Sites.ReadWrite.All` (ใช้การตั้งค่า�
 
 หลังตั้งค่า ให้เปิดหน้า `request-increase.html` จาก Dashboard เมนู
 **➕ สร้างคำขอเพิ่มวงเงิน** แล้วกดลงชื่อเข้าใช้ก่อนบันทึก
+
+หน้า [request-new.html](./request-new.html) ใช้ Microsoft 365 Login และการบันทึกลง
+**DemoApp** ชุดเดียวกับหน้าเพิ่มวงเงิน โดยทั้งสองหน้าใช้ Redirect URI
+`request-increase.html` ในโฟลเดอร์เดียวกัน เพื่อใช้ SPA Redirect URI ที่ลงทะเบียนไว้แล้ว
+ไม่ต้องเพิ่ม Redirect URI แยกสำหรับหน้าเปิดวงเงินใหม่หรือหน้า Dashboard
+หลัง Login หน้าเดิมยังคงข้อมูลที่กรอกไว้ และบันทึก `Type_Request` เป็น
+`คำขอเปิดวงเงินลูกค้าใหม่` สำหรับหน้าเปิดวงเงิน หรือ `คำขอเพิ่มวงเงิน` สำหรับหน้าเพิ่มวงเงิน
+ข้อมูลจะเข้า SharePoint ทันที แต่ตาราง Dashboard ใช้ข้อมูล snapshot จึงแสดงหลังรอบอัปเดตข้อมูล
 
 หน้าเว็บใช้ MSAL Browser 3 และรอ `initialize()` กับ `handleRedirectPromise()`
 ให้เสร็จก่อนเปิดปุ่ม Login ปุ่มบันทึกจะเปิดหลังลงชื่อเข้าใช้สำเร็จเท่านั้น

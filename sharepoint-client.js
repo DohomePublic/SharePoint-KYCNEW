@@ -101,7 +101,8 @@
       if(!window.msal) throw new Error('โหลด Microsoft 365 Login ไม่สำเร็จ กรุณาตรวจเครือข่ายแล้วโหลดหน้าใหม่');
       app = new msal.PublicClientApplication({
         auth: {clientId:config.clientId, authority:'https://login.microsoftonline.com/' + config.tenantId,
-          redirectUri:location.origin + location.pathname},
+          // Reuse the registered increase-request callback for every form.
+          redirectUri:new URL('request-increase.html', location.origin + location.pathname).href},
         cache: {cacheLocation:'sessionStorage'}
       });
       await app.initialize();

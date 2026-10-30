@@ -40,7 +40,8 @@
   function state(){
     signIn.disabled = !ready || busy;
     signOut.disabled = busy;
-    signIn.hidden = !!account;
+    signIn.hidden = !!account && !!columns;
+    signIn.textContent = account ? 'ลองเชื่อมต่อ SharePoint อีกครั้ง' : 'ลงชื่อเข้าใช้ Microsoft 365';
     signOut.hidden = !account;
     save.disabled = !ready || !account || busy || saved || !columns || !addressReady;
     next.disabled = busy || saved;
@@ -244,7 +245,7 @@
     state();
     showMessage('');
     try {
-      account = await client.login();
+      if(!account) account = await client.login();
       updateAccount();
       await loadSchema();
     } catch(error){ showMessage(error.message, 'error'); }

@@ -42,4 +42,22 @@ label{font-weight:600;font-size:13px}small{font-size:12px;color:#80553b}.require
 #review dt,#review dd{margin:0;padding-bottom:6px;border-bottom:1px solid #f2dfd0;white-space:pre-wrap}
 summary{cursor:pointer;font-weight:600}.version{font-size:12px;color:#80553b}
 [hidden]{display:none!important}
+.create-header{background:var(--paper);border-bottom:1px solid var(--line);padding:8px;min-height:60px}
+.create-header>a{color:#241106;text-decoration:none;font-size:16px;font-weight:700}
+.create-header p{font-size:10px;margin:0}
+.request-create main{max-width:710px;margin:19px auto}
+.create-intro{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px;margin-bottom:16px;border-radius:12px}
+.create-intro h1{font-size:18px;margin-bottom:3px}
+.create-intro p{font-size:10px;margin:0}
+.create-badge{flex:none;background:var(--accent);color:#241106;border-radius:20px;padding:2px 8px;font-size:9px}
+.create-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.create-card{display:flex;flex-direction:column;align-items:flex-start;border-left:2px solid var(--accent);border-radius:12px;padding:16px;margin:0;box-shadow:0 2px 2px #3c21131a}
+.create-icon{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:var(--accent);color:#241106;margin-bottom:12px}
+.create-icon svg{width:18px;height:18px}
+.create-kind{font-size:10px;margin:0}
+.create-card h2{font-size:13px;margin:0}
+.create-description{font-size:10px;margin:12px 0 16px}
+.create-link{display:flex;align-items:center;justify-content:center;gap:8px;align-self:stretch;margin-top:auto;padding:5px 12px;border-radius:7px;background:var(--accent);color:#241106;text-decoration:none;font-size:10px}
+.create-link:hover{background:#ec4b13}
+@media(max-width:500px){.create-options{grid-template-columns:1fr}.create-intro{flex-wrap:wrap}}
 @media(max-width:650px){main{margin:8px auto;padding:0 8px}.panel{padding:18px 14px}.auth h1{font-size:19px}.grid{grid-template-columns:1fr;gap:18px}.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.steps ol{flex-wrap:wrap;justify-content:flex-start}.steps li{flex:1 0 30%}.steps button{font-size:11px}.steps button span{width:26px;height:26px}#review{grid-template-columns:1fr}#review dt{border:0;padding:0}#review dd{margin-bottom:8px}}
